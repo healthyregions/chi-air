@@ -1,3 +1,7 @@
+import {colors} from ".";
+
+console.log(colors)
+
 export const compact = <svg x="0px" y="0px" viewBox="0 0 19.6 32">
         <path d="M1,0h17.6c0.6,0,1,0.5,1,1v3.1c0,0.6-0.4,1-1,1H1c-0.6,0-1-0.5-1-1V1C0,0.5,0.4,0,1,0z"/>
         <path d="M1,9h17.6c0.6,0,1,0.5,1,1v3.1c0,0.6-0.4,1-1,1H1c-0.6,0-1-0.5-1-1V10C0,9.4,0.4,9,1,9z"/>
@@ -125,8 +129,8 @@ export const embed = <svg viewBox="0 0 512 512"><path d="M288 368l48 48 160-160-
 export const hamburger = <svg height="24px" width="24px" viewBox="0 0 24 24">
     <g>
         <rect id="Rectangle" fillRule="nonzero" fill="none" x="0" y="0" width="24" height="24"></rect>
-        <line x1="5" y1="7" x2="19" y2="7" id="Path" stroke="#2e7d32" strokeWidth="1.5"></line>
-        <line x1="5" y1="17" x2="19" y2="17" id="Path" stroke="#2e7d32" strokeWidth="1.5"></line>
-        <line x1="5" y1="12" x2="19" y2="12" id="Path" stroke="#2e7d32" strokeWidth="1.5"></line>
+        <line x1="5" y1="7" x2="19" y2="7" id="Path" stroke={colors.chicagoBlue} strokeWidth="1.5"></line>
+        <line x1="5" y1="17" x2="19" y2="17" id="Path" stroke={colors.chicagoBlue} strokeWidth="1.5"></line>
+        <line x1="5" y1="12" x2="19" y2="12" id="Path" stroke={colors.chicagoBlue} strokeWidth="1.5"></line>
 </g>
 </svg>

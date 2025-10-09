@@ -10,11 +10,10 @@ import styled from "styled-components";
 
 // import Tooltip from './tooltip';
 import { Gutter } from "../../styled_components";
-import { changeVariable, setMapParams, setPanelState, toggle3d, toggleCustom } from "../../actions"; //variableChangeZ, setNotification, storeMobilityData
+import { changeVariable, setMapParams, setPanelState, toggle3d, toggleCustom } from "../../actions";
 import {colors, variablePresets, dataDescriptions, parsedOverlays} from "../../config";
 import * as SVG from "../../config/svg";
-import {FormControl, Switch, Stack, FormControlLabel, FormGroup} from "@mui/material";
-import {Link} from "react-router-dom";
+import {FormControl, Switch, Stack, FormControlLabel} from "@mui/material";
 
 const VariablePanelContainer = styled.div`
   position: fixed;
@@ -31,7 +30,7 @@ const VariablePanelContainer = styled.div`
   padding: 0;
   box-sizing: border-box;
   transition: 250ms all;
-  font: "Roboto", sans-serif;
+  font-fmaily: "Roboto", sans-serif;
   color: ${colors.black};
   z-index: 50;
   // border-radius:20px;

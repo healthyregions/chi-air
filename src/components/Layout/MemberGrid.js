@@ -14,7 +14,7 @@ const TeamBio = styled(Grid)`
     }
     h5 {
 
-    font-family: 'Robot', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     line-height: 1;
     font-weight: 300;

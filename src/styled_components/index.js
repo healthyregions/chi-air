@@ -161,7 +161,7 @@ export const ContentContainer = styled.div`
   a {
     font-weight:bold;
     text-decoration:none;
-    color: ${colors.blue};
+    color: ${colors.chicagoDarkBlue};
   }
   hr {
     display: block;

@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import { colors } from "../../config";
 
 const FooterContainer = styled.footer`
+  display:flex;
+  justify-content: center;
   width: 100%;
   background: ${colors.chicagoDarkBlue};
   p {
@@ -70,34 +71,26 @@ const FooterContainer = styled.footer`
   }
 `;
 const FooterContent = styled.div`
-  width: 100%;
-  max-width: 1140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
   padding: 2rem 0;
   a, a img {
     display: inline-block;
     width:90%;
   }
-`;
-
-const LinkLists = styled(Grid)`
-  width: 100%;
   ul {
     list-style: none;
     li {
       line-height: 1.5;
       color: white;
       font-weight: bold;
+      display: inline-block;
+      margin-right: 2em;
     }
-  }
-  .copyright {
-    text-align: center;
-    font-family: "Roboto", sans-serif;
-    color: ${colors.white};
-    font-size: 13px;
-  }
-  @media (max-width: 960px) {
-    text-align: center;
+    li:last-child {
+    margin-right: 0}
   }
 `;
 
@@ -105,28 +98,18 @@ const Footer = (props) => {
   return (
     <FooterContainer>
       <FooterContent>
-        <LinkLists container spacing={0}>
-          <Grid item xs={12}>
-            <h6 translate="no">Chi Air</h6>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={0}>
-              <Grid item xs={6}>
-                <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/map">Map</Link>
-                  </li>
-                  <li>
-                    <Link to="/about">About</Link>
-                  </li>
-                </ul>
-              </Grid>
-            </Grid>
-          </Grid>
-        </LinkLists>
+        <h6 translate="no">Chi Air</h6>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/map">Map</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+        </ul>
       </FooterContent>
     </FooterContainer>
   );

@@ -188,7 +188,7 @@ button.mapboxgl-ctrl-attrib-button {
   backdrop-filter: blur( 20px );
   -webkit-backdrop-filter: blur( 20px );
   box-shadow: 2px 0px 5px gray;
-  border:1px solid green;
+  border:1px solid #41B6E6;
   border-radius:0;
 }
 

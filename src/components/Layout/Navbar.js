@@ -78,13 +78,14 @@ const NavInner = styled(Box)`
   min-width: 11.5em;
 
 `
-const LogoButtonContainer = styled(Button)`  
+const LogoButtonContainer = styled.button`
+  display: flex;
+  cursor: pointer;
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
   -webkit-backdrop-filter: blur( 20px );
   box-shadow: 2px 0px 5px ${colors.gray}44;
-  transform:translateX(3px);
   border-radius:0;
   border:1px solid ${colors.chicagoBlue};
 `
@@ -127,7 +128,7 @@ export default function Nav({
           horizontal: 'left',
         }}
         className="menu-popover"
-        sx={{
+        style={{
           border: `1px solid ${colors.chicagoBlue}`,
         }}
       >

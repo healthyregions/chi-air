@@ -165,48 +165,15 @@ const NavInlineButton = styled.button`
   }
 `;
 
-// const ShareURL = styled.input`
-//     position:fixed;
-//     left:110%;
-// `
-
-// const IndicatorBox = styled.div`
-//     position:fixed;
-//     border:1px dashed #FFCE00;
-//     background:rgba(0,0,0,0.25);
-//     z-index:5;
-// `
-
 const GeocoderContainer = styled.div`
   position: fixed;
-  left: 14em;
+  left: 130px;
   top: 7px;
   z-index: 500;
   width: 230px;
   height: 45px;
   @media (max-width: 600px) {
     display: none;
-  }
-`;
-
-const LogoContainer = styled.div`
-  position: absolute;
-  right: ${(props) =>
-    props.infoPanel ? `calc(${getRightMargin()}px + 3.5em)` : "3.5em"};
-  bottom: 0.75em;
-  z-index: 500;
-  height: 4em;
-  background: white;
-  padding: 0.5em 1em;
-  border: 1px solid #00e59e;
-  transition: 250ms all;
-  img {
-    height: 100%;
-  }
-  @media (max-width: 768px) {
-    bottom: initial;
-    top: 0;
-    right: 0;
   }
 `;
 
@@ -965,7 +932,8 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             placeholder={"Search for address..."}
             API_KEY={MAPBOX_ACCESS_TOKEN}
             onChange={handleGeocoder}
-            height={45}
+            height={36}
+            style={{color:"red", borderColor:"green"}}
           />
         </GeocoderContainer>
       )}

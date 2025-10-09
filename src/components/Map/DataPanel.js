@@ -40,7 +40,7 @@ const DataPanelContainer = styled.div`
   padding:20px;
   box-sizing: border-box;
   transition:250ms all;
-  font: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
   color:${colors.black};
   font-size:100%;
   padding:0;

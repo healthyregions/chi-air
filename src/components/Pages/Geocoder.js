@@ -11,14 +11,13 @@ const Container = styled.div`
     width:100%;
     .MuiFormControl-root {
         margin:0;
-        /* border-bottom:2px solid ${colors.chicagoDarkBlue}; */
         background: rgba( 255, 255, 255, 0.85 );
         box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
         backdrop-filter: blur( 20px );
         -webkit-backdrop-filter: blur( 20px );
-        box-shadow: 2px 0px 5px ${colors.gray}44;  
-        border:1px solid ${colors.chicagoBlue};
+        box-shadow: 2px 0px 5px ${colors.gray};
     }
+    
     .MuiAutocomplete-inputRoot {
         background:white;
         height:${({height}) => height||36}px;
@@ -29,13 +28,6 @@ const Container = styled.div`
         padding:0;
         color:${colors.black};
     }
-    .MuiInput-underline:hover:not(.Mui-disabled):before {
-        /* border-bottom:2px solid ${colors.chicagoBlue}; */
-    }
-    .MuiInput-underline:after {
-        /* border-bottom:2px solid ${colors.chicagoBlue}; */
-
-    }
     .MuiFormControl-root .MuiInputBase-adornedEnd:before {
         display: block;
         content: ' ';
@@ -45,6 +37,7 @@ const Container = styled.div`
         width: 20px;
         transform:translate(8px, -9px);
         border-bottom:none !important;
+        border:1px solid ${colors.forest};
     }
 
 `
