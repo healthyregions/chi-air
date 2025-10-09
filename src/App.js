@@ -10,33 +10,11 @@ import makeStyles from "@mui/styles/makeStyles";
 
 const theme = createTheme();
 
-// const useStyles = makeStyles((theme) => {
-//   root: {
-//     // some CSS that access to theme
-//   }
-// });
-
 const Map = React.lazy(() => import('./components/Pages/Map'));
 const About = React.lazy(() => import('./components/Pages/About'));
-const Team = React.lazy(() => import('./components/Pages/Team'));
 const Guide = React.lazy(() => import('./components/Pages/Guide'));
-const Contact = React.lazy(() => import('./components/Pages/Contact'));
 const Community = React.lazy(() => import('./components/Pages/Community'));
-const Data = React.lazy(() => import('./components/Pages/Data'));
-const Explore = React.lazy(() => import('./components/Pages/Explore'));
-const IndexBuilder = React.lazy(() => import('./components/Pages/IndexBuilder'));
-const Learn = React.lazy(() => import('./components/Pages/Learn'));
-
-
-const LearnHistogramFilter = React.lazy(() => import('./components/Pages/LearnHistogramFilter'));
-const LearnMapping101 = React.lazy(() => import('./components/Pages/LearnMapping101'));
-const LearnIndexBuilder = React.lazy(() => import('./components/Pages/LearnIndexBuilder'));
-
 const Posts = React.lazy(() => import('./components/Pages/Posts'));
-
-const PRN = React.lazy(() => import('./components/Pages/PRN'));
-const Instituto = React.lazy(() => import('./components/Pages/Instituto'));
-
 
 /** Google Translation Widget */
 const googleTranslateElementInit = () => {
@@ -86,44 +64,19 @@ export default function App() {
 				<ThemeProvider theme={theme}>
 					<Suspense fallback={<LoadingMessage />}>
 						<Switch>
-							<Route exact path="/" component={Home} exact />
+							<Route exact path="/" component={Home} />
 							<Route exact path="/map" component={Map} />
 							<Route exact path="/map.html" component={Map} />
 							<Route exact path="/about" component={About} />
 							<Route exact path="/about.html" component={About} />
-							<Route exact path="/team" component={Team} />
-							<Route exact path="/team.html" component={Team} />
 							<Route exact path="/guide" component={Guide} />
 							<Route exact path="/guide.html" component={Guide} />
 							<Route path="/posts/:slug?" component={Posts} />
-							<Route exact path="/contact" component={Contact} />
-							<Route exact path="/contact.html" component={Contact} />
 							<Route exact path="/community" component={Community} />
 							<Route exact
 								path="/community.html"
 								component={Community}
 							/>
-							<Route exact path="/learn/mapping101" component={LearnMapping101} />
-							<Route exact path="/learn/mapping101.html" component={LearnMapping101} />
-							<Route exact path="/learn/histogram" component={LearnHistogramFilter} />
-							<Route exact path="/learn/histogram.html" component={LearnHistogramFilter} />
-							<Route exact path="/learn/indexBuilder" component={LearnIndexBuilder} />
-							<Route exact path="/learn/indexBuilder.html" component={LearnIndexBuilder} />
-							<Route exact path="/learn" component={Learn} />
-							<Route exact path="/learn.html" component={Learn} />
-							<Route exact path="/data" component={Data} />
-							<Route exact path="/data.html" component={Data} />
-							<Route exact path="/builder" component={IndexBuilder} />
-							<Route exact path="/builder.html" component={IndexBuilder} />
-
-							{/* <Route path="/community/instituto" component={Instituto} />
-							<Route path="/community/instituto.html" component={Instituto} />
-							<Route path="/community/prn" component={PRN} />
-							<Route path="/community/prn.html" component={PRN} />
-							<Route path="/community/peoplesresponse" component={PRN} />
-							<Route path="/community/peoplesresponse.html" component={PRN} />
-							<Route path="/community/peoplesresponsenetwork" component={PRN} />
-							<Route path="/community/peoplesresponsenetwork.html" component={PRN} /> */}
 							<Route component={ErrorPage} />
 						</Switch>
 					</Suspense>

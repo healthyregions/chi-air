@@ -131,6 +131,7 @@ function SvgLogo({
 
 const NavInner = styled(Box)`
   padding:1em;
+  min-width: 11.5em;
 
 `
 const LogoButtonContainer = styled(Button)`  
@@ -153,18 +154,6 @@ export default function Nav({
   const dispatch = useDispatch();
   const panelState = useSelector(state => state.panelState);
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: panelState[panel] ? false : true }))
-
-  // const handleGeolocate = async () => {
-  //   navigator.geolocation.getCurrentPosition(position => {
-  //       setViewport({
-  //           longitude: position.coords.longitude,
-  //           latitude: position.coords.latitude,
-  //           zoom: 14,
-  //           transitionDuration: 1000,
-  //           transitionInterpolator: new FlyToInterpolator()
-  //       })
-  //   })
-  // }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
@@ -202,41 +191,12 @@ export default function Nav({
             <NavItems>
               <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
               <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
-              {/* <li><a onClick={() => setViewState({
-                ...bounds,
-                bearing:0,
-                pitch:0
-              })}>{SVG.compass}Recenter Map</a></li>
-              {/* <li><a onClick={handleGeolocate}>{SVG.locate}Find my location</a></li> */}
             </NavItems>
           </>}
-          {/* <Typography>Pages</Typography> */}
           <NavItems>
             <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
-
+            <li><NavLink to="/nap">Map</NavLink></li>
             <li><NavLink to="/about">About</NavLink></li>
-            <NavItems>
-              <SubNav><NavLink to="/team">Team</NavLink></SubNav>
-              <SubNav><NavLink to="/data">Data</NavLink></SubNav>
-              <SubNav><NavLink to="/posts">News</NavLink></SubNav>
-            </NavItems>
-
-            <li><NavLink to="/explore">Explore</NavLink></li>
-            <NavItems>
-              <SubNav><NavLink to="/map">Map</NavLink></SubNav>
-              <SubNav><NavLink to="/builder">Index Builder</NavLink></SubNav>
-              <SubNav><NavLink to="/community">My Community</NavLink></SubNav>
-              <SubNav><NavLink to="/guide">Resource Guide</NavLink></SubNav>
-            </NavItems>
-
-            <li><Link to="/learn" className={loc.pathname === '/learn' ? 'active' : 'inactive'}>Learn</Link></li>
-            <NavItems>
-              <SubNav><NavLink to="/learn/mapping101">Mapping 101</NavLink></SubNav>
-              <SubNav><NavLink to="/learn/histogram">Histogram Filter</NavLink></SubNav>
-              <SubNav><NavLink to="/learn/indexBuilder">Index Builder</NavLink></SubNav>
-            </NavItems>
-
-            <li><NavLink to="/contact">Contact</NavLink></li>
           </NavItems>
         </NavInner>
       </Popover>

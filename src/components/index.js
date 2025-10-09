@@ -23,11 +23,8 @@ import StaticNavbar from './Layout/StaticNavbar';
 import Table from './Layout/Table';
 import Geocoder from './Pages/Geocoder';
 
-
 // pages
 import About from './Pages/About';
-import Contact from './Pages/Contact';
-import Data from './Pages/Data';
 import ErrorPage from './Pages/Error';
 import Home from './Pages/Home';
 import LoadingMessage from './Pages/LoadingMessage';
@@ -38,7 +35,6 @@ export {
     BarChart,
     BottomPanel,
     ContactForm,
-    // ContextMenu,
     DataPanel,
     DensityChart,
     Draggable,
@@ -46,7 +42,6 @@ export {
     Gutter,
     Histogram,
     Footer,
-    // InfoBox,
     Legend,
     MapSection,
     MapTooltipContent,
@@ -54,7 +49,6 @@ export {
     NavBar,
     PolarSpeciesPlot,
     VariablePanel,
-    // Popover,
     Preloader,
     ResourceGuideRow,
     Scaleable,
@@ -62,8 +56,6 @@ export {
     StaticNavbar,
     Table,
     About,
-    Contact,
-    Data,
     ErrorPage,
     Home,
     LoadingMessage,
