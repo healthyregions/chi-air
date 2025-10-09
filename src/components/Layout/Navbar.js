@@ -195,7 +195,7 @@ export default function Nav({
           </>}
           <NavItems>
             <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
-            <li><NavLink to="/nap">Map</NavLink></li>
+            <li><NavLink to="/map">Map</NavLink></li>
             <li><NavLink to="/about">About</NavLink></li>
           </NavItems>
         </NavInner>
