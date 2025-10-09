@@ -27,7 +27,7 @@ const VariablePanelContainer = styled.div`
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 2px 0px 5px ${colors.gray}44;
-  border: 1px solid ${colors.green};
+  border: 1px solid ${colors.chicagoBlue};
   padding: 0;
   box-sizing: border-box;
   transition: 250ms all;
@@ -75,7 +75,7 @@ const VariablePanelContainer = styled.div`
     background-color: ${colors.white};
     box-shadow: 2px 0px 5px ${colors.gray}88;
     outline: none;
-    border: 1px solid ${colors.green};
+    border: 1px solid ${colors.chicagoBlue};
     // border-radius:20px;
     cursor: pointer;
     transition: 500ms all;
@@ -295,12 +295,6 @@ const VariablePanel = (props) => {
     dispatch(changeVariable(variablePresets[e.target.value]));
   }
 
-  const toggleCommunityStickers = (e) => {
-    dispatch(setMapParams({
-      showCommunityStickers: !!e.target.checked
-    }));
-  };
-
   return (
     <VariablePanelContainer
       className={panelState.variables ? "" : "hidden"}
@@ -332,14 +326,6 @@ const VariablePanel = (props) => {
               </div>)}
             </>)}
           </div>
-
-          <AntSwitchLabel label={'Community Stickers'}
-            control={
-              <AntSwitch checked={mapParams.showCommunityStickers}
-                         onClick={(e) => toggleCommunityStickers(e)} />
-            } />
-
-          <Link to='/builder' style={{ textDecoration: 'none', color: 'rgb(1 ,123, 255)' }}>Create a Custom Vulnerability Index with Multiple Variables</Link>
         </FormControl>
         <Gutter h={20} />
         <h2>Data Description</h2>
@@ -380,7 +366,7 @@ const VariablePanel = (props) => {
             value={mapParams.overlays}
             onChange={(e) => handleMapOverlay(e.target.value)}
             multiple={true}
-            style={{ maxWidth: '300px' }}
+            style={{ minWidth: '200px' }}
           >
             <MenuItem value="None" key={"None"}>
               None
@@ -392,9 +378,6 @@ const VariablePanel = (props) => {
                   </MenuItem>
               )
             }
-            <MenuItem value={"aq"} key={"aq"}>
-              Microsoft PM2.5 Readings
-            </MenuItem>
           </Select>
         </FormControl>
         {mapParams.overlays.map((selectedOverlay, index) => <div key={`overlay-legend-container-${index}`}>

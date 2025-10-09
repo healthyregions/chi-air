@@ -50,7 +50,6 @@ export const INITIAL_STATE = {
     bins: [],
     overlay: "community_areas",
     overlays: ["community_areas"],
-    showCommunityStickers: false,
   },
   panelState: {
     variables: window.innerWidth > 768,

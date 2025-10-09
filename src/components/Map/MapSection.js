@@ -42,6 +42,7 @@ function DeckGLOverlay(props) {
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
+
 const getRightMargin = () =>
   window.innerWidth * 0.15 < 250 ? 260 : window.innerWidth * 0.15 + 10;
 
@@ -103,7 +104,7 @@ const HoverDiv = styled.div`
 const MapButtonContainer = styled.div`
   position: absolute;
   right: ${(props) =>
-    props.infoPanel ? `calc(${getRightMargin()}px)` : "0.75em"};
+    props.infoPanel ? "0.75em" : "0.75em"};
   bottom: 0;
   z-index: 10;
   transition: 250ms all;
@@ -910,19 +911,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           }
         }}
       >
-        {mapParams.showCommunityStickers && mapStickers}
-        {popupInfo && (
-          <Popup
-            anchor="top"
-            className="sticker-marker-popup"
-            maxWidth={'45vw'}
-            longitude={Number(popupInfo.long||popupInfo.longitude)}
-            latitude={Number(popupInfo.lat||popupInfo.latitude)}
-            onClose={() => setPopupInfo(null)}
-          >
-            <MapMarkerPopup sticker={popupInfo} />
-          </Popup>
-        )}
         <DeckGLOverlay
           interleaved={true}
           width={"100%"}
@@ -1009,21 +997,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
            <MapOverlayTooltipContent content={overlayHover.object} overlay={overlayHover.overlay} />
           </HoverDiv>
       }
-
-      {!geoids.length && (
-        <LogoContainer infoPanel={panelState.info}>
-          <a
-            href="https://healthyregions.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={`${process.env.PUBLIC_URL}/herop_dark_logo_teal.png`}
-              alt=""
-            />
-          </a>
-        </LogoContainer>
-      )}
     </MapContainer>
   );
 }

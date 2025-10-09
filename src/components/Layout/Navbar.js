@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, NavLink, useLocation} from 'react-router-dom';
 import Popover from '@mui/material/Popover';
@@ -10,19 +10,6 @@ import { Box } from '@mui/system';
 import { setPanelState } from '../../actions';
 import * as SVG from '../../config/svg';
 
-const SubNav = styled.li`
-  padding: 0 1.5rem;
-  a {
-    color: ${colors.chicagoBlue} !important;
-    &.active {
-      color: #3D6017 !important;
-    }
-  }
-  &:first-child {
-    border-top: 1px solid ${colors.lightgray};
-  }
-`;
-
 const NavItems = styled.ul`
   margin-top:.25em;
   margin-bottom:1em;
@@ -33,11 +20,11 @@ const NavItems = styled.ul`
   transition: 250ms all;
   li a, button {
     &.active {
-      color: #3D6017;
+      color: ${colors.chicagoDarkBlue};
     }
     text-decoration:none;
     font-family:"Roboto", sans-serif;
-    color: #267FA4;
+    color: ${colors.chicagoBlue};
     transition:250ms all;
     cursor: pointer;
     text-transform:none;
@@ -61,11 +48,11 @@ const NavItems = styled.ul`
       }
     }
     &:hover {
-      color: ${colors.green};
+      color: ${colors.chicagoBlue};
         svg {
-          fill: ${colors.green};
+          fill: ${colors.chicagoBlue};
         .cls-1 {
-          stroke:${colors.green};
+          stroke:${colors.chicagoBlue};
         }
       }
     }
@@ -82,52 +69,9 @@ const NavContainer = styled.div`
     padding-right: 15px;
     padding-bottom: 5px;
     padding-left: 15px;
-    border: 1px solid #97DB4F;
+    border: 1px solid ${colors.chicagoBlue};
   }
 `
-const SvgLogoContainer = styled.svg`
-  height:2.5em;
-  margin-right:.5em;
-  width:2.5em;
-  circle {
-    transition:2000ms all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-`
-const initialSizing = [
-  { r: 12.5, cx: 77.2, cy: 21.2, fill: colors.green },
-  { r: 20.5, cx: 85.2, cy: 61.6, fill: colors.green },
-  { r: 16.2, cx: 40.9, cy: 90.1, fill: colors.green },
-  { r: 24, cx: 33.3, cy: 41, fill: colors.green },
-]
-
-const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-function SvgLogo({
-  colors
-}) {
-  const [svgSizing, setSvgSizing] = useState(initialSizing)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSvgSizing(prev => [
-        { ...prev[1], r: Math.random() * 15 + 5, fill: getRandom(colors) },
-        { ...prev[2], r: Math.random() * 15 + 5, fill: getRandom(colors) },
-        { ...prev[3], r: Math.random() * 15 + 5, fill: getRandom(colors) },
-        { ...prev[0], r: Math.random() * 15 + 5, fill: getRandom(colors) }
-      ])
-    }, 2000)
-    return () => clearInterval(interval)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return <SvgLogoContainer version="1.1" x="0px" y="0px" viewBox="0 0 115 115" >
-    <circle r={svgSizing[0].r} cx={svgSizing[0].cx} cy={svgSizing[0].cy} fill={svgSizing[0].fill} />
-    <circle r={svgSizing[1].r} cx={svgSizing[1].cx} cy={svgSizing[1].cy} fill={svgSizing[1].fill} />
-    <circle r={svgSizing[2].r} cx={svgSizing[2].cx} cy={svgSizing[2].cy} fill={svgSizing[2].fill} />
-    <circle r={svgSizing[3].r} cx={svgSizing[3].cx} cy={svgSizing[3].cy} fill={svgSizing[3].fill} />
-  </SvgLogoContainer>
-}
 
 const NavInner = styled(Box)`
   padding:1em;
@@ -142,7 +86,7 @@ const LogoButtonContainer = styled(Button)`
   box-shadow: 2px 0px 5px ${colors.gray}44;
   transform:translateX(3px);
   border-radius:0;
-  border:1px solid ${colors.green};
+  border:1px solid ${colors.chicagoBlue};
 `
 
 export default function Nav({
@@ -170,8 +114,7 @@ export default function Nav({
   return (
     <NavContainer>
       <LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
-        <SvgLogo colors={[colors.green, colors.chicagoBlue, colors.skyblue, colors.chicagoDarkBlue, colors.chicagoRed]}></SvgLogo>
-        <Typography><span style={{fontWeight:"bold", color:"#2e7d32"}} translate="no"> ChiVes</span></Typography>
+        <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
         {SVG.hamburger}
       </LogoButtonContainer>
       <Popover
@@ -184,6 +127,9 @@ export default function Nav({
           horizontal: 'left',
         }}
         className="menu-popover"
+        sx={{
+          border: `1px solid ${colors.chicagoBlue}`,
+        }}
       >
         <NavInner>
           {!!showMapControls && <>

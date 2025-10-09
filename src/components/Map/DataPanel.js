@@ -31,13 +31,12 @@ const DataPanelContainer = styled.div`
   right:0.5em;
   top:0.5em;
   overflow-x:visible;
-  height:calc(100vh - 1em);
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
   -webkit-backdrop-filter: blur( 20px );
   box-shadow: 2px 0px 5px ${colors.gray}44;
-  border:1px solid ${colors.green};
+  border:1px solid ${colors.chicagoBlue};
   padding:20px;
   box-sizing: border-box;
   transition:250ms all;
@@ -84,7 +83,7 @@ const DataPanelContainer = styled.div`
     margin:0;
     background-color: ${colors.white};
     box-shadow: 2px 0px 5px ${colors.gray}88;
-    border:1px solid ${colors.green};
+    border:1px solid ${colors.chicagoBlue};
     // border-radius:20px;
     cursor: pointer;
     transition:500ms all;
@@ -209,7 +208,7 @@ const ReportWrapper = styled.div`
 
 // Inner container for report content
 const ReportContainer = styled.div`
-    padding:10px 15px 200px 15px;
+    padding:10px 15px;
     box-sizing:border-box;
     overflow-x:visible;
     // Multi-column layout (NYI)
@@ -257,161 +256,6 @@ const ReportSection = styled.div`
     align-items: center;
 `
 
-// // Toggle styling for condensed and expanded drop down
-// const ExpandSelect = styled(FormControl)`
-//   outline:none;
-//   border:none;
-//   position:absolute !important;
-//   right:25px;
-//   top:15px;
-//   div.MuiInputBase-root:before {
-//     display:none !important;
-//   }
-//   div.MuiInputBase-root:after {
-//     display:none !important;
-//   }
-//   svg {
-//     path {
-//       fill:white;
-//     }
-//   }
-// `
-
-// function AirbnbThumbComponent(props) {
-//   return (
-//     <span {...props}>
-//       <span className="bar" />
-//       <span className="bar" />
-//       <span className="bar" />
-//     </span>
-//   );
-// }
-
-const EnvironmentalColumnsToChart = [
-  {
-    'column':'trees_crown_den',
-    'name':'Tree Canopy % in 2010',
-    'color':colors.green,
-    'preset':'',
-  },
-  {
-    'column':'treeChng',
-    'name':'Tree Canopy Change',
-    'color':colors.pink,
-    'preset':'',
-  },
-  {
-    'column':'heatisl',
-    'name':'Temperature Percentile',
-    'color':colors.orange,
-    'preset':'',
-  },
-  // {
-  //   'column':'topline_median',
-  //   'name':'PM2.5 Weekly Median',
-  //   'color':colors.yellow,
-  //   'preset':'',
-  // },
-  {
-    'column':'nn_q3_pm2_5',
-    'name':'Summer PM2.5',
-    'color':colors.chicagoRed,
-    'preset':'',
-  },
-  {
-    'column':'urban_flood_suscep',
-    'name':'Urban Flood Susceptibility',
-    'color':colors.chicagoBlue,
-    'preset':'',
-  },
-  {
-    'column':'ndvi',
-    'name':'Vegetation Index (NDVI)',
-    'color':colors.forest,
-    'preset':'',
-  },
-  {
-    'column':'simpson',
-    'name':'Plant Biodiversity (Simpson)',
-    'color':colors.green,
-    'preset':'',
-  }
-]
-const SocialColumnsToChart = [
-  {
-    'column':'svi_pecentile',
-    'name':'Social Vulnerability',
-    'color':colors.teal,
-    'preset':'',
-  },
-  {
-    'column':'hardship',
-    'name':'Economic Hardship Index',
-    'color':colors.yellow,
-    'preset':'',
-  },
-  {
-    'column':'asthma_age_adj_rate',
-    'name':'Childhood Asthma Rate',
-    'color':colors.chicagoDarkBlue,
-    'preset':'',
-  },
-  {
-    'column':'logtraf',
-    'name': 'Traffic Volume',
-    'color':colors.purple,
-    'preset':'',
-  },
-]
-
-const RaceColumnsToChart = [
-  {
-    'column':'pct_asian',
-    'name':'% Identified as Asian',
-    'color':colors.pink,
-    'preset':'',
-  },
-  {
-    'column':'pct_black',
-    'name':'% Identified as Black/African American',
-    'color':colors.lightblue,
-    'preset':'',
-  },
-  {
-    'column':'pct_nativeam',
-    'name':'% Identified as Native American/Indigenous',
-    'color':colors.strongOrange,
-    'preset':'',
-  },
-  {
-    'column':'pct_pacis',
-    'name':'% Identified as Native Hawaiian/Other Pacific Islander',
-    'color':colors.blue,
-    'preset':'',
-  },
-  {
-    'column':'pct_white',
-    'name':'% Identified as White',
-    'color':colors.paleyellow,
-    'preset':'',
-  },
-  {
-    'column':'pct_other',
-    'name':'% Identified as other races',
-    'color':colors.green,
-    'preset':'',
-  },
-]
-
-const EthnicityColumnsToChart = [
-  {
-    'column':'pct_hisp',
-    'name':'% Identified as Hispanic/Latinx',
-    'color':colors.orange,
-    'preset':'',
-  },
-]
-
 const AgeColumnsToChart = [
   {
     'column':'percentage_seniors',
@@ -450,78 +294,13 @@ const DataPanel = () => {
                     <h3>{selectionData.treeCoverage.toFixed(1)}%</h3> */}
                     <p>Heat Island Percentile</p>
                     <h3>{selectionData.heatIsland.toFixed(1)}</h3>
-                    {/* <p>Averaged over {selectionData.sums.count} census tracts</p>
-                    <NeighborhoodCounts
-                      counts={selectionData.communityCounts}
-                      activeCommunities={filterValues.community}
-                    /> */}
+
                 </ReportSection>
                 <h2>Filters</h2>
                 <br/>
                 <p style={{padding:0}}>
                   These charts show the distribution of variables in the tracts on your screen. Adjust the sliders to filter the map.
                 </p>
-                <Gutter height="1em" />
-                <h3 className="sectionHeader">Environmental</h3>
-                {
-                  EnvironmentalColumnsToChart.map(({name, column, color, description}, i) => <>
-                      <Histogram
-                        name={name}
-                        column={column}
-                        histCounts={selectionData.histCounts[column]}
-                        density={selectionData.densities[column]}
-                        range={ranges[column]}
-                        color={color}
-                        key={`distribution-${i}`}
-                      />
-                    </>
-                  )
-                }
-                <Gutter height="1em" />
-                <h3 className="sectionHeader">Socio-Economic</h3>
-                {
-                  SocialColumnsToChart.map(({name, column, color}, i) =>
-                    <Histogram
-                      name={name}
-                      column={column}
-                      histCounts={selectionData.histCounts[column]}
-                      density={selectionData.densities[column]}
-                      range={ranges[column]}
-                      color={color}
-                      key={`distribution-2-${i}`}
-                    />
-                  )
-                }
-                <Gutter height="1em" />
-                <h3 className="sectionHeader">Race</h3>
-                {
-                  RaceColumnsToChart.map(({name, column, color}, i) =>
-                    <Histogram
-                      name={name}
-                      column={column}
-                      histCounts={selectionData.histCounts[column]}
-                      density={selectionData.densities[column]}
-                      range={ranges[column]}
-                      color={color}
-                      key={`distribution-3-${i}`}
-                    />
-                  )
-                }
-                <Gutter height="1em" />
-                <h3 className="sectionHeader">Ethnicity</h3>
-                {
-                  EthnicityColumnsToChart.map(({name, column, color}, i) =>
-                    <Histogram
-                      name={name}
-                      column={column}
-                      histCounts={selectionData.histCounts[column]}
-                      density={selectionData.densities[column]}
-                      range={ranges[column]}
-                      color={color}
-                      key={`distribution-4-${i}`}
-                    />
-                  )
-                }
                 <Gutter height="1em" />
                 <h3 className="sectionHeader">Age Demographics</h3>
                 {

@@ -17,7 +17,7 @@ const Container = styled.div`
         backdrop-filter: blur( 20px );
         -webkit-backdrop-filter: blur( 20px );
         box-shadow: 2px 0px 5px ${colors.gray}44;  
-        border:1px solid ${colors.green};
+        border:1px solid ${colors.chicagoBlue};
     }
     .MuiAutocomplete-inputRoot {
         background:white;

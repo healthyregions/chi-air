@@ -4,7 +4,7 @@ import rawOverlays from './overlays.json';
 import {useEffect, useState} from "react";
 
 export const defaultData = 'chives-data.geojson';
-export const defaultVariable = "Tree Canopy Change";
+export const defaultVariable = "Air Temperature";
 
 // No further processing needed
 export const variableCategories = rawCategories;
