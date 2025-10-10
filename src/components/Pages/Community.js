@@ -1,19 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import booleanWithin from "@turf/boolean-within";
 import { quantileRank } from "simple-statistics";
-// import { nicelyFormatNumber } from "../../utils";
 import { colors } from "../../config";
 import bbox from "@turf/bbox";
 
 import {
   Gutter,
   NavBar,
-  // VariablePanel,
   Footer,
-  // Pm25Report,
-  // Table,
-  PolarSpeciesPlot,
-} from "../../components"; //  Scaleable, Draggable, InfoBox, TopPanel, Preloader,
+} from "../../components";
 import useFilterData from "../../hooks/useFilterData";
 import useProcessData from "../../hooks/useProcessData";
 import styled from "styled-components";
@@ -478,23 +473,6 @@ function App() {
         });
       }
     );
-  };
-  const [speciesPlotInfo, setSpeciesPlotInfo] = useState({
-    geoid: 0,
-    open: false,
-  });
-
-  const handleSpeciesPlot = (geoid) => {
-    setSpeciesPlotInfo({
-      open: true,
-      geoid: +geoid,
-    });
-  };
-  const handleSetOpen = (bool) => {
-    setSpeciesPlotInfo((prev) => ({
-      ...prev,
-      open: bool,
-    }));
   };
 
   useEffect(() => {
@@ -1044,36 +1022,9 @@ function App() {
               <div style={{ position: "relative", width: "100%", height: 400 }}>
                 <MapSection bounds={filteredViewport} geoids={currGeoids} />
               </div>
-              <Gutter h={40} />
-              {currGeoids.length && (
-                <ReportSection>
-                  <p>
-                    <b>Species in census tracts near you</b>
-                    <br />
-                    Click to see species tree
-                  </p>
-                  {currGeoids.map((geoid, i) => (
-                    <StyledButton
-                      onClick={() => handleSpeciesPlot(geoid)}
-                      variant="outlined"
-                      style={{
-                        margin: ".5em .5em 0 0",
-                        fontFamily: '"Lato", sans-serif',
-                      }}
-                    >
-                      {geoid}
-                    </StyledButton>
-                  ))}
-                </ReportSection>
-              )}
             </Grid>
           </Grid>
         )}
-        <PolarSpeciesPlot
-          geoid={speciesPlotInfo.geoid}
-          open={speciesPlotInfo.open}
-          setOpen={handleSetOpen}
-        />
       </ContentContainer>
       <Footer />
     </CommunityPage>

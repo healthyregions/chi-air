@@ -13,7 +13,6 @@ import MapSection from './Map/MapSection';
 import MapTooltipContent from './Map/MapTooltipContent';
 import MemberGrid from './Layout/MemberGrid';
 import NavBar from './Layout/Navbar';
-import PolarSpeciesPlot from './Charts/PolarSpeciesPlot';
 import VariablePanel from './Layout/VariablePanel';
 import Preloader from './Layout/Preloader';
 import ResourceGuideRow from './Layout/ResourceGuideRow';
@@ -47,7 +46,6 @@ export {
     MapTooltipContent,
     MemberGrid,
     NavBar,
-    PolarSpeciesPlot,
     VariablePanel,
     Preloader,
     ResourceGuideRow,

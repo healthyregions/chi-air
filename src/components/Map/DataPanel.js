@@ -211,6 +211,7 @@ const ReportContainer = styled.div`
     padding:10px 15px;
     box-sizing:border-box;
     overflow-x:visible;
+    max-height: calc(100vh - 2em);
     // Multi-column layout (NYI)
     // display:flex;
     // flex-direction:column;

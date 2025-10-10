@@ -1,8 +1,3 @@
-import React, { useState } from 'react';
-
-import { Button } from '@mui/material';
-import {colors} from '../../config'
-const PolarSpeciesPlot = React.lazy(() => import('../Charts/PolarSpeciesPlot.js'));
 // This component handles and formats the map tooltip info.
 // The props passed to this component should contain an object of the hovered object (from deck, info.object by default)
 const MapTooltipContent = ({content, showCustom = false}) => {
@@ -35,23 +30,6 @@ const MapTooltipContent = ({content, showCustom = false}) => {
         percentage_children,
         CUSTOM_INDEX_scaled,
     } = content;
-    const [speciesPlotInfo, setSpeciesPlotInfo] = useState({
-        open: false,
-        geoid: null
-    });
-
-    const handleSpeciesPlot = () => {
-        setSpeciesPlotInfo({
-            open: true,
-            geoid: +geoid
-        });
-    }
-    const handleSetOpen = (bool) => {
-        setSpeciesPlotInfo(prev =>({
-            ...prev,
-            open: bool
-        }))
-    }
 
     return (
         <>
@@ -88,13 +66,6 @@ const MapTooltipContent = ({content, showCustom = false}) => {
                     {showCustom && <tr><td>Custom Index</td><td>{CUSTOM_INDEX_scaled && CUSTOM_INDEX_scaled.toFixed(3)}</td></tr>}
                 </tbody>
             </table>
-
-            <Button variant="contained" onClick={handleSpeciesPlot} style={{marginTop:'.5em', fontFamily:'"Lato", sans-serif', background:colors.forest}}>Open Species Tree</Button>
-            <PolarSpeciesPlot
-                geoid={speciesPlotInfo.geoid}
-                open={speciesPlotInfo.open}
-                setOpen={handleSetOpen}
-                />
             </span></div>}
         </>
     )

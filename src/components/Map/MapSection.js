@@ -5,19 +5,9 @@ import styled from "styled-components";
 
 // deck GL and helper function import
 import { MapView, FlyToInterpolator } from "@deck.gl/core";
-import {
-  TextLayer,
-  GeoJsonLayer,
-  // GridCellLayer,
-  ColumnLayer,
-  LineLayer,
-} from "@deck.gl/layers"; //, ScatterplotLayer, TextLayer
-// import { GridLayer, HexagonLayer } from "@deck.gl/aggregation-layers";
-import { CSVLoader } from "@loaders.gl/csv";
-// import { GPUGridLayer, HeatmapLayer } from "@deck.gl/aggregation-layers";
+import { GeoJsonLayer } from "@deck.gl/layers";
 import { fitBounds } from "@math.gl/web-mercator";
 import MapboxGLMap from "react-map-gl";
-import { scaleThreshold } from "d3-scale";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
@@ -221,7 +211,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     pitch: 0,
   });
 
-  const zoom = Math.round(viewState.zoom);
   const mapIsTilted =
     viewRef.current?.bearing !== 0 || viewRef.current?.pitch !== 0;
 
@@ -369,42 +358,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
 
   const COLOR_SCALE = (x) =>
     scaleColor(x, mapParams.bins, mapParams.colorScale);
-
-  const AQ_SCALE = scaleThreshold()
-    .domain([8.91, 9.6, 9.89, 10.12, 10.29, 10.49, 10.71, 11.1, 12.06])
-    .range([
-      'rgb(255,255,229)',
-      'rgb(255,247,188)',
-      'rgb(254,227,145)',
-      'rgb(254,196,79)',
-      'rgb(254,153,41)',
-      'rgb(236,112,20)',
-      'rgb(204,76,2)',
-      'rgb(140,45,4)'
-    ]);
-
-  const getAqColor = (val) => {
-    const color = AQ_SCALE(val);
-    return color
-      .slice(4, -1)
-      .split(",")
-      .map((x) => parseInt(x));
-  };
-
-  const REDLINING_COLOR_SCALE = {
-    A: [115, 169, 77],
-    B: [52, 172, 198],
-    C: [219, 207, 0],
-    D: [226, 77, 90],
-  };
-
-  const DISPLACEMENT_COLOR_SCALE = {
-    // Displacement Pressure
-    '0': [225,225,225],
-    'vulnerable, prices not rising': [252,146,114],
-    'vulnerable, prices rising':  [222,45,38]
-  };
-
+  
   const isVisible = (feature, filters) => {
     for (const property in filters) {
       if (typeof filters[property][0] === "string") {
@@ -416,44 +370,28 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           feature.properties[property] > filters[property][1]
         )
           return false;
+        }
       }
-    }
-    return true;
-  };
-  // const CONTOURS = [
-  //   { threshold: [0, 1], color: [0, 0, 0, 25], strokeWidth: 0, zIndex: 1 }, // => Isoline for threshold 1
-  //   { threshold: [1, 4], color: [254, 240, 217], strokeWidth: 0, zIndex: 2 }, // => Isoline for threshold 1
-  //   { threshold: [4, 8], color: [253, 204, 138], strokeWidth: 0, zIndex: 3 }, // => Isoline for threshold 5
-  //   { threshold: [8, 10], color: [252, 141, 89], strokeWidth: 0, zIndex: 4 }, // => Isoline for threshold 5
-  //   { threshold: [10, 15], color: [227, 74, 51], strokeWidth: 0, zIndex: 5 }, // => Isoline for threshold 5
-  //   { threshold: [15, 200], color: [179, 0, 0], strokeWidth: 0, zIndex: 6 }, // => Isoline for threshold 5
-  // ];
-  // const AQ_COL = "weekend_median";
+      return true;
+    };
+
+      const DISPLACEMENT_COLOR_SCALE = {
+        // Displacement Pressure
+        '0': [225,225,225],
+        'vulnerable, prices not rising': [252,146,114],
+        'vulnerable, prices rising':  [222,45,38]
+      };
 
   const mapAlphaFunc = (feature, color) => {
     const variableName = mapParams.variableName.toLowerCase();
     switch (true) {
-      case variableName.includes("plant diversity"):
-        return [...color, feature.properties.specCt > 7 ? 255 : 75];
-      case variableName.includes("redlining"):
-        return (
-          REDLINING_COLOR_SCALE[
-            feature.properties["primary_grade_4levels"]
-          ] || [0, 0, 0]
-        );
+      // example of putting a legend on for a variable
       case variableName.toLowerCase().includes("displacement index"):
         const indexKey = String(feature.properties["HPRICETIER"]).toLowerCase();
         return (
           DISPLACEMENT_COLOR_SCALE[indexKey] || [
             0, 0, 0,
           ]
-        );
-      case variableName.toLowerCase().includes("displacement pressure"):
-        const pressureKey = String(feature.properties["VUL_PRICE"]).toLowerCase();
-        return (
-            DISPLACEMENT_COLOR_SCALE[pressureKey] || [
-              0, 0, 0,
-            ]
         );
       default:
         return color;
@@ -586,74 +524,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       beforeId: "water",
     }),
   ];
-  const customLayers = [
-    // new HexagonLayer({
-    //   id: "aq_data_grid",
-    //   data: process.env.REACT_APP_AQ_IDW_ENDPOINT,
-    //   loaders: [CSVLoader],
-    //   loadOptions: {
-    //     csv: {
-    //       dynamicTyping: true,
-    //       skipEmptyLines: true,
-    //       header: true,
-    //     },
-    //   },
-    //   getPosition: (d) => [d.x, d.y],
-    //   opacity:1,
-    //   colorDomain: [7,12],
-    //   colorRange: mapParams.colorScale,
-    //   coverage: 0.9,
-    //   // extruded: true,
-    //   getColorWeight: (d) => d["topline_median"],
-    //   colorAggregation: "MEAN",
-    //   getElevationWeight: (d) => d["topline_median"],
-    //   elevationScale: 10,
-    //   elevationAggregation: "MEAN",
-    //   elevationDomain: [7, 12],
-    //   elevationRange: [0, 1000],
-    //   opacity: 0.5,
-    //   radius: 500,
-    //   // upperPercentile,
-    //   // lowerPercentile,
-    //   visible: mapParams.custom === 'aq_grid',
-    //   updateTriggers: {
-    //     visible: [mapParams.custom, mapParams.variableName],
-    //   }
-    // }),
-
-    /* This layer displays when Source Data is toggled on for Observed PM2.5 */
-    new ColumnLayer({
-      id: "aq_data_grid",
-      data: `${process.env.PUBLIC_URL}/csv/aq_source_data.csv`,
-      loaders: [CSVLoader],
-      loadOptions: {
-        csv: {
-          dynamicTyping: true,
-          skipEmptyLines: true,
-          header: true,
-        },
-      },
-      getPosition: (d) => [d.longitude, d.latitude],
-      opacity: 1,
-      extruded: use3d,
-      getElevation: d => d.pm_25,
-      getFillColor: (feature) => {
-        const val = feature.pm_25;
-        return getAqColor(val);
-      },
-      diskResolution: 8,
-      flatShading: true,
-      elevationScale: 100,
-      radius: 100,
-      visible: mapParams.custom === "aq_grid" && mapParams.useCustom,
-      updateTriggers: {
-        visible: [mapParams.custom, mapParams.useCustom],
-        getFillColor: [mapParams.variableName],
-        extruded: use3d,
-      },
-      beforeId: "state-label",
-    }),
-  ];
+  const customLayers = [];
 
   // Layers parsed from newer pattern for storing Data Overlays
   // See https://github.com/healthyregions/chicago-environment-explorer/issues/168
@@ -708,77 +579,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     })
   });
 
-    overlayLayers.push(
-      /* This layer displays when the Weekly PM2.5 overlay is selected */
-      new LineLayer({
-        id: "aq-line-layer",
-        data: `${process.env.PUBLIC_URL}/csv/aq_source_data.csv`,
-        loaders: [CSVLoader],
-        loadOptions: {
-          csv: {
-            dynamicTyping: true,
-            skipEmptyLines: true,
-            header: true,
-          },
-        },
-        getSourcePosition: (feature) => [
-          feature.longitude,
-          feature.latitude,
-          feature["pm_25"] * 100 * use3d,
-        ],
-        getTargetPosition: (feature) => [feature.longitude, feature.latitude, 0],
-        getColor: [0, 0, 0],
-        getWidth: 1,
-        visible: mapParams.overlays.includes("aq"),
-        updateTriggers: {
-          visible: [mapParams.overlay, mapParams.overlays],
-          getSourcePosition: [use3d],
-        },
-        beforeId: "country-label",
-      }),
-
-    )
-
-    /* This text is displayed when the Weekly PM2.5 overlay is selected */
-    overlayLayers.push(
-      new TextLayer({
-        id: "aq-text-layer",
-        data: `${process.env.PUBLIC_URL}/csv/aq_source_data.csv`,
-        loaders: [CSVLoader],
-        loadOptions: {
-          csv: {
-            dynamicTyping: true,
-            skipEmptyLines: true,
-            header: true,
-          },
-        },
-        getPosition: (feature) => [
-          feature.longitude,
-          feature.latitude,
-          feature["pm_25"] * 100 * use3d + 1,
-        ],
-        getText: (feature) =>
-          `${Math.round(feature["pm_25"] * 10) / 10}`,
-        getSize: zoom ** 2,
-        getAngle: 0,
-        getTextAnchor: "middle",
-        getAlignmentBaseline: "center",
-        sizeScale: 0.15,
-        background: true,
-        backgroundPadding: [5, 0, 5, 0],
-        getPixelOffset: [0, -10],
-        getBorderColor: [0, 0, 0],
-        getBorderWidth: 1,
-        visible: mapParams.overlays.includes("aq"),
-        updateTriggers: {
-          visible: [mapParams.overlay, mapParams.overlays],
-          getPosition: [use3d],
-          getSize: [zoom],
-        },
-        beforeId: "country-label",
-      })
-    );
-
   const allLayers = [...baseLayers, ...customLayers, ...overlayLayers];
 
   useEffect(() => {
@@ -799,32 +599,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             (object.properties.hours_of_operation ? object.properties.hours_of_operation : ''));
   }
 
-
-  // const [stickers, setStickers] = useState([]);
-  // useEffect(async () => {
-  //   setStickers(await loadStickers('/content/stickers.json'));
-  // }, []);
-  // const mapStickers = useMemo(() =>
-  //   stickers?.map((sticker, index) => (
-  //     <Marker
-  //       key={`marker-${index}`}
-  //       longitude={sticker.long||sticker.longitude}
-  //       latitude={sticker.lat||sticker.latitude}
-  //       anchor="bottom"
-  //       onClick={e => {
-  //         // If we let the click event propagates to the map, it will immediately close the popup
-  //         // with `closeOnClick: true`
-  //         e.originalEvent.stopPropagation();
-  //         setPopupInfo(null);
-  //         setPopupInfo(sticker);
-  //       }}
-  //     >
-  //       <MapMarkerPin size={72} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
-  //     </Marker>
-  //   )), [stickers]);
-
-
-  // const [popupInfo, setPopupInfo] = useState(null);
   return (
     <MapContainer infoPanel={panelState.info} ref={mapContainerRef}>
       <MapboxGLMap
