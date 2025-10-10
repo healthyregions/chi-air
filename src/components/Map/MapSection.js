@@ -21,7 +21,8 @@ import { scaleThreshold } from "d3-scale";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
-import { MapTooltipContent, Geocoder } from "..";
+import MapTooltipContent from "./MapTooltipContent";
+import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
 import {colors, parsedOverlays} from "../../config";
 import * as SVG from "../../config/svg";

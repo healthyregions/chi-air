@@ -4,7 +4,8 @@ import styled, { keyframes } from "styled-components";
 
 import Grid from "@mui/material/Grid";
 
-import { Geocoder, Showcase, NavBar, Footer } from "../../components";
+import { Showcase, NavBar, Footer } from "../../components";
+import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
 // import PostList from "../Posts/PostList";
