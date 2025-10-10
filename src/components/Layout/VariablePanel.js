@@ -13,7 +13,7 @@ import { Gutter } from "../../styled_components";
 import { changeVariable, setMapParams, setPanelState, toggle3d, toggleCustom } from "../../actions";
 import {colors, variablePresets, dataDescriptions, parsedOverlays} from "../../config";
 import * as SVG from "../../config/svg";
-import {FormControl, Switch, Stack, FormControlLabel} from "@mui/material";
+import {FormControl, Switch, Stack} from "@mui/material";
 
 const VariablePanelContainer = styled.div`
   position: fixed;
@@ -181,19 +181,19 @@ const ControlsContainer = styled.div`
     background-size: 50%, 100%;
   }
 `
-const AntSwitchLabel = styled(FormControlLabel)`
-  margin: 0.5rem 0;
-  color: rgb(1 ,123, 255);
-  text-decoration: none;
+// const AntSwitchLabel = styled(FormControlLabel)`
+//   margin: 0.5rem 0;
+//   color: rgb(1 ,123, 255);
+//   text-decoration: none;
   
-  .MuiSwitch-root {
-    margin-right: 0.5rem;
-  }
-  .MuiTypography-root {
-    font-family: 'Roboto', sans-serif !important;
-    font-size: 13px !important;
-  }
-`;
+//   .MuiSwitch-root {
+//     margin-right: 0.5rem;
+//   }
+//   .MuiTypography-root {
+//     font-family: 'Roboto', sans-serif !important;
+//     font-size: 13px !important;
+//   }
+// `;
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,

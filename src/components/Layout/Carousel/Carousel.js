@@ -90,24 +90,24 @@ const CarouselExplainerText = styled.p`
   text-align: center !important;
   padding:0 !important;
 `
-const CarouselHeader = styled.h2`
-  width:100%;
-  text-align: center !important;
-  color:black;
-  font-size:4rem;
-  font-family:"Lora", serif;
-  font-weight:bold;
-  padding:2rem 4rem;
-`
+// const CarouselHeader = styled.h2`
+//   width:100%;
+//   text-align: center !important;
+//   color:black;
+//   font-size:4rem;
+//   font-family:"Lora", serif;
+//   font-weight:bold;
+//   padding:2rem 4rem;
+// `
 
-const CarouselText = styled.div`
-p {
-    font-family: "Roboto";
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.5;
-  }
- `;
+// const CarouselText = styled.div`
+// p {
+//     font-family: "Roboto";
+//     font-size: 1rem;
+//     font-weight: 300;
+//     line-height: 1.5;
+//   }
+//  `;
 
 const Nav = ({items, selectedIndex, onClick}) => (
   <NavContainer>

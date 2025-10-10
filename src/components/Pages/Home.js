@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback} from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import { Geocoder, Showcase, NavBar, Footer } from "../../components";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
-import PostList from "../Posts/PostList";
+// import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -308,45 +308,45 @@ const ThreeUpGrid = styled(Grid)`
   }
 `;
 
-const PostContainer = styled(Grid)`
-  padding: 0 2rem;
-  margin: 0rem 0;
-  a {
-    text-decoration: none;
-    .post-title {
-      text-decoration: underline;
-    }
-  }
+// const PostContainer = styled(Grid)`
+//   padding: 0 2rem;
+//   margin: 0rem 0;
+//   a {
+//     text-decoration: none;
+//     .post-title {
+//       text-decoration: underline;
+//     }
+//   }
 
-  a.button {
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    background: ${colors.forest};
-    color: white;
-    border-radius: 0.3rem;
-    margin: 0.5rem 1rem 0 0;
-    text-align: left;
-    font-size: 1rem;
-    font-weight: bold;
-    display: table;
-    box-shadow: 5px 5px 20px ${colors.forest}55;
-    transition: 250ms all;
-    @media (max-width: 900px){
-      margin:1rem auto 2rem auto;
-      text-align:center;
-    }
-    &:hover {
-      background: ${colors.fuschia};
-      box-shadow: 5px 10px 20px ${colors.forest}88;
-    }
-  }
+//   a.button {
+//     padding: 0.5rem 1rem;
+//     text-decoration: none;
+//     background: ${colors.forest};
+//     color: white;
+//     border-radius: 0.3rem;
+//     margin: 0.5rem 1rem 0 0;
+//     text-align: left;
+//     font-size: 1rem;
+//     font-weight: bold;
+//     display: table;
+//     box-shadow: 5px 5px 20px ${colors.forest}55;
+//     transition: 250ms all;
+//     @media (max-width: 900px){
+//       margin:1rem auto 2rem auto;
+//       text-align:center;
+//     }
+//     &:hover {
+//       background: ${colors.fuschia};
+//       box-shadow: 5px 10px 20px ${colors.forest}88;
+//     }
+//   }
 
-  p {
-    padding: 0;
-    margin: 0;
-    max-width: 90%;
-  }
-`;
+//   p {
+//     padding: 0;
+//     margin: 0;
+//     max-width: 90%;
+//   }
+// `;
 
 const GeocoderContainer = styled(Grid)`
   padding: 0 2rem;
@@ -386,7 +386,7 @@ const ContributersContainerInner = styled.div`
 `
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
 
   const handleGeocoder = useCallback((location) => {
     if (location.center !== undefined) {
@@ -402,18 +402,18 @@ export default function Home() {
     }
   }, []);
 
-  const postLimit = 3;
-  useEffect(() => {
-    if (posts.length === 0) {
-      try {
-        fetch('/content/posts.json')
-            .then(r => r.json())
-            .then(results => setPosts(results));
-      } catch (e) {
-        setPosts([{ title: 'Error: failed to fetch news posts' }]);
-      }
-    }
-  });
+  // const postLimit = 3;
+  // useEffect(() => {
+  //   if (posts.length === 0) {
+  //     try {
+  //       fetch('/content/posts.json')
+  //           .then(r => r.json())
+  //           .then(results => setPosts(results));
+  //     } catch (e) {
+  //       setPosts([{ title: 'Error: failed to fetch news posts' }]);
+  //     }
+  //   }
+  // });
 
   return (
     <HomePage>
@@ -437,7 +437,7 @@ export default function Home() {
       </Hero>
 
 
-      <Hero2 style={{ background: '#f2f6fc' }} >
+      {/* <Hero2 style={{ background: '#f2f6fc' }} >
             <PostContainer container spacing={2} alignItems="start">
                 <Grid item xs={12} sm={12} md={6}>
                     <h2>Latest News</h2>
@@ -455,7 +455,7 @@ export default function Home() {
                     <PostList posts={posts} limit={postLimit} hideHeader={true} />
                 </Grid>
             </PostContainer>
-        </Hero2>
+        </Hero2> */}
 
 
 

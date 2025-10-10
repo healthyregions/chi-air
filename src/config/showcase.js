@@ -1,5 +1,3 @@
-import { combineMeans } from "simple-statistics"
-
 const BASE_URL = process.env.PUBLIC_URL
 export const SHOWCASE_ITEMS = [
     {

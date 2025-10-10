@@ -1,7 +1,6 @@
 import rawVariables from './variables.json';
 import rawCategories from './categories.json';
 import rawOverlays from './overlays.json';
-import {useEffect, useState} from "react";
 
 export const defaultData = 'chives-data.geojson';
 export const defaultVariable = "Air Temperature";

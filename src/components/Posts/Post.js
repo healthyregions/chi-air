@@ -38,7 +38,7 @@ const BlogPostImageList = ({ imageList }) => {
             <FaTimes/>
           </IconButton>
         </PullRightPanel>
-        <img src={imagePreviewUrl} />
+        <img alt="blog post preview" src={imagePreviewUrl} />
       </Dialog>
       <ImageList variant={'masonry'} cols={6} gap={0} sx={{ paddingBottom: '2rem', overflowY: 'hidden' }} >
         {/* TODO: this may need a more complex media configuration - need a real test case to know what to target! */}

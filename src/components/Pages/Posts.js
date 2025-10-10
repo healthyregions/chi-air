@@ -11,7 +11,7 @@ import Post from "../Posts/Post";
 // see example of this pattern:
 // https://github.com/healthyregions/oeps/blob/main/explorer/pages/docs/%5Bmd%5D.js
 
-const PostsPage = ({}) => {
+const PostsPage = () => {
     const { slug } = useParams();
     const [posts, setPosts] = useState([]);
     const [post, setPost] = useState({});
@@ -26,7 +26,7 @@ const PostsPage = ({}) => {
                 setPosts([{ title: 'Error: failed to fetch news posts' }]);
             }
         }
-    });
+    }, [posts.length]);
 
     useEffect(() => {
         if (posts.length > 0 && slug) {

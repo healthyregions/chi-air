@@ -1,5 +1,5 @@
 // general imports, state
-import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -16,14 +16,14 @@ import {
 import { CSVLoader } from "@loaders.gl/csv";
 // import { GPUGridLayer, HeatmapLayer } from "@deck.gl/aggregation-layers";
 import { fitBounds } from "@math.gl/web-mercator";
-import MapboxGLMap, {Marker, Popup} from "react-map-gl";
+import MapboxGLMap from "react-map-gl";
 import { scaleThreshold } from "d3-scale";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
 import { MapTooltipContent, Geocoder } from "..";
 import { scaleColor } from "../../utils";
-import {colors, loadStickers, parsedOverlays} from "../../config";
+import {colors, parsedOverlays} from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
@@ -31,8 +31,6 @@ import { useChivesWorkerQuery } from "../../hooks/useChivesWorkerQuery";
 import { MapboxOverlay } from "@deck.gl/mapbox";
 import { useControl } from "react-map-gl";
 import MapOverlayTooltipContent from "./MapOverlayTooltipContent";
-import MapMarkerPin from "./MapMarkerPin";
-import MapMarkerPopup from "./MapMarkerPopup";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -43,8 +41,8 @@ function DeckGLOverlay(props) {
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 
-const getRightMargin = () =>
-  window.innerWidth * 0.15 < 250 ? 260 : window.innerWidth * 0.15 + 10;
+// const getRightMargin = () =>
+//   window.innerWidth * 0.15 < 250 ? 260 : window.innerWidth * 0.15 + 10;
 
 // component styling
 const MapContainer = styled.div`
@@ -671,7 +669,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       pickable: parsedOverlay.geometryType === 'point',    // TODO: point data should be clickable (optionally?)
 
       // Look & Feel
-      opacity: (colors === [0,0,0,0] || colors === [0,0,0]) ? 1.0 : 0.8,
+      opacity: (JSON.stringify(colors) === JSON.stringify([0,0,0,0]) || JSON.stringify(colors) === JSON.stringify([0,0,0])) ? 1.0 : 0.8,
       material: false,
       stroked: !!parsedOverlay.lineColor,
       filled: !!parsedOverlay.fillColor,
@@ -801,31 +799,31 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
   }
 
 
-  const [stickers, setStickers] = useState([]);
-  useEffect(async () => {
-    setStickers(await loadStickers('/content/stickers.json'));
-  }, []);
-  const mapStickers = useMemo(() =>
-    stickers?.map((sticker, index) => (
-      <Marker
-        key={`marker-${index}`}
-        longitude={sticker.long||sticker.longitude}
-        latitude={sticker.lat||sticker.latitude}
-        anchor="bottom"
-        onClick={e => {
-          // If we let the click event propagates to the map, it will immediately close the popup
-          // with `closeOnClick: true`
-          e.originalEvent.stopPropagation();
-          setPopupInfo(null);
-          setPopupInfo(sticker);
-        }}
-      >
-        <MapMarkerPin size={72} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
-      </Marker>
-    )), [stickers]);
+  // const [stickers, setStickers] = useState([]);
+  // useEffect(async () => {
+  //   setStickers(await loadStickers('/content/stickers.json'));
+  // }, []);
+  // const mapStickers = useMemo(() =>
+  //   stickers?.map((sticker, index) => (
+  //     <Marker
+  //       key={`marker-${index}`}
+  //       longitude={sticker.long||sticker.longitude}
+  //       latitude={sticker.lat||sticker.latitude}
+  //       anchor="bottom"
+  //       onClick={e => {
+  //         // If we let the click event propagates to the map, it will immediately close the popup
+  //         // with `closeOnClick: true`
+  //         e.originalEvent.stopPropagation();
+  //         setPopupInfo(null);
+  //         setPopupInfo(sticker);
+  //       }}
+  //     >
+  //       <MapMarkerPin size={72} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
+  //     </Marker>
+  //   )), [stickers]);
 
 
-  const [popupInfo, setPopupInfo] = useState(null);
+  // const [popupInfo, setPopupInfo] = useState(null);
   return (
     <MapContainer infoPanel={panelState.info} ref={mapContainerRef}>
       <MapboxGLMap

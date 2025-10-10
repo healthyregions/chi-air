@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {ContentContainer} from "../../styled_components";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { colors } from '../../config';
 import remarkGfm from "remark-gfm";
 import MapMarkerPin from "./MapMarkerPin";
 import ReactMarkdown from "react-markdown";
@@ -63,7 +60,7 @@ const MapMarkerPopup = ({ sticker, truncLength = 50 }) => {
         } else {
             setPost(undefined);
         }
-    }, [posts, sticker]);
+    }, [posts, sticker, truncLength]);
 
     /** Truncate post length, if necessary */
     const [truncatedMd, setTruncatedMd] = useState('');
