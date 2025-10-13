@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 
 import Grid from "@mui/material/Grid";
 
-import { Showcase, NavBar, Footer } from "../../components";
+import { NavBar, Footer } from "../../components";
 import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
@@ -251,13 +251,13 @@ const Hero = styled.div`
   }
 `;
 
-const ShowCaseContainer = styled.div`
-  padding:0 0 3em 0;
-  p {
-    max-width:80ch;
-    margin:0 auto;
-  }
-`
+// const ShowCaseContainer = styled.div`
+//   padding:0 0 3em 0;
+//   p {
+//     max-width:80ch;
+//     margin:0 auto;
+//   }
+// `
 
 const ThreeUpGrid = styled(Grid)`
   padding: 2em 0;
