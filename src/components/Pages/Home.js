@@ -403,19 +403,6 @@ export default function Home() {
     }
   }, []);
 
-  // const postLimit = 3;
-  // useEffect(() => {
-  //   if (posts.length === 0) {
-  //     try {
-  //       fetch('/content/posts.json')
-  //           .then(r => r.json())
-  //           .then(results => setPosts(results));
-  //     } catch (e) {
-  //       setPosts([{ title: 'Error: failed to fetch news posts' }]);
-  //     }
-  //   }
-  // });
-
   return (
     <HomePage>
       <NavBar />
@@ -426,64 +413,63 @@ export default function Home() {
 
                   <Grid item xs={12} md={12}>
 
-                  <h1>Uncover the nature of Chicago.</h1>
+                  <h1 style={{fontFamily:'Big Shoulders'}}>Chicago Air Quality</h1>
 
-                  <ShowCaseContainer>
+                  {/* <ShowCaseContainer>
                       <Showcase />
-                  </ShowCaseContainer>
+                  </ShowCaseContainer> */}
 
                   </Grid>
-
-              </Grid>
-      </Hero>
-
-
-      {/* <Hero2 style={{ background: '#f2f6fc' }} >
-            <PostContainer container spacing={2} alignItems="start">
-                <Grid item xs={12} sm={12} md={6}>
-                    <h2>Latest News</h2>
-                    <br />
-                    <p className={'font-lg'}>
-                        Visit our <Link to={'/posts'}>News page</Link> to stay
-                        current on the latest updates from the ChiVes
-                        project.
-                    </p>
-                    <br/>
-                    <a class="button" href="https://groups.webservices.illinois.edu/subscribe/200077">Subscribe to the Newsletter</a>
-                </Grid>
-
-                <Grid item xs={12} sm={12} md={6}>
-                    <PostList posts={posts} limit={postLimit} hideHeader={true} />
-                </Grid>
-            </PostContainer>
-        </Hero2> */}
-
-
-
-        <Hero>
-
-        <GeocoderContainer container spacing={0} alignItems="center">
+                  <GeocoderContainer container spacing={0} alignItems="center">
             <Grid item xs={12} sm={12} md={6}>
-                <br />
-                <h2>Neighborhood Map </h2>
                 <p className={'font-lg'}>
               <span>
-                Explore dimensions of the environment across Chicago in an
-                interactive map. Add community boundaries, resources, or industrial
-                areas as an "Overlay" to explore different aspects of environmental justice in Chicago. Filter the
-                map using different data breakpoints. Click on the map for more data!<br /><br />
-                The map was co-designed with multiple community partners and organizations.
-              </span>
-                    <span> <a href={`${process.env.PUBLIC_URL}/data`}>Data</a> comes from collaborators across the city and beyond. Read more about the </span>
-                    <a href={`${process.env.PUBLIC_URL}/about`}>project</a><span> and </span>
-                    <a href={`${process.env.PUBLIC_URL}/team`}>team</a>. </p>
+                Magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
+              </span></p>
             </Grid>
 
             <Grid item xs={12} sm={12} md={6}>
                 <Link to="/map">
                     <img
                         className="photo"
-                        src={process.env.PUBLIC_URL + "/img/neighborhood-map.png"}
+                        src={process.env.PUBLIC_URL + "/img/map-view.webp"}
+                        alt="Wild Onion"
+                        loading="lazy"
+                        width="100%"
+                    />
+                </Link>
+
+
+                <Geocoder
+                    id="Geocoder"
+                    placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
+                    API_KEY={MAPBOX_ACCESS_TOKEN}
+                    onChange={handleGeocoder}
+                />
+
+            </Grid>
+        </GeocoderContainer>
+
+              </Grid>
+      </Hero>
+
+        <Hero>
+
+        <GeocoderContainer container spacing={0} alignItems="center">
+            <Grid item xs={12} sm={12} md={6}>
+                <br />
+                <h2>Mapping air quality </h2>
+                <p className={'font-lg'}>
+              <span>
+                Magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
+              </span></p>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6}>
+                <Link to="/map">
+                    <img
+                        className="photo"
+                        src={process.env.PUBLIC_URL + "/img/map-view.webp"}
                         alt="Wild Onion"
                         loading="lazy"
                         width="100%"
@@ -504,7 +490,7 @@ export default function Home() {
 
         <Grid item xs={12} sm={12} md={12}>
             <br /><br />
-            <h2> Explore ChiVes </h2>
+            <h2> Explore the Dashboard </h2>
             <br /> <br />
 
             </Grid>
@@ -543,15 +529,14 @@ export default function Home() {
                   />
                 </Grid>
                 <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
-                  <h2>Index <br /> Builder</h2>
+                  <h2>Thing 2</h2>
                 </Grid>
               </Grid>
 
               <p className={'font-md'}>
-                Select variables and apply weights to generate a new vulnerability index. Download the
-                findings, and explore your map.
+                Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
               </p>
-              <Link to="/map">Start Building</Link>
+              <Link to="/map">Feature link</Link>
             </Grid>
 
             <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
@@ -566,18 +551,15 @@ export default function Home() {
                 </Grid>
                 <Grid item xs={9} sm={9} md={9} lg={9} xl={9}>
                   <h2>
-                    Resource <br />
-                    Guide
+                    Thing 3
                   </h2>
                 </Grid>
               </Grid>
               <p className={'font-md'}>
                 {" "}
-                Find other maps, data, and resources about the Chicago
-                environment from featured partners and a curated list of
-                resources.{" "}
+                Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo{" "}
               </p>
-              <Link to="/guide">Learn More</Link>
+              <Link to="/guide">Another link</Link>
             </Grid>
           </ThreeUpGrid>
 
@@ -587,90 +569,30 @@ export default function Home() {
 
 <GeocoderContainer container spacing={0} alignItems="center">
     <Grid item xs={12} sm={12} md={6}>
-    <br />
-    <h2>Learn & Engage</h2>
-      <p className={'font-lg'}>From 2022-2024, DePaul University partnered with the University of Illinois at Urbana-Champaign
-        and multiple community organizations to expand ChiVes and make it more accessible.
-        <br /><br />
-        Thanks to funding by NASA, the latest release of ChiVes includes expanded learning resources, new data, and improved user experience.
-         Read the final Community Report for an overview (in <a href="https://drive.google.com/file/d/1pe3grtQEo8m8zbt4eUOzxaziCilPGNWH/view?usp=sharing">
-         English</a> and <a href="https://drive.google.com/file/d/1KjXDWpj46NBOi1lq1puc8s3XFDf3Ucrv/view?usp=sharing">en Español</a>).
-        <br /><br />
-        <a href="/learn">Learn Resources</a> include new tutorials and a video tour.
-        </p>
+    <h2>Second panel</h2>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
     </Grid>
 
     <Grid item xs={12} sm={12} md={6}>
       <a href="https://drive.google.com/file/d/1pe3grtQEo8m8zbt4eUOzxaziCilPGNWH/view?usp=sharing">
     <img
             className="photo"
-            src={process.env.PUBLIC_URL + "/img/report_Page_1.png"}
+            src={process.env.PUBLIC_URL + "/img/christian-wiediger-rpZHKBowuig-unsplash.jpg"}
             alt="Wild Onion"
             loading="lazy"
             width="80%"
           />
           </a>
-
     </Grid>
   </GeocoderContainer>
 
   </Hero2>
-
-
-          <Hero>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              <img
-                className="photo2"
-                src={process.env.PUBLIC_URL + "/img/onion.png"}
-                alt="Wild Onion"
-                loading="lazy"
-              />
-            </Grid>
-            <Grid item xs={12} md={8}>
-              <h2>Open Data Access</h2>
-              <p className={'font-lg'}>
-                All the data on the ChiVes platform is free and openly accessible. Download <a href="/data?">here</a> !
-                <br /><br />
-                Like the{" "}
-                <a href="https://www.illinoiswildflowers.info/woodland/plants/wild_leek.htm">
-                  wild onion
-                </a>{" "}
-                that Chicago was named for, data about the city's environment
-                should be tasty and plentiful. By <i>tasty</i>, we mean easily
-                accessible and ready to use and explore. By <i>plentiful</i>, we
-                mean the data should extend across multiple dimensions of the
-                city's landscape, and be updated regularly.
-                <br />
-                <br />
-                We <a href="/data">harmonize & standardize</a> environmental
-                data across dozens of sources to make it accessible for full
-                exploration, alongside a growing list of resources on the
-                Chicago Environment, cultivated by a community of curators.
-                <br />
-                <br />
-                Have data to add? A mapping resource to share or recommend?
-                Please <a href="/about">contribute</a> ! For bigger projects, please reach out the Healthy Regions team
-                at UIUC to discuss future grant and funding collaborations using the <a href="/contact">Contact</a> page.
-              </p>
-              <h5>
-                Image of <i>Wild Onion, Allium acuminatum </i> by Margaret
-                Neilson Armstrong (1913) via
-                <br />
-                Creative Commons CC0 1.0 Universal Public Domain Dedication.
-              </h5>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12} md={12}>
-          <br /><br />
-          <p className={'font-lg'}>A big thank you to <b><span translate="no"> ChiVes </span>Contributors</b>!
-          Learn more about the team and sources supporting ChiVes in the <a href="/team"><i>Team</i></a> section.</p>
+      <Hero>
+        <Grid item xs={12} md={12}>
+          <p className={'font-lg'}>Place logo files in <code>public/img/logos/</code> and create entries in the <strong>Data Dictionary and Variables</strong> spreadsheet to generate a scrolling logo list below.</p>
           <LogoScroll logoList={logoList} />
-          </Grid>
-
-
-          </Hero>
+        </Grid>
+        </Hero>
       </HomePageContent>
       <Footer />
     </HomePage>
