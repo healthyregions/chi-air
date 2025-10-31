@@ -578,8 +578,34 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       beforeId: "state-label",
     })
   });
-
-  const allLayers = [...baseLayers, ...customLayers, ...overlayLayers];
+  
+  baseLayers.push(
+    new GeoJsonLayer({
+      id: "sensors",
+      data: `https://herop-geodata.s3.us-east-2.amazonaws.com/tmp/nowcasts.geojson`,
+      pickable: true,
+      stroked: true,
+      filled: true,
+      extruded: false,
+      getFillColor: (feature) => {
+        const scale = [[255, 255, 204], [217, 240, 163], [173, 221, 142], [120, 198, 121], [49, 163, 84], [0, 104, 55]]
+        const bins = [3,3.5,4,4.5,5]
+        return scaleColor(feature.properties.pm2_5ConcMassNowcast, bins, scale)
+      },
+      opacity: .7,
+      getPointRadius: 400,
+      pointRadiusUnits: 'meters',
+      visible: true,
+      onClick: (feature) => handleMapClick(feature, {
+        popupTitle: "{datasourceId}",
+        popupContent: `{"id": "datasourceId"}`
+      }),
+      beforeId: "state-label",
+      onHover: (info, event) => {}
+    })
+  )
+  const allLayers = [...baseLayers, ...customLayers, overlayLayers];
+  
 
   useEffect(() => {
     if (use3d) {
