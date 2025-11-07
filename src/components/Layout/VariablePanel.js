@@ -10,10 +10,10 @@ import styled from "styled-components";
 
 // import Tooltip from './tooltip';
 import { Gutter } from "../../styled_components";
-import { changeVariable, setMapParams, setPanelState, toggle3d, toggleCustom } from "../../actions";
-import {colors, variablePresets, dataDescriptions, parsedOverlays} from "../../config";
+import { changeVariable, setMapParams, setPanelState} from "../../actions";
+import {colors, variablePresets, dataDescriptions, parsedOverlays, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
-import {FormControl, Switch, Stack} from "@mui/material";
+import {FormControl} from "@mui/material";
 
 const VariablePanelContainer = styled.div`
   position: fixed;
@@ -181,65 +181,14 @@ const ControlsContainer = styled.div`
     background-size: 50%, 100%;
   }
 `
-// const AntSwitchLabel = styled(FormControlLabel)`
-//   margin: 0.5rem 0;
-//   color: rgb(1 ,123, 255);
-//   text-decoration: none;
-  
-//   .MuiSwitch-root {
-//     margin-right: 0.5rem;
-//   }
-//   .MuiTypography-root {
-//     font-family: 'Roboto', sans-serif !important;
-//     font-size: 13px !important;
-//   }
-// `;
-
-const AntSwitch = styled(Switch)(({ theme }) => ({
-  width: 28,
-  height: 16,
-  padding: 0,
-  display: 'flex',
-  '&:active': {
-    '& .MuiSwitch-thumb': {
-      width: 15,
-    },
-    '& .MuiSwitch-switchBase.Mui-checked': {
-      transform: 'translateX(9px)',
-    },
-  },
-  '& .MuiSwitch-switchBase': {
-    padding: 2,
-    '&.Mui-checked': {
-      transform: 'translateX(12px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        opacity: 1,
-        backgroundColor: '#1890ff',
-      },
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 16 / 2,
-    opacity: 1,
-    backgroundColor:'rgba(0,0,0,.25)',
-    boxSizing: 'border-box',
-  },
-}));
 
 const VariablePanel = (props) => {
   const dispatch = useDispatch();
 
   const mapParams = useSelector((state) => state.mapParams);
-  const use3d = useSelector((state) => state.use3d);
   const panelState = useSelector((state) => state.panelState);
-  const aqLastUpdated = useSelector((state) => state.aqLastUpdated);
+
+  const [lastUpdated, setLastUpdated] = useState(null)
 
   // Only update overlays when variable first changes
   // This allows the user to disable the default overlays, if they desire
@@ -260,6 +209,13 @@ const VariablePanel = (props) => {
       }
     }
   }, [mapParams, dispatch, variableChanged]);
+
+  fetch("https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson")
+    .then((response) => response.json())
+    .then((data) => {
+      const date = new Date(data.timestamp)
+      setLastUpdated(date)
+  })
 
   const handleMapOverlay = (overlays) => {
     let prevOverlays = mapParams.overlays;
@@ -301,7 +257,27 @@ const VariablePanel = (props) => {
       id="variablePanel"
     >
       <ControlsContainer>
-        <h2>Map Variables</h2>
+        <h2>Air Quality</h2>
+        <p className="data-description">
+          Points on the map show PM 2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
+        </p>
+        { Object.entries(pm2_5ColorMap).map(([key, color]) => (
+          <div style={{ display: "flex", margin:'.25em 0' }}>
+            <span
+                key={`overlay-key-${key}-${color}`}
+                style={{
+                  backgroundColor: `rgb(${color.join(",")})`,
+                  width: 16,
+                  height: 16,
+                }}
+            ></span>
+              <p style={{padding:0, margin:'0 0 0 .25em'}}>{key}</p>
+            </div>
+        ))}
+        <p className="data-description">
+          {lastUpdated ? `last updated: ${lastUpdated}` : "loading data..."}
+        </p>
+        <h2>Comparison Variables</h2>
         <FormControl id="newVariableSelect" variant="filled">
           <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
           <Select
@@ -317,7 +293,11 @@ const VariablePanel = (props) => {
               </MenuItem>
             ))}
           </Select>
-          <div style={{ margin: '1rem 0 0.5rem' }}>
+        </FormControl>
+        <p className="data-description">
+          {dataDescriptions[mapParams.variableName]}
+        </p>
+        <div style={{ margin: '1rem 0 0.5rem' }}>
             <span style={{ color: colors.pink }}>Overlays:</span> {mapParams.overlays?.map((selectedOverlay, index) => <>
               {parsedOverlays.map((parsedOverlay, i) => <div key={`overlays-enabled-list-${i}`}>
                 { selectedOverlay === parsedOverlay?.id && <span style={{ color: colors.darkgray }} key={`overlay-description-${selectedOverlay}`}>
@@ -325,35 +305,6 @@ const VariablePanel = (props) => {
               </div>)}
             </>)}
           </div>
-        </FormControl>
-        <Gutter h={20} />
-        <h2>Data Description</h2>
-        <p className="data-description">
-          {mapParams.custom === 'aq_grid' && <>
-          <code>Data from {aqLastUpdated.start?.slice(0,10)} to {aqLastUpdated.end?.slice(0,10)} </code>
-          </>}
-
-        {mapParams.custom === 'aq_grid' && <>
-          <p>
-            To see the source data grid, click the switch below.
-          </p>
-          <Stack direction="row" spacing={1} alignItems="center">
-
-          <p>Aggregated by Tract</p>
-          <AntSwitch checked={mapParams.useCustom}  onClick={() => dispatch(toggleCustom())} inputProps={{ 'aria-label': 'ant design' }} />
-          <p>Source Data</p>
-        </Stack>
-          <Stack direction="row" spacing={1} alignItems="center" sx={{opacity: mapParams.useCustom ? 1 : 0.25}}>
-
-          <p>2D Map</p>
-          <AntSwitch checked={use3d}  onClick={() => dispatch(toggle3d())} disabled={!mapParams.useCustom} inputProps={{ 'aria-label': 'ant design' }} />
-          <p>3D Map</p>
-        </Stack>
-        </>
-        }
-          {dataDescriptions[mapParams.variableName]}
-        </p>
-
 
         <Gutter h={20} />
 

@@ -74,3 +74,14 @@ export const colors = {
   chicagoRed: "#E4002B",
   paleyellow: "#F0C016",
 }
+
+// https://www.elichens.com/blog-posts/2020/9/16/wildfires-and-urban-air-quality-when-actionable-data-can-only-be-ultra-local
+export const pm2_5Bins = [12.1,35.5,55.5,150.5,250.5]
+export const pm2_5ColorMap = {
+  "Good | 0 to 12.0": [0,174,82],
+  "Moderate | 12.1 to 35.4": [254,253,2],
+  "Unhealthy for Sensitive Groups | 35.5 to 55.4": [253,191,1],
+  "Unhealthy | 55.5 to 150.4": [246,3,1],
+  "Very Unhealthy | 150.5 to 250.4": [198,10,70],
+  "Unhealthy | 250.5 to 500": [114,24,31],
+}

@@ -14,7 +14,7 @@ import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 import MapTooltipContent from "./MapTooltipContent";
 import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
-import {colors, parsedOverlays} from "../../config";
+import {colors, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
@@ -187,6 +187,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     y: null,
     object: null,
   });
+  const [censorPopupFeature, setCensorPopupFeature] = useState(null)
 
   const mapRef = useRef(null);
 
@@ -582,30 +583,27 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
   baseLayers.push(
     new GeoJsonLayer({
       id: "sensors",
-      data: `https://herop-geodata.s3.us-east-2.amazonaws.com/tmp/nowcasts.geojson`,
+      data: "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson",
       pickable: true,
       stroked: true,
       filled: true,
       extruded: false,
       getFillColor: (feature) => {
-        const scale = [[77,172,38], [184,225,134], [173, 221, 142], [247,247,247], [241,182,218], [208,28,139]]
-        const bins = [3,3.5,4,4.5,5]
-        return scaleColor(feature.properties.pm2_5ConcMassNowcast, bins, scale)
+        return scaleColor(feature.properties.pm2_5ConcMassNowcast, pm2_5Bins, Object.values(pm2_5ColorMap))
       },
       opacity: .7,
       getPointRadius: 400,
       pointRadiusUnits: 'meters',
       visible: true,
-      onClick: (feature) => handleMapClick(feature, {
+      onClick: (feature) => {setCensorPopupFeature(feature)},
+      beforeId: "state-label",
+      onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
-      }),
-      beforeId: "state-label",
-      onHover: (info, event) => {}
+      }})}
     })
   )
   const allLayers = [...baseLayers, ...customLayers, overlayLayers];
-  
 
   useEffect(() => {
     if (use3d) {
@@ -655,9 +653,9 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             height: window.innerHeight,
           });
           viewRef.current = e.viewState;
-
           overlayHover.object &&
             handleMapClick({ x: null, y: null, object: null }, null);
+          setCensorPopupFeature(null)
         }}
         onViewportLoad={(e) => {
           queryViewport({
@@ -762,6 +760,25 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
               ref={hoverCcRef}
           >
            <MapOverlayTooltipContent content={overlayHover.object} overlay={overlayHover.overlay} />
+          </HoverDiv>
+      }
+      {
+        censorPopupFeature &&
+          <HoverDiv
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                left: censorPopupFeature.x,
+                top: censorPopupFeature.y,
+              }}
+              ref={hoverCcRef}
+          >
+           <h3>{censorPopupFeature.object.properties.datasourceId}</h3>
+           <ul>
+            {Object.keys(censorPopupFeature.object.properties).map((key) => {
+              return <li>{key}: {censorPopupFeature.object.properties[key]}</li>
+            })}
+           </ul>
           </HoverDiv>
       }
     </MapContainer>
