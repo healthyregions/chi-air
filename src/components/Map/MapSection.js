@@ -776,7 +776,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
            <h3>{censorPopupFeature.object.properties.datasourceId}</h3>
            <ul>
             {Object.keys(censorPopupFeature.object.properties).map((key) => {
-              return <li>{key}: {censorPopupFeature.object.properties[key]}</li>
+              return <li>{key}: {key === "time" ? new Date(censorPopupFeature.object.properties[key]).toLocaleString('en-US',  { timeZone: 'America/Chicago' }) : censorPopupFeature.object.properties[key]}</li>
             })}
            </ul>
           </HoverDiv>
