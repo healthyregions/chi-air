@@ -571,7 +571,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             .reduce((a, c) => [a[0]+c[0], a[1]+c[1], a[2]+c[2]], [0,0,0])
             .map(rgb => rgb / colorsToAvg.length);
         }
-        
+
         return colors[symbolKey];
       },
 
