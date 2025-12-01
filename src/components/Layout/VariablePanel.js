@@ -210,12 +210,19 @@ const VariablePanel = (props) => {
     }
   }, [mapParams, dispatch, variableChanged]);
 
-  fetch("https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson")
-    .then((response) => response.json())
-    .then((data) => {
-      const date = new Date(data.timestamp)
-      setLastUpdated(date)
-  })
+
+  useEffect(() => {
+    try {
+      fetch("https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson")
+        .then((response) => response.json())
+        .then((data) => {
+          const date = new Date(data.timestamp)
+          setLastUpdated(date)
+        })
+    } catch (ex) {
+      console.error('whoopsies: ' + ex)
+    }
+  }, []);
 
   const handleMapOverlay = (overlays) => {
     let prevOverlays = mapParams.overlays;
