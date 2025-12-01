@@ -220,7 +220,7 @@ const VariablePanel = (props) => {
           setLastUpdated(date)
         })
     } catch (ex) {
-      console.error('whoopsies: ' + ex)
+      console.error('Failed to fetch "latest.geojson": ' + ex)
     }
   }, []);
 
