@@ -1,11 +1,52 @@
 [
-    {
-        "title": "Instituto Del Progreso Latino",
-        "subtitle": "Pilsen",
-        "icon": "../../icons/stickers/pilsen-icon.svg",
-        "logo": "../../icons/stickers/pilsen-logo.svg",
-        "long": -87.6885052,
-        "lat": 41.8457851,
-        "blog_slug": "designing-chives-with-instituto"
-    }
+  {
+    "title": "Washington High School",
+    "subtitle": "3535 E. 114th St",
+    "icon": "../../icons/stickers/noun-flag.svg",
+    "logo": "../../icons/stickers/noun-flag.svg",
+    "long": -87.5395,
+    "lat": 41.6872,
+    "pm25": true,
+    "no2": false
+  },
+  {
+    "title": "Com Ed",
+    "subtitle": "7801 Lawndale",
+    "icon": "../../icons/stickers/noun-flag.svg",
+    "logo": "../../icons/stickers/noun-flag.svg",
+    "long": -87.7135,
+    "lat": 41.7514,
+    "pm25": true,
+    "no2": true
+  },
+  {
+    "title": "Mayfair Pump Station",
+    "subtitle": "4850 Wilson Ave.",
+    "icon": "../../icons/stickers/noun-flag.svg",
+    "logo": "../../icons/stickers/noun-flag.svg",
+    "long": -87.7499,
+    "lat": 41.9655,
+    "pm25": true,
+    "no2": false
+  },
+  {
+    "title": "Springfield Pump Station",
+    "subtitle": "1745 N. Springfield Ave.",
+    "icon": "../../icons/stickers/noun-flag.svg",
+    "logo": "../../icons/stickers/noun-flag.svg",
+    "long": -87.7227,
+    "lat": 41.9127,
+    "pm25": true,
+    "no2": false
+  },
+  {
+    "title": "Kennedy near-road #2",
+    "subtitle": "Kennedy Expy & W. Webster Ave",
+    "icon": "../../icons/stickers/noun-flag.svg",
+    "logo": "../../icons/stickers/noun-flag.svg",
+    "long": -87.6744,
+    "lat": 41.9207,
+    "pm25": false,
+    "no2": true
+  }
 ]
