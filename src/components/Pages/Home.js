@@ -8,6 +8,9 @@ import { NavBar, Footer } from "../../components";
 import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
+import {Button} from "@mui/material";
+import {LineChart} from "@mui/x-charts";
+import {Line, LineChart as RechartsLineChart, XAxis, YAxis} from "recharts";
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -386,6 +389,53 @@ const ContributersContainerInner = styled.div`
   animation: ${slide} 30s linear infinite;
 `
 
+const TitleBanner = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    text-align: right;
+    font: Lexend;
+`;
+
+
+
+const brandColors = {
+  chiDarkBlue: '#005899',
+  chiRed: '#E4002B',
+  chiLightBlue: '#2D9ECD'
+}
+
+const ChiDarkBlueText = styled.span`
+    font-family: Lexend;
+    color: ${brandColors.chiDarkBlue};
+    font-size: 64px;
+    text-align: right;
+`;
+const ChiLightBlueText = styled.span`
+    font-family: Lexend;
+    color: ${brandColors.chiLightBlue};
+    font-size: 32px;
+    text-align: right;
+`;
+const ChiRedText = styled.span`
+    font-family: Lexend;
+    color: ${brandColors.chiRed};
+    font-size: 32px;
+    font-weight: bold;
+    text-align: right;
+`;
+
+const SubTitle = styled.span`
+    max-width: 30vw;
+    margin-top: 3rem;
+    display: flex;
+    align-self: end;
+    text-align: right;
+    font-family: Space Grotesk;
+    font-size: 18px;
+    font-weight: normal;
+`;
+
 export default function Home() {
   // const [posts, setPosts] = useState([]);
 
@@ -403,9 +453,93 @@ export default function Home() {
     }
   }, []);
 
+  const [preferStrictDomainInLineCharts, setPreferStrictDomainInLineCharts] = React.useState(true);
+
   return (
     <HomePage>
       <NavBar />
+
+      <TitleBanner>
+        <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+        <h1>The <ChiDarkBlueText style={{ fontWeight: 'bold' }}>Chi Air Quality Network</ChiDarkBlueText></h1>
+
+        <ChiLightBlueText style={{ textAlign: 'right' }}>America’s Largest Air Monitoring Network.</ChiLightBlueText>
+        <ChiRedText style={{ fontWeight: 'bold' }}>Built for Chicago.</ChiRedText>
+
+        <SubTitle>Air pollution is often invisible, but its impact is real. Now,
+          real-time air quality data is available for every neighborhood, for every Chicagoan,
+          ensuring you and your family have the information you need to breathe easier.
+        </SubTitle>
+
+        <Button variant={"contained"} style={{ fontFamily: 'Space Grotesk', marginTop: '1rem' }} size={"large"} color={'primary'} onClick={() => window.location.href='/map'}>
+          View Map &rarr;
+        </Button>
+      </TitleBanner>
+
+      <div>
+        <Grid container spacing={0}>
+          <Grid item sm={6} xs={12}>
+            <Grid container spacing={0}>
+              <Grid item xs>
+                <LineChart height={300}
+                           experimentalFeatures={{ preferStrictDomainInLineCharts }}
+                           series={[
+                             { data: [14, 145, 301, 183, 85, 20] }
+                           ]}
+                           xAxis={[
+                             {
+                               scaleType: 'point',
+                               data: [6,5,4,3,2,1],
+                               valueFormatter: (d) => `${d}hr ago`,
+
+                             },
+                           ]}
+                           yAxis={[{
+                            colorMap: {
+                              type: 'continuous',
+                              thresholds: [50, 100, 150, 200, 300],
+                              colors: [
+                                '#0C7300',
+                                '#F8CD46',
+                                '#DC7500',
+                                '#E40004',
+                                '#8200C5',
+                                '#8B0D38'
+                              ],
+                            }
+                           }]}
+                />
+
+                <RechartsLineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 800, margin: 'auto' }} responsive data={[14, 145, 301, 183, 85, 20]}>
+                  <XAxis dataKey="name" />
+                  <YAxis width="auto" />
+                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                  <Line type="monotone" dataKey="pv" stroke="#82ca9d" />
+                  {/* <RechartsDevtools /> */}
+                </RechartsLineChart>
+
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={0}>
+              <Grid item xs>
+                <GeocoderContainer container spacing={0} alignItems="center">
+                  <Geocoder
+                    id="Geocoder"
+                    placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
+                    API_KEY={MAPBOX_ACCESS_TOKEN}
+                    onChange={handleGeocoder}
+                  />
+                </GeocoderContainer>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <p>Shadow map visualization</p>
+          </Grid>
+        </Grid>
+      </div>
+
       <HomePageContent>
 
       <Hero>
