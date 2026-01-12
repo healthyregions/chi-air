@@ -11,6 +11,7 @@ import logoList from '../../config/logos.json';
 import {Button} from "@mui/material";
 import {LineChart} from "@mui/x-charts";
 import {Line, LineChart as RechartsLineChart, XAxis, YAxis} from "recharts";
+import {LineChart as D3LineChart} from '../../components/Charts/LineChart';
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -410,6 +411,7 @@ const ChiDarkBlueText = styled.span`
     color: ${brandColors.chiDarkBlue};
     font-size: 64px;
     text-align: right;
+    font-weight: bold;
 `;
 const ChiLightBlueText = styled.span`
     font-family: Lexend;
@@ -434,6 +436,23 @@ const SubTitle = styled.span`
     font-family: Space Grotesk;
     font-size: 18px;
     font-weight: normal;
+`;
+
+const WhiteBackground = styled.div`
+    background: #FFFFFF00;
+    width: 100%;
+    min-height: 20rem;
+`;
+
+const GradientBackground = styled.div`
+    background: linear-gradient(
+        ${props => props.direction || 'to right'},
+        ${props => props.startColor || '#FFFFFF00'},
+        ${props => props.endColor || '#41B6E633'}
+    );
+    width: 100%;
+    min-height: 20rem;
+    padding: 3rem;
 `;
 
 export default function Home() {
@@ -461,10 +480,10 @@ export default function Home() {
 
       <TitleBanner>
         <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-        <h1>The <ChiDarkBlueText style={{ fontWeight: 'bold' }}>Chi Air Quality Network</ChiDarkBlueText></h1>
+        <h1>The <ChiDarkBlueText>Chi Air Quality Network</ChiDarkBlueText></h1>
 
-        <ChiLightBlueText style={{ textAlign: 'right' }}>America’s Largest Air Monitoring Network.</ChiLightBlueText>
-        <ChiRedText style={{ fontWeight: 'bold' }}>Built for Chicago.</ChiRedText>
+        <ChiLightBlueText>America’s Largest Air Monitoring Network.</ChiLightBlueText>
+        <ChiRedText>Built for Chicago.</ChiRedText>
 
         <SubTitle>Air pollution is often invisible, but its impact is real. Now,
           real-time air quality data is available for every neighborhood, for every Chicagoan,
@@ -476,11 +495,12 @@ export default function Home() {
         </Button>
       </TitleBanner>
 
-      <div>
+      <GradientBackground direction={'to bottom'}>
         <Grid container spacing={0}>
           <Grid item sm={6} xs={12}>
             <Grid container spacing={0}>
               <Grid item xs>
+                <D3LineChart ></D3LineChart>
                 <LineChart height={300}
                            experimentalFeatures={{ preferStrictDomainInLineCharts }}
                            series={[
@@ -534,11 +554,28 @@ export default function Home() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item sm={6} xs={12}>
-            <p>Shadow map visualization</p>
+
+          <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
+            <img src={'/icons/homepage-map-mask.svg'} alt={''} />
           </Grid>
         </Grid>
-      </div>
+      </GradientBackground>
+
+      <WhiteBackground>
+
+      </WhiteBackground>
+
+      <GradientBackground>
+
+      </GradientBackground>
+
+      <WhiteBackground>
+
+      </WhiteBackground>
+
+      <GradientBackground>
+
+      </GradientBackground>
 
       <HomePageContent>
 
