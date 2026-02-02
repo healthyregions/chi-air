@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
 // import NeighborhoodCounts from './NeighborhoodCounts';
-import { setPanelState } from '../../store/slices/legacyStoreSlice';
+import {selectPanelState, selectRanges, selectSelectionData, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
 import { report } from '../../config/svg';
 
@@ -276,10 +276,10 @@ const AgeColumnsToChart = [
 const DataPanel = () => {
 
   const dispatch = useDispatch();
-  const selectionData = useSelector(state => state.legacy.selectionData);
-  const panelState = useSelector(state => state.legacy.panelState);
-  const ranges = useSelector(state => state.legacy.ranges);
-  // const filterValues = useSelector(state => state.legacy.filterValues);
+  const selectionData = useSelector(selectSelectionData);
+  const panelState = useSelector(selectPanelState);
+  const ranges = useSelector(selectRanges);
+  // const filterValues = useSelector(selectFilterValues);
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))

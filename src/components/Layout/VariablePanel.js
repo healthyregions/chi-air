@@ -10,7 +10,13 @@ import styled from "styled-components";
 
 // import Tooltip from './tooltip';
 import { Gutter } from "../../styled_components";
-import { changeVariable, setMapParams, setPanelState} from "../../store/slices/legacyStoreSlice";
+import {
+  changeVariable,
+  selectMapParams,
+  selectPanelState,
+  setMapParams,
+  setPanelState
+} from "../../store/slices/legacyStoreSlice";
 import {colors, variablePresets, dataDescriptions, parsedOverlays, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
 import {FormControl} from "@mui/material";
@@ -185,8 +191,8 @@ const ControlsContainer = styled.div`
 const VariablePanel = (props) => {
   const dispatch = useDispatch();
 
-  const mapParams = useSelector((state) => state.legacy.mapParams);
-  const panelState = useSelector((state) => state.legacy.panelState);
+  const mapParams = useSelector(selectMapParams);
+  const panelState = useSelector(selectPanelState);
 
   const [lastUpdated, setLastUpdated] = useState(null)
 

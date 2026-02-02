@@ -379,11 +379,38 @@ export const legacyStoreSlice = createSlice({
     },
   },
   selectors: {
-    selectMapParams: (state) => state.mapParams,
+    selectStoredGeojson: state => state.storedGeojson,
+    selectColumnNames: state => state.columnNames,
+    selectMapParams: state => state.mapParams,
+    selectRanges: state => state.ranges,
+    selectAnchorEl: state => state.anchorEl,
+    selectPanelState: state => state.panelState,
+    selectUse3d: state => state.use3d,
+    selectCentroids: state => state.centroids,
+
+    selectSelectionData: state => state.selectionData,
+    selectFilterValues: state => state.filterValues,
+    selectUrlParams: state => state.urlParams,
+
+    // Helper accessors for common panels
+    selectVariablePanelState: state => state.panelState.variables,
+    selectDataPanelState: state => state.panelState.info,
+
+
+    /**
+     * Parameterized selector on title for panel
+     *    Usage: const myPanelState = useSelector(selectPanelStateByTitle('myPanelTitle)) )
+     *
+     * @param title the title/key of the panel to describe
+     * @returns {function(*): *} a selector for the panel matching the given title
+     */
+    selectPanelStateByTitle: title => state => state.legacy.panelState[title],
+
   }
 });
 
-//
+// Actions will update the state
+//    write-only, useDispatch
 export const {
   loadDataAndBins,
   setPanelState,
@@ -394,6 +421,18 @@ export const {
   setSelectionData,
 } = legacyStoreSlice.actions;
 
+// Our read-only selectors
+//    read-only, useSelector
 export const {
   selectMapParams,
+  selectRanges,
+  selectPanelState,
+  selectPanelStateByTitle,
+  selectSelectionData,
+  selectUrlParams,
+  selectFilterValues,
+  selectUse3d,
+  selectStoredGeojson,
+  selectCentroids,
+  selectColumnNames,
 } = legacyStoreSlice.selectors

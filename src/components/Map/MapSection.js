@@ -22,6 +22,13 @@ import { useChivesWorkerQuery } from "../../hooks/useChivesWorkerQuery";
 import { MapboxOverlay } from "@deck.gl/mapbox";
 import { useControl } from "react-map-gl";
 import MapOverlayTooltipContent from "./MapOverlayTooltipContent";
+import {
+  selectFilterValues,
+  selectMapParams,
+  selectPanelState,
+  selectUrlParams,
+  selectUse3d
+} from "../../store/slices/legacyStoreSlice";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -172,11 +179,11 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
 
   // fetch pieces of state from store
   const { storedGeojson } = useChivesData();
-  const panelState = useSelector((state) => state.legacy.panelState);
-  const mapParams = useSelector((state) => state.legacy.mapParams);
-  const urlParams = useSelector((state) => state.legacy.urlParams);
-  const filterValues = useSelector((state) => state.legacy.filterValues);
-  const use3d = useSelector((state) => state.legacy.use3d);
+  const panelState = useSelector(selectPanelState);
+  const mapParams = useSelector(selectMapParams);
+  const urlParams = useSelector(selectUrlParams);
+  const filterValues = useSelector(selectFilterValues);
+  const use3d = useSelector(selectUse3d);
   // component state elements
   // hover and highlight geographibes
   const [hoverInfo, setHoverInfo] = useState({

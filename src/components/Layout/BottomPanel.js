@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 // import { Legend } from '../components';
 import { colors } from '../../config';
+import {selectPanelState} from "../../store/slices/legacyStoreSlice";
 
 // helper function to get dock offset
 const getChartHeight = () => { try { return document.querySelector('#main-chart-container').offsetHeight} catch { return 0} }
@@ -62,7 +63,7 @@ const BottomDrawer = styled.div`
 
 const BottomPanel = () => {
 
-    const panelState = useSelector(state => state.legacy.panelState);
+    const panelState = useSelector(selectPanelState);
 
     // offset for the bottom panel based on the chart height,
     // managed through props via styled-components

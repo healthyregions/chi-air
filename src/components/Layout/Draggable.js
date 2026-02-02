@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 // Import config and actions
 import { colors } from '../../config';
-import { setPanelState } from '../../store/slices/legacyStoreSlice';
+import {selectPanelStateByTitle, setPanelState} from '../../store/slices/legacyStoreSlice';
 
 // Styles - Container
 const DragContainer = styled.div`
@@ -65,7 +65,7 @@ const CollapseButton = styled.button`
 const Draggable = (props) => {
     // Redux Dispatch and selector
     const dispatch = useDispatch();
-    const open = useSelector(state => state.legacy.panelState[props.title]);
+    const open = useSelector(selectPanelStateByTitle(props.title));
 
     // Local state, dragging
     const [X, setX] = useState(props.defaultX);

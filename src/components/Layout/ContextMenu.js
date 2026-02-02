@@ -12,7 +12,11 @@
 
 // import { colors } from '../config';
 // import * as SVG from '../config/svg';
-// import { setPanelState } from '../../store/legacy';
+// import {
+//   setPanelState,
+//   selectPanelStateByTitle,
+//   selectPanelState,
+// } from '../../store/slices/legacyStoreSlice';
 
 // const MenuContainer = styled(Paper)`
 //     position:fixed;
@@ -71,8 +75,8 @@
 // const ContextMenu = () => {
 //     const dispatch = useDispatch();
 
-//     const panelState = useSelector(state => state.legacy.panelState);
-//     const {x, y} = useSelector(state => state.legacy.panelState.contextPos);
+//     const panelState = useSelector(selectPanelState);
+//     const {x, y} = useSelector(selectPanelStateByTitle('contextPos')));
 
 //     const closePanel = () => dispatch(setPanelState({context:false}));
 

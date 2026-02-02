@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { colors } from '../../config';
 import { Box } from '@mui/system';
-import { setPanelState } from '../../store/slices/legacyStoreSlice';
+import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
 
 const NavItems = styled.ul`
@@ -97,7 +97,7 @@ export default function Nav({
 }) {
 
   const dispatch = useDispatch();
-  const panelState = useSelector(state => state.legacy.panelState);
+  const panelState = useSelector(selectPanelState);
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
   const [anchorEl, setAnchorEl] = React.useState(null);

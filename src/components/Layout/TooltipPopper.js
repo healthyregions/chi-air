@@ -4,7 +4,7 @@
 // import styled from 'styled-components';
 // import Popper from '@mui/material/Popper';
 
-// import { setAnchorEl } from '../../store/legacy';
+// import { setAnchorEl } from '../../store/slices/legacyStoreSlice';
 
 // const TooltipContentDiv = styled(Popper)`
 //     z-index:10000;
@@ -33,7 +33,7 @@
 
 //     const dispatch = useDispatch();
 
-//     const anchorEl = useSelector(state => state.legacy.anchorEl);
+//     const anchorEl = useSelector(selectAnchorEl);
 //     const open = Boolean(anchorEl);
 //     const id = open ? 'simple-popper' : undefined;
 
