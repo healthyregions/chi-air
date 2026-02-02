@@ -8,7 +8,7 @@ import {
   Legend,
   DataPanel,
 } from "../../components";
-import {selectMapParams} from "../../store/legacy";
+import { selectMapParams } from "../../store/slices/legacyStoreSlice";
 
 // US bounds
 export const defaultBounds = fitBounds({
@@ -21,7 +21,7 @@ export const defaultBounds = fitBounds({
 });
 
 function Map() {
-  const mapParams = useSelector((state) => state.legacy.mapParams);
+  const mapParams = useSelector(selectMapParams);
 
   return (
     <div className="Map-App">

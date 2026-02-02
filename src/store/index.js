@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { legacyStoreSlice } from './legacy';
+import { legacyStoreSlice } from './slices/legacyStoreSlice';
 import { staticDataSlice } from './slices/staticDataSlice';
 import { locationsSlice } from './slices/locationsSlice';
 

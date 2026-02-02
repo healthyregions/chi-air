@@ -25,7 +25,7 @@ import MapOverlayTooltipContent from "./MapOverlayTooltipContent";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
-  overlay && overlay?.setProps(props);
+  overlay?.setProps(props);
   return null;
 }
 

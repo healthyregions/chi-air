@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { colors } from '../../config';
 import { Box } from '@mui/system';
-import { setPanelState } from '../../store/legacy';
+import { setPanelState } from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
 
 const NavItems = styled.ul`

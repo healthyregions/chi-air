@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loadDataAndBins } from "../store/legacy";
+import { loadDataAndBins } from "../store/slices/legacyStoreSlice";
 import { loadData } from "../utils/handleData";
 
 export const useChivesData = () => {

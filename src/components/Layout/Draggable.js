@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 // Import config and actions
 import { colors } from '../../config';
-import { setPanelState } from '../../store/legacy';
+import { setPanelState } from '../../store/slices/legacyStoreSlice';
 
 // Styles - Container
 const DragContainer = styled.div`

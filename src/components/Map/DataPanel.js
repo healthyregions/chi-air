@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
 // import NeighborhoodCounts from './NeighborhoodCounts';
-import { setPanelState } from '../../store/legacy';
+import { setPanelState } from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
 import { report } from '../../config/svg';
 

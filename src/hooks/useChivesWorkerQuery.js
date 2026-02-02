@@ -2,7 +2,7 @@ import { WebMercatorViewport } from "@deck.gl/core";
 import { wrap } from "comlink";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectionData } from "../store/legacy";
+import { setSelectionData } from "../store/slices/legacyStoreSlice";
 import { useChivesData } from "./useChivesData";
 
 const queryWorker = wrap(

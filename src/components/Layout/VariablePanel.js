@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 // import Tooltip from './tooltip';
 import { Gutter } from "../../styled_components";
-import { changeVariable, setMapParams, setPanelState} from "../../store/legacy";
+import { changeVariable, setMapParams, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {colors, variablePresets, dataDescriptions, parsedOverlays, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
 import {FormControl} from "@mui/material";

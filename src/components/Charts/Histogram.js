@@ -8,7 +8,7 @@ import Slider, { SliderThumb } from '@mui/material/Slider';
 import withStyles from '@mui/styles/withStyles';
 
 import DensityChart from './DensityChart';
-import { applyFilterValues, removeFilterValues } from '../../store/legacy';
+import { applyFilterValues, removeFilterValues } from '../../store/slices/legacyStoreSlice';
 import {colors, variablePresets} from '../../config';
 import PropTypes from "prop-types";
 import clsx from "clsx";

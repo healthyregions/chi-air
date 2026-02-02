@@ -1,6 +1,6 @@
-import { INITIAL_STATE } from "../constants/defaults";
+import { INITIAL_STATE } from "../../constants/defaults";
 import centroid from "@turf/centroid";
-import { generateQuantileBins } from "../utils";
+import { generateQuantileBins } from "../../utils";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const legacyStoreSlice = createSlice({
@@ -377,13 +377,13 @@ export const legacyStoreSlice = createSlice({
         },
       };
     },
+  },
+  selectors: {
+    selectMapParams: (state) => state.mapParams,
   }
 });
 
-
-
-export const selectMapParams = (state) => state.mapParams;
-
+//
 export const {
   loadDataAndBins,
   setPanelState,
@@ -392,7 +392,8 @@ export const {
   removeFilterValues,
   changeVariable,
   setSelectionData,
-
 } = legacyStoreSlice.actions;
 
-export const selectors = legacyStoreSlice.selectors
+export const {
+  selectMapParams,
+} = legacyStoreSlice.selectors
