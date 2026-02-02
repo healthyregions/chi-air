@@ -15,7 +15,7 @@ const ResizeButton = styled.button`
 `
 
 const Scaleable = (props) => {
-    
+
     const [width, setWidth] = useState(props.defaultWidth);
     const [height, setHeight] = useState(props.defaultHeight);
     const [currXYPos, setCurrXYPos] = useState(false);
@@ -39,7 +39,7 @@ const Scaleable = (props) => {
         window.removeEventListener('touchmove', touchListener);
         window.removeEventListener('touchend', removeTouchListener);
     }
-    
+
     const handleDown = () => {
         window.addEventListener('mousemove', listener)
         window.addEventListener('mouseup', removeListener)
@@ -50,8 +50,8 @@ const Scaleable = (props) => {
         window.addEventListener('touchmove', touchListener)
         window.addEventListener('touchend', removeTouchListener)
     }
-    
-    const open = useSelector(state => state.panelState[props.title]);
+
+    const open = useSelector(state => state.legacy.panelState[props.title]);
 
     useEffect(() => {
         setWidth(props.defaultWidth)
@@ -61,7 +61,7 @@ const Scaleable = (props) => {
     return (
         <div style={{width: width, height: height, minHeight: props.minHeight, minWidth: props.minWidth}}>
             {props.content}
-            <ResizeButton 
+            <ResizeButton
                 id="resize"
                 notScaleable={props.notScaleable}
                 onMouseDown={handleDown}

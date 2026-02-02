@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 // import Tooltip from './tooltip';
 import { Gutter } from "../../styled_components";
-import { changeVariable, setMapParams, setPanelState} from "../../actions";
+import { changeVariable, setMapParams, setPanelState} from "../../store/legacy";
 import {colors, variablePresets, dataDescriptions, parsedOverlays, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
 import {FormControl} from "@mui/material";
@@ -185,8 +185,8 @@ const ControlsContainer = styled.div`
 const VariablePanel = (props) => {
   const dispatch = useDispatch();
 
-  const mapParams = useSelector((state) => state.mapParams);
-  const panelState = useSelector((state) => state.panelState);
+  const mapParams = useSelector((state) => state.legacy.mapParams);
+  const panelState = useSelector((state) => state.legacy.panelState);
 
   const [lastUpdated, setLastUpdated] = useState(null)
 
@@ -254,7 +254,7 @@ const VariablePanel = (props) => {
 
   const handleVariable = (e) => {
     setVariableChanged(true);
-    dispatch(changeVariable(variablePresets[e.target.value]));
+    dispatch(changeVariable({ params: variablePresets[e.target.value] }));
   }
 
   return (
@@ -265,11 +265,11 @@ const VariablePanel = (props) => {
     >
       <ControlsContainer>
         <h2>Air Quality</h2>
-        <p className="data-description">
+        <span className="data-description">
           Points on the map show PM 2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
-        </p>
-        { Object.entries(pm2_5ColorMap).map(([key, color]) => (
-          <div style={{ display: "flex", margin:'.25em 0' }}>
+        </span>
+        { Object.entries(pm2_5ColorMap).map(([key, color], index) => (
+          <div key={`${key}-${index}`} style={{ display: "flex", margin:'.25em 0' }}>
             <span
                 key={`overlay-key-${key}-${color}`}
                 style={{
@@ -278,12 +278,12 @@ const VariablePanel = (props) => {
                   height: 16,
                 }}
             ></span>
-              <p style={{padding:0, margin:'0 0 0 .25em'}}>{key}</p>
+              <span style={{padding:0, margin:'0 0 0 .25em'}}>{key}</span>
             </div>
         ))}
-        <p className="data-description">
+        <span className="data-description">
           {lastUpdated ? `last updated: ${lastUpdated}` : "loading data..."}
-        </p>
+        </span>
         <h2>Comparison Variables</h2>
         <FormControl id="newVariableSelect" variant="filled">
           <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
@@ -301,17 +301,17 @@ const VariablePanel = (props) => {
             ))}
           </Select>
         </FormControl>
-        <p className="data-description">
+        <span className="data-description">
           {dataDescriptions[mapParams.variableName]}
-        </p>
+        </span>
         <div style={{ margin: '1rem 0 0.5rem' }}>
-            <span style={{ color: colors.pink }}>Overlays:</span> {mapParams.overlays?.map((selectedOverlay, index) => <>
-              {parsedOverlays.map((parsedOverlay, i) => <div key={`overlays-enabled-list-${i}`}>
-                { selectedOverlay === parsedOverlay?.id && <span style={{ color: colors.darkgray }} key={`overlay-description-${selectedOverlay}`}>
-                  <span style={{ display: index === 0 ? 'none' : 'inline' }}>, </span>{parsedOverlay?.displayName}</span> }
-              </div>)}
-            </>)}
-          </div>
+          <span style={{ color: colors.pink }}>Overlays:</span> {mapParams.overlays?.map((selectedOverlay, index) => <div key={`overlays-section-${index}`}>
+            {parsedOverlays.map((parsedOverlay, i) => <div key={`overlays-enabled-list-${i}`}>
+              { selectedOverlay === parsedOverlay?.id && <span style={{ color: colors.darkgray }} key={`overlay-description-${selectedOverlay}`}>
+                <span style={{ display: index === 0 ? 'none' : 'inline' }}>, </span>{parsedOverlay?.displayName}</span> }
+            </div>)}
+          </div>)}
+        </div>
 
         <Gutter h={20} />
 
@@ -340,7 +340,7 @@ const VariablePanel = (props) => {
         {mapParams.overlays.map((selectedOverlay, index) => <div key={`overlay-legend-container-${index}`}>
           {parsedOverlays.map((parsedOverlay, subindex) => {
             const fillColor = JSON.parse(parsedOverlay?.fillColor);
-            return (<>
+            return (<div key={`parsed-overlay-${index}-${subindex}`}>
             { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'1em' }}>
               <h3>{parsedOverlay?.description}</h3>
             {parsedOverlay?.fillColor && !Array.isArray(fillColor) && Object.entries(fillColor).map(([key, color]) => (
@@ -353,7 +353,7 @@ const VariablePanel = (props) => {
                       height: 16,
                     }}
                 ></span>
-                  <p style={{padding:0, margin:'0 0 0 .25em'}}>{key}</p>
+                  <span style={{padding:0, margin:'0 0 0 .25em'}}>{key}</span>
                 </div>
             ))}
               {parsedOverlay?.fillColor && Array.isArray(fillColor) && <div key={`overlay-legend-${selectedOverlay}`} style={{ display: "flex", margin:'.25em 0' }}>
@@ -364,10 +364,10 @@ const VariablePanel = (props) => {
                        height: 16,
                      }}
                  ></span>
-                  <p style={{padding:0, margin:'0 0 0 .25em'}}>{parsedOverlay?.description}</p>
+                  <span style={{padding:0, margin:'0 0 0 .25em'}}>{parsedOverlay?.description}</span>
               </div>}
             </div>}
-          </>)})}
+          </div>)})}
         </div>)}
       </ControlsContainer>
       <button

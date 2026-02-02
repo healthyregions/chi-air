@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
 // import NeighborhoodCounts from './NeighborhoodCounts';
-import { setPanelState } from '../../actions';
+import { setPanelState } from '../../store/legacy';
 import {colors} from '../../config';
 import { report } from '../../config/svg';
 
@@ -276,13 +276,17 @@ const AgeColumnsToChart = [
 const DataPanel = () => {
 
   const dispatch = useDispatch();
-  const selectionData = useSelector(state => state.selectionData);
-  const panelState = useSelector(state => state.panelState);
-  const ranges = useSelector(state => state.ranges);
-  // const filterValues = useSelector(state => state.filterValues);
-
+  const selectionData = useSelector(state => state.legacy.selectionData);
+  const panelState = useSelector(state => state.legacy.panelState);
+  const ranges = useSelector(state => state.legacy.ranges);
+  const legacyState = useSelector(state => state.legacy);
+  // const filterValues = useSelector(state => state.legacy.filterValues);
+  console.log('selectionData:', selectionData);
+  console.log('panelState:', panelState);
+  console.log('ranges:', ranges);
+  console.log('legacyState:', legacyState);
   // handles panel open/close
-  const handleOpenClose = () => dispatch(setPanelState({info:panelState.info ? false : true}))
+  const handleOpenClose = () => dispatch(setPanelState({info: !!panelState.info}))
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>

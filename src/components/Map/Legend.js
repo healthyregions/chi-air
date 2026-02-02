@@ -169,9 +169,11 @@ const Legend = ({
     precision = 2
 }) => {
     const { storedGeojson } = useChivesData();
-    const mapParams = useSelector((state) => state.mapParams);
+    const mapParams = useSelector((state) => state.legacy.mapParams);
 
     // Note that "label" above and variableName here are similar, but not always the same
+    console.log(mapParams);
+    console.log(variablePresets);
     const columnName = variablePresets[mapParams.variableName].Column;
 
     const values = storedGeojson?.features?.map(f => f.properties[columnName]) || [];

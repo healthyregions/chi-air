@@ -166,14 +166,17 @@ const GeocoderContainer = styled.div`
   }
 `;
 
+
 function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
+
+
   // fetch pieces of state from store
   const { storedGeojson } = useChivesData();
-  const panelState = useSelector((state) => state.panelState);
-  const mapParams = useSelector((state) => state.mapParams);
-  const urlParams = useSelector((state) => state.urlParams);
-  const filterValues = useSelector((state) => state.filterValues);
-  const use3d = useSelector((state) => state.use3d);
+  const panelState = useSelector((state) => state.legacy.panelState);
+  const mapParams = useSelector((state) => state.legacy.mapParams);
+  const urlParams = useSelector((state) => state.legacy.urlParams);
+  const filterValues = useSelector((state) => state.legacy.filterValues);
+  const use3d = useSelector((state) => state.legacy.use3d);
   // component state elements
   // hover and highlight geographibes
   const [hoverInfo, setHoverInfo] = useState({
@@ -793,7 +796,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
            <h3>{censorPopupFeature.object.properties.datasourceId}</h3>
            <ul>
             {Object.keys(censorPopupFeature.object.properties).map((key) => {
-              return <li>{key}: {key === "time" ? new Date(censorPopupFeature.object.properties[key]).toLocaleString('en-US',  { timeZone: 'America/Chicago' }) : censorPopupFeature.object.properties[key]}</li>
+              return <li key={key}>{key}: {key === "time" ? new Date(censorPopupFeature.object.properties[key]).toLocaleString('en-US',  { timeZone: 'America/Chicago' }) : censorPopupFeature.object.properties[key]}</li>
             })}
            </ul>
           </HoverDiv>

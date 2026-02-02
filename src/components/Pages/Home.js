@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
@@ -12,6 +12,7 @@ import {Button} from "@mui/material";
 import {LineChart} from "@mui/x-charts";
 import {Line, LineChart as RechartsLineChart, XAxis, YAxis} from "recharts";
 import {LineChart as D3LineChart} from '../../components/Charts/LineChart';
+import ParquetReaderComponent from "../Map/ParquetReaderComponent";
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -473,6 +474,8 @@ export default function Home() {
   }, []);
 
   const [preferStrictDomainInLineCharts /*, setPreferStrictDomainInLineCharts*/] = React.useState(true);
+  const [locations, setLocations] = useState([]);
+  const [data, setData] = useState([]);
 
   return (
     <HomePage>
@@ -494,6 +497,10 @@ export default function Home() {
           View Map &rarr;
         </Button>
       </TitleBanner>
+
+      <div>
+        <ParquetReaderComponent data={data} setData={setData} locations={locations} setLocations={setLocations}></ParquetReaderComponent>
+      </div>
 
       <GradientBackground direction={'to bottom'}>
         <Grid container spacing={0}>

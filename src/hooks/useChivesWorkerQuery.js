@@ -2,7 +2,7 @@ import { WebMercatorViewport } from "@deck.gl/core";
 import { wrap } from "comlink";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectionData } from "../actions";
+import { setSelectionData } from "../store/legacy";
 import { useChivesData } from "./useChivesData";
 
 const queryWorker = wrap(
@@ -49,11 +49,11 @@ const GLOBE_VIEWPORT = {
 export const useChivesWorkerQuery = (deckRef) => {
   const { storedGeojson } = useChivesData();
 
-  const centroids = useSelector((state) => state.centroids);
-  const columnNames = useSelector((state) => state.columnNames);
-  const ranges = useSelector((state) => state.ranges);
-  const filterValues = useSelector((state) => state.filterValues);
-  const selectionData = useSelector((state) => state.selectionData);
+  const centroids = useSelector((state) => state.legacy.centroids);
+  const columnNames = useSelector((state) => state.legacy.columnNames);
+  const ranges = useSelector((state) => state.legacy.ranges);
+  const filterValues = useSelector((state) => state.legacy.filterValues);
+  const selectionData = useSelector((state) => state.legacy.selectionData);
 
   const dispatch = useDispatch();
   const [dataIsCached, setDataIsCached] = useState(false);
@@ -75,6 +75,8 @@ export const useChivesWorkerQuery = (deckRef) => {
       extent,
       ranges,
     });
+
+    console.log('selectionData (hook):', data);
     if (data) {
       dispatch(setSelectionData(data));
       if (data.dataIsCached) {

@@ -62,15 +62,15 @@ const BottomDrawer = styled.div`
 
 const BottomPanel = () => {
 
-    const panelState = useSelector(state => state.panelState);
+    const panelState = useSelector(state => state.legacy.panelState);
 
-    // offset for the bottom panel based on the chart height, 
+    // offset for the bottom panel based on the chart height,
     // managed through props via styled-components
     const [bottomMargin, setBottomMargin] = useState(0);
 
     const handleResize = () => setBottomMargin(getChartHeight())
     window.addEventListener("resize", handleResize);
-    
+
     return (
         <BottomDrawer bottom={panelState.chart ? 0 : bottomMargin } id="bottomPanel">
             {/* <DateSlider /> */}
