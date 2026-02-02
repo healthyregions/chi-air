@@ -279,14 +279,10 @@ const DataPanel = () => {
   const selectionData = useSelector(state => state.legacy.selectionData);
   const panelState = useSelector(state => state.legacy.panelState);
   const ranges = useSelector(state => state.legacy.ranges);
-  const legacyState = useSelector(state => state.legacy);
   // const filterValues = useSelector(state => state.legacy.filterValues);
-  console.log('selectionData:', selectionData);
-  console.log('panelState:', panelState);
-  console.log('ranges:', ranges);
-  console.log('legacyState:', legacyState);
+
   // handles panel open/close
-  const handleOpenClose = () => dispatch(setPanelState({info: !!panelState.info}))
+  const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>

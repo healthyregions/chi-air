@@ -109,7 +109,7 @@ const Draggable = (props) => {
     // End Listeners
 
     // Hide Panel
-    const handleCollapse = () => dispatch(setPanelState({[props.title]: false}))
+    const handleCollapse = () => dispatch(setPanelState({ [props.title]: false }))
 
     // Props change when window changes, updates local state here
     useEffect(() => {

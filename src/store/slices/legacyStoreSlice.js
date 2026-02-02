@@ -291,7 +291,7 @@ export const legacyStoreSlice = createSlice({
       ...state,
       panelState: {
         ...state.panelState,
-        ...action.payload.params,
+        ...action.payload,
       },
     }),
     setVariableName: (state, action) => ({

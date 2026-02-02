@@ -98,7 +98,7 @@ export default function Nav({
 
   const dispatch = useDispatch();
   const panelState = useSelector(state => state.legacy.panelState);
-  const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: panelState[panel] ? false : true }))
+  const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
