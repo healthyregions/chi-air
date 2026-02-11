@@ -566,6 +566,7 @@ export default function Home() {
                 <GeocoderContainer container spacing={0} alignItems="center">
                   <Geocoder
                     id="Geocoder"
+                    style={{ borderRadius: '100px' }}
                     placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
                     API_KEY={MAPBOX_ACCESS_TOKEN}
                     onChange={handleGeocoder}

@@ -5,6 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 import { colors } from '../../config';
+import {FaSearch} from "@react-icons/all-files/fa/FaSearch";
 
 const Container = styled.div`
     flex:auto;
@@ -12,17 +13,15 @@ const Container = styled.div`
     .MuiFormControl-root {
         margin:0;
         background: rgba( 255, 255, 255, 0.85 );
-        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
         backdrop-filter: blur( 20px );
         -webkit-backdrop-filter: blur( 20px );
-        box-shadow: 2px 0px 5px ${colors.gray};
     }
     
     .MuiAutocomplete-inputRoot {
         background:white;
         height:${({height}) => height||36}px;
-        border-radius:0px;
         padding:0;
+        border-radius: 100px;
     }
     .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input:first-child {
         padding:0;
@@ -82,7 +81,7 @@ const Geocoder = ({
             value: '',
         })
     }
-    
+
     const buildAddress = (text) => `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?access_token=${API_KEY}&country=US&autocomplete=true&types=region%2Cdistrict%2Cpostcode%2Clocality%2Cplace%2Caddress&bbox=-88.28487843194713%2C41.54199009379835%2C-87.52216519803295%2C42.16483530634653`
 
     const getMapboxResults = async (text, callback) => fetch(buildAddress(text)).then(r => r.json()).then(r => callback(r.features))
@@ -95,8 +94,8 @@ const Geocoder = ({
           // eslint-disable-next-line
         [],
       );
-      
-    //   
+
+    //
     const handleSearch = async (e) => {
         if (e.target.value.length > 3) {
             queryMapbox(e.target.value, (r) => loadResults(r))
@@ -146,13 +145,15 @@ const Geocoder = ({
                 //     </StyledOption>
                 // </React.Fragment>
                 // }
+
                 renderInput={(params) => (
                     <TextField
                     {...params}
                     margin="normal"
+                    style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
                     placeholder={placeholder}
                     InputProps={{ ...params.InputProps, type: 'search' }}
-                    onChange={(e) => {               
+                    onChange={(e) => {
                         setSearchState(prev => ({
                             ...prev,
                             value: e.target.value,

@@ -32,6 +32,8 @@ import {
 } from "../../store/slices/legacyStoreSlice";
 import MapMarkerPin from "./MapMarkerPin";
 import MapMarkerPopup from "./MapMarkerPopup";
+import {selectSensorLocations, selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
+import ParquetReaderComponent from "./ParquetReaderComponent";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -178,7 +180,8 @@ const GeocoderContainer = styled.div`
 
 
 function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
-
+  const locations = useSelector(selectSensorLocations);
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
 
   // fetch pieces of state from store
   const { storedGeojson } = useChivesData();
@@ -630,16 +633,50 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     })
   });
 
+  const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
+  const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
+  const geojsonData = {
+    type: 'FeatureCollection',
+    features: sensorIds.map((datasourceId) => {
+      const location = locations.find(r => r.datasourceId === datasourceId);
+      const metric_pm25 = mean_pm25.map((r) => ({
+        period: r.period || r.type,
+        date: r.date,
+        [datasourceId]: r[datasourceId]
+      }));
+      return {
+        type: 'Feature',
+        geometry: {
+          type: "Point",
+          coordinates: [
+            location.locationLongitude,
+            location.locationLatitude
+          ],
+        },
+        // Ensure this is valid GeoJSON format
+        properties: {
+          ...location,
+          mean_pm25: metric_pm25
+        },
+      }
+    }),
+  };
+  console.log(geojsonData)
   baseLayers.push(
     new GeoJsonLayer({
       id: "sensors",
-      data: "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson",
+      data: geojsonData,
       pickable: true,
       stroked: true,
       filled: true,
       extruded: false,
       getFillColor: (feature) => {
-        return scaleColor(feature.properties.pm2_5ConcMassNowcast, pm2_5Bins, Object.values(pm2_5ColorMap))
+        const datasourceId = feature.properties.datasourceId;
+        const allValues = feature.properties.mean_pm25;
+        const latestValues = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .find(() => true);
+        return scaleColor(latestValues[datasourceId], pm2_5Bins, Object.values(pm2_5ColorMap))
       },
       opacity: .7,
       getPointRadius: 400,
@@ -838,10 +875,14 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
               }}
               ref={hoverCcRef}
           >
-           <h3>{censorPopupFeature.object.properties.datasourceId}</h3>
+           <h3>{censorPopupFeature.object.properties.name}</h3>
            <ul>
             {Object.keys(censorPopupFeature.object.properties).map((key) => {
-              return <li key={key}>{key}: {key === "time" ? new Date(censorPopupFeature.object.properties[key]).toLocaleString('en-US',  { timeZone: 'America/Chicago' }) : censorPopupFeature.object.properties[key]}</li>
+              const value = censorPopupFeature.object.properties[key];
+              if (typeof value === 'object') {
+                return (<></>);
+              }
+              return <li key={`sensor-popup-${key}`}>{key}: {value}</li>
             })}
            </ul>
           </HoverDiv>
