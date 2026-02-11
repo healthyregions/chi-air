@@ -14,7 +14,15 @@ import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 import MapTooltipContent from "./MapTooltipContent";
 import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
-import {colors as appColors, colors, loadStickers, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
+import {
+  colors as appColors,
+  colors,
+  loadStickers,
+  parsedOverlays,
+  pm2_5Bins,
+  pm2_5BorderolorMap,
+  pm2_5ColorMap
+} from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
@@ -695,8 +703,22 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         }
         return scaleColor(latest, pm2_5Bins, Object.values(pm2_5ColorMap))
       },
-      opacity: .7,
+      opacity: .85,
       getPointRadius: 400,
+      getLineWidth: 35,
+    getLineColor: (feature) => {
+        const datasourceId = feature.properties.datasourceId;
+        const allValues = feature.properties.mean_pm25;
+        const latestHourlyRow = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .reverse()
+          .find(() => true);
+        const latest = latestHourlyRow[datasourceId];
+        if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+          return [68, 68, 68];
+        }
+        return scaleColor(latest, pm2_5Bins, Object.values(pm2_5BorderolorMap))
+      },
       pointRadiusUnits: 'meters',
       visible: true,
       onClick: (feature) => {setCensorPopupFeature(feature)},
