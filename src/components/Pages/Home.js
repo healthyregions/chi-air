@@ -459,6 +459,20 @@ const GradientBackground = styled.div`
     padding: 3rem;
 `;
 
+const ViewMapButton = styled(Button)`
+    font-family: Space Grotesk !important;
+    margin-top: 1rem;
+    background: rgba(0, 88, 153, 1);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 16px;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    width:200px;
+    height:46px;
+
+`;
+
 export default function Home() {
   // const [posts, setPosts] = useState([]);
 
@@ -495,9 +509,9 @@ export default function Home() {
           ensuring you and your family have the information you need to breathe easier.
         </ChiSubtitle>
 
-        <Button variant={"contained"} style={{ fontFamily: 'Space Grotesk', marginTop: '1rem' }} size={"large"} color={'primary'} onClick={() => window.location.href='/map'}>
+        <ViewMapButton variant={"contained"} size={"large"} color={"primary"} onClick={() => window.location.href='/map'}>
           View Map &rarr;
-        </Button>
+        </ViewMapButton>
       </TitleBanner>
 
 
