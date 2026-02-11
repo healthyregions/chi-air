@@ -1,9 +1,8 @@
 import { parsedOverlays } from "../../config";
-import OverlaysDropdown from "./OverlaysDropdown";
-import {useSelector} from "react-redux";
-import {selectMapParams} from "../../store/slices/legacyStoreSlice";
+import { useSelector } from "react-redux";
+import { selectMapParams } from "../../store/slices/legacyStoreSlice";
 
-const OverlaysColorLegend = ({}) => {
+const OverlaysColorLegend = () => {
   const mapParams = useSelector(selectMapParams);
 
   return (
@@ -14,8 +13,8 @@ const OverlaysColorLegend = ({}) => {
           return (<div key={`parsed-overlay-${index}-${subindex}`}>
             { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-colorlegend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'1em' }}>
               <h3>{parsedOverlay?.description}</h3>
-              {parsedOverlay?.fillColor && !Array.isArray(fillColor) && Object.entries(fillColor).map(([key, color]) => (
-                <div key={`overlay-array-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", margin:'.25em 0' }}>
+              {parsedOverlay?.fillColor && !Array.isArray(fillColor) && Object.entries(fillColor).map(([key, color], subsubindex) => (
+                <div key={`overlay-array-legend-${selectedOverlay}-${index}-${subindex}-${subsubindex}`} style={{ display: "flex", margin:'.25em 0' }}>
                 <span
                   style={{
                     backgroundColor: `rgb(${color.join(",")})`,

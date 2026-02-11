@@ -32,9 +32,9 @@ export const sensorDataSlice = createSlice({
 
 // useDispatch + an action to update the state
 export const {
-  setLocations,
-  setMeanPm25,
-  setMetadata,
+  setSensorLocations,
+  setSensorValuesMeanPm25,
+  setSensorValuesMeanPm25Metadata,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state

@@ -2,7 +2,7 @@ import { colors, parsedOverlays } from "../../config";
 import {useSelector} from "react-redux";
 import {selectMapParams} from "../../store/slices/legacyStoreSlice";
 
-const EnabledOverlayDisplay = ({}) => {
+const EnabledOverlayDisplay = () => {
   const mapParams = useSelector(selectMapParams);
 
   return (

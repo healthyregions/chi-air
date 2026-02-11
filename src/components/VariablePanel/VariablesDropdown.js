@@ -3,7 +3,7 @@ import {defaultVariable, variablePresets} from "../../config";
 import {changeVariable, selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 
-const VariablesDropdown = ({ style }) => {
+const VariablesDropdown = () => {
   const mapParams = useSelector(selectMapParams);
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ const VariablesDropdown = ({ style }) => {
   }
 
   return (
-    <div style={style}>
+    <>
       <h2>Comparison Variables</h2>
       <FormControl id="newVariableSelect" variant="filled">
         <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
@@ -53,7 +53,7 @@ const VariablesDropdown = ({ style }) => {
           ))}
         </Select>
       </FormControl>
-    </div>
+    </>
   )
 }
 

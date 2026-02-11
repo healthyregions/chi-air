@@ -4,7 +4,7 @@ import {selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice
 import {useDispatch, useSelector} from "react-redux";
 
 
-const OverlaysDropdown = ({ style }) => {
+const OverlaysDropdown = () => {
   const mapParams = useSelector(selectMapParams);
   const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const OverlaysDropdown = ({ style }) => {
   };
 
   return (
-    <div style={style}>
+    <>
       <h2>Data Overlay</h2>
       <FormControl variant="filled">
         <InputLabel htmlFor="overlay-select">Overlay</InputLabel>
@@ -53,7 +53,7 @@ const OverlaysDropdown = ({ style }) => {
           }
         </Select>
       </FormControl>
-    </div>
+    </>
   )
 }
 

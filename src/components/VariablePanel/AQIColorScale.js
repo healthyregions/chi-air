@@ -1,7 +1,7 @@
 // AQIColorScale.js
 import {pm2_5ColorMap} from "../../config";
 
-const AQIColorScale = ({}) => {
+const AQIColorScale = () => {
   return (
     <div>
       { Object.entries(pm2_5ColorMap).map(([key, color], index) => (

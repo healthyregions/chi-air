@@ -2,7 +2,7 @@ import { dataDescriptions } from "../../config";
 import {useSelector} from "react-redux";
 import {selectMapParams} from "../../store/slices/legacyStoreSlice";
 
-const VariableDescriptionDisplay = ({}) => {
+const VariableDescriptionDisplay = () => {
   const mapParams = useSelector(selectMapParams);
 
   return (
