@@ -12,12 +12,11 @@ const OverlaysColorLegend = ({}) => {
         {parsedOverlays.map((parsedOverlay, subindex) => {
           const fillColor = JSON.parse(parsedOverlay?.fillColor);
           return (<div key={`parsed-overlay-${index}-${subindex}`}>
-            { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'1em' }}>
+            { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-colorlegend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'1em' }}>
               <h3>{parsedOverlay?.description}</h3>
               {parsedOverlay?.fillColor && !Array.isArray(fillColor) && Object.entries(fillColor).map(([key, color]) => (
-                <div key={`overlay-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", margin:'.25em 0' }}>
+                <div key={`overlay-array-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", margin:'.25em 0' }}>
                 <span
-                  key={`overlay-key-${key}-${index}-${subindex}`}
                   style={{
                     backgroundColor: `rgb(${color.join(",")})`,
                     width: 16,
@@ -27,7 +26,7 @@ const OverlaysColorLegend = ({}) => {
                   <span style={{padding:0, margin:'0 0 0 .25em'}}>{key}</span>
                 </div>
               ))}
-              {parsedOverlay?.fillColor && Array.isArray(fillColor) && <div key={`overlay-legend-${selectedOverlay}`} style={{ display: "flex", margin:'.25em 0' }}>
+              {parsedOverlay?.fillColor && Array.isArray(fillColor) && <div key={`overlay-nonarray-legend-${selectedOverlay}`} style={{ display: "flex", margin:'.25em 0' }}>
                  <span
                    style={{
                      backgroundColor: `rgb(${JSON.parse(parsedOverlay.fillColor)})`,

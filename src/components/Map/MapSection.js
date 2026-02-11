@@ -221,7 +221,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           //e.originalEvent.stopPropagation();
           setPopupInfo(null);
           setPopupInfo(sticker);
-          console.log('clicked', e)
         }}
       >
         <MapMarkerPin size={32} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
@@ -596,7 +595,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         // If mapping of colors, choose color based on symbolProp
         const { symbolProp } = parsedOverlay;
         const symbolKey = feature.properties[symbolProp];
-        console.log('symbolKey', symbolKey)
 
         if (typeof symbolKey === 'object' && symbolKey.sort) {
           // Treat as array of strings

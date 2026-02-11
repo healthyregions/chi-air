@@ -1,7 +1,5 @@
 import {colors} from ".";
 
-console.log(colors)
-
 export const compact = <svg x="0px" y="0px" viewBox="0 0 19.6 32">
         <path d="M1,0h17.6c0.6,0,1,0.5,1,1v3.1c0,0.6-0.4,1-1,1H1c-0.6,0-1-0.5-1-1V1C0,0.5,0.4,0,1,0z"/>
         <path d="M1,9h17.6c0.6,0,1,0.5,1,1v3.1c0,0.6-0.4,1-1,1H1c-0.6,0-1-0.5-1-1V10C0,9.4,0.4,9,1,9z"/>
