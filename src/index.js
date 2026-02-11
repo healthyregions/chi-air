@@ -11,7 +11,7 @@ import { store } from './store';
 
 WebFont.load({
   google: {
-    families: ['Big Shoulders:400,600', 'Lora:400,600', 'Roboto:300,500,700', 'sans-serif']
+    families: ['Lexend', 'Space Grotesk', 'Big Shoulders:400,600', 'Lora:400,600', 'Roboto:300,500,700', 'sans-serif']
   }
 });
 

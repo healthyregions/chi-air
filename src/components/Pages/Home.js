@@ -396,7 +396,7 @@ const TitleBanner = styled.div`
     flex-direction: column;
     align-items: end;
     text-align: right;
-    font: Lexend;
+    font-family: Lexend;
 `;
 
 
@@ -406,7 +406,11 @@ const brandColors = {
   chiRed: '#E4002B',
   chiLightBlue: '#2D9ECD'
 }
-
+const ChiHeader = styled.h1`
+    font-family: Lexend !important;
+    font-size: 64px;
+    text-align: right;
+`;
 const ChiDarkBlueText = styled.span`
     font-family: Lexend;
     color: ${brandColors.chiDarkBlue};
@@ -483,7 +487,7 @@ export default function Home() {
 
       <TitleBanner>
         <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-        <h1>The <ChiDarkBlueText>Chi Air Quality Network</ChiDarkBlueText></h1>
+        <ChiHeader>The <ChiDarkBlueText>Chi Air Quality Network</ChiDarkBlueText></ChiHeader>
 
         <ChiLightBlueText>America’s Largest Air Monitoring Network.</ChiLightBlueText>
         <ChiRedText>Built for Chicago.</ChiRedText>

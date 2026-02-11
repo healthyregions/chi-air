@@ -6,7 +6,7 @@ const store = configureStore({
   reducer: {
     legacy: legacyStoreSlice.reducer,
     // New slice state accessible under state.user
-    sensorData: sensorDataSlice.reducer,
+    sensors: sensorDataSlice.reducer,
   }
   // , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 });
