@@ -1,24 +1,30 @@
 import { asyncBufferFromUrl, parquetReadObjects, parquetMetadataAsync, parquetSchema } from 'hyparquet';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSensorLocations, setSensorValuesMeanPm25, setSensorValuesMeanPm25Metadata, selectSensorValuesMeanPm25Metadata, selectSensorValuesMeanPm25, selectSensorLocations } from '../../store/slices/sensorDataSlice';
 
 // Cache values as they are read
-const SensorDataStore = ({  }) => {
+/*const SensorDataStore = ({  }) => {
   const [yearly, setYearly] = useState(null);
   const [seasonal, setSeasonal] = useState(null);
   const [month, setMonth] = useState(null);
   const [week, setWeek] = useState(null);
   const [day, setDay] = useState(null);
   const [hour, setHour] = useState(null);
-
-}
+}*/
 
 // Given a URL to a Parquet file, read it into memory
 // There will always be at least 2 of these - one for locations.parquet and one for each metric displayed (e.g. mean_pm25)
 const ParquetReaderComponent = ({ }) => {
+  const dispatch = useDispatch();
+  const locations = useSelector(selectSensorLocations);
+  const metadata = useSelector(selectSensorValuesMeanPm25Metadata);
+  const data = useSelector(selectSensorValuesMeanPm25);
+
   const [error, setError] = useState(null);
-  const [metadata, setMetadata] = useState(null);
-  const [locations, setLocations] = useState([]);
-  const [data, setData] = useState([]);
+  //const [metadata, setMetadata] = useState(null);
+  //const [locations, setLocations] = useState([]);
+  //const [data, setData] = useState([]);
 
   const meanPm25Url = 'http://localhost:9000/chicago-aq/current/mean_pm25.parquet';
   const locationsUrl = 'http://localhost:9000/chicago-aq/current/locations.parquet';
@@ -38,11 +44,11 @@ const ParquetReaderComponent = ({ }) => {
   //setData(fetchData());
   useEffect(() => {
     (async () => {
-      setMetadata(await parquetMetadataAsync(
+      dispatch(setSensorValuesMeanPm25Metadata(await parquetMetadataAsync(
         await asyncBufferFromUrl({
           url: meanPm25Url
         }))
-      );
+      ));
     })();
   }, []);
 
@@ -51,8 +57,8 @@ const ParquetReaderComponent = ({ }) => {
     fetch({
       url: locationsUrl,
       columns: ['datasourceId','sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags'],
-    }).then(l => setLocations(l));
-  }, [locationsUrl]);
+    }).then(l => dispatch(setSensorLocations(l)));
+  }, [dispatch, locationsUrl]);
 
   useEffect(() => {
     // TODO: Support multiple metrics?
@@ -62,8 +68,8 @@ const ParquetReaderComponent = ({ }) => {
       columns: ['type','date', ...new Set(locations.map(d => d.datasourceId))],
       rowStart: 0,
       rowEnd: 100
-    }).then(d => setData(d));
-  }, [meanPm25Url, locations]);
+    }).then(d => dispatch(setSensorValuesMeanPm25(d)));
+  }, [dispatch, meanPm25Url, locations]);
 
   console.log(`Metadata: `, metadata);
   console.log('Locations:', locations)
