@@ -5,9 +5,7 @@ import styled from "styled-components";
 
 // import Tooltip from './tooltip';
 import {
-  selectMapParams,
   selectPanelState,
-  setMapParams,
   setPanelState
 } from "../../store/slices/legacyStoreSlice";
 import {colors} from "../../config";
@@ -189,7 +187,6 @@ const ControlsContainer = styled.div`
 const VariablePanel = (props) => {
   const dispatch = useDispatch();
 
-  const mapParams = useSelector(selectMapParams);
   const panelState = useSelector(selectPanelState);
 
   const [lastUpdated, setLastUpdated] = useState(null)

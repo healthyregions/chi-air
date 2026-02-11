@@ -323,6 +323,9 @@ const DataPanel = () => {
         </ReportWrapper>
     }
 
+      <VariablesDropdown></VariablesDropdown>
+      <OverlaysDropdown></OverlaysDropdown>
+
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.info ? 'active' : 'hidden'}>{report}</button>
     </DataPanelContainer>
   );

@@ -12,10 +12,8 @@ import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
 import MapTooltipContent from "./MapTooltipContent";
-import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
 import {
-  colors as appColors,
   colors,
   loadStickers,
   parsedOverlays,
@@ -41,7 +39,6 @@ import {
 import MapMarkerPin from "./MapMarkerPin";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {selectSensorLocations, selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
-import ParquetReaderComponent from "./ParquetReaderComponent";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -174,7 +171,7 @@ const NavInlineButton = styled.button`
   }
 `;
 
-const GeocoderContainer = styled.div`
+/*const GeocoderContainer = styled.div`
   position: fixed;
   left: 130px;
   top: 7px;
@@ -184,7 +181,7 @@ const GeocoderContainer = styled.div`
   @media (max-width: 600px) {
     display: none;
   }
-`;
+`;*/
 
 
 function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
@@ -642,7 +639,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
   });
 
   const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
-  const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
+  //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
   const geojsonData = {
     type: 'FeatureCollection',
     features: sensorIds.map((datasourceId) => {
@@ -921,14 +918,13 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
               if (typeof value === 'object' && value?.sort) {
                 return (
                   <div key={`sensor-popup-${key}`}>
-                    {value?.map((value, index) => {
-
-                    })}
+                    {value?.map((value, index) => (
+                      <>{index}: {value}</>
+                    ))}
                   </div>
                 );
               } else if (typeof value === 'object' && !value?.sort) {
-                {/* Unsupported */}
-                return (<div key={`sensor-popup-${key}`}></div>);
+                return (<div key={`sensor-popup-${key}`}>Unsupported</div>);
               }
               return <li key={`sensor-popup-${key}`}>{key}: {value}</li>
             })}

@@ -152,7 +152,9 @@ const Geocoder = ({
                     margin="normal"
                     style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
                     placeholder={placeholder}
-                    InputProps={{ ...params.InputProps, type: 'search' }}
+                    InputProps={{ ...params.InputProps, type: 'search', startAdornment:
+                        <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'10px'}}></FaSearch>
+                    }}
                     onChange={(e) => {
                         setSearchState(prev => ({
                             ...prev,

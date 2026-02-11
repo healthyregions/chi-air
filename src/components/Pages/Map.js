@@ -4,7 +4,6 @@ import { fitBounds } from "@math.gl/web-mercator";
 import {
   MapSection,
   NavBar,
-  VariablePanel,
   Legend,
   DataPanel,
 } from "../../components";

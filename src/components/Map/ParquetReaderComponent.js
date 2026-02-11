@@ -1,5 +1,5 @@
-import { asyncBufferFromUrl, parquetReadObjects, parquetMetadataAsync, parquetSchema } from 'hyparquet';
-import { useEffect, useState } from 'react';
+import { asyncBufferFromUrl, parquetReadObjects, parquetMetadataAsync } from 'hyparquet';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSensorLocations, setSensorValuesMeanPm25, setSensorValuesMeanPm25Metadata, selectSensorValuesMeanPm25Metadata, selectSensorValuesMeanPm25, selectSensorLocations } from '../../store/slices/sensorDataSlice';
 
@@ -20,11 +20,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const locations = useSelector(selectSensorLocations);
   const metadata = useSelector(selectSensorValuesMeanPm25Metadata);
   const data = useSelector(selectSensorValuesMeanPm25);
-
-  const [error, setError] = useState(null);
-  //const [metadata, setMetadata] = useState(null);
-  //const [locations, setLocations] = useState([]);
-  //const [data, setData] = useState([]);
 
   const meanPm25Url = 'http://localhost:9000/chicago-aq/current/mean_pm25.parquet';
   const locationsUrl = 'http://localhost:9000/chicago-aq/current/locations.parquet';
@@ -50,7 +45,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         }))
       ));
     })();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     // Fetch the list of location id, name, coordinates
@@ -75,18 +70,17 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   console.log('Locations:', locations)
   console.log('Data:', data)
 
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <>Loading...</>;
 
   return (
-    DEBUG ? <div>
+    DEBUG ? <>
       <h3>Parquet Data:</h3>
       <ul>
         {data.map((record, index) => (
           <li key={index}>{/* Render your data here, e.g., record.columnName */}</li>
         ))}
       </ul>
-    </div> : <></>
+    </> : <></>
   );
 };
 
