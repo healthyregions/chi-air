@@ -43,14 +43,14 @@ const MapMarkerPopup = ({ sticker }) => {
                     <FlexRow className={'flex-row'}>
                         <MapMarkerPin size={60} clickable={false} imgSrc={sticker?.logo} imgAlt={sticker?.title} />
                         <FlexCol>
-                            <PopupTitle>{sticker?.title}</PopupTitle>
-                            <PopupSubtitle>{sticker?.subtitle}</PopupSubtitle>
-
+                          <PopupTitle>{sticker?.title}</PopupTitle>
+                          <PopupSubtitle>{sticker?.owner}</PopupSubtitle>
                         </FlexCol>
                     </FlexRow>
 
                     <PopupBody>
-                      Monitors: {sticker?.pm25 && 'PM2.5'}  {sticker?.no2 && 'NO2'}
+                      <div>Address: {sticker?.address}</div>
+                      <div>Monitors for: {sticker?.monitors?.join(' & ')}</div>
                     </PopupBody>
                 </ContentContainer>
             </>}
