@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
@@ -8,11 +8,10 @@ import { NavBar, Footer } from "../../components";
 import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
-import {Button} from "@mui/material";
-import {LineChart} from "@mui/x-charts";
-import {Line, LineChart as RechartsLineChart, XAxis, YAxis} from "recharts";
-import {LineChart as D3LineChart} from '../../components/Charts/LineChart';
-import ParquetReaderComponent from "../Map/ParquetReaderComponent";
+import { Button } from "@mui/material";
+import { LineChart } from "@mui/x-charts";
+import { Line, LineChart as RechartsLineChart, XAxis, YAxis } from "recharts";
+import { LineChart as D3LineChart } from '../../components/Charts/LineChart';
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -432,7 +431,7 @@ const ChiRedText = styled.span`
     text-align: right;
 `;
 
-const SubTitle = styled.span`
+const ChiSubtitle = styled.span`
     max-width: 30vw;
     margin-top: 3rem;
     display: flex;
@@ -478,8 +477,6 @@ export default function Home() {
   }, []);
 
   const [preferStrictDomainInLineCharts /*, setPreferStrictDomainInLineCharts*/] = React.useState(true);
-  const [locations, setLocations] = useState([]);
-  const [data, setData] = useState([]);
 
   return (
     <HomePage>
@@ -492,19 +489,17 @@ export default function Home() {
         <ChiLightBlueText>America’s Largest Air Monitoring Network.</ChiLightBlueText>
         <ChiRedText>Built for Chicago.</ChiRedText>
 
-        <SubTitle>Air pollution is often invisible, but its impact is real. Now,
+        <ChiSubtitle>
+          Air pollution is often invisible, but its impact is real. Now,
           real-time air quality data is available for every neighborhood, for every Chicagoan,
           ensuring you and your family have the information you need to breathe easier.
-        </SubTitle>
+        </ChiSubtitle>
 
         <Button variant={"contained"} style={{ fontFamily: 'Space Grotesk', marginTop: '1rem' }} size={"large"} color={'primary'} onClick={() => window.location.href='/map'}>
           View Map &rarr;
         </Button>
       </TitleBanner>
 
-      <div>
-        <ParquetReaderComponent data={data} setData={setData} locations={locations} setLocations={setLocations}></ParquetReaderComponent>
-      </div>
 
       <GradientBackground direction={'to bottom'}>
         <Grid container spacing={0}>
