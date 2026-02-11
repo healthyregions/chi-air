@@ -36,7 +36,7 @@ function Map() {
           colorScale={mapParams.colorScale}
           bins={mapParams.bins}
         />}
-        <VariablePanel />
+        {/*<VariablePanel />*/}
         <DataPanel />
         <ParquetReaderComponent></ParquetReaderComponent>
         {/* <Popover />     */}

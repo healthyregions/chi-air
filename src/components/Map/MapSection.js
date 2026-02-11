@@ -14,7 +14,7 @@ import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 import MapTooltipContent from "./MapTooltipContent";
 import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
-import {colors, loadStickers, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
+import {colors as appColors, colors, loadStickers, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
@@ -644,6 +644,16 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         date: r.date,
         [datasourceId]: r[datasourceId]
       }));
+
+      const sortedHourlyRows = metric_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .reverse();
+
+      let latestHourlyRow = sortedHourlyRows.find(() => true);
+      if (latestHourlyRow === undefined || latestHourlyRow === null || latestHourlyRow === "NaN" || latestHourlyRow === "None") {
+        console.warn(`WARNING: updated measurements not yet available for ${datasourceId}.. using previous measurement`);
+        latestHourlyRow = sortedHourlyRows.slice(1).find(() => true);
+      }
       return {
         type: 'Feature',
         geometry: {
@@ -656,6 +666,8 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         // Ensure this is valid GeoJSON format
         properties: {
           ...location,
+          last_update: latestHourlyRow?.['date'],
+          latest_mean_pm25: latestHourlyRow?.[datasourceId] || 'Unavailable',
           mean_pm25: metric_pm25
         },
       }
@@ -673,10 +685,15 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       getFillColor: (feature) => {
         const datasourceId = feature.properties.datasourceId;
         const allValues = feature.properties.mean_pm25;
-        const latestValues = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
+        const latestHourlyRow = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
           .sort((a, b) => a.date.localeCompare(b.date))
+          .reverse()
           .find(() => true);
-        return scaleColor(latestValues[datasourceId], pm2_5Bins, Object.values(pm2_5ColorMap))
+        const latest = latestHourlyRow[datasourceId];
+        if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+          return [137, 137, 137];
+        }
+        return scaleColor(latest, pm2_5Bins, Object.values(pm2_5ColorMap))
       },
       opacity: .7,
       getPointRadius: 400,
@@ -824,7 +841,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           </NavInlineButtonGroup>
         </MapButtonContainer>
       )}
-      {!geoids.length && showSearch && (
+      {/*!geoids.length && showSearch && (
         <GeocoderContainer>
           <Geocoder
             id="Geocoder"
@@ -835,7 +852,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             style={{color:"red", borderColor:"green"}}
           />
         </GeocoderContainer>
-      )}
+      )*/}
 
       {hoverInfo.object && (
         <HoverDiv
@@ -879,8 +896,17 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
            <ul>
             {Object.keys(censorPopupFeature.object.properties).map((key) => {
               const value = censorPopupFeature.object.properties[key];
-              if (typeof value === 'object') {
-                return (<></>);
+              if (typeof value === 'object' && value?.sort) {
+                return (
+                  <div key={`sensor-popup-${key}`}>
+                    {value?.map((value, index) => {
+
+                    })}
+                  </div>
+                );
+              } else if (typeof value === 'object' && !value?.sort) {
+                {/* Unsupported */}
+                return (<div key={`sensor-popup-${key}`}></div>);
               }
               return <li key={`sensor-popup-${key}`}>{key}: {value}</li>
             })}

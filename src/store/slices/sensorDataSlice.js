@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  selectedSensors: [],
   locations: [],
   mean_pm25: [],
   mean_pm25_metadata: {},
@@ -10,6 +11,19 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    addSensorsToSelection: (state, action) => ({
+      ...state,
+      selectedSensors: [
+        ...state.selectedSensors,
+        ...action.payload
+      ]
+    }),
+    removeSensorsFromSelection: (state, action) => ({
+      ...state,
+      selectedSensors: [
+        ...state.selectedSensors.filter(s => s === action.payload)
+      ]
+    }),
     setSensorLocations: (state, action) => ({
         ...state,
         locations: action.payload,

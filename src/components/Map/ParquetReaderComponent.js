@@ -15,7 +15,7 @@ import { setSensorLocations, setSensorValuesMeanPm25, setSensorValuesMeanPm25Met
 
 // Given a URL to a Parquet file, read it into memory
 // There will always be at least 2 of these - one for locations.parquet and one for each metric displayed (e.g. mean_pm25)
-const ParquetReaderComponent = ({ }) => {
+const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
   const metadata = useSelector(selectSensorValuesMeanPm25Metadata);
@@ -79,14 +79,14 @@ const ParquetReaderComponent = ({ }) => {
   if (!data) return <div>Loading...</div>;
 
   return (
-    <div>
+    DEBUG ? <div>
       <h3>Parquet Data:</h3>
       <ul>
         {data.map((record, index) => (
           <li key={index}>{/* Render your data here, e.g., record.columnName */}</li>
         ))}
       </ul>
-    </div>
+    </div> : <></>
   );
 };
 
