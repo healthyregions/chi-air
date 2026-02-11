@@ -1,5 +1,5 @@
 // general imports, state
-import React, {useState, useEffect, useRef, useCallback} from "react";
+import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -7,14 +7,14 @@ import styled from "styled-components";
 import { MapView, FlyToInterpolator } from "@deck.gl/core";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { fitBounds } from "@math.gl/web-mercator";
-import MapboxGLMap from "react-map-gl";
+import MapboxGLMap, {Marker, Popup} from "react-map-gl";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
 import MapTooltipContent from "./MapTooltipContent";
 import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
-import {colors, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
+import {colors, loadStickers, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
@@ -22,6 +22,7 @@ import { useChivesWorkerQuery } from "../../hooks/useChivesWorkerQuery";
 import { MapboxOverlay } from "@deck.gl/mapbox";
 import { useControl } from "react-map-gl";
 import MapOverlayTooltipContent from "./MapOverlayTooltipContent";
+
 import {
   selectFilterValues,
   selectMapParams,
@@ -29,6 +30,8 @@ import {
   selectUrlParams,
   selectUse3d
 } from "../../store/slices/legacyStoreSlice";
+import MapMarkerPin from "./MapMarkerPin";
+import MapMarkerPopup from "./MapMarkerPopup";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -185,7 +188,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
   const filterValues = useSelector(selectFilterValues);
   const use3d = useSelector(selectUse3d);
   // component state elements
-  // hover and highlight geographibes
+  // hover and highlight geographies
   const [hoverInfo, setHoverInfo] = useState({
     x: null,
     y: null,
@@ -197,8 +200,36 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     y: null,
     object: null,
   });
-  const [censorPopupFeature, setCensorPopupFeature] = useState(null)
+  const [censorPopupFeature, setCensorPopupFeature] = useState(null);
 
+  // AQ monitoring stations as stickers (similar to ChiVes community stickers)
+  const [stickers, setStickers] = useState([]);
+  useEffect( () => {
+    loadStickers('/content/stickers.json').then(s => setStickers(s))
+  }, []);
+  const mapStickers = useMemo(() =>
+    stickers?.map((sticker, index) => (
+      <Marker
+        key={`marker-${index}`}
+        longitude={sticker.long||sticker.longitude}
+        latitude={sticker.lat||sticker.latitude}
+        anchor="bottom"
+        offset={[7, 8]}
+        onClick={e => {
+          // If we let the click event propagates to the map, it will immediately close the popup
+          // with `closeOnClick: true`
+          //e.originalEvent.stopPropagation();
+          setPopupInfo(null);
+          setPopupInfo(sticker);
+          console.log('clicked', e)
+        }}
+      >
+        <MapMarkerPin size={32} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
+      </Marker>
+    )), [stickers]);
+
+
+  const [popupInfo, setPopupInfo] = useState(null);
   const mapRef = useRef(null);
 
   const handlePanMap = (viewState) => {
@@ -696,6 +727,21 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           }
         }}
       >
+        {mapParams.overlays.includes('aq-monitoring-sites') && mapStickers}
+        {popupInfo && (
+          <Popup
+            anchor="top"
+            className="sticker-marker-popup"
+            closeOnClick={false}
+            closeOnMove={true}
+            maxWidth={'45vw'}
+            longitude={Number(popupInfo.long||popupInfo.longitude)}
+            latitude={Number(popupInfo.lat||popupInfo.latitude)}
+            onClose={() => setPopupInfo(null)}
+          >
+            <MapMarkerPopup sticker={popupInfo} />
+          </Popup>
+        )}
         <DeckGLOverlay
           interleaved={true}
           width={"100%"}
