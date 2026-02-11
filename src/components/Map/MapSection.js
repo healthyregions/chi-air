@@ -661,7 +661,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       }
     }),
   };
-  console.log(geojsonData)
+
   baseLayers.push(
     new GeoJsonLayer({
       id: "sensors",
