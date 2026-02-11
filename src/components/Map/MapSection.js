@@ -394,7 +394,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       };
 
   const mapAlphaFunc = (feature, color) => {
-    const variableName = mapParams.variableName.toLowerCase();
+    const variableName = mapParams.variableName?.toLowerCase();
     switch (true) {
       // example of putting a legend on for a variable
       case variableName.toLowerCase().includes("displacement index"):
@@ -449,7 +449,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             return [232, 63, 111];
           }
         }
-        const val = mapParams.accessor(feature);
+        const val = feature?.properties[mapParams.accessor];
         if ([null, undefined].includes(val)) {
           return [0, 0, 0, 0];
         } else {
@@ -565,21 +565,15 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         // If mapping of colors, choose color based on symbolProp
         const { symbolProp } = parsedOverlay;
         const symbolKey = feature.properties[symbolProp];
+        console.log('symbolKey', symbolKey)
 
-        // Treat as boolean map if symbolKey is not a string
-        if (typeof symbolKey === 'object') {
-          const boolMap = symbolKey;
-          const colorsToAvg = Object.keys(colors)
-            .filter(key => boolMap[key] === true);
-          if (!colorsToAvg?.length) {
-            console.error(`Failed to parse colors for ${parsedOverlay?.id}: ${JSON.stringify(symbolKey)}`, feature)
-            return colors[symbolKey];
-          }
-
-          // Average the colors together
-          return colorsToAvg.map(key => colors[key])
-            .reduce((a, c) => [a[0]+c[0], a[1]+c[1], a[2]+c[2]], [0,0,0])
-            .map(rgb => rgb / colorsToAvg.length);
+        if (typeof symbolKey === 'object' && symbolKey.sort) {
+          // Treat as array of strings
+          const key = symbolKey.sort().join(" & ");
+          return colors[key];
+        } else if (typeof symbolKey === 'object') {
+          // Treat as a mapping of strings
+          console.error('ERROR: Currently unsupported - please use an array of strings for your symbol instead');
         }
 
         return colors[symbolKey];

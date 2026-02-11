@@ -20,6 +20,8 @@ import { Gutter } from '../Layout/Gutter';
 import {selectPanelState, selectRanges, selectSelectionData, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
 import { report } from '../../config/svg';
+import VariablesDropdown from "../VariablePanel/VariablesDropdown";
+import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -286,12 +288,12 @@ const DataPanel = () => {
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
-    {selectionData.success &&
+      {selectionData.success &&
         <ReportWrapper>
             <ReportContainer>
                 <ReportSection>
                     <h1>Current View</h1>
-{/*                     <p>Tree Canopy Coverage</p>
+                    {/*  <p>Tree Canopy Coverage</p>
                     <h3>{selectionData.treeCoverage.toFixed(1)}%</h3> */}
                     <p>Heat Island Percentile</p>
                     <h3>{selectionData.heatIsland.toFixed(1)}</h3>
@@ -321,6 +323,8 @@ const DataPanel = () => {
         </ReportWrapper>
     }
 
+      <VariablesDropdown></VariablesDropdown>
+      <OverlaysDropdown></OverlaysDropdown>
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.info ? 'active' : 'hidden'}>{report}</button>
     </DataPanelContainer>
   );

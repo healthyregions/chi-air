@@ -12,10 +12,7 @@ export const useChivesData = () => {
   // data loading
   const handleData = async () => {
     if (features.length === 0) {
-      console.log('Fetching data...');
       const geojsonData = await loadData();
-      console.log('Fetched data:', geojsonData);
-
       dispatch(loadDataAndBins({ geojsonData }));
     }
   };

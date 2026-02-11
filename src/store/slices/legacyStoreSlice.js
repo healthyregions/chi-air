@@ -25,7 +25,6 @@ export const legacyStoreSlice = createSlice({
       let columnValues = {};
       // const columnNames = Object.keys(action.payload.geojsonData.features[0].properties);\
       const columnNames = state.columnNames;
-      console.log('columnNames', columnNames);
 
       for (let n = 0; n < columnNames.length; n++) {
         columnValues[columnNames[n]] = {
@@ -87,6 +86,14 @@ export const legacyStoreSlice = createSlice({
       };
     },
     changeVariable: (state, action) => {
+      if (!action.payload?.params) {
+        return {
+          ...state,
+          storedGeojson: {},
+          bins: [],
+          colorScale: [],
+        };
+      }
       const bins = action.payload.params.bins
         ? action.payload.params.bins
         : generateQuantileBins(

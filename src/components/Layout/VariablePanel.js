@@ -1,25 +1,23 @@
 import React, {useEffect, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import ListSubheader from '@mui/material/ListSubheader';
-
 import styled from "styled-components";
 
 // import Tooltip from './tooltip';
-import { Gutter } from "../../styled_components";
 import {
-  changeVariable,
   selectMapParams,
   selectPanelState,
   setMapParams,
   setPanelState
 } from "../../store/slices/legacyStoreSlice";
-import {colors, variablePresets, dataDescriptions, parsedOverlays, pm2_5ColorMap} from "../../config";
+import {colors} from "../../config";
 import * as SVG from "../../config/svg";
-import {FormControl} from "@mui/material";
+import AQIColorScale from "../VariablePanel/AQIColorScale";
+import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
+import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
+import EnabledOverlayDisplay from "../VariablePanel/EnabledOverlaysDisplay";
+import VariablesDropdown from "../VariablePanel/VariablesDropdown";
+import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
 
 const VariablePanelContainer = styled.div`
   position: fixed;
@@ -196,28 +194,8 @@ const VariablePanel = (props) => {
 
   const [lastUpdated, setLastUpdated] = useState(null)
 
-  // Only update overlays when variable first changes
-  // This allows the user to disable the default overlays, if they desire
-  const [variableChanged, setVariableChanged] = useState(true);
-
   useEffect(() => {
-    setVariableChanged(false);
-    // If user selects Displacement Pressure, automatically apply the Non-residential Overlay
-    if (variableChanged && (mapParams.variableName?.toLowerCase().includes('temperature') || mapParams.variableName?.toLowerCase().includes('heat index'))) {
-      if (!mapParams.overlays?.includes('cooling-centers')) {
-        dispatch(setMapParams({ overlays: [ ...mapParams.overlays, 'cooling-centers' ]}));
-      }
-    }
-    // If user selects one of the Heat Indicator variables, automatically apply the Cooling Centers Overlay
-    if (variableChanged && mapParams.variableName === 'Displacement Pressure') {
-      if (!mapParams.overlays?.includes('non-res')) {
-        dispatch(setMapParams({ overlays: [ ...mapParams.overlays, 'non-res' ]}));
-      }
-    }
-  }, [mapParams, dispatch, variableChanged]);
-
-
-  useEffect(() => {
+    // TODO: read from redux store
     try {
       fetch("https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson")
         .then((response) => response.json())
@@ -230,25 +208,6 @@ const VariablePanel = (props) => {
     }
   }, []);
 
-  const handleMapOverlay = (overlays) => {
-    let prevOverlays = mapParams.overlays;
-
-    // If "None" is clicked, remove all other overlays
-    if ((!prevOverlays.includes('None') && overlays.includes('None')) || !overlays.length) {
-      overlays = ['None'];
-    }
-
-    // If "None" was previously selected and something else is chosen, then de-select "None"
-    if (prevOverlays.includes('None') && overlays.find((o) => o !== 'None')) {
-      overlays.splice(overlays.indexOf('None'), 1);
-    }
-
-    dispatch(
-      setMapParams({
-        overlays: overlays,
-      })
-    );
-  };
 
   const handleOpenClose = () => {
     if (panelState.variables) {
@@ -257,11 +216,6 @@ const VariablePanel = (props) => {
       dispatch(setPanelState({ variables: true }));
     }
   };
-
-  const handleVariable = (e) => {
-    setVariableChanged(true);
-    dispatch(changeVariable({ params: variablePresets[e.target.value] }));
-  }
 
   return (
     <VariablePanelContainer
@@ -274,107 +228,18 @@ const VariablePanel = (props) => {
         <span className="data-description">
           Points on the map show PM 2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
         </span>
-        { Object.entries(pm2_5ColorMap).map(([key, color], index) => (
-          <div key={`${key}-${index}`} style={{ display: "flex", margin:'.25em 0' }}>
-            <span
-                key={`overlay-key-${key}-${color}`}
-                style={{
-                  backgroundColor: `rgb(${color.join(",")})`,
-                  width: 16,
-                  height: 16,
-                }}
-            ></span>
-              <span style={{padding:0, margin:'0 0 0 .25em'}}>{key}</span>
-            </div>
-        ))}
+        <AQIColorScale></AQIColorScale>
         <span className="data-description">
-          {lastUpdated ? `last updated: ${lastUpdated}` : "loading data..."}
+          {lastUpdated ? `last updated: ${lastUpdated.toLocaleDateString('en-US')} ${lastUpdated.toLocaleTimeString('en-US')}` : "loading data..."}
         </span>
-        <h2>Comparison Variables</h2>
-        <FormControl id="newVariableSelect" variant="filled">
-          <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
-          <Select
-            value={mapParams.variableName}
-            onChange={handleVariable}
-            MenuProps={{ id: "variableMenu" }}
-          >
-            {Object.keys(variablePresets).map((variable,i) => (
-              variable.includes("HEADER::")
-               ? <ListSubheader key={`list-header-${i}`}>{variable.split("HEADER::")[1]}</ListSubheader>
-               : <MenuItem value={variable} key={`variable-menu-item-${i}`}>
-                {variable}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <span className="data-description">
-          {dataDescriptions[mapParams.variableName]}
-        </span>
-        <div style={{ margin: '1rem 0 0.5rem' }}>
-          <span style={{ color: colors.pink }}>Overlays:</span> {mapParams.overlays?.map((selectedOverlay, index) => <div key={`overlays-section-${index}`}>
-            {parsedOverlays.map((parsedOverlay, i) => <div key={`overlays-enabled-list-${i}`}>
-              { selectedOverlay === parsedOverlay?.id && <span style={{ color: colors.darkgray }} key={`overlay-description-${selectedOverlay}`}>
-                <span style={{ display: index === 0 ? 'none' : 'inline' }}>, </span>{parsedOverlay?.displayName}</span> }
-            </div>)}
-          </div>)}
-        </div>
 
-        <Gutter h={20} />
+        <EnabledOverlayDisplay></EnabledOverlayDisplay>
+        <VariableDescriptionDisplay></VariableDescriptionDisplay>
 
-        <h2>Data Overlay</h2>
-        <FormControl variant="filled">
-          <InputLabel htmlFor="overlay-select">Overlay</InputLabel>
-          <Select
-            id="overlay-select"
-            value={mapParams.overlays}
-            onChange={(e) => handleMapOverlay(e.target.value)}
-            multiple={true}
-            style={{ minWidth: '200px' }}
-          >
-            <MenuItem value="None" key={"None"}>
-              None
-            </MenuItem>
-            {
-              parsedOverlays?.map((overlay) =>
-                  <MenuItem value={overlay.id} key={overlay.id}>
-                    {overlay.displayName}
-                  </MenuItem>
-              )
-            }
-          </Select>
-        </FormControl>
-        {mapParams.overlays.map((selectedOverlay, index) => <div key={`overlay-legend-container-${index}`}>
-          {parsedOverlays.map((parsedOverlay, subindex) => {
-            const fillColor = JSON.parse(parsedOverlay?.fillColor);
-            return (<div key={`parsed-overlay-${index}-${subindex}`}>
-            { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'1em' }}>
-              <h3>{parsedOverlay?.description}</h3>
-            {parsedOverlay?.fillColor && !Array.isArray(fillColor) && Object.entries(fillColor).map(([key, color]) => (
-                <div key={`overlay-legend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", margin:'.25em 0' }}>
-                <span
-                    key={`overlay-key-${key}-${index}-${subindex}`}
-                    style={{
-                      backgroundColor: `rgb(${color.join(",")})`,
-                      width: 16,
-                      height: 16,
-                    }}
-                ></span>
-                  <span style={{padding:0, margin:'0 0 0 .25em'}}>{key}</span>
-                </div>
-            ))}
-              {parsedOverlay?.fillColor && Array.isArray(fillColor) && <div key={`overlay-legend-${selectedOverlay}`} style={{ display: "flex", margin:'.25em 0' }}>
-                 <span
-                     style={{
-                       backgroundColor: `rgb(${JSON.parse(parsedOverlay.fillColor)})`,
-                       width: 16,
-                       height: 16,
-                     }}
-                 ></span>
-                  <span style={{padding:0, margin:'0 0 0 .25em'}}>{parsedOverlay?.description}</span>
-              </div>}
-            </div>}
-          </div>)})}
-        </div>)}
+        <VariablesDropdown></VariablesDropdown>
+        <OverlaysDropdown></OverlaysDropdown>
+
+        <OverlaysColorLegend></OverlaysColorLegend>
       </ControlsContainer>
       <button
         onClick={handleOpenClose}

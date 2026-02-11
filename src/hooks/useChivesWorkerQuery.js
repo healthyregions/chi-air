@@ -81,7 +81,6 @@ export const useChivesWorkerQuery = (deckRef) => {
       ranges,
     });
 
-    console.log('selectionData (hook):', data);
     if (data) {
       dispatch(setSelectionData(data));
       if (data.dataIsCached) {

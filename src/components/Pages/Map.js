@@ -28,13 +28,13 @@ function Map() {
       <NavBar showMapControls={true} bounds={defaultBounds} />
       <div id="mainContainer">
         <MapSection bounds={defaultBounds} />
-        <Legend
+        {mapParams.variableName && <Legend
           label={`${mapParams.variableName} ${
             mapParams.units ? `(${mapParams.units})` : ""
           }`}
           colorScale={mapParams.colorScale}
           bins={mapParams.bins}
-        />
+        />}
         <VariablePanel />
         <DataPanel />
         {/* <Popover />     */}

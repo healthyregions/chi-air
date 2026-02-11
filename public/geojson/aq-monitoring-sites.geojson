@@ -12,10 +12,7 @@
                 "site_description": "Washington High School",
                 "address": "3535 E. 114th St",
                 "owner": "CCDES",
-                "monitors": {
-                    "PM2.5": true,
-                    "NO2": false
-                }
+                "monitors": ["PM2.5"]
             }
         },
         {
@@ -29,10 +26,7 @@
                 "site_description": "Com Ed",
                 "address": "7801 Lawndale",
                 "owner": "CCDES",
-                "monitors": {
-                    "PM2.5": true,
-                    "NO2": true
-                }
+                "monitors": ["PM2.5", "NO2"]
             }
         },
         {
@@ -46,10 +40,7 @@
                 "site_description": "Mayfair Pump Station",
                 "address": "4850 Wilson Ave.",
                 "owner": "CCDES",
-                "monitors": {
-                    "PM2.5": true,
-                    "NO2": false
-                }
+                "monitors": ["PM2.5"]
             }
         },
         {
@@ -63,10 +54,7 @@
                 "site_description": "Springfield Pump Station",
                 "address": "1745 N. Springfield Ave.",
                 "owner": "CCDES",
-                "monitors": {
-                    "PM2.5": true,
-                    "NO2": false
-                }
+                "monitors": ["PM2.5"]
             }
         },
         {
@@ -80,10 +68,7 @@
                 "site_description": "Kennedy near-road #2",
                 "address": "Kennedy Expy & W. Webster Ave",
                 "owner": "IEPA",
-                "monitors": {
-                    "PM2.5": false,
-                    "NO2": true
-                }
+                "monitors": ["NO2"]
             }
         }
     ]

@@ -173,9 +173,7 @@ const Legend = ({
     const mapParams = useSelector(selectMapParams);
 
     // Note that "label" above and variableName here are similar, but not always the same
-    console.log(mapParams);
-    console.log(variablePresets);
-    const columnName = variablePresets[mapParams.variableName].Column;
+    const columnName = mapParams.variableName ? variablePresets[mapParams.variableName].Column : '';
 
     const values = storedGeojson?.features?.map(f => f.properties[columnName]) || [];
 

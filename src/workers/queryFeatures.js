@@ -37,8 +37,6 @@ class QueryFeatureRunner {
             filters
         } = params;
 
-        console.log('Wamp wamp', params);
-
         if (!this.geojsonData) this.geojsonData = storedGeojson;
         if (!this.centroids) this.centroids = centroids;
         const dataIsCached = this.geojsonData && this.centroids;

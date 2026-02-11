@@ -20,7 +20,8 @@ const MapOverlayTooltipContent = ({content, overlay}) => {
         <>
           {typeof content === 'boolean' && <>{printContents(popupFields, content ? 'Yes' : 'No')}</>}
           {typeof content === 'string' && <tr key={'popup-content-' + popupFields}><td>{popupFields}</td><td>{content}</td></tr>}
-          {typeof content === 'object' && Object.keys(popupFields)?.map((keyName) =>
+          {typeof content === 'object' && content.sort && printContents(popupFields, content.join(' & '))}
+          {typeof content === 'object' && !content.sort && Object.keys(popupFields)?.map((keyName) =>
             printContents(popupFields[keyName], content[keyName])
           )}
         </>
