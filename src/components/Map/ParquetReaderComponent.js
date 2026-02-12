@@ -21,8 +21,13 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const metadata = useSelector(selectSensorValuesMeanPm25Metadata);
   const data = useSelector(selectSensorValuesMeanPm25);
 
-  const meanPm25Url = 'http://localhost:9000/chicago-aq/current/mean_pm25.parquet';
-  const locationsUrl = 'http://localhost:9000/chicago-aq/current/locations.parquet';
+  const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
+  const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+
+  // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
+  // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
+  const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet?t=${new Date().getTime()}`;
+  const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet?t=${new Date().getTime()}`;
 
   const fetch = async ({ url, columns, rowStart, rowEnd, predicate = undefined }) => {
     // Fetch the list of location id, name, coordinates
@@ -51,7 +56,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch the list of location id, name, coordinates
     fetch({
       url: locationsUrl,
-      columns: ['datasourceId','sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags'],
     }).then(l => dispatch(setSensorLocations(l)));
   }, [dispatch, locationsUrl]);
 
@@ -60,7 +64,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch the metric data (currently just mean_pm25) using our list of locations
     fetch({
       url: meanPm25Url,
-      columns: ['type','date', ...new Set(locations.map(d => d.datasourceId))],
       rowStart: 0,
       rowEnd: 100
     }).then(d => dispatch(setSensorValuesMeanPm25(d)));
