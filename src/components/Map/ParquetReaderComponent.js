@@ -1,7 +1,7 @@
-import { asyncBufferFromUrl, parquetReadObjects, parquetMetadataAsync } from 'hyparquet';
+import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSensorLocations, setSensorValuesMeanPm25, setSensorValuesMeanPm25Metadata, selectSensorValuesMeanPm25Metadata, selectSensorValuesMeanPm25, selectSensorLocations } from '../../store/slices/sensorDataSlice';
+import { setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations } from '../../store/slices/sensorDataSlice';
 
 // Cache values as they are read
 /*const SensorDataStore = ({  }) => {
@@ -18,7 +18,6 @@ import { setSensorLocations, setSensorValuesMeanPm25, setSensorValuesMeanPm25Met
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
-  const metadata = useSelector(selectSensorValuesMeanPm25Metadata);
   const data = useSelector(selectSensorValuesMeanPm25);
 
   const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
@@ -26,8 +25,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
 
   // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
   // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
-  const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet?t=${new Date().getTime()}`;
-  const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet?t=${new Date().getTime()}`;
+  const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet`;
+  const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet`;
 
   const fetch = async ({ url, columns, rowStart, rowEnd, predicate = undefined }) => {
     // Fetch the list of location id, name, coordinates
@@ -41,21 +40,11 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     });
   };
 
-  //setData(fetchData());
-  useEffect(() => {
-    (async () => {
-      dispatch(setSensorValuesMeanPm25Metadata(await parquetMetadataAsync(
-        await asyncBufferFromUrl({
-          url: meanPm25Url
-        }))
-      ));
-    })();
-  }, [dispatch]);
-
   useEffect(() => {
     // Fetch the list of location id, name, coordinates
     fetch({
       url: locationsUrl,
+      columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags'],
     }).then(l => dispatch(setSensorLocations(l)));
   }, [dispatch, locationsUrl]);
 
@@ -64,14 +53,15 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch the metric data (currently just mean_pm25) using our list of locations
     fetch({
       url: meanPm25Url,
+      columns: ['type','date', ...new Set(locations.map(d => d.datasourceId))],
       rowStart: 0,
       rowEnd: 100
     }).then(d => dispatch(setSensorValuesMeanPm25(d)));
   }, [dispatch, meanPm25Url, locations]);
 
-  console.log(`Metadata: `, metadata);
-  console.log('Locations:', locations)
-  console.log('Data:', data)
+  //console.log(`Metadata: `, metadata);
+  //console.log('Locations:', locations)
+  //console.log('Data:', data)
 
   if (!data) return <>Loading...</>;
 
