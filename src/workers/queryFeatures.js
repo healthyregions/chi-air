@@ -24,9 +24,10 @@ class QueryFeatureRunner {
         this.utilities = new Utilities();
         this.geojsonData = null;
         this.centroids = null;
+
     }
     generateFilteredData(params) {
-        // Instead of destructuring for older ES support 
+        // Instead of destructuring for older ES support
         const {
             storedGeojson,
             centroids,
@@ -39,7 +40,7 @@ class QueryFeatureRunner {
         if (!this.geojsonData) this.geojsonData = storedGeojson;
         if (!this.centroids) this.centroids = centroids;
         const dataIsCached = this.geojsonData && this.centroids;
-        
+
         // declare return arrays and object
         // return array will hold the list of objects with data information
         // data columns have the names of the data from geojson
@@ -55,7 +56,7 @@ class QueryFeatureRunner {
         let treeCoverage = 0;
         let communityCounts = {};
         let count = 0;
-        
+
         for (let n = 0; n < columns.length; n++) {
             sums[columns[n]] = 0
             histCounts[columns[n]] = []
@@ -71,25 +72,25 @@ class QueryFeatureRunner {
                 )
             }
         };
-    
+
         let filterPresent = false;
         if (Object.keys(filters).length) filterPresent = true;
-    
+
         for (let i = 0; i < this.geojsonData.features.length; i++) {
             if (this.utilities.within(this.centroids[i].feature.geometry.coordinates, extent)) {
-    
+
                 if (communityCounts[this.geojsonData.features[i].properties.community] === undefined) {
                     communityCounts[this.geojsonData.features[i].properties.community] = 1
                 } else {
                     communityCounts[this.geojsonData.features[i].properties.community] += 1
                 }
-    
+
                 let filterPass = true;
-    
+
                 if (filterPresent) {
                     let filterList = Object.keys(filters);
                     let filterValues = Object.values(filters);
-    
+
                     for (let n = 0; n < filterList.length; n++) {
                         if (typeof filterValues[n][0] === 'string') {
                             if (!filterValues[n][0].includes(this.geojsonData.features[i].properties[filterList[n]])) {
@@ -106,7 +107,7 @@ class QueryFeatureRunner {
                         }
                     }
                 }
-    
+
                 if (filterPass) {
                     totalPop += this.geojsonData.features[i].properties.acs_population
                     totalTrees += this.geojsonData.features[i].properties.trees_n
@@ -115,8 +116,8 @@ class QueryFeatureRunner {
                     treeCoverage += this.geojsonData.features[i].properties.trees_crown_den
                     count += 1;
                 }
-    
-    
+
+
                 for (let n = 0; n < columns.length; n++) {
                     if (!this.geojsonData.features[i].properties[columns[n]]) continue
                     sums[columns[n]] += this.geojsonData.features[i].properties[columns[n]]
@@ -138,17 +139,17 @@ class QueryFeatureRunner {
             let estimate =  kde(rawVals[columns[n]])
             densities[columns[n]] = estimate.map(([value, density]) => ({
                 value,
-                density 
+                density
             }))
         }
-        
+
         heatIsland /= count
         treeCoverage /= count
         sums['count'] = count
-    
+
         return { success: true, dataIsCached, communityCounts, ranges, histCounts, densities, sums, totalPop, totalTrees, totalTreesArea, treeCoverage, heatIsland };
     }
-    
+
 }
 
 const queryFeatureRunner = new QueryFeatureRunner();

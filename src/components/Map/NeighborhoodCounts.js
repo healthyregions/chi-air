@@ -5,7 +5,7 @@ import {  useDispatch } from 'react-redux';
 import styled from 'styled-components';
 // import { withStyles, makeStyles } from '@mui/material/styles';
 
-import { applyFilterValues, removeFilterValues, removeFilterEntry } from '../../actions';
+import { applyFilterValues, removeFilterValues, removeFilterEntry } from '../../store/legacy';
 import { colors } from '../../config';
 // import * as _ from 'lodash';
 
@@ -80,13 +80,13 @@ const Tags = (props) => {
         tagButtons.push(
             <TagButton
                 className={activeCommunities.includes(neighborhoodsList[i][0]) ? 'active' : ''}
-                onClick={activeCommunities.includes(neighborhoodsList[i][0]) ? 
-                        () => dispatch(removeFilterEntry('community', neighborhoodsList[i][0])) 
+                onClick={activeCommunities.includes(neighborhoodsList[i][0]) ?
+                        () => dispatch(removeFilterEntry({ name: 'community', range: neighborhoodsList[i][0] }))
                     :
-                        () => dispatch(applyFilterValues('community', neighborhoodsList[i][0])) 
+                        () => dispatch(applyFilterValues({ name: 'community', range: neighborhoodsList[i][0] }))
                 }
             >
-                {neighborhoodsList[i][0].toLocaleLowerCase()} 
+                {neighborhoodsList[i][0].toLocaleLowerCase()}
                 <span>{neighborhoodsList[i][1]}</span>
             </TagButton>)
     }
@@ -97,23 +97,23 @@ export default function NeighborhoodCounts(props){
     const [tagCount, setTagCount] = useState(5)
     const dispatch = useDispatch();
     const resetFilter = () => {
-        dispatch(removeFilterValues('community'));
+        dispatch(removeFilterValues({ name: 'community' }));
         setTagCount(5)
     }
 
     return (
         <CountsContainer>
-            <Tags 
-                counts={props.counts} 
-                numberOfTags={tagCount} 
+            <Tags
+                counts={props.counts}
+                numberOfTags={tagCount}
                 activeCommunities={props.activeCommunities}
             />
             {
-                Object.keys(props.counts).length > tagCount && 
+                Object.keys(props.counts).length > tagCount &&
                     <TagButton onClick={() => setTagCount(prev => prev+5)}>...</TagButton>
             }
             {
-                (props.activeCommunities !== undefined || tagCount > 5) && 
+                (props.activeCommunities !== undefined || tagCount > 5) &&
                     <ClearButton onClick={() => resetFilter()}>clear</ClearButton>
             }
         </CountsContainer>

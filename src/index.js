@@ -2,28 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
-import { Provider } from 'react-redux';
 import './index.css';
 import WebFont from 'webfontloader';
-import { createStore } from 'redux';
-import rootReducer from './reducers';
-const store = createStore(
-  rootReducer
-  // , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+
+// Initialize Redux store
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 WebFont.load({
   google: {
-    families: ['Big Shoulders:400,600', 'Lora:400,600', 'Roboto:300,500,700', 'sans-serif']
+    families: ['Lexend', 'Space Grotesk', 'Big Shoulders:400,600', 'Lora:400,600', 'Roboto:300,500,700', 'sans-serif']
   }
 });
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-		<Router basename={process.env.PUBLIC_URL}>
+		  <Router basename={process.env.PUBLIC_URL}>
         <App />
-        </Router>
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

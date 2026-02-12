@@ -4,10 +4,11 @@ import { fitBounds } from "@math.gl/web-mercator";
 import {
   MapSection,
   NavBar,
-  VariablePanel,
   Legend,
   DataPanel,
 } from "../../components";
+import { selectMapParams } from "../../store/slices/legacyStoreSlice";
+import ParquetReaderComponent from "../Map/ParquetReaderComponent";
 
 // US bounds
 export const defaultBounds = fitBounds({
@@ -19,27 +20,28 @@ export const defaultBounds = fitBounds({
   ],
 });
 
-function App() {
-  const mapParams = useSelector((state) => state.mapParams);
+function Map() {
+  const mapParams = useSelector(selectMapParams);
 
   return (
     <div className="Map-App">
       <NavBar showMapControls={true} bounds={defaultBounds} />
       <div id="mainContainer">
         <MapSection bounds={defaultBounds} />
-        <Legend
+        {mapParams.variableName && <Legend
           label={`${mapParams.variableName} ${
             mapParams.units ? `(${mapParams.units})` : ""
           }`}
           colorScale={mapParams.colorScale}
           bins={mapParams.bins}
-        />
-        <VariablePanel />
+        />}
+        {/*<VariablePanel />*/}
         <DataPanel />
+        <ParquetReaderComponent></ParquetReaderComponent>
         {/* <Popover />     */}
       </div>
     </div>
   );
 }
 
-export default App;
+export default Map;

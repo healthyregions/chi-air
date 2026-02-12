@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import {colors, variablePresets} from '../../config';
 import {useChivesData} from "../../hooks/useChivesData";
 import {useSelector} from "react-redux";
+import {selectMapParams} from "../../store/slices/legacyStoreSlice";
 // import { Gutter } from '../styled_components';
 // import Tooltip from './tooltip';
 
@@ -169,10 +170,10 @@ const Legend = ({
     precision = 2
 }) => {
     const { storedGeojson } = useChivesData();
-    const mapParams = useSelector((state) => state.mapParams);
+    const mapParams = useSelector(selectMapParams);
 
     // Note that "label" above and variableName here are similar, but not always the same
-    const columnName = variablePresets[mapParams.variableName].Column;
+    const columnName = mapParams.variableName ? variablePresets[mapParams.variableName].Column : '';
 
     const values = storedGeojson?.features?.map(f => f.properties[columnName]) || [];
 

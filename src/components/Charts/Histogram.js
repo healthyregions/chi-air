@@ -8,7 +8,7 @@ import Slider, { SliderThumb } from '@mui/material/Slider';
 import withStyles from '@mui/styles/withStyles';
 
 import DensityChart from './DensityChart';
-import { applyFilterValues, removeFilterValues } from '../../actions';
+import { applyFilterValues, removeFilterValues } from '../../store/slices/legacyStoreSlice';
 import {colors, variablePresets} from '../../config';
 import PropTypes from "prop-types";
 import clsx from "clsx";
@@ -200,7 +200,7 @@ export default function Histogram({
   };
 
   const filterChart = useMemo(
-    () => debounce((newValues) => dispatch(applyFilterValues(column, newValues)), 250),
+    () => debounce((newValues) => dispatch(applyFilterValues({name: column, range: newValues})), 250),
     [column, dispatch]
   );
 
@@ -210,7 +210,7 @@ export default function Histogram({
   );
 
   const resetFilter = () => {
-    dispatch(removeFilterValues(column));
+    dispatch(removeFilterValues({ name: column }));
     setSliderValue([range.min, range.max]);
   }
 

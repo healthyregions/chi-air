@@ -62,24 +62,24 @@ export default function App() {
 			></div>
 			<StyledEngineProvider injectFirst>
 				<ThemeProvider theme={theme}>
-					<Suspense fallback={<LoadingMessage />}>
-						<Switch>
-							<Route exact path="/" component={Home} />
-							<Route exact path="/map" component={Map} />
-							<Route exact path="/map.html" component={Map} />
-							<Route exact path="/about" component={About} />
-							<Route exact path="/about.html" component={About} />
-							<Route exact path="/guide" component={Guide} />
-							<Route exact path="/guide.html" component={Guide} />
-							<Route path="/posts/:slug?" component={Posts} />
-							<Route exact path="/community" component={Community} />
-							<Route exact
-								path="/community.html"
-								component={Community}
-							/>
-							<Route component={ErrorPage} />
-						</Switch>
-					</Suspense>
+          <Suspense fallback={<LoadingMessage />}>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/map" component={Map} />
+              <Route exact path="/map.html" component={Map} />
+              <Route exact path="/about" component={About} />
+              <Route exact path="/about.html" component={About} />
+              <Route exact path="/guide" component={Guide} />
+              <Route exact path="/guide.html" component={Guide} />
+              <Route path="/posts/:slug?" component={Posts} />
+              <Route exact path="/community" component={Community} />
+              <Route exact
+                path="/community.html"
+                component={Community}
+              />
+              <Route component={ErrorPage} />
+            </Switch>
+          </Suspense>
 				</ThemeProvider>
 			</StyledEngineProvider>
 		</div>

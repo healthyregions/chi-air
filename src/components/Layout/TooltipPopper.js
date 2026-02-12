@@ -4,7 +4,7 @@
 // import styled from 'styled-components';
 // import Popper from '@mui/material/Popper';
 
-// import { setAnchorEl } from '../actions';
+// import { setAnchorEl } from '../../store/slices/legacyStoreSlice';
 
 // const TooltipContentDiv = styled(Popper)`
 //     z-index:10000;
@@ -33,10 +33,10 @@
 
 //     const dispatch = useDispatch();
 
-//     const anchorEl = useSelector(state => state.anchorEl);
+//     const anchorEl = useSelector(selectAnchorEl);
 //     const open = Boolean(anchorEl);
 //     const id = open ? 'simple-popper' : undefined;
-    
+
 //     const handleMouseOver = (event) => {
 //         dispatch(setAnchorEl(anchorEl))
 //     }
@@ -44,11 +44,11 @@
 //     const handleMouseLeave = () => {
 //         dispatch(setAnchorEl(null))
 //     }
-    
+
 //     return (
-//         <TooltipContentDiv 
-//             id={id} 
-//             open={open} 
+//         <TooltipContentDiv
+//             id={id}
+//             open={open}
 //             anchorEl={anchorEl}
 //             disablePortal={false}
 //             modifiers={{
@@ -60,7 +60,7 @@
 //                 boundariesElement: 'window',
 //                 }
 //             }}
-//             onMouseEnter={handleMouseOver} 
+//             onMouseEnter={handleMouseOver}
 //             onMouseLeave={handleMouseLeave}
 //             >
 //             <div className="tooltipContentContainer">

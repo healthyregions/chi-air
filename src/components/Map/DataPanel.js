@@ -17,9 +17,11 @@ import styled from 'styled-components';
 import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
 // import NeighborhoodCounts from './NeighborhoodCounts';
-import { setPanelState } from '../../actions';
+import {selectPanelState, selectRanges, selectSelectionData, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
 import { report } from '../../config/svg';
+import VariablesDropdown from "../VariablePanel/VariablesDropdown";
+import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -276,22 +278,22 @@ const AgeColumnsToChart = [
 const DataPanel = () => {
 
   const dispatch = useDispatch();
-  const selectionData = useSelector(state => state.selectionData);
-  const panelState = useSelector(state => state.panelState);
-  const ranges = useSelector(state => state.ranges);
-  // const filterValues = useSelector(state => state.filterValues);
+  const selectionData = useSelector(selectSelectionData);
+  const panelState = useSelector(selectPanelState);
+  const ranges = useSelector(selectRanges);
+  // const filterValues = useSelector(selectFilterValues);
 
   // handles panel open/close
-  const handleOpenClose = () => dispatch(setPanelState({info:panelState.info ? false : true}))
+  const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
-    {selectionData.success &&
+      {selectionData.success &&
         <ReportWrapper>
             <ReportContainer>
                 <ReportSection>
                     <h1>Current View</h1>
-{/*                     <p>Tree Canopy Coverage</p>
+                    {/*  <p>Tree Canopy Coverage</p>
                     <h3>{selectionData.treeCoverage.toFixed(1)}%</h3> */}
                     <p>Heat Island Percentile</p>
                     <h3>{selectionData.heatIsland.toFixed(1)}</h3>
@@ -320,6 +322,9 @@ const DataPanel = () => {
             </ReportContainer>
         </ReportWrapper>
     }
+
+      <VariablesDropdown></VariablesDropdown>
+      <OverlaysDropdown></OverlaysDropdown>
 
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.info ? 'active' : 'hidden'}>{report}</button>
     </DataPanelContainer>

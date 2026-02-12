@@ -1,5 +1,5 @@
 // general imports, state
-import React, {useState, useEffect, useRef, useCallback} from "react";
+import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -7,14 +7,20 @@ import styled from "styled-components";
 import { MapView, FlyToInterpolator } from "@deck.gl/core";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import { fitBounds } from "@math.gl/web-mercator";
-import MapboxGLMap from "react-map-gl";
+import MapboxGLMap, {Marker, Popup} from "react-map-gl";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
 import MapTooltipContent from "./MapTooltipContent";
-import Geocoder from "./Geocoder";
 import { scaleColor } from "../../utils";
-import {colors, parsedOverlays, pm2_5Bins, pm2_5ColorMap} from "../../config";
+import {
+  colors,
+  loadStickers,
+  parsedOverlays,
+  pm2_5Bins,
+  pm2_5BorderolorMap,
+  pm2_5ColorMap
+} from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
@@ -23,9 +29,20 @@ import { MapboxOverlay } from "@deck.gl/mapbox";
 import { useControl } from "react-map-gl";
 import MapOverlayTooltipContent from "./MapOverlayTooltipContent";
 
+import {
+  selectFilterValues,
+  selectMapParams,
+  selectPanelState,
+  selectUrlParams,
+  selectUse3d
+} from "../../store/slices/legacyStoreSlice";
+import MapMarkerPin from "./MapMarkerPin";
+import MapMarkerPopup from "./MapMarkerPopup";
+import {selectSensorLocations, selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
+
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
-  overlay && overlay?.setProps(props);
+  overlay?.setProps(props);
   return null;
 }
 
@@ -154,7 +171,7 @@ const NavInlineButton = styled.button`
   }
 `;
 
-const GeocoderContainer = styled.div`
+/*const GeocoderContainer = styled.div`
   position: fixed;
   left: 130px;
   top: 7px;
@@ -164,18 +181,22 @@ const GeocoderContainer = styled.div`
   @media (max-width: 600px) {
     display: none;
   }
-`;
+`;*/
+
 
 function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
+  const locations = useSelector(selectSensorLocations);
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+
   // fetch pieces of state from store
   const { storedGeojson } = useChivesData();
-  const panelState = useSelector((state) => state.panelState);
-  const mapParams = useSelector((state) => state.mapParams);
-  const urlParams = useSelector((state) => state.urlParams);
-  const filterValues = useSelector((state) => state.filterValues);
-  const use3d = useSelector((state) => state.use3d);
+  const panelState = useSelector(selectPanelState);
+  const mapParams = useSelector(selectMapParams);
+  const urlParams = useSelector(selectUrlParams);
+  const filterValues = useSelector(selectFilterValues);
+  const use3d = useSelector(selectUse3d);
   // component state elements
-  // hover and highlight geographibes
+  // hover and highlight geographies
   const [hoverInfo, setHoverInfo] = useState({
     x: null,
     y: null,
@@ -187,8 +208,35 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     y: null,
     object: null,
   });
-  const [censorPopupFeature, setCensorPopupFeature] = useState(null)
+  const [censorPopupFeature, setCensorPopupFeature] = useState(null);
 
+  // AQ monitoring stations as stickers (similar to ChiVes community stickers)
+  const [stickers, setStickers] = useState([]);
+  useEffect( () => {
+    loadStickers('/content/stickers.json').then(s => setStickers(s))
+  }, []);
+  const mapStickers = useMemo(() =>
+    stickers?.map((sticker, index) => (
+      <Marker
+        key={`marker-${index}`}
+        longitude={sticker.long||sticker.longitude}
+        latitude={sticker.lat||sticker.latitude}
+        anchor="bottom"
+        offset={[7, 8]}
+        onClick={e => {
+          // If we let the click event propagates to the map, it will immediately close the popup
+          // with `closeOnClick: true`
+          //e.originalEvent.stopPropagation();
+          setPopupInfo(null);
+          setPopupInfo(sticker);
+        }}
+      >
+        <MapMarkerPin size={32} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
+      </Marker>
+    )), [stickers]);
+
+
+  const [popupInfo, setPopupInfo] = useState(null);
   const mapRef = useRef(null);
 
   const handlePanMap = (viewState) => {
@@ -384,7 +432,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       };
 
   const mapAlphaFunc = (feature, color) => {
-    const variableName = mapParams.variableName.toLowerCase();
+    const variableName = mapParams.variableName?.toLowerCase();
     switch (true) {
       // example of putting a legend on for a variable
       case variableName.toLowerCase().includes("displacement index"):
@@ -439,7 +487,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             return [232, 63, 111];
           }
         }
-        const val = mapParams.accessor(feature);
+        const val = feature?.properties[mapParams.accessor];
         if ([null, undefined].includes(val)) {
           return [0, 0, 0, 0];
         } else {
@@ -556,20 +604,13 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         const { symbolProp } = parsedOverlay;
         const symbolKey = feature.properties[symbolProp];
 
-        // Treat as boolean map if symbolKey is not a string
-        if (typeof symbolKey === 'object') {
-          const boolMap = symbolKey;
-          const colorsToAvg = Object.keys(colors)
-            .filter(key => boolMap[key] === true);
-          if (!colorsToAvg?.length) {
-            console.error(`Failed to parse colors for ${parsedOverlay?.id}: ${JSON.stringify(symbolKey)}`, feature)
-            return colors[symbolKey];
-          }
-
-          // Average the colors together
-          return colorsToAvg.map(key => colors[key])
-            .reduce((a, c) => [a[0]+c[0], a[1]+c[1], a[2]+c[2]], [0,0,0])
-            .map(rgb => rgb / colorsToAvg.length);
+        if (typeof symbolKey === 'object' && symbolKey.sort) {
+          // Treat as array of strings
+          const key = symbolKey.sort().join(" & ");
+          return colors[key];
+        } else if (typeof symbolKey === 'object') {
+          // Treat as a mapping of strings
+          console.error('ERROR: Currently unsupported - please use an array of strings for your symbol instead');
         }
 
         return colors[symbolKey];
@@ -597,19 +638,85 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
     })
   });
 
+  const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
+  //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
+  const geojsonData = {
+    type: 'FeatureCollection',
+    features: sensorIds.map((datasourceId) => {
+      const location = locations.find(r => r.datasourceId === datasourceId);
+      const metric_pm25 = mean_pm25.map((r) => ({
+        period: r.period || r.type,
+        date: r.date,
+        [datasourceId]: r[datasourceId]
+      }));
+
+      const sortedHourlyRows = metric_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .reverse();
+
+      let latestHourlyRow = sortedHourlyRows.find(() => true);
+      if (latestHourlyRow === undefined || latestHourlyRow === null || latestHourlyRow === "NaN" || latestHourlyRow === "None") {
+        //console.warn(`WARNING: updated measurements not yet available for ${datasourceId}.. using previous measurement`);
+        latestHourlyRow = sortedHourlyRows.slice(1).find(() => true);
+      }
+      
+      return {
+        type: 'Feature',
+        geometry: {
+          type: "Point",
+          coordinates: [
+            location.locationLongitude,
+            location.locationLatitude
+          ],
+        },
+        // Ensure this is valid GeoJSON format
+        properties: {
+          ...location,
+          last_update: latestHourlyRow?.['date'],
+          latest_mean_pm25: latestHourlyRow?.[datasourceId] || 'Unavailable',
+          mean_pm25: metric_pm25
+        },
+      }
+    }),
+  };
+
   baseLayers.push(
     new GeoJsonLayer({
       id: "sensors",
-      data: "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson",
+      data: geojsonData,
       pickable: true,
       stroked: true,
       filled: true,
       extruded: false,
       getFillColor: (feature) => {
-        return scaleColor(feature.properties.pm2_5ConcMassNowcast, pm2_5Bins, Object.values(pm2_5ColorMap))
+        const datasourceId = feature.properties.datasourceId;
+        const allValues = feature.properties.mean_pm25;
+        const latestHourlyRow = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .reverse()
+          .find(() => true);
+        const latest = latestHourlyRow[datasourceId];
+        if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+          return [137, 137, 137];
+        }
+        return scaleColor(latest, pm2_5Bins, Object.values(pm2_5ColorMap))
       },
-      opacity: .7,
+      opacity: .85,
       getPointRadius: 400,
+      getLineWidth: 35,
+    getLineColor: (feature) => {
+        const datasourceId = feature.properties.datasourceId;
+        const allValues = feature.properties.mean_pm25;
+        const latestHourlyRow = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .reverse()
+          .find(() => true);
+        const latest = latestHourlyRow[datasourceId];
+        if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+          return [68, 68, 68];
+        }
+        return scaleColor(latest, pm2_5Bins, Object.values(pm2_5BorderolorMap))
+      },
       pointRadiusUnits: 'meters',
       visible: true,
       onClick: (feature) => {setCensorPopupFeature(feature)},
@@ -692,6 +799,21 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           }
         }}
       >
+        {mapParams.overlays.includes('aq-monitoring-sites') && mapStickers}
+        {popupInfo && (
+          <Popup
+            anchor="top"
+            className="sticker-marker-popup"
+            closeOnClick={false}
+            closeOnMove={true}
+            maxWidth={'45vw'}
+            longitude={Number(popupInfo.long||popupInfo.longitude)}
+            latitude={Number(popupInfo.lat||popupInfo.latitude)}
+            onClose={() => setPopupInfo(null)}
+          >
+            <MapMarkerPopup sticker={popupInfo} />
+          </Popup>
+        )}
         <DeckGLOverlay
           interleaved={true}
           width={"100%"}
@@ -739,7 +861,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           </NavInlineButtonGroup>
         </MapButtonContainer>
       )}
-      {!geoids.length && showSearch && (
+      {/*!geoids.length && showSearch && (
         <GeocoderContainer>
           <Geocoder
             id="Geocoder"
@@ -750,7 +872,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
             style={{color:"red", borderColor:"green"}}
           />
         </GeocoderContainer>
-      )}
+      )*/}
 
       {hoverInfo.object && (
         <HoverDiv
@@ -790,10 +912,20 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
               }}
               ref={hoverCcRef}
           >
-           <h3>{censorPopupFeature.object.properties.datasourceId}</h3>
+           <h3>{censorPopupFeature.object.properties.name}</h3>
            <ul>
             {Object.keys(censorPopupFeature.object.properties).map((key) => {
-              return <li>{key}: {key === "time" ? new Date(censorPopupFeature.object.properties[key]).toLocaleString('en-US',  { timeZone: 'America/Chicago' }) : censorPopupFeature.object.properties[key]}</li>
+              const value = censorPopupFeature.object.properties[key];
+              if (typeof value === 'object' && value?.sort) {
+                return (
+                  <div key={`sensor-popup-${key}`}>
+                    Arrays Unsupported: {key}
+                  </div>
+                );
+              } else if (typeof value === 'object' && !value?.sort) {
+                return (<div key={`sensor-popup-${key}`}>Objects Unsupported: {key}</div>);
+              }
+              return <li key={`sensor-popup-${key}`}>{key}: {value}</li>
             })}
            </ul>
           </HoverDiv>

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 // Import config and actions
 import { colors } from '../../config';
-import { setPanelState } from '../../actions';
+import {selectPanelStateByTitle, setPanelState} from '../../store/slices/legacyStoreSlice';
 
 // Styles - Container
 const DragContainer = styled.div`
@@ -65,9 +65,9 @@ const CollapseButton = styled.button`
 const Draggable = (props) => {
     // Redux Dispatch and selector
     const dispatch = useDispatch();
-    const open = useSelector(state => state.panelState[props.title]);
+    const open = useSelector(selectPanelStateByTitle(props.title));
 
-    // Local state, dragging 
+    // Local state, dragging
     const [X, setX] = useState(props.defaultX);
     const [Y, setY] = useState(props.defaultY);
     const [isDragging, setIsDragging] = useState(false)
@@ -94,7 +94,7 @@ const Draggable = (props) => {
         window.removeEventListener('touchmove', touchListener);
         window.removeEventListener('touchend', removeTouchListener);
     }
-    
+
     const handleDown = () => {
         window.addEventListener('mousemove', listener)
         window.addEventListener('mouseup', removeListener)
@@ -109,7 +109,7 @@ const Draggable = (props) => {
     // End Listeners
 
     // Hide Panel
-    const handleCollapse = () => dispatch(setPanelState({[props.title]: false}))
+    const handleCollapse = () => dispatch(setPanelState({ [props.title]: false }))
 
     // Props change when window changes, updates local state here
     useEffect(() => {
@@ -121,7 +121,7 @@ const Draggable = (props) => {
     return (
         <DragContainer style={{left:`${X}px`, top: `${Y}px`, zIndex: props.z || 1}} className={open ? '' : 'collapsed'} isDragging={isDragging}>
             {props.content}
-            <DragButton 
+            <DragButton
                 id="resize"
                 onMouseDown={handleDown}
                 onTouchStart={handleTouch}

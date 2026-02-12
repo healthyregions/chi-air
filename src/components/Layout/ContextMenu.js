@@ -12,7 +12,11 @@
 
 // import { colors } from '../config';
 // import * as SVG from '../config/svg';
-// import { setPanelState } from '../actions';
+// import {
+//   setPanelState,
+//   selectPanelStateByTitle,
+//   selectPanelState,
+// } from '../../store/slices/legacyStoreSlice';
 
 // const MenuContainer = styled(Paper)`
 //     position:fixed;
@@ -47,7 +51,7 @@
 //     span.MuiCheckbox-root {
 //         padding:2px 12px;
 //     }
-    
+
 // `
 // const Contextbutton = styled(Button)`
 //     background-color: ${props => props.active ? colors.lightblue : colors.white} !important;
@@ -71,16 +75,16 @@
 // const ContextMenu = () => {
 //     const dispatch = useDispatch();
 
-//     const panelState = useSelector(state => state.panelState);
-//     const {x, y} = useSelector(state => state.panelState.contextPos);
+//     const panelState = useSelector(selectPanelState);
+//     const {x, y} = useSelector(selectPanelStateByTitle('contextPos')));
 
 //     const closePanel = () => dispatch(setPanelState({context:false}));
-    
+
 //     useEffect(() => {
 //         if (panelState.context) {
 //             const listener = (e) => {
 //                 if (recurseParentNode(e.target) !== "contextMenu") {
-//                     closePanel()                  
+//                     closePanel()
 //                 }
 //             }
 //             const removeListener = (e) => {
@@ -99,15 +103,15 @@
 //             document.addEventListener('wheel', listener, {passive: true});
 //             document.addEventListener('wheel', removeListener, {passive: true});
 //             document.addEventListener('touchstart', listener, {passive: true});
-//             document.addEventListener('touchstart', removeListener, {passive: true}); 
+//             document.addEventListener('touchstart', removeListener, {passive: true});
 //         }
 //     }, [panelState.context])
-    
-//     return panelState.context ? 
+
+//     return panelState.context ?
 //         <MenuContainer x={x} y={y} elevation={8} id="contextMenu">
-//             <h2>Toggle Panels</h2>     
+//             <h2>Toggle Panels</h2>
 //             <ButtonGroup>
-//                 <Contextbutton 
+//                 <Contextbutton
 //                     title="Data and Map Variables"
 //                     active={panelState.variables}
 //                     onClick={() => dispatch(setPanelState({variables:panelState.variables ? false : true}))}
@@ -136,17 +140,17 @@
 //                     {SVG.info}
 //                 </Contextbutton>
 //             </ButtonGroup>
-//             <h2>Map Selection Control</h2>  
+//             <h2>Map Selection Control</h2>
 //             <FormControlLabel
 //                 control={<Switch  />} //checked={state.checkedA} onChange={handleChange} name="checkedA"
 //                 label="Select Multiple"
-//             /><br/>  
+//             /><br/>
 //             <ButtonGroup>
 //                 <Contextbutton>Reset</Contextbutton>
 //                 <Contextbutton>Box</Contextbutton>
 //                 <Contextbutton>Brush</Contextbutton>
 //             </ButtonGroup>
-//             <h2>Share</h2>   
+//             <h2>Share</h2>
 //             <ButtonGroup>
 //                 <Contextbutton>{SVG.share}</Contextbutton>
 //                 <Contextbutton>{SVG.print}</Contextbutton>
@@ -158,8 +162,8 @@
 //                 <Contextbutton>{SVG.embed} <p>Embed Code</p></Contextbutton>
 //             </ButtonGroup>
 
-//             <h2 className="noBottomMargin">Save Settings</h2> 
-//             <p>Privacy Policy</p>  
+//             <h2 className="noBottomMargin">Save Settings</h2>
+//             <p>Privacy Policy</p>
 //             <FormControlLabel
 //                 control={<Checkbox  />} //checked={state.checkedA} onChange={handleChange} name="checkedA"
 //                 label="Map View"
