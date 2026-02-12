@@ -656,7 +656,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
 
       let latestHourlyRow = sortedHourlyRows.find(() => true);
       if (latestHourlyRow === undefined || latestHourlyRow === null || latestHourlyRow === "NaN" || latestHourlyRow === "None") {
-        console.warn(`WARNING: updated measurements not yet available for ${datasourceId}.. using previous measurement`);
+        //console.warn(`WARNING: updated measurements not yet available for ${datasourceId}.. using previous measurement`);
         latestHourlyRow = sortedHourlyRows.slice(1).find(() => true);
       }
       return {
@@ -918,13 +918,11 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
               if (typeof value === 'object' && value?.sort) {
                 return (
                   <div key={`sensor-popup-${key}`}>
-                    {value?.map((value, index) => (
-                      <>{index}: {value}</>
-                    ))}
+                    Arrays Unsupported: {key}
                   </div>
                 );
               } else if (typeof value === 'object' && !value?.sort) {
-                return (<div key={`sensor-popup-${key}`}>Unsupported</div>);
+                return (<div key={`sensor-popup-${key}`}>Objects Unsupported: {key}</div>);
               }
               return <li key={`sensor-popup-${key}`}>{key}: {value}</li>
             })}

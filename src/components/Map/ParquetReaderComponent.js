@@ -45,7 +45,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     fetch({
       url: locationsUrl,
       columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags'],
-    }).then(l => dispatch(setSensorLocations(l)));
+    }).then(l => dispatch(setSensorLocations(l)) && console.log('Locations:', l));
   }, [dispatch, locationsUrl]);
 
   useEffect(() => {
@@ -56,12 +56,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       columns: ['type','date', ...new Set(locations.map(d => d.datasourceId))],
       rowStart: 0,
       rowEnd: 100
-    }).then(d => dispatch(setSensorValuesMeanPm25(d)));
+    }).then(d => dispatch(setSensorValuesMeanPm25(d)) && console.log('Data:', d));
   }, [dispatch, meanPm25Url, locations]);
-
-  //console.log(`Metadata: `, metadata);
-  //console.log('Locations:', locations)
-  //console.log('Data:', data)
 
   if (!data) return <>Loading...</>;
 
