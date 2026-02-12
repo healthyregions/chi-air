@@ -659,6 +659,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         //console.warn(`WARNING: updated measurements not yet available for ${datasourceId}.. using previous measurement`);
         latestHourlyRow = sortedHourlyRows.slice(1).find(() => true);
       }
+      
       return {
         type: 'Feature',
         geometry: {
