@@ -85,7 +85,7 @@ export const pm2_5ColorMap = {
   "Very Unhealthy | 150.5 to 250.4": [130, 0, 197],
   "Hazardous | 250.5 to 500": [139, 13, 56],
 }
-export const pm2_5BorderolorMap = {
+export const pm2_5BorderColorMap = {
   "Good | 0 to 12.0": [12, 115, 0],
   "Moderate | 12.1 to 35.4": [122, 96, 17],
   "Unhealthy for Sensitive Groups | 35.5 to 55.4": [222, 204, 183],
