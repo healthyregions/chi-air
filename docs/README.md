@@ -3,7 +3,7 @@
 This application is build from [WebGeoDa](https://docs.webgeoda.org/).
 
 ## Required Environment Variables
-The below are required environmnent variables. These should be available in `.env` or `.env.local` in your repo root. Don't commit them to Github. You can copy `.env.example` to `.env` and fill in the blank values.
+The below are required environment variables. These should be available in `.env` or `.env.local` in your repo root. Don't commit them to Github. You can copy `.env.example` to `.env` and fill in the blank values.
 
 ```
 # mapbox token for map
@@ -14,6 +14,10 @@ REACT_APP_AQ_ENDPOINT=https:...
 
 # submission url for google form
 REACT_APP_EMAIL_FORM_URL=
+
+# S3 URL segments for Chicago AQ data
+REACT_APP_S3_ENDPOINT_URL=https://s3.us-east-2.amazonaws.com
+REACT_APP_S3_BUCKET_NAME=chicago-aq
 ```
 
 ## Installing and Running the App
