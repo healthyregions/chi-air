@@ -640,6 +640,11 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
 
   const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
   //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
+  const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .reverse();
+  const latestHourlyRow = sortedHourlyRows.find(() => true);
+  const previousHourlyRow = sortedHourlyRows.slice(1).find(() => true);
   const geojsonData = {
     type: 'FeatureCollection',
     features: sensorIds.map((datasourceId) => {
@@ -650,16 +655,6 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         [datasourceId]: r[datasourceId]
       }));
 
-      const sortedHourlyRows = metric_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
-        .sort((a, b) => a.date.localeCompare(b.date))
-        .reverse();
-
-      let latestHourlyRow = sortedHourlyRows.find(() => true);
-      if (latestHourlyRow === undefined || latestHourlyRow === null || latestHourlyRow === "NaN" || latestHourlyRow === "None") {
-        //console.warn(`WARNING: updated measurements not yet available for ${datasourceId}.. using previous measurement`);
-        latestHourlyRow = sortedHourlyRows.slice(1).find(() => true);
-      }
-      
       return {
         type: 'Feature',
         geometry: {
@@ -672,8 +667,8 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         // Ensure this is valid GeoJSON format
         properties: {
           ...location,
-          last_update: latestHourlyRow?.['date'],
-          latest_mean_pm25: latestHourlyRow?.[datasourceId] || 'Unavailable',
+          last_update: latestHourlyRow?.[datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
+          latest_mean_pm25: latestHourlyRow?.[datasourceId] || previousHourlyRow?.[datasourceId],
           mean_pm25: metric_pm25
         },
       }
@@ -689,13 +684,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       filled: true,
       extruded: false,
       getFillColor: (feature) => {
-        const datasourceId = feature.properties.datasourceId;
-        const allValues = feature.properties.mean_pm25;
-        const latestHourlyRow = allValues.filter(r => r.period === 'hour' || r.type === 'hour')
-          .sort((a, b) => a.date.localeCompare(b.date))
-          .reverse()
-          .find(() => true);
-        const latest = latestHourlyRow[datasourceId];
+        const latest = feature.properties.latest_mean_pm25;
         if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
           return [137, 137, 137];
         }
