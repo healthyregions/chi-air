@@ -120,7 +120,7 @@ const StyledSlider = withStyles({
     marginTop: -35,
     boxShadow: '#00000044 0 2px 2px',
     borderRadius:0,
-    '&:focus, &:hover, &$active': {
+    '&:focus, &:hover, &:active': {
       boxShadow: '#000 0 2px 3px 1px',
     },
     '& .bar': {

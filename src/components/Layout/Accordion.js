@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import {FaChevronDown} from "@react-icons/all-files/fa/FaChevronDown";
 import styled from "styled-components";
 // import { colors } from "../config";

@@ -53,7 +53,7 @@ export default function App() {
 		<div>
 			<div
 				id="google_translate_element"
-				className={classes.googleTranslateElement}
+        className={classes.googleTranslateElement}
 				style={
 					location.pathname.indexOf("map") > -1
 						? { bottom: "4em" } //if on map page, move up to avoid overlapping with map controls
