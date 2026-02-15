@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 // import FormControl from '@mui/material/FormControl';
 import Slider, { SliderThumb } from '@mui/material/Slider';
-import withStyles from '@mui/styles/withStyles';
 
 import DensityChart from './DensityChart';
 import { applyFilterValues, removeFilterValues } from '../../store/slices/legacyStoreSlice';
@@ -97,70 +96,66 @@ StyledThumb.propTypes = {
   children: PropTypes.node
 };
 
-const StyledSlider = withStyles({
-  root: {
-    color: colors.cartoColors.gray,
-    height: 0,
-    padding: '0 25px 0 15px',
-    // marginLeft:'0px',
-    // width:'calc(100% - 42px)',
-    boxSizing: 'border-box',
-    transform: 'translateY(-28px)'
-  },
-  thumb: {
-    height: 75,
-    width: 2,
-    pointerEvents: "auto!important",
+
+
+const StyledSlider = styled(Slider)`
+  color: ${colors.cartoColors.gray};
+  height: 0;
+  padding: 0 25px 0 15px;
+  // margin-left: 0px;
+  // width: calc(100% - 42px);
+  box-sizing: border-box;
+  transform: translateY(-28px);
+`;
+
+const StyledSliderThumb = styled(SliderThumb)`
+    height: 75px;
+    width: 2px;
+    pointer-events: auto!important;
     // borderLeft: '6px solid rgba(0,0,0,0)',
     // borderRight: '6px solid rgba(0,0,0,0)',
-    backgroundColor: 'transparent',
-    border: '1px solid currentColor',
-    borderLeft: '2px dotted #767676',
-    position: 'absolute',
-    marginTop: -35,
-    boxShadow: '#00000044 0 2px 2px',
-    borderRadius:0,
+    background-color: transparent;
+    border: 1px solid currentColor;
+    border-left: 2px dotted #767676;
+    position: absolute;
+    margin-top: -35px;
+    box-shadow: #00000044 0 2px 2px;
+    border-radius: 0;
     '&:focus, &:hover, &:active': {
-      boxShadow: '#000 0 2px 3px 1px',
+        box-shadow: #000 0 2px 3px 1px;
     },
-    '& .bar': {
-      // display: inline-block !important;
-      height: 9,
-      width: 1,
-      backgroundColor: 'currentColor',
-      marginLeft: 1,
-      marginRight: 1,
+    '&.bar': {
+        // display: inline-block !important;
+        height: 9px;
+        width: 1px;
+        background-color: currentColor;
+        margin-left: 1px;
+        margin-right: 1px;
     },
     '&::after': {
-      // display:'none',
-      position: 'absolute',
-      content: '""',
-      width: 0,
-      height: 0,
-      borderWidth: '10px 10px 0 0',
-      borderColor: '#767676 transparent transparent transparent',
-      transform: 'translateX(-20%) translateY(-2%)',
-      top: 0,
-      right: 0,
-      borderStyle: 'solid',
-      borderRadius: 0,
+        // display:'none',
+        position:absolute;
+        content: '""';
+        width: 0;
+        height: 0;
+        border-width: 10px 10px 0 0;
+        border-color: #767676 transparent transparent transparent;
+        transform: translateX(-20%) translateY(-2%);
+        top: 0;
+        right: 0;
+        border-style: solid;
+        border-radius: 0;
     },
     '&.second-thumb::after': {
-      borderWidth: '10px 0 10px 10px',
-      transform: 'translateX(-100%)',
+        border-width: 10px 0 10px 10px;
+        transform: translateX(-100%);
     },
     '&.Mui-focusVisible': {
-      boxShadow: 'none',
+        box-shadow: none;
     },
-  },
-  active: {},
-  track: {
-    display:'none',
-  },
-  rail: {
-    display:'none',
-  },
-})(Slider);
+    '&.MuiSlider-track': { display: none; },
+    '&.MuiSlider-rail: { display: none; },
+`;
 
 const debounce = (func, wait, immediate) => {
 	var timeout;
@@ -276,7 +271,8 @@ export default function Histogram({
 
       <StyledSlider
         // ThumbComponent={StyledThumb}
-        components={{ Thumb: StyledThumb }}
+        components={{ Thumb: StyledSliderThumb }}
+        track={false}
         onChange={valueChangeHandler}
         // getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
         value={sliderValue}

@@ -1,15 +1,12 @@
-import makeStyles from "@mui/styles/makeStyles";
 import { useEffect } from "react";
 
-const useStyles = makeStyles((theme) => ({
-  googleTranslateElement: {
-    position: "fixed",
-    left: "0.5em", //same left margin as the Nav Menu
-    zIndex: "1000",
-    backgroundColor: "rgba(255,255,255,0.75)",
-    padding: "15px", //same padding as the Nav Menu
-  },
-}));
+const GoogleTranslateContainer = styled.div`
+  position: fixed;
+  left: 0.5em;   //same left margin as the Nav Menu
+  z-index: 1000;
+  background-color: rgba(255,255,255,0.75);
+  padding: 15px; //same padding as the Nav Menu
+`;
 
 /** Google Translation Widget */
 const googleTranslateElementInit = () => {
@@ -23,8 +20,6 @@ const googleTranslateElementInit = () => {
 };
 
 const GoogleTranslate = ({ }) => {
-  const classes = useStyles();
-
   useEffect(() => {
     var addScript = document.createElement("script");
     addScript.setAttribute(
@@ -36,15 +31,14 @@ const GoogleTranslate = ({ }) => {
   }, []);
 
   return (
-    <div
+    <GoogleTranslateContainer
       id="google_translate_element"
-      className={classes.googleTranslateElement}
       style={
         location.pathname.indexOf("map") > -1
           ? { bottom: "4em" } //if on map page, move up to avoid overlapping with map controls
           : { bottom: "0.5em" }
       }
-    ></div>
+    ></GoogleTranslateContainer>
   );
 }
 
