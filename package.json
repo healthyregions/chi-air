@@ -30,7 +30,7 @@
     "@mui/styled-engine-sc": "^6.0.0",
     "@mui/styles": "^6.0.0",
     "@mui/x-charts": "^6.18.7",
-    "@mui/x-data-grid": "^5.5.1",
+    "@mui/x-data-grid": "^6.0.0",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^2.11.2",
     "@turf/bbox": "^6.5.0",
