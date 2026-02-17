@@ -2,7 +2,7 @@
 // and displays it in the right side panel.
 
 // Import main libraries
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import helper libraries
@@ -22,30 +22,34 @@ import {colors} from '../../config';
 import { report } from '../../config/svg';
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
+import {Button} from "@mui/material";
+import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
+import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
+import Geocoder from "./Geocoder";
+import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
+import Grid from "@mui/material/Grid";
+import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
+import {selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
 
 //// Styled components CSS
 // Main container for entire panel
 const DataPanelContainer = styled.div`
-  display: ${props => props.dataLength === 0 ? 'none' : 'initial'};
   position:fixed;
-  min-width:250px;
-  width:15%;
+  min-width:433px;
   right:0.5em;
   top:0.5em;
-  overflow-x:visible;
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
   -webkit-backdrop-filter: blur( 20px );
   box-shadow: 2px 0px 5px ${colors.gray}44;
   border:1px solid ${colors.chicagoBlue};
-  padding:20px;
+  padding: 36px 29px;
   box-sizing: border-box;
   transition:250ms all;
   font-family: 'Roboto', sans-serif;
   color:${colors.black};
   font-size:100%;
-  padding:0;
   z-index:5;
   transform: translateX(calc(100% + .5em));
   h4, h1 {
@@ -285,46 +289,99 @@ const DataPanel = () => {
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
+  const [breadcrumbs, setBreadcrumbs] = useState(['root']);
+
+  // Page selector logic for navigating the panel via breadcrumbs and links
+  const currentPage = breadcrumbs[breadcrumbs.length - 1];
+  const pushPage = (bc) => {
+    setBreadcrumbs([...breadcrumbs, bc]);
+  };
+  const popPage = () => {
+    if (currentPage !== 'root') {
+      setBreadcrumbs([...breadcrumbs.slice(0, breadcrumbs.length-1)]);
+    }
+  };
+
+  // Grab our previously-fetched data and use that to determine some stats
+  // TODO: we can do better for this logic, but for now this should work alright
+  const data = useSelector(selectSensorValuesMeanPm25);
+  const firstHourlyRow = data.find((r) => r.type === 'hour');
+  const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
+  const lastUpdated = new Date(lastUpdatedUtcTimestamp);
+
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
-      {selectionData.success &&
-        <ReportWrapper>
+      {currentPage === 'root' && <>
+        <div>
+          <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} style={{ width:'254px',height:'41px' }} />
+          <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</Button>
+        </div>
+        <Button variant={'text'} onClick={() => true}>&larr; Homepage</Button>
+        <div>
+          <span><strong>Search</strong> any Chicago Address</span>
+          <Button variant={'text'} onClick={() => pushPage('layers')}>Map Layers</Button>
+        </div>
+        <Geocoder></Geocoder>
+        <div>
+          <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community area</Button>
+          <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</Button>
+        </div>
+        <div>
+          <span><FaHistory /> updated {lastUpdated?.toLocaleTimeString()}, {lastUpdated?.toLocaleDateString()}</span>
+        </div>
+      </>}
+
+      {currentPage === 'layers' && <>
+        <Button variant={'text'} onClick={() => popPage()}>Back</Button>
+        <div>Map Layers</div>
+
+
+        <VariablesDropdown></VariablesDropdown>
+        <VariableDescriptionDisplay></VariableDescriptionDisplay>
+        <OverlaysDropdown></OverlaysDropdown>
+        <OverlaysColorLegend></OverlaysColorLegend>
+      </>}
+
+      {currentPage === 'selection' && <>
+        <Button variant={'text'} onClick={() => popPage()}>Back</Button>
+        <div>Selected sensors</div>
+        {selectionData.success &&
+          <ReportWrapper>
             <ReportContainer>
-                <ReportSection>
-                    <h1>Current View</h1>
-                    {/*  <p>Tree Canopy Coverage</p>
+              <ReportSection>
+                <h1>Current View</h1>
+                {/*  <p>Tree Canopy Coverage</p>
                     <h3>{selectionData.treeCoverage.toFixed(1)}%</h3> */}
-                    <p>Heat Island Percentile</p>
-                    <h3>{selectionData.heatIsland.toFixed(1)}</h3>
+                <p>Heat Island Percentile</p>
+                <h3>{selectionData.heatIsland.toFixed(1)}</h3>
 
-                </ReportSection>
-                <h2>Filters</h2>
-                <br/>
-                <p style={{padding:0}}>
-                  These charts show the distribution of variables in the tracts on your screen. Adjust the sliders to filter the map.
-                </p>
-                <Gutter height="1em" />
-                <h3 className="sectionHeader">Age Demographics</h3>
-                {
-                  AgeColumnsToChart.map(({name, column, color}, i) =>
-                    <Histogram
-                      name={name}
-                      column={column}
-                      histCounts={selectionData.histCounts[column]}
-                      density={selectionData.densities[column]}
-                      range={ranges[column]}
-                      color={color}
-                      key={`distribution-5-${i}`}
-                    />
-                  )
-                }
+              </ReportSection>
+              <h2>Filters</h2>
+              <br/>
+              <p style={{padding:0}}>
+                These charts show the distribution of variables in the tracts on your screen. Adjust the sliders to filter the map.
+              </p>
+              <Gutter height="1em" />
+              <h3 className="sectionHeader">Age Demographics</h3>
+              {
+                AgeColumnsToChart.map(({name, column, color}, i) =>
+                  <Histogram
+                    name={name}
+                    column={column}
+                    histCounts={selectionData.histCounts[column]}
+                    density={selectionData.densities[column]}
+                    range={ranges[column]}
+                    color={color}
+                    key={`distribution-5-${i}`}
+                  />
+                )
+              }
             </ReportContainer>
-        </ReportWrapper>
-    }
+          </ReportWrapper>
+        }
+      </>}
 
-      <VariablesDropdown></VariablesDropdown>
-      <OverlaysDropdown></OverlaysDropdown>
 
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.info ? 'active' : 'hidden'}>{report}</button>
     </DataPanelContainer>

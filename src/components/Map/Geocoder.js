@@ -125,7 +125,7 @@ const Geocoder = ({
     return (
         <Container {...{height}}>
             <Autocomplete
-                id="geocoder search"
+                id="geocoder-search"
                 freeSolo
                 disableClearable
                 filterOptions={(x) => x}
