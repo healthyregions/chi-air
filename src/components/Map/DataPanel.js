@@ -30,6 +30,7 @@ import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 import Grid from "@mui/material/Grid";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
+import {NavLink} from "react-router-dom";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -280,7 +281,6 @@ const AgeColumnsToChart = [
 
 // DataPanel Function Component
 const DataPanel = () => {
-
   const dispatch = useDispatch();
   const selectionData = useSelector(selectSelectionData);
   const panelState = useSelector(selectPanelState);
@@ -317,7 +317,13 @@ const DataPanel = () => {
           <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} style={{ width:'254px',height:'41px' }} />
           <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</Button>
         </div>
-        <Button variant={'text'} onClick={() => true}>&larr; Homepage</Button>
+        <Button
+          component={NavLink} // Use the NavLink component for routing
+          to="/"         // Specify the destination path
+          variant="text" // Optional: apply Material UI button styles
+        >
+          &larr; Homepage
+        </Button>
         <div>
           <span><strong>Search</strong> any Chicago Address</span>
           <Button variant={'text'} onClick={() => pushPage('layers')}>Map Layers</Button>
