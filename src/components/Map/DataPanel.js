@@ -27,7 +27,6 @@ import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisp
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
-import Grid from "@mui/material/Grid";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
@@ -36,7 +35,7 @@ import {NavLink} from "react-router-dom";
 // Main container for entire panel
 const DataPanelContainer = styled.div`
   position:fixed;
-  min-width:433px;
+  width:433px;
   right:0.5em;
   top:0.5em;
   background: rgba( 255, 255, 255, 0.85 );
@@ -340,8 +339,13 @@ const DataPanel = () => {
 
       {currentPage === 'layers' && <>
         <Button variant={'text'} onClick={() => popPage()}>Back</Button>
-        <div>Map Layers</div>
+        <h1>Map Layers</h1>
 
+        <div>
+          Customize your view to see how air quality intersects with
+          your community. Use overlays and filters to explore how
+          social determinants impact health outcomes in your area.
+        </div>
 
         <VariablesDropdown></VariablesDropdown>
         <VariableDescriptionDisplay></VariableDescriptionDisplay>

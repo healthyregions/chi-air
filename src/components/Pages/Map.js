@@ -8,7 +8,7 @@ import {
   DataPanel,
 } from "../../components";
 import { selectMapParams } from "../../store/slices/legacyStoreSlice";
-import ParquetReaderComponent from "../Map/ParquetReaderComponent";
+import AQIColorScale from "../VariablePanel/AQIColorScale";
 
 // US bounds
 export const defaultBounds = fitBounds({
@@ -37,7 +37,7 @@ function Map() {
         />}
         {/*<VariablePanel />*/}
         <DataPanel />
-        <ParquetReaderComponent></ParquetReaderComponent>
+        <AQIColorScale />
         {/* <Popover />     */}
       </div>
     </div>

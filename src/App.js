@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Home, LoadingMessage, ErrorPage } from "./components/";
+import ParquetReaderComponent from "./components/Map/ParquetReaderComponent";
 
 const Map = React.lazy(() => import('./components/Pages/Map'));
 const About = React.lazy(() => import('./components/Pages/About'));
@@ -12,6 +13,7 @@ const Posts = React.lazy(() => import('./components/Pages/Posts'));
 export default function App() {
 	return (
 		<div>
+      <ParquetReaderComponent></ParquetReaderComponent>
       <Suspense fallback={<LoadingMessage />}>
         <Switch>
           <Route exact path="/" component={Home} />
