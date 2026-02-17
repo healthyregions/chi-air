@@ -9,9 +9,6 @@ import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
 import { Button } from "@mui/material";
-import { LineChart } from "@mui/x-charts";
-import { Line, LineChart as RechartsLineChart, XAxis, YAxis } from "recharts";
-import { LineChart as D3LineChart } from '../../components/Charts/LineChart';
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
