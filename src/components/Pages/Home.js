@@ -9,9 +9,6 @@ import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
 import { Button } from "@mui/material";
-import { LineChart } from "@mui/x-charts";
-import { Line, LineChart as RechartsLineChart, XAxis, YAxis } from "recharts";
-import { LineChart as D3LineChart } from '../../components/Charts/LineChart';
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -356,6 +353,7 @@ const ThreeUpGrid = styled(Grid)`
 const GeocoderContainer = styled(Grid)`
   padding: 0 2rem;
   margin: 0rem 0;
+    min-width: 45vw;
   p {
     max-width: 90%;
   }
@@ -490,8 +488,6 @@ export default function Home() {
     }
   }, []);
 
-  const [preferStrictDomainInLineCharts /*, setPreferStrictDomainInLineCharts*/] = React.useState(true);
-
   return (
     <HomePage>
       <NavBar />
@@ -520,7 +516,7 @@ export default function Home() {
           <Grid item sm={6} xs={12}>
             <Grid container spacing={0}>
               <Grid item xs>
-                <D3LineChart ></D3LineChart>
+                {/*<D3LineChart ></D3LineChart>
                 <LineChart height={300}
                            experimentalFeatures={{ preferStrictDomainInLineCharts }}
                            series={[
@@ -548,15 +544,15 @@ export default function Home() {
                               ],
                             }
                            }]}
-                />
+                />*/}
 
-                <RechartsLineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 800, margin: 'auto' }} responsive data={[14, 145, 301, 183, 85, 20]}>
+                {/* <RechartsLineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 800, margin: 'auto' }} responsive data={[14, 145, 301, 183, 85, 20]}>
                   <XAxis dataKey="name" />
                   <YAxis width="auto" />
                   <Line type="monotone" dataKey="uv" stroke="#8884d8" />
                   <Line type="monotone" dataKey="pv" stroke="#82ca9d" />
-                  {/* <RechartsDevtools /> */}
-                </RechartsLineChart>
+                  <RechartsDevtools />
+                </RechartsLineChart>*/}
 
               </Grid>
             </Grid>

@@ -1,13 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+// Initialize React
+import { StrictMode } from "react";
+import { Provider } from 'react-redux';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import './index.css';
-import WebFont from 'webfontloader';
 
 // Initialize Redux store
-import { Provider } from 'react-redux';
 import { store } from './store';
+
+// Initialize styles + fonts
+import './index.css';
+import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
+import WebFont from 'webfontloader';
+
+import App from './App';
 
 WebFont.load({
   google: {
@@ -15,15 +20,22 @@ WebFont.load({
   }
 });
 
-ReactDOM.render(
-  <React.StrictMode>
+const theme = createTheme();
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <StrictMode>
     <Provider store={store}>
 		  <Router basename={process.env.PUBLIC_URL}>
-        <App />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </StyledEngineProvider>
       </Router>
     </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </StrictMode>,
+
 );
 
 // If you want to start measuring performance in your app, pass a function

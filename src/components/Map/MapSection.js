@@ -683,12 +683,13 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       extruded: false,
       getFillColor: (feature) => {
         // Detect loading state, display soft colors while loading
-        if (Object.keys(latestHourlyRow)?.length === 2) {
+        if (Object.keys(latestHourlyRow)?.length <= 2) {
           return [229, 238, 245];
         }
         const latest = feature.properties.latest_mean_pm25;
         if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
-          return [137, 137, 137];
+          //return [79, 143, 197];
+          return [200, 200, 200];
         }
         return scaleColor(latest, pm2_5Bins, Object.values(pm2_5ColorMap));
       },
@@ -697,12 +698,13 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
       getLineWidth: 35,
       getLineColor: (feature) => {
         // Detect loading state, display soft colors while loading
-        if (Object.keys(latestHourlyRow)?.length === 2) {
+        if (Object.keys(latestHourlyRow)?.length <= 2) {
           return [79, 143, 197];
         }
         const latest = feature.properties.latest_mean_pm25;
         if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
-          return [68, 68, 68];
+          return [229, 238, 245];
+          //return [68, 68, 68];
         }
         return scaleColor(latest, pm2_5Bins, Object.values(pm2_5BorderColorMap));
       },
