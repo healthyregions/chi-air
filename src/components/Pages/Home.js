@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 import Grid from "@mui/material/Grid";
@@ -505,7 +505,7 @@ export default function Home() {
           ensuring you and your family have the information you need to breathe easier.
         </ChiSubtitle>
 
-        <ViewMapButton variant={"contained"} size={"large"} color={"primary"} onClick={() => window.location.href='/map'}>
+        <ViewMapButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
           View Map &rarr;
         </ViewMapButton>
       </TitleBanner>
