@@ -520,7 +520,7 @@ export default function Home() {
           <Grid item sm={6} xs={12}>
             <Grid container spacing={0}>
               <Grid item xs>
-                <D3LineChart ></D3LineChart>
+                {/*<D3LineChart ></D3LineChart>
                 <LineChart height={300}
                            experimentalFeatures={{ preferStrictDomainInLineCharts }}
                            series={[
@@ -548,15 +548,15 @@ export default function Home() {
                               ],
                             }
                            }]}
-                />
+                />*/}
 
-                <RechartsLineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 800, margin: 'auto' }} responsive data={[14, 145, 301, 183, 85, 20]}>
+                {/* <RechartsLineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 800, margin: 'auto' }} responsive data={[14, 145, 301, 183, 85, 20]}>
                   <XAxis dataKey="name" />
                   <YAxis width="auto" />
                   <Line type="monotone" dataKey="uv" stroke="#8884d8" />
                   <Line type="monotone" dataKey="pv" stroke="#82ca9d" />
-                  {/* <RechartsDevtools /> */}
-                </RechartsLineChart>
+                  <RechartsDevtools />
+                </RechartsLineChart>*/}
 
               </Grid>
             </Grid>
