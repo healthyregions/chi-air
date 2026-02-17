@@ -353,6 +353,7 @@ const ThreeUpGrid = styled(Grid)`
 const GeocoderContainer = styled(Grid)`
   padding: 0 2rem;
   margin: 0rem 0;
+    min-width: 45vw;
   p {
     max-width: 90%;
   }
