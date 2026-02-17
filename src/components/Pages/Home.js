@@ -487,8 +487,6 @@ export default function Home() {
     }
   }, []);
 
-  const [preferStrictDomainInLineCharts /*, setPreferStrictDomainInLineCharts*/] = React.useState(true);
-
   return (
     <HomePage>
       <NavBar />
