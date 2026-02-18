@@ -437,24 +437,43 @@ const DataPanel = ({ handleGeocoder }) => {
           <LButton onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</LButton>
 
           <GridHeader container spacing={0}>
-            <AqiValueColumn size={3}>PM2.5 Mass Concentration</AqiValueColumn>
+            <Grid size={3}>Time</Grid>
+            <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
-            <LocationNameColumn size={5}>Location Name</LocationNameColumn>
+            <LocationNameColumn size={4}>Location Name</LocationNameColumn>
             <SensorIdColumn>Sensor ID</SensorIdColumn>
           </GridHeader>
 
           {selectedSensors?.map((s, index) => {
-            const { latest_mean_pm25, datasourceId, name } = getLatestValue(s);
+            const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(s);
             const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
+            const isoTimestamp = last_update.split(' ').join('T') + 'Z';
+            const lastUpdateDate = new Date(isoTimestamp);
+
+            // Use 'en-US' to ensure the Month/Day/Year order
+            const parts = new Intl.DateTimeFormat('en-US', {
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+              month: '2-digit',
+              day: '2-digit',
+              year: '2-digit'
+            }).formatToParts(lastUpdateDate);
+
+            // Reconstruct to place the time before the date with a comma
+            const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
+            const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+
             return (
               <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`}>
-                <AqiValueColumn size={3} >
+                <AqiValueColumn size={3}>{date} {time}</AqiValueColumn>
+                <AqiValueColumn size={1} >
                   <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
                 </AqiValueColumn>
                 <ColorColumn size={1}>
                   <Color color={range?.color} border={range?.border}></Color>
                 </ColorColumn>
-                <LocationNameColumn size={5}>{name}</LocationNameColumn>
+                <LocationNameColumn size={4}>{name}</LocationNameColumn>
                 <SensorIdColumn size={3}>{datasourceId}</SensorIdColumn>
               </GridBody>
             );
