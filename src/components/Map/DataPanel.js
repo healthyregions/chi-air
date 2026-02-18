@@ -18,7 +18,7 @@ import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
 // import NeighborhoodCounts from './NeighborhoodCounts';
 import {selectPanelState, selectRanges, selectSelectionData, setPanelState} from '../../store/slices/legacyStoreSlice';
-import {colors} from '../../config';
+import {colors, pm2_5Ranges} from '../../config';
 import { report } from '../../config/svg';
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
@@ -34,6 +34,7 @@ import {
   selectSensorValuesMeanPm25
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
+import Grid from "@mui/material/Grid";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -319,7 +320,6 @@ const DataPanel = ({ handleGeocoder }) => {
     const first = geojsonData?.features?.find(f => {
       return f.properties['datasourceId'] === id;
     });
-    console.log('first: ', first);
     return first?.properties;
   }
 
@@ -358,9 +358,32 @@ const DataPanel = ({ handleGeocoder }) => {
           <hr />
           <Button onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</Button>
 
-          <h3>Selected Sensors:</h3>
+          <h3>Selected Sensors</h3>
+
           <ul>
-            {selectedSensors?.map((s) => <li>{s}: {Number(getLatestValue(s)?.latest_mean_pm25).toFixed(1)}</li>)}
+            {selectedSensors?.map((s) => {
+              const { latest_mean_pm25, datasourceId, name } = getLatestValue(s);
+              console.log(pm2_5Ranges);
+              const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
+              return (
+                <Grid container spacing={0}>
+                  <Grid size={6}>{name}</Grid>
+                  <Grid size={1}>
+                    <span
+                      style={{
+                        display: 'block',
+                        backgroundColor: range?.color,
+                        border: `1px solid ${range?.border}`,
+                        borderRadius: '10px',
+                        width: '16px',
+                        height: '16px',
+                      }}
+                    ></span>
+                  </Grid>
+                  <Grid size={5}>{Number(latest_mean_pm25)?.toFixed(1)}</Grid>
+                </Grid>
+              );
+            })}
           </ul>
         </>}
       </>}

@@ -42,7 +42,7 @@ const AQIColorScale = () => {
               style={{
                 display: 'block',
                 backgroundColor: color,
-                border: `2px solid ${border}`,
+                border: `1px solid ${border}`,
                 borderRadius: '10px',
                 width: '16px',
                 height: '16px',
