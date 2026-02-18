@@ -283,6 +283,47 @@ const AgeColumnsToChart = [
   },
 ]
 
+const SelectedSensorsPanel = styled.div`
+    overflow-y: auto;
+    max-height: 40vh;
+`;
+
+const LButton = styled(Button)`
+    font-family: Lexend;
+    text-transform: capitalize;
+`;
+
+const SensorIdColumn = styled(Grid)`
+
+`;
+const LocationNameColumn = styled(Grid)`
+
+`;
+const Color = styled.span`
+    display: block;
+    background-color: ${(props) => props.color};
+    border: 1px solid ${(props) => props.border};
+    border-radius: 10px;
+    width: 16px;
+    height: 16px;
+`;
+const ColorColumn = styled(Grid)`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+const AqiValueColumn = styled(Grid)`
+    text-align: right;
+`;
+
+const GridHeader = styled(Grid)`
+    font-family: Lexend;
+`;
+
+const GridBody = styled(Grid)`
+    font-family: Space Grotesk;
+`;
+
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
   const dispatch = useDispatch();
@@ -358,20 +399,20 @@ const DataPanel = ({ handleGeocoder }) => {
 
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</Button></Grid>
+        <Grid><LButton variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</LButton></Grid>
       </Grid>
-        <Button
+        <LButton
           component={NavLink} // Use the NavLink component for routing
           to="/"         // Specify the destination path
           variant="text" // Optional: apply Material UI button styles
         >
           &larr; Homepage
-        </Button>
+        </LButton>
         <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
           <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
             <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address</span>
           </Grid>
-          <Grid><Button variant={'text'} onClick={() => pushPage('layers')}>Map Layers</Button></Grid>
+          <Grid><LButton variant={'text'} onClick={() => pushPage('layers')}>Map Layers</LButton></Grid>
         </Grid>
         <Geocoder
           id="Geocoder"
@@ -380,8 +421,8 @@ const DataPanel = ({ handleGeocoder }) => {
           onChange={handleGeocoder}
         />
         <Grid container spacing={4}>
-          <Grid size={4}><Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community</Button></Grid>
-          <Grid size={4}><Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</Button></Grid>
+          <Grid size={4}><LButton variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community</LButton></Grid>
+          <Grid size={4}><LButton variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</LButton></Grid>
         </Grid>
         {selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
             <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
@@ -391,42 +432,38 @@ const DataPanel = ({ handleGeocoder }) => {
             </span>
           </div>
         }
-        {selectedSensors?.length > 0 && <>
+        {selectedSensors?.length > 0 && <SelectedSensorsPanel>
           <hr />
-          <Button onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</Button>
+          <LButton onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</LButton>
 
-          <h3>Selected Sensors</h3>
+          <GridHeader container spacing={0}>
+            <AqiValueColumn size={3}>PM2.5 Mass Concentration</AqiValueColumn>
+            <ColorColumn size={1}></ColorColumn>
+            <LocationNameColumn size={5}>Location Name</LocationNameColumn>
+            <SensorIdColumn>Sensor ID</SensorIdColumn>
+          </GridHeader>
 
-          <ul>
-            {selectedSensors?.map((s) => {
-              const { latest_mean_pm25, datasourceId, name } = getLatestValue(s);
-              const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
-              return (
-                <Grid container spacing={0}>
-                  <Grid size={3}>{datasourceId}</Grid>
-                  <Grid size={1}>
-                    <span
-                      style={{
-                        display: 'block',
-                        backgroundColor: range?.color,
-                        border: `1px solid ${range?.border}`,
-                        borderRadius: '10px',
-                        width: '16px',
-                        height: '16px',
-                      }}
-                    ></span>
-                  </Grid>
-                  <Grid size={3}>{Number(latest_mean_pm25)?.toFixed(1)}</Grid>
-                  <Grid size={5}>{name}</Grid>
-                </Grid>
-              );
-            })}
-          </ul>
-        </>}
+          {selectedSensors?.map((s, index) => {
+            const { latest_mean_pm25, datasourceId, name } = getLatestValue(s);
+            const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
+            return (
+              <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`}>
+                <AqiValueColumn size={3} >
+                  <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
+                </AqiValueColumn>
+                <ColorColumn size={1}>
+                  <Color color={range?.color} border={range?.border}></Color>
+                </ColorColumn>
+                <LocationNameColumn size={5}>{name}</LocationNameColumn>
+                <SensorIdColumn size={3}>{datasourceId}</SensorIdColumn>
+              </GridBody>
+            );
+          })}
+        </SelectedSensorsPanel>}
       </>}
 
       {currentPage === 'layers' && <>
-        <Button variant={'text'} onClick={() => popPage()}>Back</Button>
+        <LButton variant={'text'} onClick={() => popPage()}>Back</LButton>
         <h1>Map Layers</h1>
 
         <div>
@@ -442,7 +479,7 @@ const DataPanel = ({ handleGeocoder }) => {
       </>}
 
       {currentPage === 'selection' && <>
-        <Button variant={'text'} onClick={() => popPage()}>Back</Button>
+        <LButton variant={'text'} onClick={() => popPage()}>Back</LButton>
         <div>Selected sensors</div>
         {selectionData.success &&
           <ReportWrapper>
