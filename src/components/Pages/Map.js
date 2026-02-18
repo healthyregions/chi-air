@@ -63,7 +63,7 @@ function Map() {
 
   return (
     <div className="Map-App">
-      <NavBar showMapControls={true} bounds={defaultBounds} />
+      {/*<NavBar showMapControls={true} bounds={defaultBounds} />*/}
       <div id="mainContainer">
         { mapParams && <>
             <MapSection bounds={defaultBounds} mapRef={mapRef} handlePanMap={handlePanMap} handleGeocoder={handleGeocoder} />
