@@ -363,11 +363,10 @@ const DataPanel = ({ handleGeocoder }) => {
           <ul>
             {selectedSensors?.map((s) => {
               const { latest_mean_pm25, datasourceId, name } = getLatestValue(s);
-              console.log(pm2_5Ranges);
               const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
               return (
                 <Grid container spacing={0}>
-                  <Grid size={6}>{name}</Grid>
+                  <Grid size={3}>{datasourceId}</Grid>
                   <Grid size={1}>
                     <span
                       style={{
@@ -380,7 +379,8 @@ const DataPanel = ({ handleGeocoder }) => {
                       }}
                     ></span>
                   </Grid>
-                  <Grid size={5}>{Number(latest_mean_pm25)?.toFixed(1)}</Grid>
+                  <Grid size={3}>{Number(latest_mean_pm25)?.toFixed(1)}</Grid>
+                  <Grid size={5}>{name}</Grid>
                 </Grid>
               );
             })}
