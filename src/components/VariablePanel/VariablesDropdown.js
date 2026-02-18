@@ -1,6 +1,6 @@
 import {FormControl, InputLabel, ListSubheader, MenuItem, Select, } from "@mui/material";
-import {defaultVariable, variablePresets} from "../../config";
-import {changeVariable, resetState, selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
+import {variablePresets} from "../../config";
+import {changeVariable, selectMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 const VariablesDropdown = () => {
@@ -14,11 +14,9 @@ const VariablesDropdown = () => {
 
     if (!e?.target?.value) {
       // "None" was selected, de-select current choice
-      console.log('de-selecting:', e.target.value);
-      dispatch(resetState());
+      dispatch(changeVariable());
     } else {
       // New item chosen, select it
-      console.log('selecting:', e.target.value);
       dispatch(changeVariable({
         params: variablePresets[e.target.value]
       }));
