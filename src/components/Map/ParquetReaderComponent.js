@@ -44,7 +44,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch the list of location id, name, coordinates
     fetch({
       url: locationsUrl,
-      columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags'],
+      columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags', 'community', 'zip'],
     }).then(l => dispatch(setSensorLocations(l)) && console.log('Locations:', l));
   }, [dispatch, locationsUrl]);
 

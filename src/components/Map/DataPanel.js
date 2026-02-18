@@ -2,7 +2,7 @@
 // and displays it in the right side panel.
 
 // Import main libraries
-import React, {useState} from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import helper libraries
@@ -22,7 +22,7 @@ import {colors, pm2_5Ranges} from '../../config';
 import { report } from '../../config/svg';
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
-import {Button} from "@mui/material";
+import {Button, FormControl, Menu} from "@mui/material";
 import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
@@ -30,11 +30,15 @@ import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
   removeSensorsFromSelection,
-  selectSelectedSensors, selectSensorGeojsonData,
+  selectSelectedSensors, selectSensorGeojsonData, selectSensorLocations,
   selectSensorValuesMeanPm25
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import {DropdownButton} from "../VariablePanel/DropdownButton";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -334,6 +338,7 @@ const DataPanel = ({ handleGeocoder }) => {
   const geojsonData = useSelector(selectSensorGeojsonData);
   const selectedSensors = useSelector(selectSelectedSensors);
   const data = useSelector(selectSensorValuesMeanPm25);
+  const locations = useSelector(selectSensorLocations);
   // const filterValues = useSelector(selectFilterValues);
 
   // handles panel open/close
@@ -389,6 +394,17 @@ const DataPanel = ({ handleGeocoder }) => {
   const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
   const lastUpdated = new Date(lastUpdatedUtcTimestamp);
   const formatted = formatDate(lastUpdated);
+  const [open, setOpen] = useState(false);
+  const [community, setCommunity] = useState([]);
+  const [zip, setZip] = useState([]);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleCommunityChange = (event) => {
+    setCommunity(event.target.value);
+  };
+  const handleZipChange = (event) => {
+    setZip(event.target.value);
+  };
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
@@ -417,10 +433,16 @@ const DataPanel = ({ handleGeocoder }) => {
           placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
           onChange={handleGeocoder}
         />
+
         <Grid container spacing={4}>
-          <Grid size={4}><LButton variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community</LButton></Grid>
-          <Grid size={4}><LButton variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</LButton></Grid>
+          <Grid size={4}>
+            <DropdownButton ButtonComponent={LButton} label={'Community'} options={locations?.map(l => l.community)} />
+          </Grid>
+          <Grid size={8}>
+            <DropdownButton ButtonComponent={LButton} label={'Zip code'} options={locations?.map(l => l.zip)} />
+          </Grid>
         </Grid>
+
         {selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
             <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
               <FaHistory style={{ transform: 'scaleX(-1)', color: 'lightblue', marginRight: '0.35rem' }} />
