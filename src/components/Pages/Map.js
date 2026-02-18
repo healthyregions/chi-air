@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { fitBounds } from "@math.gl/web-mercator";
 import {
   MapSection,
-  NavBar,
   Legend,
   DataPanel,
 } from "../../components";
