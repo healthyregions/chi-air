@@ -171,6 +171,9 @@ const Legend = ({
 }) => {
     const { storedGeojson } = useChivesData();
     const mapParams = useSelector(selectMapParams);
+    if (mapParams.variableName === '') {
+      return (<></>);
+    }
 
     // Note that "label" above and variableName here are similar, but not always the same
     const columnName = mapParams.variableName ? variablePresets[mapParams.variableName].Column : '';

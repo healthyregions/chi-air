@@ -30,7 +30,7 @@ const OverlaysDropdown = () => {
 
   return (
     <>
-      <h2>Data Overlay</h2>
+      <div><h2>Data Overlay</h2></div>
       <FormControl variant="filled">
         <InputLabel htmlFor="overlay-select">Overlay</InputLabel>
         <Select

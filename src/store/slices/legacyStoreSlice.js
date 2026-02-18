@@ -7,6 +7,14 @@ export const legacyStoreSlice = createSlice({
   name: 'legacy',
   initialState: INITIAL_STATE,
   reducers: {
+    resetState: (state, action) => {
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        ranges: state.ranges,
+        storedGeojson: state.storedGeojson,
+      };
+    },
     loadDataAndBins: (state, action) => {
       const bins = action.payload.bins
         ? action.payload.bins
@@ -425,6 +433,7 @@ export const {
   applyFilterValues,
   removeFilterValues,
   changeVariable,
+  resetState,
   setSelectionData,
 } = legacyStoreSlice.actions;
 
