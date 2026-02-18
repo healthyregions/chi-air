@@ -147,13 +147,15 @@ const Geocoder = ({
                 // }
 
                 renderInput={(params) => (
-                    <TextField
+                  <TextField
                     {...params}
                     margin="normal"
                     style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
                     placeholder={placeholder}
-                    InputProps={{ ...params.InputProps, type: 'search', startAdornment:
+                    slotProps={{
+                      input: { ...params.InputProps, type: 'search', startAdornment:
                         <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'10px'}}></FaSearch>
+                      }
                     }}
                     onChange={(e) => {
                         setSearchState(prev => ({
@@ -162,7 +164,7 @@ const Geocoder = ({
                         }));
                         handleSearch(e)}
                     }
-                    />
+                  />
                 )}
                 style={style}
             />

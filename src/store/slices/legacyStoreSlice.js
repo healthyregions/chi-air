@@ -89,9 +89,15 @@ export const legacyStoreSlice = createSlice({
       if (!action.payload?.params) {
         return {
           ...state,
-          storedGeojson: {},
-          bins: [],
-          colorScale: [],
+          ...INITIAL_STATE,
+          ranges: state.ranges,
+          storedGeojson: state.storedGeojson,
+          mapParams: {
+            ...INITIAL_STATE.mapParams,
+            overlay: state.mapParams.overlay,
+            overlays: state.mapParams.overlays,
+          },
+          mapLoaded: true
         };
       }
       const bins = action.payload.params.bins
@@ -425,6 +431,7 @@ export const {
   applyFilterValues,
   removeFilterValues,
   changeVariable,
+  deselectVariable,
   setSelectionData,
 } = legacyStoreSlice.actions;
 

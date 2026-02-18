@@ -27,18 +27,19 @@ function Map() {
     <div className="Map-App">
       <NavBar showMapControls={true} bounds={defaultBounds} />
       <div id="mainContainer">
-        <MapSection bounds={defaultBounds} />
-        {mapParams.variableName && <Legend
-          label={`${mapParams.variableName} ${
-            mapParams.units ? `(${mapParams.units})` : ""
-          }`}
-          colorScale={mapParams.colorScale}
-          bins={mapParams.bins}
-        />}
-        {/*<VariablePanel />*/}
-        <DataPanel />
-        <AQIColorScale />
-        {/* <Popover />     */}
+        { mapParams && <>
+            <MapSection bounds={defaultBounds} />
+            <Legend
+              label={`${mapParams.variableName} ${
+                mapParams?.units ? `(${mapParams?.units})` : ""
+              }`}
+            />
+            {/*<VariablePanel />*/}
+            <DataPanel />
+            <AQIColorScale />
+            {/* <Popover />     */}
+          </>
+        }
       </div>
     </div>
   );

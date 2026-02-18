@@ -7,6 +7,8 @@ export const generateQuantileBins = (data, colorScale, accessor, mapParams) => {
     const features = data?.features || [];
     //console.log('generating bins: ' + nBins);
     const columnData = features.map((f) => f.properties[accessor]).filter(filterMissing).sort((a,b) => a - b)
-    const bins = Array(nBins).fill(0).map((_, i) => columnData[Math.round((data.features.length/nBins)*i)]).slice(1,)
+    const bins = Array(nBins).fill(0).map((_, i) => {
+      return columnData[Math.round((features?.length/nBins)*i)]
+    }).slice(1,)
     return bins;
 }

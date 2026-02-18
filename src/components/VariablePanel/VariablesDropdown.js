@@ -1,6 +1,6 @@
 import {FormControl, InputLabel, ListSubheader, MenuItem, Select, } from "@mui/material";
-import {defaultVariable, variablePresets} from "../../config";
-import {changeVariable, selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
+import {variablePresets} from "../../config";
+import {changeVariable, selectMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 const VariablesDropdown = () => {
@@ -12,18 +12,11 @@ const VariablesDropdown = () => {
     // TODO: may not needed for this dashboard
     //setVariableChanged(true);
 
-    if (e.target.value === '') {
+    if (!e?.target?.value) {
       // "None" was selected, de-select current choice
-      console.log('de-selecting:', e.target.value);
-      dispatch(setMapParams({
-        ...variablePresets[defaultVariable],
-        zAxisParams: null,
-        storedRange: null,
-        bins: [],
-      }));
+      dispatch(changeVariable());
     } else {
       // New item chosen, select it
-      console.log('selecting:', e.target.value);
       dispatch(changeVariable({
         params: variablePresets[e.target.value]
       }));
@@ -32,7 +25,7 @@ const VariablesDropdown = () => {
 
   return (
     <>
-      <h2>Comparison Variables</h2>
+      <div><h2>Comparison Variables</h2></div>
       <FormControl id="newVariableSelect" variant="filled">
         <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
         <Select
