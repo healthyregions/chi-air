@@ -289,16 +289,23 @@ const SelectedSensorsPanel = styled.div`
 `;
 
 const LButton = styled(Button)`
-    font-family: Lexend;
+    font-family: Lexend,serif;
     text-transform: capitalize;
 `;
 
-const SensorIdColumn = styled(Grid)`
-
+const GridHeader = styled(Grid)`
+    font-family: Lexend;
 `;
-const LocationNameColumn = styled(Grid)`
 
+const GridBody = styled(Grid)`
+    font-family: Space Grotesk;
 `;
+const TimestampColumn = styled(Grid)``;
+const AqiValueColumn = styled(Grid)`
+    text-align: right;
+`;
+const SensorIdColumn = styled(Grid)``;
+const LocationNameColumn = styled(Grid)``;
 const Color = styled.span`
     display: block;
     background-color: ${(props) => props.color};
@@ -312,17 +319,7 @@ const ColorColumn = styled(Grid)`
     flex-direction: column;
     align-items: center;
 `;
-const AqiValueColumn = styled(Grid)`
-    text-align: right;
-`;
 
-const GridHeader = styled(Grid)`
-    font-family: Lexend;
-`;
-
-const GridBody = styled(Grid)`
-    font-family: Space Grotesk;
-`;
 
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
@@ -437,11 +434,11 @@ const DataPanel = ({ handleGeocoder }) => {
           <LButton onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</LButton>
 
           <GridHeader container spacing={0}>
-            <Grid size={3}>Time</Grid>
+            <TimestampColumn size={3}></TimestampColumn>
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
             <LocationNameColumn size={4}>Location Name</LocationNameColumn>
-            <SensorIdColumn>Sensor ID</SensorIdColumn>
+            <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>
           </GridHeader>
 
           {selectedSensors?.map((s, index) => {
@@ -466,15 +463,21 @@ const DataPanel = ({ handleGeocoder }) => {
 
             return (
               <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`}>
-                <AqiValueColumn size={3}>{date} {time}</AqiValueColumn>
-                <AqiValueColumn size={1} >
+                <TimestampColumn size={3}>
+                  <small>{date} {time}</small>
+                </TimestampColumn>
+                <AqiValueColumn size={1}>
                   <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
                 </AqiValueColumn>
                 <ColorColumn size={1}>
-                  <Color color={range?.color} border={range?.border}></Color>
+                  <small><Color color={range?.color} border={range?.border}></Color></small>
                 </ColorColumn>
-                <LocationNameColumn size={4}>{name}</LocationNameColumn>
-                <SensorIdColumn size={3}>{datasourceId}</SensorIdColumn>
+                <LocationNameColumn size={4}>
+                  <small>{name}</small>
+                </LocationNameColumn>
+                <SensorIdColumn size={3}>
+                  <small>{datasourceId}</small>
+                </SensorIdColumn>
               </GridBody>
             );
           })}
