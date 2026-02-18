@@ -430,7 +430,7 @@ const DataPanel = ({ handleGeocoder }) => {
         <Geocoder
           id="Geocoder"
           style={{ borderRadius: '100px' }}
-          placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
+          placeholder={""}
           onChange={handleGeocoder}
         />
 
