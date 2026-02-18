@@ -182,7 +182,7 @@ const NavInlineButton = styled.button`
 `;*/
 
 
-function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
+function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
 
@@ -235,16 +235,15 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
 
 
   const [popupInfo, setPopupInfo] = useState(null);
-  const mapRef = useRef(null);
 
-  const handlePanMap = (viewState) => {
+  const handlePanMap = useCallback((viewState) => {
     mapRef?.current?.flyTo({
       center: [viewState.longitude, viewState.latitude],
       zoom: viewState.zoom,
       bearing: viewState.bearing,
       pitch: viewState.pitch,
     });
-  };
+  }, [mapRef]);
   const hoverRef = useRef();
   const hoverCcRef = useRef();
   const viewRef = useRef(null);
@@ -401,7 +400,7 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
         pitch: 0,
       });
     }
-  }, []);
+  }, [handlePanMap]);
 
   const COLOR_SCALE = (x) =>
     scaleColor(x, mapParams.bins, mapParams.colorScale);

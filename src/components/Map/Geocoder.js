@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 import { colors } from '../../config';
 import {FaSearch} from "@react-icons/all-files/fa/FaSearch";
+import {debounce} from "@mui/material";
 
 const Container = styled.div`
     flex:auto;
@@ -55,12 +55,12 @@ const Container = styled.div`
 //     }
 // `
 
+const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 const Geocoder = ({
     onChange,
     placeholder,
     style,
-    height,
-    API_KEY
+    height
 }) => {
 
     const [searchState, setSearchState] = useState({
@@ -82,13 +82,16 @@ const Geocoder = ({
         })
     }
 
-    const buildAddress = (text) => `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?access_token=${API_KEY}&country=US&autocomplete=true&types=region%2Cdistrict%2Cpostcode%2Clocality%2Cplace%2Caddress&bbox=-88.28487843194713%2C41.54199009379835%2C-87.52216519803295%2C42.16483530634653`
+    const buildAddress = (text) => `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?access_token=${MAPBOX_ACCESS_TOKEN}&country=US&autocomplete=true&types=region%2Cdistrict%2Cpostcode%2Clocality%2Cplace%2Caddress&bbox=-88.28487843194713%2C41.54199009379835%2C-87.52216519803295%2C42.16483530634653`
 
-    const getMapboxResults = async (text, callback) => fetch(buildAddress(text)).then(r => r.json()).then(r => callback(r.features))
+    const getMapboxResults = async (text, callback) => fetch(buildAddress(text)).then(r => r.json()).then(r => {
+      console.log("result:", r);
+      callback(r.features);
+    })
 
     const queryMapbox = React.useMemo(
         () =>
-          throttle((text, callback) => {
+          debounce((text, callback) => {
                 getMapboxResults(text, callback)
           }, 200),
           // eslint-disable-next-line
@@ -123,7 +126,7 @@ const Geocoder = ({
     // }
 
     return (
-        <Container {...{height}}>
+        <Container>
             <Autocomplete
                 id="geocoder-search"
                 freeSolo

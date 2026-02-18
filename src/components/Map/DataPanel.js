@@ -279,7 +279,7 @@ const AgeColumnsToChart = [
 ]
 
 // DataPanel Function Component
-const DataPanel = () => {
+const DataPanel = ({ handleGeocoder }) => {
   const dispatch = useDispatch();
   const selectionData = useSelector(selectSelectionData);
   const panelState = useSelector(selectPanelState);
@@ -308,7 +308,6 @@ const DataPanel = () => {
   const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
   const lastUpdated = new Date(lastUpdatedUtcTimestamp);
 
-
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
       {currentPage === 'root' && <>
@@ -327,7 +326,12 @@ const DataPanel = () => {
           <span><strong>Search</strong> any Chicago Address</span>
           <Button variant={'text'} onClick={() => pushPage('layers')}>Map Layers</Button>
         </div>
-        <Geocoder></Geocoder>
+        <Geocoder
+          id="Geocoder"
+          style={{ borderRadius: '100px' }}
+          placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
+          onChange={handleGeocoder}
+        />
         <div>
           <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community area</Button>
           <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</Button>

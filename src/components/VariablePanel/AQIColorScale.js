@@ -2,7 +2,6 @@
 import {colors, pm2_5Ranges} from "../../config";
 import styled from "styled-components";
 import Grid from "@mui/material/Grid";
-import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
 
 //// Styled components CSS
 // Main container for entire panel
