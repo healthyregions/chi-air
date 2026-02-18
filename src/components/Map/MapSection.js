@@ -710,7 +710,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const bins = pm2_5Ranges.map(r => r.max);
         return scaleColor(latest, bins, colors);
       },
-      opacity: selectedSensors?.length > 0 ? 0.1 : .85,
+      opacity: selectedSensors?.length > 0 ? 0.15 : .85,
       getPointRadius: 400,
       getLineWidth: 35,
       getLineColor: (feature) => {
