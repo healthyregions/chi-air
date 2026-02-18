@@ -28,7 +28,7 @@ import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
-import {selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
+import {selectSelectedSensors, selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 
 //// Styled components CSS
@@ -301,6 +301,8 @@ const DataPanel = ({ handleGeocoder }) => {
     }
   };
 
+  const selectedSensors = useSelector(selectSelectedSensors);
+
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
   const data = useSelector(selectSensorValuesMeanPm25);
@@ -339,6 +341,10 @@ const DataPanel = ({ handleGeocoder }) => {
         <div>
           <span><FaHistory /> updated {lastUpdated?.toLocaleTimeString()}, {lastUpdated?.toLocaleDateString()}</span>
         </div>
+        <pre>{JSON.stringify(selectedSensors)}</pre>
+        {selectedSensors?.length > 0 && <>
+          <hr />
+        </>}
       </>}
 
       {currentPage === 'layers' && <>

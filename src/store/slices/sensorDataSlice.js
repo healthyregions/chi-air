@@ -20,7 +20,7 @@ export const sensorDataSlice = createSlice({
     removeSensorsFromSelection: (state, action) => ({
       ...state,
       selectedSensors: [
-        ...state.selectedSensors.filter(s => s === action.payload)
+        ...state.selectedSensors.filter(s => !action.payload?.includes(s))
       ]
     }),
     setSensorLocations: (state, action) => ({
@@ -35,6 +35,7 @@ export const sensorDataSlice = createSlice({
   selectors: {
     selectSensorLocations: state => state.locations,
     selectSensorValuesMeanPm25: state => state.mean_pm25,
+    selectSelectedSensors: state => state.selectedSensors,
   }
 });
 
@@ -42,11 +43,14 @@ export const sensorDataSlice = createSlice({
 export const {
   setSensorLocations,
   setSensorValuesMeanPm25,
+  addSensorsToSelection,
+  removeSensorsFromSelection
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
 export const {
   selectSensorLocations,
   selectSensorValuesMeanPm25,
+  selectSelectedSensors
 } = sensorDataSlice.selectors
 
