@@ -412,7 +412,7 @@ const DataPanel = ({ handleGeocoder }) => {
 
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><LButton variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</LButton></Grid>
+        <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} options={['English','Español']} /></Grid>
       </Grid>
         <LButton
           component={NavLink} // Use the NavLink component for routing
