@@ -1,6 +1,8 @@
 // AQIColorScale.js
-import {colors, pm2_5ColorMap} from "../../config";
+import {colors, pm2_5Ranges} from "../../config";
 import styled from "styled-components";
+import Grid from "@mui/material/Grid";
+import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -27,18 +29,31 @@ const ColorScaleContainer = styled.div`
 const AQIColorScale = () => {
   return (
     <ColorScaleContainer>
-      { Object.entries(pm2_5ColorMap).map(([key, color], index) => (
-        <div key={`${key}-${index}`} style={{ display: "flex", margin:'.25em 0' }}>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend' }}>
+        <Grid size={3} style={{ textAlign: 'right' }}>AQI</Grid>
+        <Grid size={1}></Grid>
+        <Grid size={8}>Health Category</Grid>
+      </Grid>
+      { pm2_5Ranges?.map(({ range, label, color, border}, index) => (
+        <Grid key={`${index}-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk' }}>
+          <Grid size={3} style={{ textAlign: 'right', }}><small>{range}</small></Grid>
+          <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span
-              key={`overlay-key-${key}-${color}`}
+              key={`overlay-key-${index}-${label}`}
               style={{
-                backgroundColor: `rgb(${color.join(",")})`,
-                width: 16,
-                height: 16,
+                display: 'block',
+                backgroundColor: color,
+                border: `2px solid ${border}`,
+                borderRadius: '10px',
+                width: '16px',
+                height: '16px',
               }}
             ></span>
-          <span style={{padding:0, margin:'0 0 0 .25em'}}>{key}</span>
-        </div>
+          </Grid>
+          <Grid size={8}>
+            <span style={{padding:0, margin:'0 0 0 .25em', fontWeight: 700}}>{label}</span>
+          </Grid>
+        </Grid>
       ))}
     </ColorScaleContainer>
   );

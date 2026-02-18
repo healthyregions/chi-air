@@ -94,6 +94,8 @@ export const legacyStoreSlice = createSlice({
           storedGeojson: state.storedGeojson,
           mapParams: {
             ...INITIAL_STATE.mapParams,
+            bins: state.mapParams.bins,
+            colorScale: state.mapParams.colorScale,
             overlay: state.mapParams.overlay,
             overlays: state.mapParams.overlays,
           },

@@ -16,7 +16,7 @@ import App from './App';
 
 WebFont.load({
   google: {
-    families: ['Lexend', 'Space Grotesk', 'Big Shoulders:400,600', 'Lora:400,600', 'Roboto:300,500,700', 'sans-serif']
+    families: ['Lexend:200,400,600,800', 'Space Grotesk:200,400,600,800', 'Big Shoulders:400,600', 'Lora:400,600', 'Roboto:300,500,700', 'sans-serif']
   }
 });
 

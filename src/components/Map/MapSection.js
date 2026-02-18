@@ -17,8 +17,7 @@ import {
   colors,
   loadStickers,
   parsedOverlays,
-  pm2_5Bins, pm2_5BorderColorMap,
-  pm2_5ColorMap
+  pm2_5Ranges
 } from "../../config";
 import * as SVG from "../../config/svg";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -691,7 +690,9 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           //return [79, 143, 197];
           return [200, 200, 200];
         }
-        return scaleColor(latest, pm2_5Bins, Object.values(pm2_5ColorMap));
+        const colors = pm2_5Ranges.map(r => r.colorComponents);
+        const bins = pm2_5Ranges.map(r => r.max);
+        return scaleColor(latest, bins, colors);
       },
       opacity: .85,
       getPointRadius: 400,
@@ -706,7 +707,9 @@ function MapSection({ setViewStateFn = () => {}, bounds, geoids = [], showSearch
           return [229, 238, 245];
           //return [68, 68, 68];
         }
-        return scaleColor(latest, pm2_5Bins, Object.values(pm2_5BorderColorMap));
+        const borders = pm2_5Ranges.map(r => r.borderComponents);
+        const bins = pm2_5Ranges.map(r => r.max);
+        return scaleColor(latest, bins, borders);
       },
       pointRadiusUnits: 'meters',
       visible: true,

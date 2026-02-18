@@ -171,9 +171,6 @@ const Legend = ({
 }) => {
     const { storedGeojson } = useChivesData();
     const mapParams = useSelector(selectMapParams);
-    if (mapParams.variableName === '') {
-      return (<></>);
-    }
 
     // Note that "label" above and variableName here are similar, but not always the same
     const columnName = mapParams.variableName ? variablePresets[mapParams.variableName].Column : '';
@@ -186,46 +183,51 @@ const Legend = ({
     const categorical = ["Historical Redlining", "Displacement Pressure"].includes(label.trim());
 
     return (
-        <BottomPanel id="bottomPanel">
+      <>
+        { mapParams?.variableName && <BottomPanel id="bottomPanel">
             {!!bins && !!colorScale && <LegendContainer>
-                <Grid container spacing={2} id='legend-bins-container'>
-                    <Grid item xs={12}>
-                        <LegendTitle>
-                            {label || ''}
-                        </LegendTitle>
-                    </Grid>
-                    <Grid item xs={12}>
-                        {colorScale !== undefined && !categorical &&
-                            <BinBars height={20}>
-                                <div className="color-bars with-labels">
-                                    <div className="bin min">
-                                        <div className="label">{min.toFixed(precision || 2)}</div>
-                                    </div>
-                                    {colorScale.map((color, i) =>
-                                        <div key={'color-bar' + i} className="bin color" style={{backgroundColor:`rgb(${color[0]},${color[1]},${color[2]})`}}>
-                                            {i > 0 && <div className="label">{Math.round(bins[i-1]*100)/100}</div>}
-                                        </div>
-                                    )}
-                                    <div className="bin max">
-                                        <div className="label">{max.toFixed(precision || 2)}</div>
-                                    </div>
-                                </div>
-                            </BinBars>
-                        }
-                        <div>
-                            {colorScale !== undefined && categorical && <>
-                                <BinBars>
-                                    <div className="color-bars">
-                                        {colorScale.map((color, i) => <div key={'color-bar' + i} className="bin color" style={{backgroundColor:`rgb(${color[0]},${color[1]},${color[2]})`}}></div>)}
-                                    </div>
-                                </BinBars>
-                                <BinLabel label={label}></BinLabel>
-                            </>}
-                        </div>
-                    </Grid>
+              <Grid container spacing={2} id='legend-bins-container'>
+                <Grid item xs={12}>
+                  <LegendTitle>
+                    {label || ''}
+                  </LegendTitle>
                 </Grid>
+                <Grid item xs={12}>
+                  {!!colorScale && !categorical &&
+                    <BinBars height={20}>
+                      <div className="color-bars with-labels">
+                        <div className="bin min">
+                          <div className="label">{min.toFixed(precision || 2)}</div>
+                        </div>
+                        {colorScale.map((color, i) =>
+                          <div key={'color-bar' + i} className="bin color"
+                               style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}>
+                            {i > 0 && <div className="label">{Math.round(bins[i - 1] * 100) / 100}</div>}
+                          </div>
+                        )}
+                        <div className="bin max">
+                          <div className="label">{max.toFixed(precision || 2)}</div>
+                        </div>
+                      </div>
+                    </BinBars>
+                  }
+                  <div>
+                    {!!colorScale && categorical && <>
+                      <BinBars>
+                        <div className="color-bars">
+                          {colorScale.map((color, i) => <div key={'color-bar' + i} className="bin color"
+                                                             style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}></div>)}
+                        </div>
+                      </BinBars>
+                      <BinLabel label={label}></BinLabel>
+                    </>}
+                  </div>
+                </Grid>
+              </Grid>
             </LegendContainer>}
-        </BottomPanel>
+          </BottomPanel>
+        }
+      </>
     )
 }
 
