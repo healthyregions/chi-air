@@ -13,6 +13,12 @@ export const legacyStoreSlice = createSlice({
         ...INITIAL_STATE,
         ranges: state.ranges,
         storedGeojson: state.storedGeojson,
+        mapParams: {
+          ...INITIAL_STATE.mapParams,
+          overlay: state.mapParams.overlay,
+          overlays: state.mapParams.overlays,
+        },
+        mapLoaded: true
       };
     },
     loadDataAndBins: (state, action) => {
