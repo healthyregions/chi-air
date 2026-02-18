@@ -286,10 +286,16 @@ const AgeColumnsToChart = [
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
   const dispatch = useDispatch();
+
+  // Legacy map controls
   const selectionData = useSelector(selectSelectionData);
   const panelState = useSelector(selectPanelState);
   const ranges = useSelector(selectRanges);
+
+  // New sensor data
   const geojsonData = useSelector(selectSensorGeojsonData);
+  const selectedSensors = useSelector(selectSelectedSensors);
+  const data = useSelector(selectSensorValuesMeanPm25);
   // const filterValues = useSelector(selectFilterValues);
 
   // handles panel open/close
@@ -307,15 +313,6 @@ const DataPanel = ({ handleGeocoder }) => {
     }
   };
 
-  const selectedSensors = useSelector(selectSelectedSensors);
-
-  // Grab our previously-fetched data and use that to determine some stats
-  // TODO: we can do better for this logic, but for now this should work alright
-  const data = useSelector(selectSensorValuesMeanPm25);
-  const firstHourlyRow = data.find((r) => r.type === 'hour');
-  const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
-  const lastUpdated = new Date(lastUpdatedUtcTimestamp);
-
   const getLatestValue = (id) => {
     const first = geojsonData?.features?.find(f => {
       return f.properties['datasourceId'] === id;
@@ -323,13 +320,46 @@ const DataPanel = ({ handleGeocoder }) => {
     return first?.properties;
   }
 
+  const formatDate = (input) => {
+    if (Object.prototype.toString.call(input) !== "[object Date]" || isNaN(input)) {
+      // either not a date object or date object is not valid
+
+      return undefined;
+    }
+
+    // Use 'en-US' to ensure the Month/Day/Year order
+    const parts = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      month: '2-digit',
+      day: '2-digit',
+      year: '2-digit'
+    }).formatToParts(input);
+
+    // Reconstruct to place the time before the date with a comma
+    const time = `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`;
+    const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+
+      return { time, date };
+  }
+
+
+  // Grab our previously-fetched data and use that to determine some stats
+  // TODO: we can do better for this logic, but for now this should work alright
+  const firstHourlyRow = data.find((r) => r.type === 'hour');
+  const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
+  const lastUpdated = new Date(lastUpdatedUtcTimestamp);
+  const formatted = formatDate(lastUpdated);
+
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
       {currentPage === 'root' && <>
-        <div>
-          <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} style={{ width:'254px',height:'41px' }} />
-          <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</Button>
-        </div>
+
+      <Grid container spacing={4} alignItems={'center'}>
+        <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
+        <Grid><Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Eng</Button></Grid>
+      </Grid>
         <Button
           component={NavLink} // Use the NavLink component for routing
           to="/"         // Specify the destination path
@@ -337,23 +367,30 @@ const DataPanel = ({ handleGeocoder }) => {
         >
           &larr; Homepage
         </Button>
-        <div>
-          <span><strong>Search</strong> any Chicago Address</span>
-          <Button variant={'text'} onClick={() => pushPage('layers')}>Map Layers</Button>
-        </div>
+        <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
+          <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
+            <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address</span>
+          </Grid>
+          <Grid><Button variant={'text'} onClick={() => pushPage('layers')}>Map Layers</Button></Grid>
+        </Grid>
         <Geocoder
           id="Geocoder"
           style={{ borderRadius: '100px' }}
           placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
           onChange={handleGeocoder}
         />
-        <div>
-          <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community area</Button>
-          <Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</Button>
-        </div>
-        <div>
-          <span><FaHistory /> updated {lastUpdated?.toLocaleTimeString()}, {lastUpdated?.toLocaleDateString()}</span>
-        </div>
+        <Grid container spacing={4}>
+          <Grid size={4}><Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Community</Button></Grid>
+          <Grid size={4}><Button variant={'text'} size={'small'} endIcon={<FaCaretDown />}>Zip Code</Button></Grid>
+        </Grid>
+        {selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
+            <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
+              <FaHistory style={{ transform: 'scaleX(-1)', color: 'lightblue', marginRight: '0.35rem' }} />
+              <span style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }}>updat{formatted?.time ? 'ed' : 'ing'}</span>
+              {formatted?.time || 'Loading'}, {formatted?.date || 'Please Wait...'}
+            </span>
+          </div>
+        }
         {selectedSensors?.length > 0 && <>
           <hr />
           <Button onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</Button>
