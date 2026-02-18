@@ -30,7 +30,7 @@ import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
   removeSensorsFromSelection,
-  selectSelectedSensors,
+  selectSelectedSensors, selectSensorGeojsonData,
   selectSensorValuesMeanPm25
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
@@ -288,6 +288,7 @@ const DataPanel = ({ handleGeocoder }) => {
   const selectionData = useSelector(selectSelectionData);
   const panelState = useSelector(selectPanelState);
   const ranges = useSelector(selectRanges);
+  const geojsonData = useSelector(selectSensorGeojsonData);
   // const filterValues = useSelector(selectFilterValues);
 
   // handles panel open/close
@@ -313,6 +314,14 @@ const DataPanel = ({ handleGeocoder }) => {
   const firstHourlyRow = data.find((r) => r.type === 'hour');
   const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
   const lastUpdated = new Date(lastUpdatedUtcTimestamp);
+
+  const getLatestValue = (id) => {
+    const first = geojsonData?.features?.find(f => {
+      return f.properties['datasourceId'] === id;
+    });
+    console.log('first: ', first);
+    return first?.properties;
+  }
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
@@ -351,7 +360,7 @@ const DataPanel = ({ handleGeocoder }) => {
 
           <h3>Selected Sensors:</h3>
           <ul>
-            {selectedSensors?.map((s) => <li>{s}</li>)}
+            {selectedSensors?.map((s) => <li>{s}: {Number(getLatestValue(s)?.latest_mean_pm25).toFixed(1)}</li>)}
           </ul>
         </>}
       </>}

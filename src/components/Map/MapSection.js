@@ -41,7 +41,7 @@ import {
   removeSensorsFromSelection,
   selectSelectedSensors,
   selectSensorLocations,
-  selectSensorValuesMeanPm25
+  selectSensorValuesMeanPm25, setSensorGeojsonData
 } from "../../store/slices/sensorDataSlice";
 
 function DeckGLOverlay(props) {
@@ -680,6 +680,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       }
     }),
   };
+  dispatch(setSensorGeojsonData(geojsonData));
   baseLayers.push(
     new GeoJsonLayer({
       id: "sensors",

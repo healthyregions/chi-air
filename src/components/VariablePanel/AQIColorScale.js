@@ -50,7 +50,7 @@ const AQIColorScale = () => {
             ></span>
           </Grid>
           <Grid size={8}>
-            <span style={{padding:0, margin:'0 0 0 .25em', fontWeight: 700}}>{label}</span>
+            <span style={{padding:0, margin:'0 0 0 .25em', fontWeight: 800, color: (label === 'Good' || label === 'Moderate') ? border : color}}>{label}</span>
           </Grid>
         </Grid>
       ))}
