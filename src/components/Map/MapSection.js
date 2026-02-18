@@ -694,6 +694,9 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       filled: true,
       extruded: false,
       getFillColor: (feature) => {
+        if (selectedSensors?.length > 0) {
+          return [250, 250, 250];
+        }
         // Detect loading state, display soft colors while loading
         if (Object.keys(latestHourlyRow)?.length <= 2) {
           return [229, 238, 245];
@@ -707,7 +710,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const bins = pm2_5Ranges.map(r => r.max);
         return scaleColor(latest, bins, colors);
       },
-      opacity: selectedSensors?.length > 0 ? 0.05 : .85,
+      opacity: selectedSensors?.length > 0 ? 0.1 : .85,
       getPointRadius: 400,
       getLineWidth: 35,
       getLineColor: (feature) => {

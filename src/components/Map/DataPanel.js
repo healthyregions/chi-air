@@ -28,7 +28,11 @@ import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
-import {selectSelectedSensors, selectSensorValuesMeanPm25} from "../../store/slices/sensorDataSlice";
+import {
+  removeSensorsFromSelection,
+  selectSelectedSensors,
+  selectSensorValuesMeanPm25
+} from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 
 //// Styled components CSS
@@ -341,9 +345,14 @@ const DataPanel = ({ handleGeocoder }) => {
         <div>
           <span><FaHistory /> updated {lastUpdated?.toLocaleTimeString()}, {lastUpdated?.toLocaleDateString()}</span>
         </div>
-        <pre>{JSON.stringify(selectedSensors)}</pre>
         {selectedSensors?.length > 0 && <>
           <hr />
+          <Button onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</Button>
+
+          <h3>Selected Sensors:</h3>
+          <ul>
+            {selectedSensors?.map((s) => <li>{s}</li>)}
+          </ul>
         </>}
       </>}
 
