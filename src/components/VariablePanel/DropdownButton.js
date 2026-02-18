@@ -5,7 +5,7 @@ import {useState} from "react";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 
 
-export const DropdownButton = ({ options, label, ButtonComponent, unique = true }) => {
+export const DropdownButton = ({ onChange = (s) => {}, options, label, selections, ButtonComponent, unique = true }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {
@@ -13,6 +13,11 @@ export const DropdownButton = ({ options, label, ButtonComponent, unique = true 
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleChange = (e) => {
+    const selection = e.target.textContent;
+    onChange(selection);
+    handleClose();
   };
   const ITEM_HEIGHT = 48;
 
@@ -47,7 +52,7 @@ export const DropdownButton = ({ options, label, ButtonComponent, unique = true 
           },
         }}
       >
-        {(unique ? [...new Set(options)] : options).sort()?.map((op) => <MenuItem onClick={handleClose} value={op}>{op}</MenuItem>)}
+        {(unique ? [...new Set(options)] : options).sort()?.map((op) => <MenuItem onClick={handleChange} value={op}>{op}</MenuItem>)}
       </Menu>
     </div>
   );

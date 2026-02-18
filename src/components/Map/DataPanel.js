@@ -39,6 +39,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
+import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -294,7 +295,8 @@ const SelectedSensorsPanel = styled.div`
 
 const LButton = styled(Button)`
     font-family: Lexend,serif;
-    text-transform: capitalize;
+    text-transform: none;
+    color: #005899;
 `;
 
 const GridHeader = styled(Grid)`
@@ -323,6 +325,11 @@ const ColorColumn = styled(Grid)`
     flex-direction: column;
     align-items: center;
 `;
+const LLabel = styled.span`
+    font-family: Lexend;
+    color: #005899;
+    margin-top: 0.5rem;
+`;
 
 
 // DataPanel Function Component
@@ -340,6 +347,12 @@ const DataPanel = ({ handleGeocoder }) => {
   const data = useSelector(selectSensorValuesMeanPm25);
   const locations = useSelector(selectSensorLocations);
   // const filterValues = useSelector(selectFilterValues);
+
+  const [selections,setSelections] = useState({
+    zips: [],
+    communities: [],
+    wards: []
+  });
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
@@ -394,17 +407,7 @@ const DataPanel = ({ handleGeocoder }) => {
   const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
   const lastUpdated = new Date(lastUpdatedUtcTimestamp);
   const formatted = formatDate(lastUpdated);
-  const [open, setOpen] = useState(false);
-  const [community, setCommunity] = useState([]);
-  const [zip, setZip] = useState([]);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleCommunityChange = (event) => {
-    setCommunity(event.target.value);
-  };
-  const handleZipChange = (event) => {
-    setZip(event.target.value);
-  };
+
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
@@ -434,14 +437,38 @@ const DataPanel = ({ handleGeocoder }) => {
           onChange={handleGeocoder}
         />
 
-        <Grid container spacing={4}>
+        {selections?.communities?.length > 0 && <Grid container spacing={4}>
+          <Grid size={10}>
+            <LLabel>Community:</LLabel> {selections?.communities?.[0]}
+          </Grid>
+          <Grid size={2}>
+            <LButton variant={'text'} size={'small'} onClick={() => setSelections({...selections, communities: []})}><FaTimes /></LButton>
+          </Grid>
+        </Grid>}
+
+        {selections?.zips?.length > 0 && <Grid container spacing={4}>
+          <Grid size={10}>
+            <LLabel>Zip code:</LLabel> {selections?.zips?.[0]}
+          </Grid>
+          <Grid size={2}>
+            <LButton variant={'text'} size={'small'} onClick={() => setSelections({...selections, zips: []})}><FaTimes /></LButton>
+          </Grid>
+        </Grid>}
+
+        {selections?.zips?.length === 0 && selections?.communities?.length === 0 && <Grid container spacing={4}>
           <Grid size={4}>
-            <DropdownButton ButtonComponent={LButton} label={'Community'} options={locations?.map(l => l.community)} />
+            <DropdownButton onChange={(s) => setSelections({...selections, communities: [s]})}
+                            ButtonComponent={LButton}
+                            label={'Community'}
+                            options={locations?.map(l => l.community)} />
           </Grid>
           <Grid size={8}>
-            <DropdownButton ButtonComponent={LButton} label={'Zip code'} options={locations?.map(l => l.zip)} />
+            <DropdownButton onChange={(s) => setSelections({...selections, zips: [s]})}
+                            ButtonComponent={LButton}
+                            label={'Zip code'}
+                            options={locations?.map(l => l.zip)} />
           </Grid>
-        </Grid>
+        </Grid>}
 
         {selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
             <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
