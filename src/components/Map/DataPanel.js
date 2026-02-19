@@ -38,6 +38,7 @@ import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
 import {SensorBarChart} from "../VariablePanel/SensorBarChart";
 import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
+import {SensorValueDisplay} from "../VariablePanel/SensorValueDisplay";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -512,14 +513,12 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
           <Grid container spacing={0}>
-            <Grid size={2}></Grid>
-            <Grid size={10}>
+            <Grid offset={2} size={10}>
               <LastUpdatedDisplay date={lastUpdatedSensorFormatted}></LastUpdatedDisplay>
             </Grid>
           </Grid>
 
-
-
+          <SensorValueDisplay value={latest.latest_mean_pm25}></SensorValueDisplay>
           <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
         </>}
 

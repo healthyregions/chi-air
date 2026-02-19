@@ -14,7 +14,7 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
         colors: pm2_5Ranges?.map(r => r.color),
       },
     }],
-    xAxis: [{ scaleType: 'band', dataKey: 'date',  tickPlacement:'middle', valueFormatter: (v) => {
+    xAxis: [{ scaleType: 'band', dataKey: 'date',  tickPlacement:'middle', zoom: true, valueFormatter: (v) => {
         if (averageType === 'week' || averageType === 'season') {
           return v;
         }
