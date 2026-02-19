@@ -22,11 +22,10 @@ import {colors, pm2_5Ranges} from '../../config';
 import { report } from '../../config/svg';
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
-import {Button, FormControl, Menu} from "@mui/material";
+import {Button} from "@mui/material";
 import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
-import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
   removeSensorsFromSelection,
@@ -35,9 +34,6 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
 
