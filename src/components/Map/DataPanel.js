@@ -530,7 +530,12 @@ const DataPanel = ({ handleGeocoder }) => {
               <LButton onClick={() => resetAll()}><FaArrowCircleLeft /></LButton>
             </Grid>
             <Grid>
-              <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>Area Sensors</h3>
+              <h3 style={{ fontFamily: 'Lexend', fontWeight: 400 }}>Selected
+                {!selections?.community?.length && !selections?.zip?.length && <> Group </>}
+                {selections?.community?.length > 0 && <> Community </>}
+                {selections?.zip?.length > 0 && <> Zip code </>}
+                <small><small><small>(Debug Info)</small></small></small>
+              </h3>
             </Grid>
           </Grid>
           <GridHeader container spacing={0}>
