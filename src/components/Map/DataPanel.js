@@ -377,31 +377,6 @@ const DataPanel = ({ handleGeocoder }) => {
     return first?.properties;
   }
 
-  const formatDate = (input) => {
-    if (Object.prototype.toString.call(input) !== "[object Date]" || isNaN(input)) {
-      // either not a date object or date object is not valid
-
-      return undefined;
-    }
-
-    // Use 'en-US' to ensure the Month/Day/Year order
-    const parts = new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-      month: '2-digit',
-      day: '2-digit',
-      year: '2-digit'
-    }).formatToParts(input);
-
-    // Reconstruct to place the time before the date with a comma
-    const time = `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`;
-    const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
-
-      return { time, date };
-  }
-
-
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
   const firstHourlyRow = data.find((r) => r.type === 'hour');
@@ -429,9 +404,6 @@ const DataPanel = ({ handleGeocoder }) => {
 
   const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
   const latest = getLatestValue(clickedSensor);
-  const lastUpdatedSensorUtcTimestamp = latest?.last_update?.split(' ')?.join('T') + 'Z';
-  const lastUpdatedSensorUtc = new Date(lastUpdatedSensorUtcTimestamp);
-  const lastUpdatedSensorFormatted = formatDate(lastUpdatedSensorUtc);
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
