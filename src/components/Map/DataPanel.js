@@ -405,9 +405,6 @@ const DataPanel = ({ handleGeocoder }) => {
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
   const firstHourlyRow = data.find((r) => r.type === 'hour');
-  const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
-  const lastUpdated = new Date(lastUpdatedUtcTimestamp);
-  const lastUpdatedAllFormatted = formatDate(lastUpdated);
 
   const clearSelection = () => {
     setSelections({...selections, community: [], zip: [], ward: []});
@@ -438,19 +435,19 @@ const DataPanel = ({ handleGeocoder }) => {
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
-      {currentPage === 'root' && <>
 
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} options={['English','Español']} /></Grid>
       </Grid>
-        <LButton
-          component={NavLink} // Use the NavLink component for routing
-          to="/"         // Specify the destination path
-          variant="text" // Optional: apply Material UI button styles
-        >
-          &larr; Homepage
-        </LButton>
+      <LButton
+        component={NavLink} // Use the NavLink component for routing
+        to="/"         // Specify the destination path
+        variant="text" // Optional: apply Material UI button styles
+      >
+        &larr; Homepage
+      </LButton>
+      {currentPage === 'root' && <>
         <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
           <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
             <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address</span>
@@ -497,28 +494,28 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>
         </Grid>}
 
-        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay date={lastUpdatedAllFormatted} />}
+        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay date={firstHourlyRow?.date} />}
 
         {clickedSensor && <>
           <hr />
-          <Grid container spacing={0} alignItems={'center'}>
-            <Grid size={2}>
-              <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowCircleLeft /></LButton>
+          <Grid container spacing={0} alignItems={'start'}>
+            <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowCircleLeft /></LButton>
+
+            <Grid>
+              <h3 style={{ marginTop: '3px', fontFamily: 'Lexend', fontWeight:400 }}>{clickedLocation?.name}</h3>
+              <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
+              <SensorValueDisplay scale={'μg/m³'} value={latest.latest_mean_pm25}></SensorValueDisplay>
             </Grid>
-            <Grid size={8}>
-              <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>{clickedLocation?.name}</h3>
-            </Grid>
-            <Grid size={2}>
+
+            <Grid flexDirection={'column'} alignItems={'end'}>
               <DropdownButton style={{ textTransform: 'uppercase' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
             </Grid>
           </Grid>
           <Grid container spacing={0}>
             <Grid offset={2} size={10}>
-              <LastUpdatedDisplay date={lastUpdatedSensorFormatted}></LastUpdatedDisplay>
             </Grid>
           </Grid>
 
-          <SensorValueDisplay scale={'μg/m³'} value={latest.latest_mean_pm25}></SensorValueDisplay>
           <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
         </>}
 

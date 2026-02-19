@@ -44,7 +44,6 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
     series: [{ dataKey: datasourceId, minBarSize: '20px', valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³` }], // Minimum width of 10px
     height: 200,
     margin: { left: 0 },
-    reverse: true,
   };
 
   //console.log(dataset);
