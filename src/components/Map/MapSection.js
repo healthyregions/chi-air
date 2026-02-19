@@ -37,8 +37,6 @@ import {
 import MapMarkerPin from "./MapMarkerPin";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
-  addSensorsToSelection,
-  removeSensorsFromSelection,
   selectSelectedSensors,
   selectSensorLocations,
   selectSensorValuesMeanPm25, setClickedSensor, setSensorGeojsonData

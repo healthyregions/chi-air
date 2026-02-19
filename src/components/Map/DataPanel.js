@@ -36,7 +36,6 @@ import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
-import {BarChart} from "@mui/x-charts/BarChart";
 import {SensorBarChart} from "../VariablePanel/SensorBarChart";
 
 //// Styled components CSS
