@@ -47,9 +47,10 @@ export const SensorValueDisplay = ({ value, scale = 'AQI' }) => {
   }
 
   const range = pm2_5Ranges?.find(r => r.min < value && value <= r.max);
+  const invertedColors = ['Good', 'Moderate'];
 
-  const primary = range?.label === 'Good' ? range?.border : range?.color;
-  const secondary = range?.label === 'Good' ? range?.color : range?.border;
+  const primary = invertedColors?.includes(range?.label) ? range?.border : range?.color;
+  const secondary = invertedColors?.includes(range?.label) ? range?.color : range?.border;
 
   return (
     <>

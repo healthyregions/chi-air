@@ -497,7 +497,7 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>
         </Grid>}
 
-        {!clickedSensor &&selectedSensors?.length === 0 && <LastUpdatedDisplay date={lastUpdatedAllFormatted} />}
+        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay date={lastUpdatedAllFormatted} />}
 
         {clickedSensor && <>
           <hr />
@@ -518,7 +518,7 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
 
-          <SensorValueDisplay value={latest.latest_mean_pm25}></SensorValueDisplay>
+          <SensorValueDisplay scale={'μg/m³'} value={latest.latest_mean_pm25}></SensorValueDisplay>
           <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
         </>}
 
