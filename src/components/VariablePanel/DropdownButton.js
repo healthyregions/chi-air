@@ -5,7 +5,7 @@ import {useState} from "react";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 
 
-export const DropdownButton = ({ style, onChange = (s) => {}, options, label, selections, ButtonComponent, unique = true }) => {
+export const DropdownButton = ({ width, style, onChange = (s) => {}, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {
@@ -23,6 +23,9 @@ export const DropdownButton = ({ style, onChange = (s) => {}, options, label, se
 
   const Btn = ButtonComponent || Button;
 
+  const listItems = unique ? [...new Set(options)] : options;
+  const displayOps = sortOptions ? listItems.sort() : listItems;
+
   return (
     <>
       <Btn
@@ -32,6 +35,7 @@ export const DropdownButton = ({ style, onChange = (s) => {}, options, label, se
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleOpen}
+        width={width}
         style={style}
       >
         {label} <FaCaretDown style={{ marginLeft: '10px' }}/>
@@ -53,7 +57,7 @@ export const DropdownButton = ({ style, onChange = (s) => {}, options, label, se
           },
         }}
       >
-        {(unique ? [...new Set(options)] : options).sort()?.map((op, index) => <MenuItem key={`dropdown-button-${op}-${index}`} onClick={handleChange} value={op}>{op}</MenuItem>)}
+        {displayOps?.map((op, index) => <MenuItem key={`dropdown-button-${op}-${index}`} onClick={handleChange} value={op}>{op}</MenuItem>)}
       </Menu>
     </>
   );

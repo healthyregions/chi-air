@@ -26,7 +26,6 @@ import {Button} from "@mui/material";
 import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
-import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
   removeSensorsFromSelection, selectAverageType, selectClickedSensor,
   selectSelectedSensors, selectSensorGeojsonData, selectSensorLocations,
@@ -38,6 +37,7 @@ import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
 import {SensorBarChart} from "../VariablePanel/SensorBarChart";
 import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
+import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -369,6 +369,7 @@ const DataPanel = ({ handleGeocoder }) => {
   };
 
   const getLatestValue = (id) => {
+    if (!id) { return undefined; }
     const first = geojsonData?.features?.find(f => {
       return f.properties['datasourceId'] === id;
     });
@@ -405,7 +406,7 @@ const DataPanel = ({ handleGeocoder }) => {
   const firstHourlyRow = data.find((r) => r.type === 'hour');
   const lastUpdatedUtcTimestamp = firstHourlyRow?.date?.split(' ')?.join('T') + 'Z';
   const lastUpdated = new Date(lastUpdatedUtcTimestamp);
-  const formatted = formatDate(lastUpdated);
+  const lastUpdatedAllFormatted = formatDate(lastUpdated);
 
   const clearSelection = () => {
     setSelections({...selections, community: [], zip: [], ward: []});
@@ -429,6 +430,10 @@ const DataPanel = ({ handleGeocoder }) => {
   };
 
   const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
+  const latest = getLatestValue(clickedSensor);
+  const lastUpdatedSensorUtcTimestamp = latest?.last_update?.split(' ')?.join('T') + 'Z';
+  const lastUpdatedSensorUtc = new Date(lastUpdatedSensorUtcTimestamp);
+  const lastUpdatedSensorFormatted = formatDate(lastUpdatedSensorUtc);
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
@@ -491,13 +496,7 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>
         </Grid>}
 
-        {!clickedSensor &&selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
-            <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
-              <FaHistory style={{ transform: 'scaleX(-1)', color: 'rgba(0, 88, 153, 0.5)', marginRight: '0.35rem' }} />
-              <span style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }}>updat{formatted?.time ? 'ed' : 'ing'}</span>
-              {formatted?.time || 'Loading'}, {formatted?.date || 'Please Wait...'}
-            </span>
-          </div>}
+        {!clickedSensor &&selectedSensors?.length === 0 && <LastUpdatedDisplay date={lastUpdatedAllFormatted} />}
 
         {clickedSensor && <>
           <hr />
@@ -509,9 +508,18 @@ const DataPanel = ({ handleGeocoder }) => {
               <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>{clickedLocation?.name}</h3>
             </Grid>
             <Grid size={2}>
-              <DropdownButton  style={{ textTransform: 'uppercase' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
+              <DropdownButton style={{ textTransform: 'uppercase' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
             </Grid>
           </Grid>
+          <Grid container spacing={0}>
+            <Grid size={2}></Grid>
+            <Grid size={10}>
+              <LastUpdatedDisplay date={lastUpdatedSensorFormatted}></LastUpdatedDisplay>
+            </Grid>
+          </Grid>
+
+
+
           <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
         </>}
 
