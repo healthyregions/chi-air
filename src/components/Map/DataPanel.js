@@ -28,14 +28,16 @@ import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
 import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
-  removeSensorsFromSelection,
+  removeSensorsFromSelection, selectAverageType, selectClickedSensor,
   selectSelectedSensors, selectSensorGeojsonData, selectSensorLocations,
-  selectSensorValuesMeanPm25, setSelectedSensors
+  selectSensorValuesMeanPm25, setAverageType, setSelectedSensors
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
+import {BarChart} from "@mui/x-charts/BarChart";
+import {SensorBarChart} from "../VariablePanel/SensorBarChart";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -414,6 +416,10 @@ const DataPanel = ({ handleGeocoder }) => {
     dispatch(setSelectedSensors([...newSelectedSensors]));
   }
 
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const averageType = useSelector(selectAverageType);
+  const clickedSensor = useSelector(selectClickedSensor);
+
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
       {currentPage === 'root' && <>
@@ -483,15 +489,23 @@ const DataPanel = ({ handleGeocoder }) => {
             </span>
           </div>
         }
+
+        {clickedSensor && <>
+          <DropdownButton ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
+          <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
+        </>}
+
+        <pre>{JSON.stringify(clickedSensor, null, 2)}</pre>
+
         {selectedSensors?.length > 0 && <SelectedSensorsPanel>
           <hr />
           <LButton onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</LButton>
-
+          <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>Area Sensors</h3>
           <GridHeader container spacing={0}>
             <TimestampColumn size={3}></TimestampColumn>
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
-            <LocationNameColumn size={4}>Location Name</LocationNameColumn>
+            <LocationNameColumn size={4}>Name</LocationNameColumn>
             {selections?.community?.length === 0 && selections?.zip?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
             {selections?.community?.length > 0 && <SensorIdColumn size={3}>Community</SensorIdColumn>}
             {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}

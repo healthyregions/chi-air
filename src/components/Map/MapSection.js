@@ -41,7 +41,7 @@ import {
   removeSensorsFromSelection,
   selectSelectedSensors,
   selectSensorLocations,
-  selectSensorValuesMeanPm25, setSensorGeojsonData
+  selectSensorValuesMeanPm25, setClickedSensor, setSensorGeojsonData
 } from "../../store/slices/sensorDataSlice";
 
 function DeckGLOverlay(props) {
@@ -732,7 +732,8 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       visible: true,
       onClick: (feature) => {
         const id = feature?.object?.properties?.['datasourceId'];
-        dispatch(addSensorsToSelection([id]));
+        //dispatch(addSensorsToSelection([id]));
+        dispatch(setClickedSensor(id));
       },
       beforeId: "state-label",
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
@@ -790,7 +791,8 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       onClick: (feature) => {
         console.log(feature);
         const id = feature?.object?.properties?.['datasourceId'];
-        dispatch(removeSensorsFromSelection([id]));
+        //dispatch(removeSensorsFromSelection([id]));
+        dispatch(setClickedSensor(id));
       },
       beforeId: "state-label",
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
