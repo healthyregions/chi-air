@@ -30,7 +30,7 @@ import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
   removeSensorsFromSelection,
   selectSelectedSensors, selectSensorGeojsonData, selectSensorLocations,
-  selectSensorValuesMeanPm25
+  selectSensorValuesMeanPm25, setSelectedSensors
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -342,12 +342,13 @@ const DataPanel = ({ handleGeocoder }) => {
   const selectedSensors = useSelector(selectSelectedSensors);
   const data = useSelector(selectSensorValuesMeanPm25);
   const locations = useSelector(selectSensorLocations);
+
   // const filterValues = useSelector(selectFilterValues);
 
   const [selections,setSelections] = useState({
-    zips: [],
-    communities: [],
-    wards: []
+    zip: [],
+    community: [],
+    ward: []
   });
 
   // handles panel open/close
@@ -404,6 +405,14 @@ const DataPanel = ({ handleGeocoder }) => {
   const lastUpdated = new Date(lastUpdatedUtcTimestamp);
   const formatted = formatDate(lastUpdated);
 
+  const clearSelection = () => {
+    setSelections({...selections, community: [], zip: [], ward: []});
+  }
+  const handleDropdownChanged = (s, key = 'community') => {
+    setSelections({...selections, [key]: [s]});
+    const newSelectedSensors = locations.filter(l => l[key] === s)?.map(l => l.datasourceId);
+    dispatch(setSelectedSensors([...newSelectedSensors]));
+  }
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
@@ -433,33 +442,33 @@ const DataPanel = ({ handleGeocoder }) => {
           onChange={handleGeocoder}
         />
 
-        {selections?.communities?.length > 0 && <Grid container spacing={4}>
+        {selections?.community?.length > 0 && <Grid container spacing={4}>
           <Grid size={10}>
-            <LLabel>Community:</LLabel> {selections?.communities?.[0]}
+            <LLabel>Community:</LLabel> {selections?.community?.[0]}
           </Grid>
           <Grid size={2}>
-            <LButton variant={'text'} size={'small'} onClick={() => setSelections({...selections, communities: []})}><FaTimes /></LButton>
+            <LButton variant={'text'} size={'small'} onClick={() => clearSelection()}><FaTimes /></LButton>
           </Grid>
         </Grid>}
 
-        {selections?.zips?.length > 0 && <Grid container spacing={4}>
+        {selections?.zip?.length > 0 && <Grid container spacing={4}>
           <Grid size={10}>
-            <LLabel>Zip code:</LLabel> {selections?.zips?.[0]}
+            <LLabel>Zip code:</LLabel> {selections?.zip?.[0]}
           </Grid>
           <Grid size={2}>
-            <LButton variant={'text'} size={'small'} onClick={() => setSelections({...selections, zips: []})}><FaTimes /></LButton>
+            <LButton variant={'text'} size={'small'} onClick={() => clearSelection()}><FaTimes /></LButton>
           </Grid>
         </Grid>}
 
-        {selections?.zips?.length === 0 && selections?.communities?.length === 0 && <Grid container spacing={4}>
+        {selections?.zip?.length === 0 && selections?.community?.length === 0 && <Grid container spacing={4}>
           <Grid size={4}>
-            <DropdownButton onChange={(s) => setSelections({...selections, communities: [s]})}
+            <DropdownButton onChange={(s) => handleDropdownChanged(s, 'community')}
                             ButtonComponent={LButton}
                             label={'Community'}
                             options={locations?.map(l => l.community)} />
           </Grid>
           <Grid size={8}>
-            <DropdownButton onChange={(s) => setSelections({...selections, zips: [s]})}
+            <DropdownButton onChange={(s) => handleDropdownChanged(s, 'zip')}
                             ButtonComponent={LButton}
                             label={'Zip code'}
                             options={locations?.map(l => l.zip)} />
@@ -483,7 +492,9 @@ const DataPanel = ({ handleGeocoder }) => {
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
             <LocationNameColumn size={4}>Location Name</LocationNameColumn>
-            <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>
+            {selections?.community?.length === 0 && selections?.zip?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
+            {selections?.community?.length > 0 && <SensorIdColumn size={3}>Community</SensorIdColumn>}
+            {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}
           </GridHeader>
 
           {selectedSensors?.map((s, index) => {
@@ -521,7 +532,9 @@ const DataPanel = ({ handleGeocoder }) => {
                   <small>{name}</small>
                 </LocationNameColumn>
                 <SensorIdColumn size={3}>
-                  <small>{datasourceId}</small>
+                  {selections?.community?.length === 0 && selections?.zip?.length === 0 && <small>{datasourceId}</small>}
+                  {selections?.community?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.community}</small>}
+                  {selections?.zip?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.zip}</small>}
                 </SensorIdColumn>
               </GridBody>
             );

@@ -28,7 +28,7 @@ const ColorScaleContainer = styled.div`
 const AQIColorScale = () => {
   return (
     <ColorScaleContainer>
-      <Grid container spacing={0} style={{ fontFamily: 'Lexend' }}>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend', marginBottom: '1rem' }}>
         <Grid size={3} style={{ textAlign: 'right' }}>AQI</Grid>
         <Grid size={1}></Grid>
         <Grid size={8}>Health Category</Grid>

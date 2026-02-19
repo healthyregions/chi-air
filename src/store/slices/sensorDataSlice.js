@@ -11,6 +11,12 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setSelectedSensors: (state, action) => ({
+      ...state,
+      selectedSensors: [
+        ...action.payload
+      ]
+    }),
     addSensorsToSelection: (state, action) => ({
       ...state,
       selectedSensors: [
@@ -52,6 +58,7 @@ export const {
   addSensorsToSelection,
   removeSensorsFromSelection,
   setSensorGeojsonData,
+  setSelectedSensors,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
