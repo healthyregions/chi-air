@@ -419,6 +419,11 @@ const DataPanel = ({ handleGeocoder }) => {
   const averageType = useSelector(selectAverageType);
   const clickedSensor = useSelector(selectClickedSensor);
 
+  const resetAll = () => {
+    setSelections({community:[],zip:[],ward:[]});
+    dispatch(removeSensorsFromSelection([...selectedSensors]));
+  };
+
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
       {currentPage === 'root' && <>
@@ -494,11 +499,9 @@ const DataPanel = ({ handleGeocoder }) => {
           <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
         </>}
 
-        <pre>{JSON.stringify(clickedSensor, null, 2)}</pre>
-
         {selectedSensors?.length > 0 && <SelectedSensorsPanel>
           <hr />
-          <LButton onClick={() => dispatch(removeSensorsFromSelection([...selectedSensors]))}>&larr; Back</LButton>
+          <LButton onClick={() => resetAll()}>&larr; Back</LButton>
           <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>Area Sensors</h3>
           <GridHeader container spacing={0}>
             <TimestampColumn size={3}></TimestampColumn>

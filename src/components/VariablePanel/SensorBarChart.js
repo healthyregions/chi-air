@@ -1,13 +1,10 @@
 import {BarChart} from "@mui/x-charts/BarChart";
 import {pm2_5Ranges} from "../../config";
 
-export function valueFormatter(value) {
-  return `${Number(value)?.toFixed(1)} μg/m³`;
-}
-
 export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
   const chartSetting = {
     yAxis: [{
+      disableLine: true, // Hides the main vertical line
       label: 'PM2.5 Mass Concentration (μg/m³)',
       width: 60,
       colorMap: {
@@ -16,7 +13,7 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
         colors: pm2_5Ranges?.map(r => r.color),
       },
     }],
-    series: [{ dataKey: datasourceId, valueFormatter, minBarSize: '20px', }], // Minimum width of 10px
+    series: [{ dataKey: datasourceId, valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³`, minBarSize: '20px', }], // Minimum width of 10px
     height: 200,
     margin: { left: 0 },
   };
