@@ -52,7 +52,7 @@ export const DropdownButton = ({ onChange = (s) => {}, options, label, selection
           },
         }}
       >
-        {(unique ? [...new Set(options)] : options).sort()?.map((op) => <MenuItem onClick={handleChange} value={op}>{op}</MenuItem>)}
+        {(unique ? [...new Set(options)] : options).sort()?.map((op, index) => <MenuItem key={`dropdown-button-${op}-${index}`} onClick={handleChange} value={op}>{op}</MenuItem>)}
       </Menu>
     </div>
   );

@@ -5,12 +5,22 @@ const initialState = {
   locations: [],
   mean_pm25: [],
   geojsonData: {},
+  clickedSensor: undefined,
+  averageType: 'hour',
 };
 
 export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setAverageType: (state, action) => ({
+      ...state,
+      averageType: action.payload
+    }),
+    setClickedSensor: (state, action) => ({
+      ...state,
+      clickedSensor: state.clickedSensor !== action.payload ? action.payload : undefined
+    }),
     setSelectedSensors: (state, action) => ({
       ...state,
       selectedSensors: [
@@ -48,6 +58,8 @@ export const sensorDataSlice = createSlice({
     selectSensorValuesMeanPm25: state => state.mean_pm25,
     selectSelectedSensors: state => state.selectedSensors,
     selectSensorGeojsonData: state => state.geojsonData,
+    selectClickedSensor: state => state.clickedSensor,
+    selectAverageType: state => state.averageType,
   }
 });
 
@@ -59,6 +71,8 @@ export const {
   removeSensorsFromSelection,
   setSensorGeojsonData,
   setSelectedSensors,
+  setClickedSensor,
+  setAverageType,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
@@ -67,5 +81,7 @@ export const {
   selectSensorValuesMeanPm25,
   selectSelectedSensors,
   selectSensorGeojsonData,
+  selectClickedSensor,
+  selectAverageType,
 } = sensorDataSlice.selectors
 
