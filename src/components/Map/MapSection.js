@@ -37,6 +37,7 @@ import {
 import MapMarkerPin from "./MapMarkerPin";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
+  selectClickedSensor,
   selectSelectedSensors,
   selectSensorLocations,
   selectSensorValuesMeanPm25, setClickedSensor, setSensorGeojsonData
@@ -192,6 +193,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const selectedSensors = useSelector(selectSelectedSensors);
+  const clickedSensor = useSelector(selectClickedSensor);
 
   // fetch pieces of state from store
   const { storedGeojson } = useChivesData();
@@ -685,7 +687,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       data: {
         ...geojsonData,
         features: geojsonData.features.filter(f =>
-          !selectedSensors?.includes(f.properties['datasourceId'])
+          !selectedSensors?.includes(f.properties['datasourceId']) && clickedSensor !== f.properties['datasourceId']
         )
       },
       pickable: true,
@@ -705,9 +707,12 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
           //return [79, 143, 197];
           return [200, 200, 200];
         }
-        const colors = pm2_5Ranges.map(r => r.colorComponents);
+
         const bins = pm2_5Ranges.map(r => r.max);
-        return scaleColor(latest, bins, colors);
+        if (clickedSensor === feature.properties['datasourceId']) {
+          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+        }
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       },
       opacity: selectedSensors?.length > 0 ? 0.15 : .85,
       getPointRadius: 400,
@@ -722,9 +727,12 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
           return [229, 238, 245];
           //return [68, 68, 68];
         }
-        const borders = pm2_5Ranges.map(r => r.borderComponents);
+
         const bins = pm2_5Ranges.map(r => r.max);
-        return scaleColor(latest, bins, borders);
+        if (clickedSensor === feature.properties['datasourceId']) {
+          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+        }
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       },
       pointRadiusUnits: 'meters',
       visible: true,
@@ -746,7 +754,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       data: {
         ...geojsonData,
         features: geojsonData.features.filter(f =>
-          selectedSensors?.includes(f.properties['datasourceId'])
+          selectedSensors?.includes(f.properties['datasourceId']) || clickedSensor === f.properties['datasourceId']
         )
       },
       pickable: true,
@@ -763,9 +771,12 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
           //return [79, 143, 197];
           return [200, 200, 200];
         }
-        const colors = pm2_5Ranges.map(r => r.colorComponents);
+
         const bins = pm2_5Ranges.map(r => r.max);
-        return scaleColor(latest, bins, colors);
+        if (clickedSensor === feature.properties['datasourceId']) {
+          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+        }
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       },
       opacity: 0.85,
       getPointRadius: 400,
@@ -780,9 +791,12 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
           return [229, 238, 245];
           //return [68, 68, 68];
         }
-        const borders = pm2_5Ranges.map(r => r.borderComponents);
+
         const bins = pm2_5Ranges.map(r => r.max);
-        return scaleColor(latest, bins, borders);
+        if (clickedSensor === feature.properties['datasourceId']) {
+          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+        }
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       },
       pointRadiusUnits: 'meters',
       visible: true,

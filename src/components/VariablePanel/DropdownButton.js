@@ -5,7 +5,7 @@ import {useState} from "react";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 
 
-export const DropdownButton = ({ onChange = (s) => {}, options, label, selections, ButtonComponent, unique = true }) => {
+export const DropdownButton = ({ style, onChange = (s) => {}, options, label, selections, ButtonComponent, unique = true }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {
@@ -24,7 +24,7 @@ export const DropdownButton = ({ onChange = (s) => {}, options, label, selection
   const Btn = ButtonComponent || Button;
 
   return (
-    <div>
+    <>
       <Btn
         id="basic-button"
         size={'small'}
@@ -32,6 +32,7 @@ export const DropdownButton = ({ onChange = (s) => {}, options, label, selection
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleOpen}
+        style={style}
       >
         {label} <FaCaretDown style={{ marginLeft: '10px' }}/>
       </Btn>
@@ -54,7 +55,7 @@ export const DropdownButton = ({ onChange = (s) => {}, options, label, selection
       >
         {(unique ? [...new Set(options)] : options).sort()?.map((op, index) => <MenuItem key={`dropdown-button-${op}-${index}`} onClick={handleChange} value={op}>{op}</MenuItem>)}
       </Menu>
-    </div>
+    </>
   );
 
 }

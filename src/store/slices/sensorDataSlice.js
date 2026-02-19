@@ -19,7 +19,7 @@ export const sensorDataSlice = createSlice({
     }),
     setClickedSensor: (state, action) => ({
       ...state,
-      clickedSensor: state.clickedSensor !== action.payload ? action.payload : undefined
+      clickedSensor: action.payload
     }),
     setSelectedSensors: (state, action) => ({
       ...state,

@@ -30,13 +30,14 @@ import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
 import {
   removeSensorsFromSelection, selectAverageType, selectClickedSensor,
   selectSelectedSensors, selectSensorGeojsonData, selectSensorLocations,
-  selectSensorValuesMeanPm25, setAverageType, setSelectedSensors
+  selectSensorValuesMeanPm25, setAverageType, setClickedSensor, setSelectedSensors
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
 import {SensorBarChart} from "../VariablePanel/SensorBarChart";
+import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -413,6 +414,9 @@ const DataPanel = ({ handleGeocoder }) => {
     setSelections({...selections, [key]: [s]});
     const newSelectedSensors = locations.filter(l => l[key] === s)?.map(l => l.datasourceId);
     dispatch(setSelectedSensors([...newSelectedSensors]));
+    if (!selectedSensors?.includes(clickedSensor)) {
+      dispatch(setClickedSensor())
+    }
   }
 
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
@@ -423,6 +427,8 @@ const DataPanel = ({ handleGeocoder }) => {
     setSelections({community:[],zip:[],ward:[]});
     dispatch(removeSensorsFromSelection([...selectedSensors]));
   };
+
+  const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
@@ -485,24 +491,40 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>
         </Grid>}
 
-        {selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
+        {!clickedSensor &&selectedSensors?.length === 0 && <div style={{ margin: '0.5rem 0' }}>
             <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
               <FaHistory style={{ transform: 'scaleX(-1)', color: 'rgba(0, 88, 153, 0.5)', marginRight: '0.35rem' }} />
               <span style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }}>updat{formatted?.time ? 'ed' : 'ing'}</span>
               {formatted?.time || 'Loading'}, {formatted?.date || 'Please Wait...'}
             </span>
-          </div>
-        }
+          </div>}
 
         {clickedSensor && <>
-          <DropdownButton ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
+          <hr />
+          <Grid container spacing={0} alignItems={'center'}>
+            <Grid size={2}>
+              <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowCircleLeft /></LButton>
+            </Grid>
+            <Grid size={8}>
+              <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>{clickedLocation?.name}</h3>
+            </Grid>
+            <Grid size={2}>
+              <DropdownButton  style={{ textTransform: 'uppercase' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
+            </Grid>
+          </Grid>
           <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
         </>}
 
         {selectedSensors?.length > 0 && <SelectedSensorsPanel>
           <hr />
-          <LButton onClick={() => resetAll()}>&larr; Back</LButton>
-          <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>Area Sensors</h3>
+          <Grid container spacing={0} alignItems={'center'}>
+            <Grid size={2}>
+              <LButton onClick={() => resetAll()}><FaArrowCircleLeft /></LButton>
+            </Grid>
+            <Grid>
+              <h3 style={{ fontFamily: 'Lexend', fontWeight:400 }}>Area Sensors</h3>
+            </Grid>
+          </Grid>
           <GridHeader container spacing={0}>
             <TimestampColumn size={3}></TimestampColumn>
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
