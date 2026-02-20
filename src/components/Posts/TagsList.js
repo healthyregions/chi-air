@@ -1,6 +1,6 @@
 import {Chip} from "@mui/material";
 import React from "react";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 
 const TagsListContainer = styled.div`
@@ -8,7 +8,7 @@ const TagsListContainer = styled.div`
 `;
 
 const TagsList = ({tags, selection}) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Given a tag, "select" this tag in the UI
   // This will show as a URL query param and filter the list of posts
@@ -16,7 +16,7 @@ const TagsList = ({tags, selection}) => {
     if (!selection?.includes(tag)) {
       // Build up a query containing this tag and navigate to it
       const query = selection?.concat(tag)?.map((tag) => `tag=${tag}`)?.join('&');
-      history.push(`/posts?${query}`);
+      navigate(`/posts?${query}`);
     }
   }
 
@@ -26,7 +26,7 @@ const TagsList = ({tags, selection}) => {
     if (selection?.includes(tag)) {
       // Build up a query without this tag and navigate to it
       const query = selection?.filter(t => tag !== t)?.map((tag) => `tag=${tag}`)?.join('&');
-      history.push(`/posts?${query}`);
+      navigate(`/posts?${query}`);
     }
   }
 

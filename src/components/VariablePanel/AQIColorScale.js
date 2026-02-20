@@ -2,6 +2,7 @@
 import {colors, pm2_5Ranges} from "../../config";
 import styled from "styled-components";
 import Grid from "@mui/material/Grid";
+import {Tooltip} from "@mui/material";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -28,13 +29,15 @@ const ColorScaleContainer = styled.div`
 const AQIColorScale = () => {
   return (
     <ColorScaleContainer>
-      <Grid container spacing={0} style={{ fontFamily: 'Lexend', marginBottom: '1rem' }}>
-        <Grid size={3} style={{ textAlign: 'right' }}>AQI</Grid>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem' }}>
+        <Grid size={3} style={{ textAlign: 'right' }}>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Air Quality Index'}>AQI</Tooltip>
+        </Grid>
         <Grid size={1}></Grid>
         <Grid size={8}>Health Category</Grid>
       </Grid>
       { pm2_5Ranges?.map(({ range, label, color, border}, index) => (
-        <Grid key={`${index}-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk' }}>
+        <Grid key={`${index}-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk', margin: '0.5rem 0' }}>
           <Grid size={3} style={{ textAlign: 'right', }}><small>{range}</small></Grid>
           <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span

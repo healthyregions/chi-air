@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Grid";
-import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
 import {pm2_5Ranges} from "../../config";
 import styled from "styled-components";
 
@@ -40,11 +39,6 @@ const SensorValueLabel = styled.span`
     color: ${({ color }) => color};
     font-size: 18px;
 `;
-const SensorValueLabelTooltip = styled(FaInfoCircle)`
-    width: 15px;
-    height: 15px;
-    margin-left: 0.5rem;
-`;
 
 export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQI' }) => {
   // TODO: is zero an expected value? if not, change to value === null
@@ -61,7 +55,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
   return (
     <>
       <SensorValueDisplayContainer style={style}>
-        <Grid container spacing={2} alignItems={'center'}>
+        <Grid container spacing={0} alignItems={'center'}>
           <Grid size={2}>
             {showColor && <SensorValueColorIndicator color={primary} border={secondary}></SensorValueColorIndicator>}
           </Grid>
@@ -72,13 +66,10 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
         </Grid>
 
         <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
-          <Grid offset={2} size={8}>
+          <Grid offset={2}>
             <SensorLabelPanel color={primary}>
               <SensorValueLabel color={primary}>{range?.label}</SensorValueLabel>
             </SensorLabelPanel>
-          </Grid>
-          <Grid size={2}>
-            <SensorValueLabelTooltip style={{ alignSelf: 'center' }} color={'rgba(0, 88, 153, 0.5)'} />
           </Grid>
         </Grid>
       </SensorValueDisplayContainer>

@@ -8,6 +8,8 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
       disableLine: true, // Hides the main vertical line
       label: 'PM2.5 Mass Concentration (μg/m³)',
       width: 60,
+      min: 0,
+      max: 300,
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => r.max),

@@ -7,16 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 // Import helper libraries
 import styled from 'styled-components';
-// import FormControl from '@mui/material/FormControl';
-// import Slider from '@mui/material/Slider';
-// import { withStyles, makeStyles } from '@mui/material/styles';
-
-// Import config and sub-components
-// import Tooltip from './tooltip';
-// import BarChart from './BarChart';
 import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
-// import NeighborhoodCounts from './NeighborhoodCounts';
 import {selectPanelState, selectRanges, selectSelectionData, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors, pm2_5Ranges} from '../../config';
 import { report } from '../../config/svg';
@@ -40,6 +32,8 @@ import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 import {SensorValueDisplay} from "../VariablePanel/SensorValueDisplay";
 import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
+import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
+import {FaLink} from "@react-icons/all-files/fa/FaLink";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -327,10 +321,27 @@ const ColorColumn = styled(Grid)`
 `;
 const LLabel = styled.span`
     font-family: Lexend;
-    color: #005899;
+    box-shadow: none;
+    color: rgba(65, 182, 230, 1);
     margin-top: 0.5rem;
 `;
+const Divider = styled.hr`
+    border-color: rgba(65, 182, 230, 1);
+    border-width: 1px;
+    margin: .5rem 0 0.5rem 0;
+`;
+const LHeader = styled.span`
+    font-size: 32px;
+    font-size: clamp(16px, 24px, 32px);
+    font-family: Lexend;
+    font-weight: 300;
+`;
 
+const SensorValueLabelTooltip = styled(FaInfoCircle)`
+    width: 15px;
+    height: 15px;
+    margin-left: 0.5rem;
+`;
 
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
@@ -436,7 +447,7 @@ const DataPanel = ({ handleGeocoder }) => {
           onChange={handleGeocoder}
         />
 
-        {selections?.community?.length > 0 && <Grid container spacing={4}>
+        {selections?.community?.length > 0 && <Grid container spacing={4} marginTop={'0.5rem'}>
           <Grid size={10}>
             <LLabel>Community:</LLabel> {selections?.community?.[0]}
           </Grid>
@@ -474,24 +485,36 @@ const DataPanel = ({ handleGeocoder }) => {
         {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay date={firstHourlyRow?.date} />}
 
         {clickedSensor && <>
-          <hr />
-          <Grid container spacing={0} alignItems={'center'}>
-            <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowLeft style={{ width: '29px', height: '29px' }} /></LButton>
+          <Divider />
+          <Grid container spacing={0} alignItems={'center'} marginTop={'2rem'}>
+            <Grid size={2}>
+              <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowLeft style={{ width: '15px', height: '15px' }} /></LButton>
+            </Grid>
 
-            <Grid size={9}>
-              <span style={{ fontSize: '32px', fontFamily: 'Lexend', fontWeight: 400.  }}>{clickedLocation?.name}</span>
+            <Grid size={8}>
+              <LHeader>{clickedLocation?.name}</LHeader>
+            </Grid>
+
+            <Grid size={2} alignItems={'end'}>
+              <LButton onClick={() => navigator.clipboard.writeText('')}><FaLink style={{ width: '15px', height: '15px' }} /></LButton>
             </Grid>
           </Grid>
 
           <Grid container spacing={0}>
             <Grid offset={2} size={8}>
               <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
-              <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
             </Grid>
             <Grid size={2}>
               <DropdownButton style={{ textTransform: 'capitalize' }} menuStyle={{ textTransform: 'capitalize' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
             </Grid>
           </Grid>
+
+          {Object.keys(firstHourlyRow)?.length > 2 && recentValueCount > 0 && <Grid container spacing={0} alignItems={'center'}>
+            <Grid offset={2} size={8}>
+              <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
+            </Grid>
+            <Grid size={2}><SensorValueLabelTooltip style={{ alignSelf: 'center' }} color={'rgba(0, 88, 153, 0.5)'} /></Grid>
+          </Grid>}
 
           <Grid container spacing={0}>
             <Grid offset={2} size={10}>
@@ -508,7 +531,7 @@ const DataPanel = ({ handleGeocoder }) => {
         </>}
 
         {selectedSensors?.length > 0 && <SelectedSensorsPanel>
-          <hr />
+          <Divider />
           <Grid container spacing={0} alignItems={'center'}>
             <Grid size={2}>
               <LButton onClick={() => resetAll()}><FaArrowCircleLeft /></LButton>
