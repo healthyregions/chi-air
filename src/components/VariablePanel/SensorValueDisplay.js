@@ -28,17 +28,16 @@ const SensorValueScale = styled.small`
     color: ${({ color }) => color};
 `;
 const SensorLabelPanel = styled.div`
-    margin-top: 0.5rem;
+    border: 2px solid ${({ color }) => color};
+    border-radius: 8px;
+    padding: 0 0.75rem;
 `;
 
 const SensorValueLabel = styled.span`
     font-weight: 500;
     letter-spacing: 4px;
-    padding: 0 0.75rem;
     text-transform: uppercase;
     color: ${({ color }) => color};
-    border: 2px solid ${({ color }) => color};
-    border-radius: 8px;
     font-size: 18px;
 `;
 const SensorValueLabelTooltip = styled(FaInfoCircle)`
@@ -47,7 +46,7 @@ const SensorValueLabelTooltip = styled(FaInfoCircle)`
     margin-left: 0.5rem;
 `;
 
-export const SensorValueDisplay = ({ showColor = true,  value, scale = 'AQI' }) => {
+export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQI' }) => {
   // TODO: is zero an expected value? if not, change to value === null
   if (value == null || value === "NaN" || value === "None") {
     return (<></>);
@@ -61,19 +60,25 @@ export const SensorValueDisplay = ({ showColor = true,  value, scale = 'AQI' }) 
 
   return (
     <>
-      <SensorValueDisplayContainer>
+      <SensorValueDisplayContainer style={style}>
         <Grid container spacing={2} alignItems={'center'}>
-          <Grid>
+          <Grid size={2}>
             {showColor && <SensorValueColorIndicator color={primary} border={secondary}></SensorValueColorIndicator>}
           </Grid>
-
           <Grid>
             <SensorNumericalValue color={primary}>{Number(value).toFixed(1)}</SensorNumericalValue>
             <SensorValueScale color={primary}>{scale}</SensorValueScale>
-            <SensorLabelPanel>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
+          <Grid offset={2} size={8}>
+            <SensorLabelPanel color={primary}>
               <SensorValueLabel color={primary}>{range?.label}</SensorValueLabel>
-              <SensorValueLabelTooltip color={'rgba(0, 88, 153, 0.5)'} />
             </SensorLabelPanel>
+          </Grid>
+          <Grid size={2}>
+            <SensorValueLabelTooltip style={{ alignSelf: 'center' }} color={'rgba(0, 88, 153, 0.5)'} />
           </Grid>
         </Grid>
       </SensorValueDisplayContainer>

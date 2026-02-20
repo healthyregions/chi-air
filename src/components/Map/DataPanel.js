@@ -39,6 +39,7 @@ import {SensorBarChart} from "../VariablePanel/SensorBarChart";
 import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 import {SensorValueDisplay} from "../VariablePanel/SensorValueDisplay";
+import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -458,6 +459,8 @@ const DataPanel = ({ handleGeocoder }) => {
             <DropdownButton onChange={(s) => handleDropdownChanged(s, 'community')}
                             ButtonComponent={LButton}
                             label={'Community'}
+                            style={{ textTransform: 'capitalize' }}
+                            menuStyle={{ textTransform: 'capitalize' }}
                             options={locations?.map(l => l.community)} />
           </Grid>
           <Grid size={8}>
@@ -472,22 +475,21 @@ const DataPanel = ({ handleGeocoder }) => {
 
         {clickedSensor && <>
           <hr />
-          <Grid container spacing={0} alignItems={'start'}>
-            <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowCircleLeft /></LButton>
+          <Grid container spacing={0} alignItems={'center'}>
+            <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowLeft style={{ width: '29px', height: '29px' }} /></LButton>
 
-            <Grid size={7}>
-              <h3 style={{ marginTop: '3px', fontFamily: 'Lexend', fontWeight:400 }}>{clickedLocation?.name}</h3>
-            </Grid>
-
-            <Grid size={2}>
-              <DropdownButton style={{ textTransform: 'uppercase' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
+            <Grid size={9}>
+              <span style={{ fontSize: '32px', fontFamily: 'Lexend', fontWeight: 400.  }}>{clickedLocation?.name}</span>
             </Grid>
           </Grid>
 
           <Grid container spacing={0}>
-            <Grid offset={2} >
+            <Grid offset={2} size={8}>
               <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
-              <SensorValueDisplay scale={'μg/m³'} value={latest.latest_mean_pm25}></SensorValueDisplay>
+              <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
+            </Grid>
+            <Grid size={2}>
+              <DropdownButton style={{ textTransform: 'capitalize' }} menuStyle={{ textTransform: 'capitalize' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
             </Grid>
           </Grid>
 
@@ -498,7 +500,11 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
 
-          {recentValueCount > 0 && <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.reverse()} />}
+          <Grid container alignItems={'center'}>
+            <Grid offset={1} size={11}>
+              {recentValueCount > 0 && <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.reverse()} />}
+            </Grid>
+          </Grid>
         </>}
 
         {selectedSensors?.length > 0 && <SelectedSensorsPanel>
@@ -508,15 +514,17 @@ const DataPanel = ({ handleGeocoder }) => {
               <LButton onClick={() => resetAll()}><FaArrowCircleLeft /></LButton>
             </Grid>
             <Grid>
-              <h3 style={{ fontFamily: 'Lexend', fontWeight: 400 }}>Selected
-                {!selections?.community?.length && !selections?.zip?.length && <> Group </>}
+
+              {Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <h3 style={{ fontFamily: 'Lexend', fontWeight: 400 }}>Selected
+                {!selections?.community?.length && !selections?.zip?.length && <> Locations </>}
                 {selections?.community?.length > 0 && <> Community </>}
                 {selections?.zip?.length > 0 && <> Zip code </>}
                 <small><small><small>(Debug Info)</small></small></small>
-              </h3>
+              </h3>}
             </Grid>
           </Grid>
-          <GridHeader container spacing={0}>
+
+          {Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0}>
             <TimestampColumn size={3}></TimestampColumn>
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
@@ -524,7 +532,7 @@ const DataPanel = ({ handleGeocoder }) => {
             {selections?.community?.length === 0 && selections?.zip?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
             {selections?.community?.length > 0 && <SensorIdColumn size={3}>Community</SensorIdColumn>}
             {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}
-          </GridHeader>
+          </GridHeader>}
 
           {selectedSensors?.map((s, index) => {
             const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(s);

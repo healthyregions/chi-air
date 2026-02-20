@@ -14,7 +14,7 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
         colors: pm2_5Ranges?.map(r => r.color),
       },
     }],
-    xAxis: [{ scaleType: 'band', dataKey: 'date',  tickPlacement:'middle', zoom: true, valueFormatter: (v) => {
+    xAxis: [{ scaleType: 'band', dataKey: 'date', barGapRatio: 3, tickPlacement:'middle', zoom: true, valueFormatter: (v) => {
         if (averageType === 'week' || averageType === 'season') {
           return v;
         }
@@ -37,9 +37,9 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
 
         return averageType === 'hour' ? time : date;
       } }],
-    series: [{ dataKey: datasourceId, minBarSize: '20px', valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³` }], // Minimum width of 10px
-    height: 200,
-    margin: { left: 0 },
+    series: [{ dataKey: datasourceId, valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³` }], // Minimum width of 10px
+    height: 175,
+    margin: { left: 0, top: 5 },
   };
 
   //console.log(dataset);

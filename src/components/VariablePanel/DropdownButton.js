@@ -5,7 +5,7 @@ import {useState} from "react";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 
 
-export const DropdownButton = ({ width, style, onChange = (s) => {}, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ width, menuStyle, style, onChange = (s) => {}, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {
@@ -38,13 +38,14 @@ export const DropdownButton = ({ width, style, onChange = (s) => {}, options, la
         width={width}
         style={style}
       >
-        {label} <FaCaretDown style={{ marginLeft: '10px' }}/>
+        {label} <FaCaretDown style={{ marginLeft: '10px' }} />
       </Btn>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        style={menuStyle}
         slotProps={{
           paper: {
             style: {
