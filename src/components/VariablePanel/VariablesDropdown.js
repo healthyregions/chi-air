@@ -25,8 +25,7 @@ const VariablesDropdown = () => {
 
   return (
     <>
-      <div><h2>Comparison Variables</h2></div>
-      <FormControl id="newVariableSelect" variant="filled">
+      <FormControl id="newVariableSelect" variant="outlined" fullWidth={true}>
         <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
         <Select
           variant={"filled"}
@@ -34,9 +33,7 @@ const VariablesDropdown = () => {
           onChange={handleVariable}
           MenuProps={{ id: "variableMenu" }}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
+          <MenuItem value="">None</MenuItem>
           {Object.keys(variablePresets).map((variable,i) => (
             variable.includes("HEADER::")
               ? <ListSubheader key={`list-header-${i}`}>{variable.split("HEADER::")[1]}</ListSubheader>

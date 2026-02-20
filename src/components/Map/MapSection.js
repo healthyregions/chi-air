@@ -42,6 +42,7 @@ import {
   selectSensorLocations,
   selectSensorValuesMeanPm25, setClickedSensor, setSensorGeojsonData
 } from "../../store/slices/sensorDataSlice";
+import {useSearchParams} from "react-router-dom";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -644,6 +645,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
     })
   });
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
   //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
   const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
@@ -740,6 +742,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const id = feature?.object?.properties?.['datasourceId'];
         //dispatch(addSensorsToSelection([id]));
         dispatch(setClickedSensor(id));
+        setSearchParams({ location: clickedSensor });
       },
       beforeId: "state-label",
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{

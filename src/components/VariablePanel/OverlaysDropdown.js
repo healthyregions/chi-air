@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { parsedOverlays } from "../../config";
 import {selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -30,16 +30,14 @@ const OverlaysDropdown = () => {
 
   return (
     <>
-      <div><h2>Data Overlay</h2></div>
-      <FormControl variant="filled">
-        <InputLabel htmlFor="overlay-select">Overlay</InputLabel>
+      <FormControl id="newOverlaySelect" variant="outlined" fullWidth={true}>
+        {/*<InputLabel htmlFor="overlay-select">Overlay</InputLabel>*/}
         <Select
           id="overlay-select"
           variant={"filled"}
           value={mapParams.overlays}
           onChange={(e) => handleMapOverlay(e.target.value)}
           multiple={true}
-          style={{ minWidth: '200px' }}
         >
           <MenuItem value="None" key={"None"}>
             None

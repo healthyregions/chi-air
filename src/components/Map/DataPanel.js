@@ -14,8 +14,7 @@ import {colors, pm2_5Ranges} from '../../config';
 import { report } from '../../config/svg';
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
-import {Button} from "@mui/material";
-import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
+import {Button, ClickAwayListener, Tooltip, Zoom} from "@mui/material";
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import Geocoder from "./Geocoder";
 import {
@@ -42,13 +41,12 @@ const DataPanelContainer = styled.div`
   width:433px;
   right:0.5em;
   top:0.5em;
-  background: rgba( 255, 255, 255, 0.85 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
+  background: linear-gradient(180deg, #e3f4fb 0%, #ffffff 80%);
+  border: 1px solid rgba(65, 182, 230, 1);
   backdrop-filter: blur( 20px );
   -webkit-backdrop-filter: blur( 20px );
-  box-shadow: 2px 0px 5px ${colors.gray}44;
-  border:1px solid ${colors.chicagoBlue};
   padding: 36px 29px;
+  border-radius: 8px;
   box-sizing: border-box;
   transition:250ms all;
   font-family: 'Roboto', sans-serif;
@@ -337,10 +335,24 @@ const LHeader = styled.span`
     font-weight: 300;
 `;
 
+const SGBody = styled.div`
+    font-family: Space Grotesk;
+    font-weight: 400;
+    margin: 1rem 0;
+    font-style: Regular;
+    font-size: 14px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+
+`;
+
 const SensorValueLabelTooltip = styled(FaInfoCircle)`
     width: 15px;
     height: 15px;
     margin-left: 0.5rem;
+    align-self: center;
+    color: rgba(0, 88, 153, 0.5);
 `;
 
 // DataPanel Function Component
@@ -419,6 +431,14 @@ const DataPanel = ({ handleGeocoder }) => {
   const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
     && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
 
+  const [linkCopied, setLinkCopied] = useState(false);
+  const handleTooltipOpen = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setLinkCopied(true);
+  };
+  const handleTooltipClose = () => {
+    setLinkCopied(false);
+  };
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
       <Grid container spacing={4} alignItems={'center'}>
@@ -496,7 +516,30 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
 
             <Grid size={2} alignItems={'end'}>
-              <LButton onClick={() => navigator.clipboard.writeText('')}><FaLink style={{ width: '15px', height: '15px' }} /></LButton>
+              <ClickAwayListener onClickAway={handleTooltipClose}>
+                <div>
+                  <Tooltip
+                    open={linkCopied}
+                    onClose={handleTooltipClose}
+                    onOpen={handleTooltipOpen}
+                    placement={'left'}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title=" ✔  Link copied!"
+                    slotProps={{
+                      popper: {
+                        disablePortal: true,
+                      },
+                    }}
+                    slots={{ transition: Zoom }}
+                  >
+                    <LButton onClick={handleTooltipOpen}>
+                      <FaLink style={{ width: '15px', height: '15px' }} />
+                    </LButton>
+                  </Tooltip>
+                </div>
+              </ClickAwayListener>
             </Grid>
           </Grid>
 
@@ -513,7 +556,7 @@ const DataPanel = ({ handleGeocoder }) => {
             <Grid offset={2} size={8}>
               <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
             </Grid>
-            <Grid size={2}><SensorValueLabelTooltip style={{ alignSelf: 'center' }} color={'rgba(0, 88, 153, 0.5)'} /></Grid>
+            <Grid size={2}><SensorValueLabelTooltip /></Grid>
           </Grid>}
 
           <Grid container spacing={0}>
@@ -603,19 +646,32 @@ const DataPanel = ({ handleGeocoder }) => {
       </>}
 
       {currentPage === 'layers' && <>
-        <LButton variant={'text'} onClick={() => popPage()}>Back</LButton>
-        <h1>Map Layers</h1>
+        <Grid container spacing={0}>
+          <Grid size={2}>
+            <LButton variant={'text'} onClick={() => popPage()}>
+              <FaArrowCircleLeft />
+            </LButton>
+          </Grid>
 
-        <div>
-          Customize your view to see how air quality intersects with
-          your community. Use overlays and filters to explore how
-          social determinants impact health outcomes in your area.
-        </div>
+          <Grid size={10}>
+            <LHeader>Map Layers</LHeader>
 
-        <VariablesDropdown></VariablesDropdown>
-        <VariableDescriptionDisplay></VariableDescriptionDisplay>
-        <OverlaysDropdown></OverlaysDropdown>
-        <OverlaysColorLegend></OverlaysColorLegend>
+            <SGBody>
+              Customize your view to see how air quality intersects with
+              your community. Use overlays and filters to explore how
+              social determinants impact health outcomes in your area.
+            </SGBody>
+
+            <LHeader style={{ fontSize: '18px' }}>Overlays</LHeader>
+
+            <SGBody>Community context <SensorValueLabelTooltip /></SGBody>
+            <VariablesDropdown></VariablesDropdown>
+            {/*<VariableDescriptionDisplay></VariableDescriptionDisplay>*/}
+            <SGBody>Boundaries <SensorValueLabelTooltip /></SGBody>
+            <OverlaysDropdown></OverlaysDropdown>
+            <OverlaysColorLegend></OverlaysColorLegend>
+          </Grid>
+        </Grid>
       </>}
 
       {currentPage === 'selection' && <>

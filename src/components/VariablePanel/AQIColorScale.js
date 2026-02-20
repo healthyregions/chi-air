@@ -8,6 +8,8 @@ import {Tooltip} from "@mui/material";
 // Main container for entire panel
 const ColorScaleContainer = styled.div`
   position:fixed;
+  border-radius: 8px;
+  border: 1px solid rgba(65, 182, 230, 1);
   min-width:433px;
   right:0.5em;
   bottom:0.5em;
