@@ -35,11 +35,7 @@ export const SensorBarChart = ({ dataset, datasourceId, averageType }) => {
         const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
         const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
 
-        if (averageType === 'hour') {
-          return time;
-        } else {
-          return date;
-        }
+        return averageType === 'hour' ? time : date;
       } }],
     series: [{ dataKey: datasourceId, minBarSize: '20px', valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³` }], // Minimum width of 10px
     height: 200,

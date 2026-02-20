@@ -404,10 +404,11 @@ const DataPanel = ({ handleGeocoder }) => {
 
   const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
   const latest = getLatestValue(clickedSensor);
+  const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
+    && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
 
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
-
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} options={['English','Español']} /></Grid>
@@ -419,6 +420,7 @@ const DataPanel = ({ handleGeocoder }) => {
       >
         &larr; Homepage
       </LButton>
+
       {currentPage === 'root' && <>
         <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
           <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
@@ -485,10 +487,12 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>
           <Grid container spacing={0}>
             <Grid offset={2} size={10}>
+              {Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
+              {Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
             </Grid>
           </Grid>
 
-          <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType).reverse()} />
+          {recentValueCount > 0 && <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.reverse()} />}
         </>}
 
         {selectedSensors?.length > 0 && <SelectedSensorsPanel>
