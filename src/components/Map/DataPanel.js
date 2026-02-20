@@ -475,16 +475,22 @@ const DataPanel = ({ handleGeocoder }) => {
           <Grid container spacing={0} alignItems={'start'}>
             <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowCircleLeft /></LButton>
 
-            <Grid>
+            <Grid size={7}>
               <h3 style={{ marginTop: '3px', fontFamily: 'Lexend', fontWeight:400 }}>{clickedLocation?.name}</h3>
-              <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
-              <SensorValueDisplay scale={'μg/m³'} value={latest.latest_mean_pm25}></SensorValueDisplay>
             </Grid>
 
-            <Grid flexDirection={'column'} alignItems={'end'}>
+            <Grid size={2}>
               <DropdownButton style={{ textTransform: 'uppercase' }} ButtonComponent={LButton} label={averageType} onChange={(t) => dispatch(setAverageType(t))} options={['hour','day','week','month','season','year']}></DropdownButton>
             </Grid>
           </Grid>
+
+          <Grid container spacing={0}>
+            <Grid offset={2} >
+              <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
+              <SensorValueDisplay scale={'μg/m³'} value={latest.latest_mean_pm25}></SensorValueDisplay>
+            </Grid>
+          </Grid>
+
           <Grid container spacing={0}>
             <Grid offset={2} size={10}>
               {Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
