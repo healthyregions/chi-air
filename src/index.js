@@ -26,7 +26,7 @@ const root = createRoot(container);
 root.render(
   <StrictMode>
     <Provider store={store}>
-		  <Router basename={process.env.PUBLIC_URL}>
+      <Router basename={process.env.PUBLIC_URL}>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
             <App />
@@ -34,8 +34,7 @@ root.render(
         </StyledEngineProvider>
       </Router>
     </Provider>
-  </StrictMode>,
-
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -74,7 +74,6 @@ function Map() {
             {/*<VariablePanel />*/}
             <DataPanel handleGeocoder={handleGeocoder} />
             <AQIColorScale />
-            {/* <Popover />     */}
           </>
         }
       </div>

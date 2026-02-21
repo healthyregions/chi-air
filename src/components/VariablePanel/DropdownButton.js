@@ -5,7 +5,7 @@ import {useState} from "react";
 import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
 
 
-export const DropdownButton = ({ width, menuStyle, style, onChange = (s) => {}, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ width, menuStyle, style, onChange = () => {}, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {

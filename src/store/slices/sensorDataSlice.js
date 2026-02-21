@@ -7,12 +7,20 @@ const initialState = {
   geojsonData: {},
   clickedSensor: undefined,
   averageType: 'hour',
+  locale: 'en',
 };
 
 export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setLocale: (state, action) => {
+      console.log('Selected locale:', action.payload);
+      return {
+        ...state,
+        locale: action.payload
+      }
+    },
     setAverageType: (state, action) => ({
       ...state,
       averageType: action.payload
@@ -60,6 +68,7 @@ export const sensorDataSlice = createSlice({
     selectSensorGeojsonData: state => state.geojsonData,
     selectClickedSensor: state => state.clickedSensor,
     selectAverageType: state => state.averageType,
+    selectLocale: state=> state.locale,
   }
 });
 
@@ -73,6 +82,7 @@ export const {
   setSelectedSensors,
   setClickedSensor,
   setAverageType,
+  setLocale,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
@@ -83,5 +93,6 @@ export const {
   selectSensorGeojsonData,
   selectClickedSensor,
   selectAverageType,
+  selectLocale,
 } = sensorDataSlice.selectors
 

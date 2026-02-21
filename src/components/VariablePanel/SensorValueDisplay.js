@@ -47,7 +47,9 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
     return (<></>);
   }
 
-  const range = pm2_5Ranges?.find(r => r.min <= value && value <= r.max);
+  const rounded = Math.round(value * 10) / 10;
+  const range = pm2_5Ranges?.find(r => r.min <= rounded && rounded <= r.max);
+
   const invertedColors = ['Good', 'Moderate'];
 
   const primary = invertedColors?.includes(range?.label) ? range?.border : range?.color;
@@ -59,7 +61,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
         <Grid container spacing={0} alignItems={'center'}>
           {showColor && <SensorValueColorIndicator color={primary} border={secondary}></SensorValueColorIndicator>}
           <Grid>
-            <SensorNumericalValue color={primary}>{Number(value).toFixed(1)}</SensorNumericalValue>
+            <SensorNumericalValue color={primary}>{Number(rounded).toFixed(1)}</SensorNumericalValue>
             <SensorValueScale color={primary}>{scale}</SensorValueScale>
           </Grid>
         </Grid>

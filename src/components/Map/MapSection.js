@@ -742,7 +742,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const id = feature?.object?.properties?.['datasourceId'];
         //dispatch(addSensorsToSelection([id]));
         dispatch(setClickedSensor(id));
-        id && setSearchParams({ location: id });
+        id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
       },
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
@@ -806,11 +806,10 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       pointRadiusUnits: 'meters',
       visible: true,
       onClick: (feature) => {
-        console.log(feature);
         const id = feature?.object?.properties?.['datasourceId'];
         //dispatch(removeSensorsFromSelection([id]));
         dispatch(setClickedSensor(id));
-        id && setSearchParams({ location: id });
+        id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
       },
       beforeId: "state-label",
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{

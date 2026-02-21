@@ -9,10 +9,9 @@ const Guide = React.lazy(() => import('./components/Pages/Guide'));
 const Community = React.lazy(() => import('./components/Pages/Community'));
 const Posts = React.lazy(() => import('./components/Pages/Posts'));
 
-
 export default function App() {
 	return (
-		<div>
+		<>
       <ParquetReaderComponent></ParquetReaderComponent>
       <Suspense fallback={<LoadingMessage />}>
         <Routes>
@@ -25,6 +24,7 @@ export default function App() {
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </Suspense>
-		</div>
+      {/*<GoogleTranslate />*/}
+		</>
 	);
 }

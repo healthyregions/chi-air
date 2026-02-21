@@ -25,7 +25,7 @@ const VariablesDropdown = () => {
 
   return (
     <>
-      <FormControl id="newVariableSelect" variant="outlined" fullWidth={true}>
+      <FormControl id="newVariableSelect" variant="outlined" fullWidth>
         <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
         <Select
           variant={"filled"}
