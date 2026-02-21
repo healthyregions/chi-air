@@ -71,7 +71,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
         <Grid size={9}>
           <SGBody>
             Community context
-            <Button variant={'text'} onClick={() => push('Overlays / Community Context')}>
+            <Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>
               <SensorValueLabelTooltip />
             </Button>
           </SGBody>
@@ -79,7 +79,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
 
           <SGBody>
             Boundaries
-            <Button variant={'text'} onClick={() => push('Overlays / Boundaries')}>
+            <Button variant={'text'} onClick={() => push(['Overlays / Boundaries'])}>
               <SensorValueLabelTooltip />
             </Button>
           </SGBody>

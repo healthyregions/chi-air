@@ -38,8 +38,8 @@ import {FaChartLine} from "@react-icons/all-files/fa/FaChartLine";
 const DataPanelContainer = styled.div`
   position:fixed;
   width:433px;
-  right:0.5em;
-  top:0.5em;
+  right:2rem;
+  top:2rem;
   background: linear-gradient(180deg, #e3f4fb 0%, #ffffff 80%);
   border: 1px solid rgba(65, 182, 230, 1);
   backdrop-filter: blur( 20px );
@@ -524,7 +524,7 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={0}>
+          <Grid container spacing={0} alignItems={'center'}>
             <Grid offset={2} size={7}>
               <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
             </Grid>
@@ -540,11 +540,23 @@ const DataPanel = ({ handleGeocoder }) => {
             <Grid size={2} onClick={() => pushPage(['Color Coding Air Quality'])}><SensorValueLabelTooltip /></Grid>
           </Grid>}
 
-          <Grid container spacing={0}>
-            <Grid offset={2} size={10}>
+          <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'}>
+            {/*<Grid size={1}>
+              <LButton style={{ fontSize: '28px', color: 'rgba(0, 88, 153, 1)', width: '36px', height: '36px' }}
+                       onClick={() => console.log('prev')}>
+                <FaChevronCircleLeft />
+              </LButton>
+            </Grid>*/}
+            <Grid size={10}>
               {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
               {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
             </Grid>
+           {/* <Grid size={1}>
+              <LButton style={{ fontSize: '28px', color: 'rgba(0, 88, 153, 1)', width: '36px', height: '36px' }}
+                       onClick={() => console.log('next')}>
+                <FaChevronCircleRight />
+              </LButton>
+            </Grid>*/}
           </Grid>
 
           <Grid container alignItems={'center'}>
