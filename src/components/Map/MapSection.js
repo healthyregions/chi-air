@@ -824,7 +824,8 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   useEffect(() => {
     const location = searchParams.get('location');
     location && !clickedSensor && dispatch(setClickedSensor(location));
-  }, [searchParams, clickedSensor, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (use3d) {
