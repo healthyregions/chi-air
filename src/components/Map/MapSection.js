@@ -824,7 +824,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   useEffect(() => {
     const location = searchParams.get('location');
     location && !clickedSensor && dispatch(setClickedSensor(location));
-  }, []);
+  }, [searchParams, clickedSensor, dispatch]);
 
   useEffect(() => {
     if (use3d) {

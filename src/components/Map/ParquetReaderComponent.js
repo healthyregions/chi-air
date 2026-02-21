@@ -1,5 +1,5 @@
 import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
-import { useEffect } from 'react';
+import {useEffect, useMemo} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations,
@@ -23,7 +23,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
 
-  const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
+  const sensorIds = useMemo(() => [...new Set(locations.map(l => l.datasourceId))], [locations]);
 
   const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
   const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
@@ -62,7 +62,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       rowStart: 0,
       rowEnd: 100
     }).then(d => dispatch(setSensorValuesMeanPm25(d)));
-  }, [dispatch, meanPm25Url, locations]);
+  }, [dispatch, meanPm25Url, locations, sensorIds]);
 
   useEffect(() => {
     //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
@@ -101,7 +101,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       }),
     };
     dispatch(setSensorGeojsonData(geojsonData));
-  }, []);
+  }, [dispatch, locations, mean_pm25, sensorIds]);
 
   if (!mean_pm25) return <>Loading...</>;
 
