@@ -6,11 +6,12 @@ const SensorValueDisplayContainer = styled.div`
     font-family: Lexend;
 `;
 
-const SensorValueColorIndicator = styled.span`
+const SensorValueColorIndicator = styled.div`
     display: block;
     background-color: ${({ color }) => color};
     border: 4px solid ${({ border }) => border};
     border-radius: 100px;
+    margin-right: 0.8rem;
     width: 32px;
     height: 32px;
 `;
@@ -56,9 +57,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
     <>
       <SensorValueDisplayContainer style={style}>
         <Grid container spacing={0} alignItems={'center'}>
-          <Grid size={2}>
-            {showColor && <SensorValueColorIndicator color={primary} border={secondary}></SensorValueColorIndicator>}
-          </Grid>
+          {showColor && <SensorValueColorIndicator color={primary} border={secondary}></SensorValueColorIndicator>}
           <Grid>
             <SensorNumericalValue color={primary}>{Number(value).toFixed(1)}</SensorNumericalValue>
             <SensorValueScale color={primary}>{scale}</SensorValueScale>

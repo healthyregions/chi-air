@@ -742,9 +742,8 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const id = feature?.object?.properties?.['datasourceId'];
         //dispatch(addSensorsToSelection([id]));
         dispatch(setClickedSensor(id));
-        setSearchParams({ location: clickedSensor });
+        id && setSearchParams({ location: id });
       },
-      beforeId: "state-label",
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
@@ -764,10 +763,13 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       stroked: true,
       filled: true,
       extruded: false,
+      /*pointType: 'circle+text',
+      getText: f => f?.properties?.name,
+      getTextSize: 12,*/
       getFillColor: (feature) => {
         // Detect loading state, display soft colors while loading
         if (Object.keys(latestHourlyRow)?.length <= 2) {
-          return [229, 238, 245];
+          return [79, 143, 197];
         }
         const latest = feature.properties.latest_mean_pm25;
         if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
@@ -787,7 +789,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       getLineColor: (feature) => {
         // Detect loading state, display soft colors while loading
         if (Object.keys(latestHourlyRow)?.length <= 2) {
-          return [79, 143, 197];
+          return [229, 238, 245];
         }
         const latest = feature.properties.latest_mean_pm25;
         if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
@@ -808,6 +810,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const id = feature?.object?.properties?.['datasourceId'];
         //dispatch(removeSensorsFromSelection([id]));
         dispatch(setClickedSensor(id));
+        id && setSearchParams({ location: id });
       },
       beforeId: "state-label",
       onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
@@ -817,6 +820,11 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
     })
   )
   const allLayers = [...baseLayers, ...customLayers, overlayLayers];
+
+  useEffect(() => {
+    const location = searchParams.get('location');
+    location && !clickedSensor && dispatch(setClickedSensor(location));
+  }, []);
 
   useEffect(() => {
     if (use3d) {

@@ -1,7 +1,10 @@
 import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations } from '../../store/slices/sensorDataSlice';
+import {
+  setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations,
+  setSensorGeojsonData
+} from '../../store/slices/sensorDataSlice';
 
 // Cache values as they are read
 /*const SensorDataStore = ({  }) => {
@@ -18,7 +21,9 @@ import { setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
-  const data = useSelector(selectSensorValuesMeanPm25);
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+
+  const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
 
   const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
   const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
@@ -45,7 +50,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     fetch({
       url: locationsUrl,
       columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags', 'community', 'zip'],
-    }).then(l => dispatch(setSensorLocations(l)) && console.log('Locations:', l));
+    }).then(l => dispatch(setSensorLocations(l)));
   }, [dispatch, locationsUrl]);
 
   useEffect(() => {
@@ -53,19 +58,58 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch the metric data (currently just mean_pm25) using our list of locations
     fetch({
       url: meanPm25Url,
-      columns: ['type','date', ...new Set(locations.map(d => d.datasourceId))],
+      columns: ['type','date', ...sensorIds],
       rowStart: 0,
       rowEnd: 100
-    }).then(d => dispatch(setSensorValuesMeanPm25(d)) && console.log('Data:', d));
+    }).then(d => dispatch(setSensorValuesMeanPm25(d)));
   }, [dispatch, meanPm25Url, locations]);
 
-  if (!data) return <>Loading...</>;
+  useEffect(() => {
+    //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
+    const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .reverse();
+    const latestHourlyRow = sortedHourlyRows.find(() => true);
+    const previousHourlyRow = sortedHourlyRows.slice(1).find(() => true);
+    const geojsonData = {
+      type: 'FeatureCollection',
+      features: sensorIds.map((datasourceId) => {
+        const location = locations.find(r => r.datasourceId === datasourceId);
+        const metric_pm25 = mean_pm25.map((r) => ({
+          period: r.period || r.type,
+          date: r.date,
+          [datasourceId]: r[datasourceId]
+        }));
+
+        return {
+          type: 'Feature',
+          geometry: {
+            type: "Point",
+            coordinates: [
+              location.locationLongitude,
+              location.locationLatitude
+            ],
+          },
+          // Ensure this is valid GeoJSON format
+          properties: {
+            ...location,
+            last_update: latestHourlyRow?.[datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
+            latest_mean_pm25: latestHourlyRow?.[datasourceId] || previousHourlyRow?.[datasourceId],
+            mean_pm25: metric_pm25
+          },
+        }
+      }),
+    };
+    dispatch(setSensorGeojsonData(geojsonData));
+  }, []);
+
+  if (!mean_pm25) return <>Loading...</>;
 
   return (
     DEBUG ? <>
       <h3>Parquet Data:</h3>
       <ul>
-        {data.map((record, index) => (
+        {mean_pm25.map((record, index) => (
           <li key={index}>{/* Render your data here, e.g., record.columnName */}</li>
         ))}
       </ul>

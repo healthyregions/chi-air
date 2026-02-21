@@ -90,7 +90,7 @@ const DataPanelContainer = styled.div`
     padding:0;
     margin:0;
     background-color: ${colors.white};
-    box-shadow: 2px 0px 5px ${colors.gray}88;
+    box-shadow: 2px 0px 2px ${colors.gray}44;
     border:1px solid ${colors.chicagoBlue};
     // border-radius:20px;
     cursor: pointer;
@@ -306,8 +306,8 @@ const SensorIdColumn = styled(Grid)``;
 const LocationNameColumn = styled(Grid)``;
 const Color = styled.span`
     display: block;
-    background-color: ${(props) => props.color};
-    border: 1px solid ${(props) => props.border};
+    background-color: ${({ color }) => color};
+    border: 1px solid ${({ border }) => border};
     border-radius: 10px;
     width: 16px;
     height: 16px;
@@ -337,7 +337,7 @@ const LHeader = styled.span`
 
 const SGBody = styled.div`
     font-family: Space Grotesk;
-    font-weight: 400;
+    font-weight: 300;
     margin: 1rem 0;
     font-style: Regular;
     font-size: 14px;
@@ -526,6 +526,7 @@ const DataPanel = ({ handleGeocoder }) => {
                     disableFocusListener
                     disableHoverListener
                     disableTouchListener
+                    arrow={true}
                     title=" ✔  Link copied!"
                     slotProps={{
                       popper: {
@@ -552,7 +553,7 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
 
-          {Object.keys(firstHourlyRow)?.length > 2 && recentValueCount > 0 && <Grid container spacing={0} alignItems={'center'}>
+          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount > 0 && <Grid container spacing={0} alignItems={'center'}>
             <Grid offset={2} size={8}>
               <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
             </Grid>
@@ -561,8 +562,8 @@ const DataPanel = ({ handleGeocoder }) => {
 
           <Grid container spacing={0}>
             <Grid offset={2} size={10}>
-              {Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
-              {Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
+              {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
+              {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
             </Grid>
           </Grid>
 
@@ -581,7 +582,7 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
             <Grid>
 
-              {Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <h3 style={{ fontFamily: 'Lexend', fontWeight: 400 }}>Selected
+              {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <h3 style={{ fontFamily: 'Lexend', fontWeight: 400 }}>Selected
                 {!selections?.community?.length && !selections?.zip?.length && <> Locations </>}
                 {selections?.community?.length > 0 && <> Community </>}
                 {selections?.zip?.length > 0 && <> Zip code </>}
@@ -590,7 +591,7 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
 
-          {Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0}>
+          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0}>
             <TimestampColumn size={3}></TimestampColumn>
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
@@ -629,7 +630,7 @@ const DataPanel = ({ handleGeocoder }) => {
                   <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
                 </AqiValueColumn>
                 <ColorColumn size={1}>
-                  <small><Color color={range?.color} border={range?.border}></Color></small>
+                  <Color color={range?.color} border={range?.border}></Color>
                 </ColorColumn>
                 <LocationNameColumn size={4}>
                   <small>{name}</small>
@@ -646,14 +647,13 @@ const DataPanel = ({ handleGeocoder }) => {
       </>}
 
       {currentPage === 'layers' && <>
-        <Grid container spacing={0}>
-          <Grid size={2}>
-            <LButton variant={'text'} onClick={() => popPage()}>
-              <FaArrowCircleLeft />
-            </LButton>
-          </Grid>
+        <Grid container spacing={0} marginTop={'1rem'}>
+          <LButton as={Grid} size={1} variant={'text'} onClick={() => popPage()}
+                   style={{ cursor: 'pointer', marginTop: '0.4rem' }}>
+            <FaArrowCircleLeft style={{ width: '19px', height: '19px' }} />
+          </LButton>
 
-          <Grid size={10}>
+          <Grid size={11}>
             <LHeader>Map Layers</LHeader>
 
             <SGBody>
