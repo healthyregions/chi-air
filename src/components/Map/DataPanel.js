@@ -33,6 +33,7 @@ import {SensorValueDisplay} from "../VariablePanel/SensorValueDisplay";
 import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
 import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
 import {FaLink} from "@react-icons/all-files/fa/FaLink";
+import {FaGripLines} from "@react-icons/all-files/fa/FaGripLines";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -71,7 +72,7 @@ const DataPanelContainer = styled.div`
   @media (max-width:600px) {
     width:calc(100% - 1em);
     top:calc(1em + 45px);
-    height:calc(100% - 6em);
+    height:auto;
     left:.75em;
     padding-top:2em;
     transform:translateX(calc(-100% - 1em));
@@ -444,7 +445,7 @@ const DataPanel = ({ handleGeocoder }) => {
     setLinkCopied(false);
   };
   return (
-    <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel" otherPanels={panelState.variables}>
+    <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel">
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} options={['English','Español']} /></Grid>
@@ -719,7 +720,7 @@ const DataPanel = ({ handleGeocoder }) => {
       </>}
 
 
-      <button onClick={handleOpenClose} id="showHideRight" className={panelState.info ? 'active' : 'hidden'}>{report}</button>
+      <button onClick={handleOpenClose} id="showHideRight" className={panelState.info ? 'active' : 'hidden'}><FaGripLines /></button>
     </DataPanelContainer>
   );
 }
