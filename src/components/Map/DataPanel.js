@@ -297,6 +297,10 @@ const GridHeader = styled(Grid)`
 
 const GridBody = styled(Grid)`
     font-family: Space Grotesk;
+    cursor: pointer;
+    &:hover {
+        background-color: #22222222;
+    }
 `;
 const TimestampColumn = styled(Grid)``;
 const AqiValueColumn = styled(Grid)`
@@ -508,7 +512,9 @@ const DataPanel = ({ handleGeocoder }) => {
           <Divider />
           <Grid container spacing={0} alignItems={'center'} marginTop={'2rem'}>
             <Grid size={2}>
-              <LButton onClick={() => dispatch(setClickedSensor())} ><FaArrowLeft style={{ width: '15px', height: '15px' }} /></LButton>
+              <LButton onClick={() => dispatch(setClickedSensor())} >
+                <FaArrowLeft style={{ width: '15px', height: '15px' }} />
+              </LButton>
             </Grid>
 
             <Grid size={8}>
@@ -574,24 +580,23 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>
         </>}
 
-        {selectedSensors?.length > 0 && <SelectedSensorsPanel>
+        {!clickedSensor && selectedSensors?.length > 0 && <SelectedSensorsPanel>
           <Divider />
-          <Grid container spacing={0} alignItems={'center'}>
+          <Grid container spacing={0} alignItems={'center'} marginTop={'2rem'}>
             <Grid size={2}>
-              <LButton onClick={() => resetAll()}><FaArrowCircleLeft /></LButton>
+              <LButton onClick={() => resetAll()}>
+                <FaArrowLeft style={{ width: '15px', height: '15px' }} />
+              </LButton>
             </Grid>
-            <Grid>
 
-              {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <h3 style={{ fontFamily: 'Lexend', fontWeight: 400 }}>Selected
+              {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <LHeader>Selected
                 {!selections?.community?.length && !selections?.zip?.length && <> Locations </>}
                 {selections?.community?.length > 0 && <> Community </>}
                 {selections?.zip?.length > 0 && <> Zip code </>}
-                <small><small><small>(Debug Info)</small></small></small>
-              </h3>}
-            </Grid>
+              </LHeader>}
           </Grid>
 
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0}>
+          {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
             <TimestampColumn size={3}></TimestampColumn>
             <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
             <ColorColumn size={1}></ColorColumn>
@@ -601,7 +606,7 @@ const DataPanel = ({ handleGeocoder }) => {
             {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}
           </GridHeader>}
 
-          {selectedSensors?.map((s, index) => {
+          {!clickedSensor && selectedSensors?.map((s, index) => {
             const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(s);
             const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
             const isoTimestamp = last_update.split(' ').join('T') + 'Z';
@@ -622,7 +627,7 @@ const DataPanel = ({ handleGeocoder }) => {
             const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
 
             return (
-              <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`}>
+              <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`} onClick={() => dispatch(setClickedSensor(s))}>
                 <TimestampColumn size={3}>
                   <small>{date} {time}</small>
                 </TimestampColumn>

@@ -47,7 +47,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
     return (<></>);
   }
 
-  const range = pm2_5Ranges?.find(r => r.min < value && value <= r.max);
+  const range = pm2_5Ranges?.find(r => r.min <= value && value <= r.max);
   const invertedColors = ['Good', 'Moderate'];
 
   const primary = invertedColors?.includes(range?.label) ? range?.border : range?.color;

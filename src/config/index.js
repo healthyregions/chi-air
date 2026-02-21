@@ -78,9 +78,9 @@ export const colors = {
 // https://www.elichens.com/blog-posts/2020/9/16/wildfires-and-urban-air-quality-when-actionable-data-can-only-be-ultra-local
 export const pm2_5Ranges = [
   { label: 'Good', min: 0, max: 12.0, range: '0 - 50', color: "rgb(162, 217, 156)", border: "rgb(12, 115, 0)", colorComponents: [162, 217, 156], borderComponents: [12, 115, 0] },
-  { label: 'Moderate', min: 12.0, max: 35.4, range: '51 - 100', color: "rgb(248, 205, 70)", border: "rgb(122, 96, 17)", colorComponents: [248, 205, 70], borderComponents: [122, 96, 17]  },
-  { label: 'Unhealthy for Sensitive Groups', min: 35.4, max: 55.4, range: '101 - 150', color: "rgb(220, 117, 0)", border: "rgb(222, 204, 183)", colorComponents: [220, 117, 0], borderComponents: [222, 204, 183]  },
-  { label: 'Unhealthy', min: 55.4, max: 150.4, range: '151 - 200', color: "rgb(228, 0, 4)", border: "rgb(233, 187, 187)", colorComponents: [228, 0, 4], borderComponents: [233, 187, 187]  },
-  { label: 'Very Unhealthy', min: 150.4, max: 250.4, range: '201 - 300', color: "rgb(130, 0, 197)", border: "rgb(207, 176, 224)", colorComponents: [130, 0, 197], borderComponents: [207, 176, 224]  },
-  { label: 'Hazardous', min: 250.4, max: 500, range: '301+', color: "rgb(139, 13, 56)", border: "rgb(227, 115, 153)", colorComponents: [139, 13, 56], borderComponents: [227, 115, 153] },
+  { label: 'Moderate', min: 12.1, max: 35.4, range: '51 - 100', color: "rgb(248, 205, 70)", border: "rgb(122, 96, 17)", colorComponents: [248, 205, 70], borderComponents: [122, 96, 17]  },
+  { label: 'Unhealthy for Sensitive Groups', min: 35.5, max: 55.4, range: '101 - 150', color: "rgb(220, 117, 0)", border: "rgb(222, 204, 183)", colorComponents: [220, 117, 0], borderComponents: [222, 204, 183]  },
+  { label: 'Unhealthy', min: 55.5, max: 150.4, range: '151 - 200', color: "rgb(228, 0, 4)", border: "rgb(233, 187, 187)", colorComponents: [228, 0, 4], borderComponents: [233, 187, 187]  },
+  { label: 'Very Unhealthy', min: 150.5, max: 250.4, range: '201 - 300', color: "rgb(130, 0, 197)", border: "rgb(207, 176, 224)", colorComponents: [130, 0, 197], borderComponents: [207, 176, 224]  },
+  { label: 'Hazardous', min: 250.5, max: 500, range: '301+', color: "rgb(139, 13, 56)", border: "rgb(227, 115, 153)", colorComponents: [139, 13, 56], borderComponents: [227, 115, 153] },
 ]
