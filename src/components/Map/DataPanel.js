@@ -11,7 +11,6 @@ import Histogram from '../Charts/Histogram';
 import { Gutter } from '../Layout/Gutter';
 import {selectPanelState, selectRanges, selectSelectionData, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors, pm2_5Ranges} from '../../config';
-import { report } from '../../config/svg';
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
 import {Button, ClickAwayListener, Tooltip, Zoom} from "@mui/material";

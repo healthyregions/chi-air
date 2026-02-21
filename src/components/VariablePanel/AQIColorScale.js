@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 import {Tooltip} from "@mui/material";
 import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {report} from "../../config/svg";
 import {FaKey} from "@react-icons/all-files/fa/FaKey";
 
 //// Styled components CSS
