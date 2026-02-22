@@ -774,7 +774,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         const latest = feature.properties.latest_mean_pm25;
         if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
           //return [79, 143, 197];
-          return [200, 200, 200];
+          return [100, 100, 100];
         }
 
         const bins = pm2_5Ranges.map(r => r.max);
@@ -793,8 +793,9 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         }
         const latest = feature.properties.latest_mean_pm25;
         if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
-          return [229, 238, 245];
+          //return [229, 238, 245];
           //return [68, 68, 68];
+          return [200, 200, 200];
         }
 
         const bins = pm2_5Ranges.map(r => r.max);
