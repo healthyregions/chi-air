@@ -131,10 +131,23 @@ const LButton = styled(Button)`
     color: #005899;
 `;
 
+
+const resources = [
+  { url: '', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'Start with Air Quality 101', description: 'Dr. Erdal’s introduction to air quality presentation. More about this resource is here' },
+  { url: '', icon: '/icons/chiair/resources-tools.svg', backdrop: true, name: 'Build your own Air Filter', description: 'Corsi-Rosenthal Box, more details about this resource is here' },
+  { url: '', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Indoor Air Quality', description: 'People spend 90% of their time indoors. Learn more about this resource here' },
+  { url: '', icon: '/icons/chiair/resources-report.svg', backdrop: true, name: 'Report Air Pollution', description: 'Chi 311 Report Air Pollution. More details about this resource is here' },
+  { url: '', icon: '/icons/chiair/resources-square.svg', backdrop: true, name: 'City of Chicago Ordinance', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+  { url: '', icon: '/icons/chiair/resources-triangle.svg', backdrop: true, name: 'Report a Violation (311)', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+  { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes Dashboard', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+  { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+];
+
 export default function Home() {
   // const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const locations = useSelector(selectSensorLocations);
 
   const handleGeocoder = useCallback((location) => {
     if (location.center !== undefined) {
@@ -148,7 +161,6 @@ export default function Home() {
     }
   }, [navigate]);
 
-  const locations = useSelector(selectSensorLocations);
   const handleDropdown = (s, key) => {
     console.log(`Locations: `, locations);
     console.log(`Selecting ${key}: `, s);
@@ -157,17 +169,6 @@ export default function Home() {
     dispatch(setSelectedSensors(matches));
     navigate('/map');
   }
-
-  const resources = [
-    { url: '', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'Start with Air Quality 101', description: 'Dr. Erdal’s introduction to air quality presentation. More about this resource is here' },
-    { url: '', icon: '/icons/chiair/resources-tools.svg', backdrop: true, name: 'Build your own Air Filter', description: 'Corsi-Rosenthal Box, more details about this resource is here' },
-    { url: '', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Indoor Air Quality', description: 'People spend 90% of their time indoors. Learn more about this resource here' },
-    { url: '', icon: '/icons/chiair/resources-report.svg', backdrop: true, name: 'Report Air Pollution', description: 'Chi 311 Report Air Pollution. More details about this resource is here' },
-    { url: '', icon: '/icons/chiair/resources-square.svg', backdrop: true, name: 'City of Chicago Ordinance', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
-    { url: '', icon: '/icons/chiair/resources-triangle.svg', backdrop: true, name: 'Report a Violation (311)', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
-    { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes Dashboard', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
-    { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
-  ]
 
   return (
     <HomePage>
@@ -246,15 +247,17 @@ export default function Home() {
       </WhiteBackground>
 
       <GradientBackground>
-        <Grid container spacing={12} justifyContent={'space-around'} alignItems={'center'} marginX={'8rem'}>
+        <Grid container spacing={8} alignItems={'start'}>
           {resources?.map((resource, index) =>
-            <Grid key={'resources-'+index} size={3} style={{ cursor: 'pointer' }} onClick={() => window.location.href = resource?.url} justifyItems={'center'}>
+            <Grid key={'resources-'+index} size={3} style={{ cursor: 'pointer' }}
+                  onClick={() => window.location.href = resource?.url}
+                  justifyItems={'center'}>
               <Grid container spacing={0} marginY={'1rem'}>
                 <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <div style={{ textAlign: 'center', fontFamily: 'Lexend', fontWeight: 700, fontSize: '24px', color: '#005899' }}>{resource?.name} <FaExternalLinkAlt style={{ fontSize: '18px', marginLeft:'0.5rem', color: '#00589980' }} /></div>
+                <div style={{ textAlign: 'center', fontFamily: 'Lexend', fontWeight: 700, fontSize: '24px', color: '#005899', minHeight: '4rem' }}>{resource?.name} <FaExternalLinkAlt style={{ fontSize: '18px', marginLeft:'0.5rem', color: '#00589980' }} /></div>
                 <div style={{ textAlign: 'center', fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', color: '#444444' }}>{resource?.description}</div>
               </Grid>
             </Grid>
