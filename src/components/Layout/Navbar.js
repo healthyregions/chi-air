@@ -12,7 +12,6 @@ import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "@react-icons/all-files/fa/FaHome";
-import {setLocale} from "../../store/slices/sensorDataSlice";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -85,18 +84,6 @@ const NavInner = styled(Box)`
   min-width: 11.5em;
 
 `
-const LogoButtonContainer = styled.button`
-  display: flex;
-  cursor: pointer;
-  background: rgba( 255, 255, 255, 0.85 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
-  backdrop-filter: blur( 20px );
-  -webkit-backdrop-filter: blur( 20px );
-  box-shadow: 2px 0px 5px ${colors.gray}44;
-  border-radius:0;
-  border:1px solid ${colors.chicagoBlue};
-`;
-
 
 
 
@@ -117,15 +104,11 @@ export default function Nav({
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'Close Menu' : 'Open Menu';
   const loc = useLocation();
   const navigate = useNavigate();
 
