@@ -115,15 +115,15 @@ export default function Nav({
     <>
       <NavContainer>
         <Grid container justifyContent={'space-between'} alignItems={'center'}>
-          <Grid size={3}>
+          <Grid size={4}>
             <Grid container justifyContent={'space-between'} alignItems={'left'}>
-              <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Eng'} options={['English', 'Español']} />
-              <LButton onClick={() => navigate('/')}><FaHome /></LButton>
+              <DropdownButton style={{fontSize:'24px'}} ButtonComponent={LButton}  label={'Eng'} options={['English', 'Español']} />
+              <LButton style={{fontSize:'24px'}} onClick={() => navigate('/')}><FaHome /></LButton>
               {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
               <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
 
-              <LButton onClick={() => navigate('/map')}>Maps</LButton>
-              <LButton onClick={() => navigate('/about')}>About</LButton>
+              <LButton style={{fontSize:'24px'}} onClick={() => navigate('/map')}>Maps</LButton>
+              <LButton style={{fontSize:'24px'}} onClick={() => navigate('/about')}>About</LButton>
             </Grid>
           </Grid>
           <Grid alignItems={'end'} justifyContent={'right'}>
