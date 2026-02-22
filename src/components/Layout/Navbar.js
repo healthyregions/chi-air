@@ -12,6 +12,7 @@ import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "@react-icons/all-files/fa/FaHome";
+import {useMediaQuery} from "@mui/material";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -111,14 +112,16 @@ export default function Nav({
   const loc = useLocation();
   const navigate = useNavigate();
 
+  const largeScreen = useMediaQuery('(min-width: 600px)');
+
   return (
     <>
       <NavContainer>
-        <Grid container justifyContent={'space-between'} alignItems={'center'}>
+        <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'}>
           <Grid size={4}>
-            <Grid container justifyContent={'space-between'} alignItems={'left'}>
+            <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
               <DropdownButton style={{fontSize:'24px'}} ButtonComponent={LButton}  label={'Eng'} options={['English', 'Español']} />
-              <LButton style={{fontSize:'24px'}} onClick={() => navigate('/')}><FaHome /></LButton>
+              <LButton style={{fontSize:'24px' }} onClick={() => navigate('/')}><FaHome /></LButton>
               {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
               <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
 
@@ -127,7 +130,7 @@ export default function Nav({
             </Grid>
           </Grid>
           <Grid alignItems={'end'} justifyContent={'right'}>
-            <img height={77} width={477} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+            <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
           </Grid>
         </Grid>
 

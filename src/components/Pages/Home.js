@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 
 import { NavBar } from "../../components";
 import Geocoder from "../../components/Map/Geocoder";
-import { Button } from "@mui/material";
+import {Button, useMediaQuery} from "@mui/material";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {selectSensorLocations, setSelectedSensors} from "../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -148,6 +148,7 @@ export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
+  const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const handleGeocoder = useCallback((location) => {
     if (location.center !== undefined) {
@@ -249,15 +250,15 @@ export default function Home() {
       <GradientBackground>
         <Grid container spacing={8} alignItems={'start'}>
           {resources?.map((resource, index) =>
-            <Grid key={'resources-'+index} size={3} style={{ cursor: 'pointer' }}
-                  onClick={() => window.location.href = resource?.url}
+            <Grid key={'resources-'+index} size={{xs: 12, md:3 }} style={{ cursor: 'pointer' }}
+                  onClick={() => navigate(resource?.url)}
                   justifyItems={'center'}>
               <Grid container spacing={0} marginY={'1rem'}>
                 <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <div style={{ textAlign: 'center', fontFamily: 'Lexend', fontWeight: 700, fontSize: '24px', color: '#005899', minHeight: '4rem' }}>{resource?.name} <FaExternalLinkAlt style={{ fontSize: '18px', marginLeft:'0.5rem', color: '#00589980' }} /></div>
+                <div style={{ textAlign: 'center', fontFamily: 'Lexend', fontWeight: 700, fontSize: '24px', color: '#005899', minHeight: largeScreen? '4rem' : '' }}>{resource?.name} <FaExternalLinkAlt style={{ fontSize: '18px', marginLeft:'0.5rem', color: '#00589980' }} /></div>
                 <div style={{ textAlign: 'center', fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', color: '#444444' }}>{resource?.description}</div>
               </Grid>
             </Grid>
@@ -267,7 +268,7 @@ export default function Home() {
 
         <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'} marginTop={'10rem'} marginBottom={'4rem'}>
           <Grid size={6}>
-            <img style={{ sidth: '400px', height: '600px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+            <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
           </Grid>
           <Grid size={6} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
             <Grid container spacing={8} justifyContent={'right'} alignItems={'center'} marginBottom={'4rem'}>
