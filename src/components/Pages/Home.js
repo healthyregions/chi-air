@@ -12,6 +12,8 @@ import { Button } from "@mui/material";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {selectSensorLocations, setSelectedSensors} from "../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {FaArrowRight} from "@react-icons/all-files/fa/FaArrowRight";
+import {FaExternalLinkAlt} from "@react-icons/all-files/fa/FaExternalLinkAlt";
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -407,10 +409,12 @@ const brandColors = {
 }
 const ChiHeader = styled.h1`
     font-family: Lexend !important;
+    font-family: Lexend;
     font-size: 64px;
     text-align: right;
 `;
 const ChiBlackText = styled.span`
+    font-family: Lexend;
     font-weight: 400;
     font-style: normal;
 `;
@@ -450,14 +454,17 @@ const ChiSubtitle = styled.span`
 `;
 
 const WhiteBackground = styled.div`
+    margin-top: 2rem;
+    padding-bottom: 2rem;
     padding-left: 6rem;
     padding-right: 6rem;
     background: #FFFFFF00;
     width: 100%;
-    min-height: 20rem;
+    min-height: 15rem;
 `;
 
 const GradientBackground = styled.div`
+    padding-bottom: 2rem;
     padding-left: 6rem;
     padding-right: 6rem;
     background: linear-gradient(
@@ -467,8 +474,6 @@ const GradientBackground = styled.div`
     );
     width: 100%;
     min-height: 20rem;
-    padding-left: 6rem;
-    padding-right: 6rem;
 `;
 
 const ViewMapButton = styled(Button)`
@@ -517,6 +522,17 @@ export default function Home() {
     navigate('/map');
   }
 
+  const resources = [
+    { url: '', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'Start with Air Quality 101', description: 'Dr. Erdal’s introduction to air quality presentation. More about this resource is here' },
+    { url: '', icon: '/icons/chiair/resources-tools.svg', backdrop: true, name: 'Build your own Air Filter', description: 'Corsi-Rosenthal Box, more details about this resource is here' },
+    { url: '', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Indoor Air Quality', description: 'People spend 90% of their time indoors. Learn more about this resource here' },
+    { url: '', icon: '/icons/chiair/resources-report.svg', backdrop: true, name: 'Report Air Pollution', description: 'Chi 311 Report Air Pollution. More details about this resource is here' },
+    { url: '', icon: '/icons/chiair/resources-square.svg', backdrop: true, name: 'City of Chicago Ordinance', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+    { url: '', icon: '/icons/chiair/resources-triangle.svg', backdrop: true, name: 'Report a Violation (311)', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+    { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes Dashboard', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+    { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
+  ]
+
   return (
     <HomePage>
       <NavBar />
@@ -558,11 +574,13 @@ export default function Home() {
             </GeocoderContainer>
             <Grid container spacing={4} marginLeft={'.5rem'}>
               <DropdownButton ButtonComponent={LButton}
+                              buttonProps={{ size: 'large' }}
                               label={'Community'}
                               options={locations?.map(l => l?.community)}
                               onChange={(s) => handleDropdown(s, 'community')} />
 
               <DropdownButton ButtonComponent={LButton}
+                              buttonProps={{ size: 'large' }}
                               label={'Zip code'}
                               options={locations?.map(l => l?.zip)}
                               onChange={(s) => handleDropdown(s, 'zip')} />
@@ -576,12 +594,36 @@ export default function Home() {
         </Grid>
       </GradientBackground>
 
-      <WhiteBackground>
-
+      <WhiteBackground style={{ marginTop: '8rem' }}>
+        <Grid container spacing={0} justifyContent={'space-between'} alignItems={'start'}>
+          <LButton style={{ fontSize: '24px' }} onClick={() => navigate('/map')}>
+            View Chi Air Quality Network Map <FaArrowRight style={{ marginLeft: '.5rem' }}/>
+          </LButton>
+          <Grid container alignItems={'center'} spacing={8}>
+            <ChiBlackText style={{ fontSize: '32px', fontWeight: 400, textAlign: 'right' }}>
+              <div>Access useful</div>
+              <div style={{ fontWeight:700 }}>Air Quality <ChiRedText>Resources</ChiRedText></div>
+            </ChiBlackText>
+            <img src={'/icons/chiair/aq-resources-icon.svg'} alt={''} />
+          </Grid>
+        </Grid>
       </WhiteBackground>
 
       <GradientBackground>
-
+        <Grid container spacing={12} justifyContent={'space-around'} alignItems={'center'} marginX={'8rem'}>
+          {resources?.map((resource, index) =>
+            <Grid key={'resources-'+index} size={3} style={{ cursor: 'pointer' }} onClick={() => window.location.href = resource?.url} justifyItems={'center'}>
+              <Grid container spacing={0} marginY={'1rem'}>
+                <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
+                <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
+              </Grid>
+              <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                <div style={{ textAlign: 'center', fontFamily: 'Lexend', fontWeight: 700, fontSize: '24px', color: '#005899' }}>{resource?.name} <FaExternalLinkAlt style={{ marginLeft:'0.5rem'}} /></div>
+                <div style={{ textAlign: 'center', fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', color: '#444444' }}>{resource?.description}</div>
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
       </GradientBackground>
 
       <WhiteBackground>

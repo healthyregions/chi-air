@@ -63,7 +63,6 @@ const NavItems = styled.ul`
 `
 
 const NavContainer = styled.div`
-  //position:fixed;
   padding-top: 4rem;
   padding-left: 6rem;
   padding-right: 6rem;
@@ -115,17 +114,16 @@ export default function Nav({
   return (
     <>
       <NavContainer>
-        <Grid container justifyContent={'space-between'}>
+        <Grid container justifyContent={'space-between'} alignItems={'center'}>
           <Grid size={3}>
             <Grid container justifyContent={'space-between'} alignItems={'left'}>
               <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Eng'} options={['English', 'Español']} />
-              <LButton><FaHome /></LButton>
+              <LButton onClick={() => navigate('/')}><FaHome /></LButton>
               {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
               <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
 
               <LButton onClick={() => navigate('/map')}>Maps</LButton>
               <LButton onClick={() => navigate('/about')}>About</LButton>
-
             </Grid>
           </Grid>
           <Grid alignItems={'end'} justifyContent={'right'}>
