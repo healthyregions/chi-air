@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { NavBar, Footer } from '../../components';
+import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
-import React, {useState} from "react";
 import {Button} from "@mui/material";
 
 const AboutPage = styled.div`
@@ -57,8 +56,8 @@ const ChiBlackText = styled.span`
 `;
 
 export default function About() {
-    const categories = ['Map', 'Protocol', 'Parameters'];
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    //const categories = ['Map', 'Protocol', 'Parameters'];
+    //const [selectedCategories, setSelectedCategories] = useState([]);
 
     return (
        <AboutPage>
