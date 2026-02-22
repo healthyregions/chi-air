@@ -32,6 +32,8 @@ import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import {FaChartLine} from "@react-icons/all-files/fa/FaChartLine";
+import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft";
+import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -357,6 +359,18 @@ const DataPanel = ({ handleGeocoder }) => {
     setLinkCopied(false);
   };
   const [, setSearchParams] = useSearchParams();
+  const prevSensor = () => {
+    const index = selectedSensors?.indexOf(clickedSensor);
+    if (index === -1) { return; }
+    const newIndex = index === 0 ? selectedSensors?.length - 1 : index - 1;
+    dispatch(setClickedSensor(selectedSensors[newIndex]));
+  };
+  const nextSensor = () => {
+    const index = selectedSensors?.indexOf(clickedSensor);
+    if (index === -1) { return; }
+    const newIndex = index === (selectedSensors?.length - 1) ? 0 : index + 1;
+    dispatch(setClickedSensor(selectedSensors[newIndex]));
+  };
   return (
     <DataPanelContainer className={panelState.info ? 'open' : ''} id="data-panel">
       <Grid container spacing={4} alignItems={'center'}>
@@ -533,6 +547,21 @@ const DataPanel = ({ handleGeocoder }) => {
             </Grid>
           </Grid>
 
+          {selectedSensors?.includes(clickedSensor) && <Grid container spacing={0} justifyContent={"space-between"}>
+            <Grid size={6}>
+              <LButton style={{ position: 'absolute', left: '-2rem', marginTop: '2rem', fontSize: '28px',  width: '36px', height: '36px' }}
+                       onClick={() => prevSensor()}>
+                <FaChevronCircleLeft style={{ border: '2px solid white', borderRadius: '100px', backgroundColor: 'white',color: 'rgba(0, 88, 153, 1)' }} />
+              </LButton>
+            </Grid>
+            <Grid size={6}>
+              <LButton style={{ position: 'absolute', right: '-2rem', marginTop: '2rem', fontSize: '28px',  width: '36px', height: '36px' }}
+                       onClick={() => nextSensor()}>
+                <FaChevronCircleRight style={{ border: '2px solid white', borderRadius: '100px', backgroundColor: 'white',color: 'rgba(0, 88, 153, 1)' }} />
+              </LButton>
+            </Grid>
+          </Grid>}
+
           {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount > 0 && <Grid container spacing={0} alignItems={'center'}>
             <Grid offset={2} size={8}>
               <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
@@ -541,27 +570,15 @@ const DataPanel = ({ handleGeocoder }) => {
           </Grid>}
 
           <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'}>
-            {/*<Grid size={1}>
-              <LButton style={{ fontSize: '28px', color: 'rgba(0, 88, 153, 1)', width: '36px', height: '36px' }}
-                       onClick={() => console.log('prev')}>
-                <FaChevronCircleLeft />
-              </LButton>
-            </Grid>*/}
             <Grid size={10}>
               {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
               {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
             </Grid>
-           {/* <Grid size={1}>
-              <LButton style={{ fontSize: '28px', color: 'rgba(0, 88, 153, 1)', width: '36px', height: '36px' }}
-                       onClick={() => console.log('next')}>
-                <FaChevronCircleRight />
-              </LButton>
-            </Grid>*/}
           </Grid>
 
           <Grid container alignItems={'center'}>
             <Grid offset={1} size={11}>
-              {recentValueCount > 0 && <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.reverse()} />}
+              {recentValueCount > 0 && <SensorBarChart pageSize={40} datasourceId={clickedSensor} averageType={'hour'} dataset={mean_pm25?.filter(d => d.type === 'hour')?.map(r => ({ type: r.type, date: r.date, value:  r[clickedSensor] }))} />}
             </Grid>
           </Grid>
         </>}
@@ -604,7 +621,7 @@ const DataPanel = ({ handleGeocoder }) => {
           {currentPage === 'Details' && <Grid size={11}>
             <LHeader><LinkText onClick={() => popPage('root')}>{clickedLocation?.name}</LinkText> / Details</LHeader>
 
-            <Grid  container spacing={2} marginTop={'1.5rem'}>
+            <Grid container spacing={2} marginTop={'1.5rem'}>
               <Grid size={6}>
                 <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ??'} disabled textAlign={'center'} />
               </Grid>
@@ -692,14 +709,25 @@ const DataPanel = ({ handleGeocoder }) => {
               </Grid>
             </Grid>
 
-            <Grid container alignItems={'center'}>
-              <Grid offset={1} size={11}>
-                {recentValueCount > 0 && <SensorBarChart datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.reverse()} />}
-              </Grid>
-            </Grid>
+            {recentValueCount > 0 && <SensorBarChart margin={{ left: 60 }} DEBUG={true} showScroll={true} datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.map(r => ({ type: r.type, date: r.date, value:  r[clickedSensor] }))} />}
           </Grid>}
-
-
+          {/*<Grid container alignItems={'center'}>
+            <Grid size={1}>
+              <LButton style={{ fontSize: '28px', color: 'rgba(0, 88, 153, 1)', width: '36px', height: '36px' }}
+                       onClick={() => console.log('prev')}>
+                <FaRegCaretSquareLeft />
+              </LButton>
+            </Grid>
+            <Grid size={10}>
+              {recentValueCount > 0 && <SensorBarChart margin={{ left: 50 }} showScroll={true} datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.reverse()} />}
+            </Grid>
+            <Grid size={1}>
+              <LButton style={{ fontSize: '28px', color: 'rgba(0, 88, 153, 1)', width: '36px', height: '36px' }}
+                       onClick={() => console.log('next')}>
+                <FaRegCaretSquareRight />
+              </LButton>
+            </Grid>
+          </Grid>*/}
           {currentPage === 'Explain' && <Grid size={11}>
             <LHeader>
               <LinkText onClick={() => popPage('root')}>...</LinkText> / <LinkText onClick={() => popPage('Details')}>Details</LinkText> / Explain

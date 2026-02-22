@@ -14,8 +14,8 @@ const ColorScaleContainer = styled.div`
   border-radius: 8px;
   border: 1px solid rgba(65, 182, 230, 1);
   min-width:433px;
-  right:0.5em;
-  bottom:0.5em;
+  right:2rem;
+  bottom:2rem;
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
@@ -29,7 +29,7 @@ const ColorScaleContainer = styled.div`
   color:${colors.black};
   font-size:100%;
   z-index:7;
-    transform: translateX(calc(100% + .5em));
+  transform: translateX(calc(100% + 2.5em));
 
     @media (max-width:1024px) {
         min-width:50vw;
