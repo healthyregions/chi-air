@@ -455,7 +455,8 @@ const DataPanel = ({ handleGeocoder }) => {
 
           {!clickedSensor && selectedSensors?.map((s, index) => {
             const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(s);
-            const range = pm2_5Ranges.find(r => r.min <= latest_mean_pm25 && latest_mean_pm25 < r.max);
+            const fixed = Number(latest_mean_pm25)?.toFixed(1);
+            const range = pm2_5Ranges.find(r => r.min <= fixed && fixed <= r.max);
             const isoTimestamp = last_update.split(' ').join('T') + 'Z';
             const lastUpdateDate = new Date(isoTimestamp);
 

@@ -328,19 +328,19 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const handleMapClick = ({ x, y, object }, overlay) => {
     if (overlay?.popupContent) {
       // Overlay point was clicked - show overlay popup, hide census tract popup
-      setHoverGeog(null);
-      setHoverInfo({ x: null, y: null, object: null });
+      //setHoverGeog(null);
+      //setHoverInfo({ x: null, y: null, object: null });
       setOverlayHover({x, y, object: object.properties, overlay: overlay});
     } else if (object?.properties?.geoid) {
       // Non-point map section was clicked - hide overlay popup, show census tract popup
       setOverlayHover({ x: null, y: null, object: null, overlay: null });
-      setHoverGeog(object.properties.geoid);
-      setHoverInfo({x, y, object: object.properties});
+      //setHoverGeog(object.properties.geoid);
+      //setHoverInfo({x, y, object: object.properties});
     } else if (!object?.properties) {
       // User clicked outside of the visualized map area - hide all popups
       setOverlayHover({ x: null, y: null, object: null, overlay: null });
-      setHoverGeog(null);
-      setHoverInfo({ x: null, y: null, object: null });
+      //setHoverGeog(null);
+      //setHoverInfo({ x: null, y: null, object: null });
     }
   };
 
@@ -647,6 +647,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
 
   const [searchParams, setSearchParams] = useSearchParams();
   const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
+
   //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
   const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
     .sort((a, b) => a.date.localeCompare(b.date))
@@ -656,7 +657,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const geojsonData = {
     type: 'FeatureCollection',
     features: sensorIds.map((datasourceId) => {
-      const location = locations.find(r => r.datasourceId === datasourceId);
+      const location = locations?.find(r => r.datasourceId === datasourceId);
       const metric_pm25 = mean_pm25.map((r) => ({
         period: r.period || r.type,
         date: r.date,
