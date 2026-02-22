@@ -54,7 +54,7 @@ const DataPanelContainer = styled.div`
   color:${colors.black};
   font-size:100%;
   z-index:5;
-  transform: translateX(calc(100% + .5em));
+  transform: translateX(calc(100% + 2rem));
   h4, h1 {
     font-family: 'Roboto', sans-serif;
     margin:10px 0;
