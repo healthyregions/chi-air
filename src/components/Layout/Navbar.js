@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {Link, NavLink, useLocation} from 'react-router-dom';
+import {Link, NavLink, useLocation, useNavigate} from 'react-router-dom';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -9,6 +9,10 @@ import { colors } from '../../config';
 import { Box } from '@mui/system';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
+import Grid from "@mui/material/Grid";
+import {DropdownButton} from "../VariablePanel/DropdownButton";
+import {FaHome} from "@react-icons/all-files/fa/FaHome";
+import {setLocale} from "../../store/slices/sensorDataSlice";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -60,7 +64,10 @@ const NavItems = styled.ul`
 `
 
 const NavContainer = styled.div`
-  position:fixed;
+  //position:fixed;
+  padding-top: 4rem;
+  padding-left: 6rem;
+  padding-right: 6rem;
   top:.5em;
   left:.5em;
   z-index:500;
@@ -69,7 +76,7 @@ const NavContainer = styled.div`
     padding-right: 15px;
     padding-bottom: 5px;
     padding-left: 15px;
-    border: 1px solid ${colors.chicagoBlue};
+    //border: 1px solid ${colors.chicagoBlue};
   }
 `
 
@@ -88,7 +95,16 @@ const LogoButtonContainer = styled.button`
   box-shadow: 2px 0px 5px ${colors.gray}44;
   border-radius:0;
   border:1px solid ${colors.chicagoBlue};
-`
+`;
+
+
+
+
+const LButton = styled(Button)`
+    font-family: Lexend,serif;
+    text-transform: none;
+    color: #005899;
+`;
 
 export default function Nav({
   showMapControls = false,
@@ -111,42 +127,64 @@ export default function Nav({
   const open = Boolean(anchorEl);
   const id = open ? 'Close Menu' : 'Open Menu';
   const loc = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <NavContainer>
-      <LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
-        <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
-        {SVG.hamburger}
-      </LogoButtonContainer>
-      <Popover
-        id="nav-container"
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        className="menu-popover"
-        style={{
-          border: `1px solid ${colors.chicagoBlue}`,
-        }}
-      >
-        <NavInner>
-          {!!showMapControls && <>
-            <Typography>Map Controls</Typography>
+    <>
+      <NavContainer>
+        <Grid container justifyContent={'space-between'}>
+          <Grid size={3}>
+            <Grid container justifyContent={'space-between'} alignItems={'left'}>
+              <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Eng'} options={['English', 'Español']} />
+              <LButton><FaHome /></LButton>
+              {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
+              <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
+
+              <LButton onClick={() => navigate('/map')}>Maps</LButton>
+              <LButton onClick={() => navigate('/about')}>About</LButton>
+
+            </Grid>
+          </Grid>
+          <Grid alignItems={'end'} justifyContent={'right'}>
+            <img height={77} width={477} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+          </Grid>
+        </Grid>
+
+        {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
+          <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
+          {SVG.hamburger}
+        </LogoButtonContainer>*/}
+        <Popover
+          id="nav-container"
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          className="menu-popover"
+          style={{
+            border: `1px solid ${colors.chicagoBlue}`,
+          }}
+        >
+          <NavInner>
+            {!!showMapControls && <>
+              <Typography>Map Controls</Typography>
+              <NavItems>
+                <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
+                <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
+              </NavItems>
+            </>}
             <NavItems>
-              <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
-              <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
+              <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
+              <li><NavLink to="/map">Map</NavLink></li>
+              <li><NavLink to="/about">About</NavLink></li>
             </NavItems>
-          </>}
-          <NavItems>
-            <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
-            <li><NavLink to="/map">Map</NavLink></li>
-            <li><NavLink to="/about">About</NavLink></li>
-          </NavItems>
-        </NavInner>
-      </Popover>
-    </NavContainer>
+          </NavInner>
+        </Popover>
+      </NavContainer>
+
+    </>
   );
 }

@@ -210,7 +210,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
     y: null,
     object: null,
   });
-  const [hoverGeog, setHoverGeog] = useState(null);
+  const [hoverGeog, /*etHoverGeog*/] = useState(null);
   const [overlayHover, setOverlayHover] = useState({
     x: null,
     y: null,

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import {Link, NavLink} from "react-router-dom";
+import {createSearchParams, Link, NavLink, useNavigate} from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 import Grid from "@mui/material/Grid";
@@ -9,6 +9,9 @@ import Geocoder from "../../components/Map/Geocoder";
 import { colors } from "../../config";
 import logoList from '../../config/logos.json';
 import { Button } from "@mui/material";
+import {DropdownButton} from "../VariablePanel/DropdownButton";
+import {selectSensorLocations, setSelectedSensors} from "../../store/slices/sensorDataSlice";
+import {useDispatch, useSelector} from "react-redux";
 // import PostList from "../Posts/PostList";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -351,8 +354,7 @@ const ThreeUpGrid = styled(Grid)`
 // `;
 
 const GeocoderContainer = styled(Grid)`
-  padding: 0 2rem;
-  margin: 0rem 0;
+  margin: 0.5rem 0;
     min-width: 45vw;
   p {
     max-width: 90%;
@@ -408,60 +410,72 @@ const ChiHeader = styled.h1`
     font-size: 64px;
     text-align: right;
 `;
+const ChiBlackText = styled.span`
+    font-weight: 400;
+    font-style: normal;
+`;
 const ChiDarkBlueText = styled.span`
     font-family: Lexend;
     color: ${brandColors.chiDarkBlue};
     font-size: 64px;
     text-align: right;
-    font-weight: bold;
+    font-style: normal;
+    font-weight: 700;
 `;
 const ChiLightBlueText = styled.span`
     font-family: Lexend;
     color: ${brandColors.chiLightBlue};
     font-size: 32px;
+    font-weight: 400;
     text-align: right;
 `;
 const ChiRedText = styled.span`
     font-family: Lexend;
     color: ${brandColors.chiRed};
     font-size: 32px;
-    font-weight: bold;
+    font-weight: 700;
     text-align: right;
 `;
 
 const ChiSubtitle = styled.span`
-    max-width: 30vw;
+    max-width: 35vw;
     margin-top: 3rem;
     display: flex;
     align-self: end;
     text-align: right;
     font-family: Space Grotesk;
     font-size: 18px;
-    font-weight: normal;
+    font-weight: 400;
+    font-style: normal;
 `;
 
 const WhiteBackground = styled.div`
+    padding-left: 6rem;
+    padding-right: 6rem;
     background: #FFFFFF00;
     width: 100%;
     min-height: 20rem;
 `;
 
 const GradientBackground = styled.div`
+    padding-left: 6rem;
+    padding-right: 6rem;
     background: linear-gradient(
-        ${props => props.direction || 'to right'},
+        ${props => props.direction || 'to bottom'},
         ${props => props.startColor || '#FFFFFF00'},
         ${props => props.endColor || '#41B6E633'}
     );
     width: 100%;
     min-height: 20rem;
-    padding: 3rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
 `;
 
 const ViewMapButton = styled(Button)`
     font-family: Space Grotesk !important;
-    margin-top: 1rem;
+    margin-top: 2rem;
     background: rgba(0, 88, 153, 1);
-    font-weight: 700;
+    font-weight: 500;
     font-size: 24px;
     line-height: 16px;
     letter-spacing: 1px;
@@ -470,105 +484,89 @@ const ViewMapButton = styled(Button)`
     height:46px;
 
 `;
+const LButton = styled(Button)`
+    font-family: Lexend,serif;
+    text-transform: none;
+    color: #005899;
+`;
 
 export default function Home() {
   // const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleGeocoder = useCallback((location) => {
     if (location.center !== undefined) {
-      let url = "";
-
-      if (`${window.location.href}`.includes("index")) {
-        url += `${window.location.href}`.split("index")[0];
-      } else {
-        url += window.location.href;
-      }
-      url += `map?lat=${location.center[1]}&lon=${location.center[0]}`;
-      window.location.href = url;
+      navigate({
+        pathname: "/map",
+        search: createSearchParams({
+          lat: location.center[1],
+          lon: location.center[0],
+       }).toString()
+      });
     }
-  }, []);
+  }, [navigate]);
+
+  const locations = useSelector(selectSensorLocations);
+  const handleDropdown = (s, key) => {
+    console.log(`Locations: `, locations);
+    console.log(`Selecting ${key}: `, s);
+    const matches = locations?.filter(l => l?.[key] === s)?.map(l => l?.datasourceId);
+    console.log(`Matches: `, matches);
+    dispatch(setSelectedSensors(matches));
+    navigate('/map');
+  }
 
   return (
     <HomePage>
       <NavBar />
 
-      <TitleBanner>
-        <img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-        <ChiHeader>The <ChiDarkBlueText>Chi Air Quality Network</ChiDarkBlueText></ChiHeader>
+      <WhiteBackground>
+        <TitleBanner>
+          <ChiHeader><ChiBlackText>Our </ChiBlackText><ChiDarkBlueText>Air</ChiDarkBlueText></ChiHeader>
 
-        <ChiLightBlueText>America’s Largest Air Monitoring Network.</ChiLightBlueText>
-        <ChiRedText>Built for Chicago.</ChiRedText>
+          <ChiLightBlueText>Mapping the Open Air Network</ChiLightBlueText>
+          <ChiRedText>Built for Chicago, with Chicago.</ChiRedText>
 
-        <ChiSubtitle>
-          Air pollution is often invisible, but its impact is real. Now,
-          real-time air quality data is available for every neighborhood, for every Chicagoan,
-          ensuring you and your family have the information you need to breathe easier.
-        </ChiSubtitle>
+          <ChiSubtitle>
+            Air pollution is often invisible, but its impact is real.
+            Now, real-time air quality data is available for every
+            neighborhood, for every Chicagoan, ensuring you and your
+            loved ones have the information you need to breathe easier.
+          </ChiSubtitle>
 
-        <ViewMapButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
-          View Map &rarr;
-        </ViewMapButton>
-      </TitleBanner>
+          <ViewMapButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
+            View Map &rarr;
+          </ViewMapButton>
+        </TitleBanner>
+      </WhiteBackground>
 
 
-      <GradientBackground direction={'to bottom'}>
-        <Grid container spacing={0}>
+      <GradientBackground>
+        <Grid container spacing={0} alignItems={"center"} justifyContent={'space-between'}>
           <Grid item sm={6} xs={12}>
-            <Grid container spacing={0}>
-              <Grid item xs>
-                {/*<D3LineChart ></D3LineChart>
-                <LineChart height={300}
-                           experimentalFeatures={{ preferStrictDomainInLineCharts }}
-                           series={[
-                             { data: [14, 145, 301, 183, 85, 20] }
-                           ]}
-                           xAxis={[
-                             {
-                               scaleType: 'point',
-                               data: [6,5,4,3,2,1],
-                               valueFormatter: (d) => `${d}hr ago`,
+            <span style={{ marginLeft: '.85rem', fontSize: '18px', fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
+              <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address
+            </span>
+            <GeocoderContainer container spacing={0} alignItems="center">
+              <Geocoder
+                id="Geocoder"
+                style={{ borderRadius: '100px' }}
+                API_KEY={MAPBOX_ACCESS_TOKEN}
+                onChange={handleGeocoder}
+              />
+            </GeocoderContainer>
+            <Grid container spacing={4} marginLeft={'.5rem'}>
+              <DropdownButton ButtonComponent={LButton}
+                              label={'Community'}
+                              options={locations?.map(l => l?.community)}
+                              onChange={(s) => handleDropdown(s, 'community')} />
 
-                             },
-                           ]}
-                           yAxis={[{
-                            colorMap: {
-                              type: 'continuous',
-                              thresholds: [50, 100, 150, 200, 300],
-                              colors: [
-                                '#0C7300',
-                                '#F8CD46',
-                                '#DC7500',
-                                '#E40004',
-                                '#8200C5',
-                                '#8B0D38'
-                              ],
-                            }
-                           }]}
-                />*/}
-
-                {/* <RechartsLineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 800, margin: 'auto' }} responsive data={[14, 145, 301, 183, 85, 20]}>
-                  <XAxis dataKey="name" />
-                  <YAxis width="auto" />
-                  <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-                  <Line type="monotone" dataKey="pv" stroke="#82ca9d" />
-                  <RechartsDevtools />
-                </RechartsLineChart>*/}
-
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={0}>
-              <Grid item xs>
-                <GeocoderContainer container spacing={0} alignItems="center">
-                  <Geocoder
-                    id="Geocoder"
-                    style={{ borderRadius: '100px' }}
-                    placeholder={" Type in an address or zip code to start mapping, e.g. 60643"}
-                    API_KEY={MAPBOX_ACCESS_TOKEN}
-                    onChange={handleGeocoder}
-                  />
-                </GeocoderContainer>
-              </Grid>
+              <DropdownButton ButtonComponent={LButton}
+                              label={'Zip code'}
+                              options={locations?.map(l => l?.zip)}
+                              onChange={(s) => handleDropdown(s, 'zip')} />
+              {/*<DropdownButton label={'Ward'} options={['zip1', 'zip2']} />*/}
             </Grid>
           </Grid>
 
