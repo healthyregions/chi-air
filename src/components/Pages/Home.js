@@ -8,7 +8,7 @@ import { NavBar } from "../../components";
 import Geocoder from "../../components/Map/Geocoder";
 import {Button, useMediaQuery} from "@mui/material";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {selectSensorLocations, setSelectedSensors} from "../../store/slices/sensorDataSlice";
+import {selectSensorLocations, setSelectedAreas, setSelectedSensors} from "../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {FaArrowRight} from "@react-icons/all-files/fa/FaArrowRight";
 import {FaExternalLinkAlt} from "@react-icons/all-files/fa/FaExternalLinkAlt";
@@ -145,8 +145,28 @@ const resources = [
   { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
 ];
 
+const ResourceLabel = styled.div`
+    text-align: center;
+    font-family: Lexend;
+    font-weight: 700;
+    font-size: 24px;
+    color: #005899;
+    min-height: ${({ largeScreen }) => largeScreen ? '4rem' : ''}
+`;
+const ResourceDescription = styled.div`
+    text-align: center;
+    font-family: Space Grotesk;
+    font-weight: 400;
+    font-size: 18px;
+    color: #444444;
+`;
+const ResourceLinkIcon = styled(FaExternalLinkAlt)`
+    font-size: 18px;
+    margin-left: 0.5rem;
+    color: #00589980;
+`;
+
 export default function Home() {
-  // const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
@@ -166,11 +186,9 @@ export default function Home() {
   }, [navigate]);
 
   const handleDropdown = (s, key) => {
-    console.log(`Locations: `, locations);
-    console.log(`Selecting ${key}: `, s);
     const matches = locations?.filter(l => l?.[key] === s)?.map(l => l?.datasourceId);
-    console.log(`Matches: `, matches);
     dispatch(setSelectedSensors(matches));
+    dispatch(setSelectedAreas({ [key]: [s] }))
     navigate('/map');
   }
 
@@ -262,8 +280,8 @@ export default function Home() {
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <div style={{ textAlign: 'center', fontFamily: 'Lexend', fontWeight: 700, fontSize: '24px', color: '#005899', minHeight: largeScreen? '4rem' : '' }}>{resource?.name} <FaExternalLinkAlt style={{ fontSize: '18px', marginLeft:'0.5rem', color: '#00589980' }} /></div>
-                <div style={{ textAlign: 'center', fontFamily: 'Space Grotesk', fontWeight: 400, fontSize: '18px', color: '#444444' }}>{resource?.description}</div>
+                <ResourceLabel largeScren={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
+                <ResourceDescription>{resource?.description}</ResourceDescription>
               </Grid>
             </Grid>
           )}
