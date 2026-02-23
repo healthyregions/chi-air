@@ -22,7 +22,6 @@ export const sensorDataSlice = createSlice({
     setSelectedAreas: (state, action) => ({
       ...state,
       selectedAreas: {
-        ...state.selectedAreas,
         ...action.payload,
       }
     }),

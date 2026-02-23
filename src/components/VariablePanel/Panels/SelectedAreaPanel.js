@@ -10,7 +10,7 @@ import {
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {formatDate, getLatestValue, LButton} from "../common";
+import {formatDate, getLatestValue, LButton, useSelectorAsState} from "../common";
 import {LHeader} from "../common";
 
 const SelectedSensorsPanelContainer = styled.div`
@@ -54,8 +54,7 @@ const LocationNameColumn = styled(Grid)``;
 export const SelectedAreaPanel = () => {
   const dispatch = useDispatch();
 
-  const selections = useSelector(selectSelectedAreas);
-  const setSelections = (sel) => dispatch(setSelectedAreas(sel));
+  const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
   const locations = useSelector(selectSensorLocations);
   const clickedSensor = useSelector(selectClickedSensor);

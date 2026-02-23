@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
 import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
-
+import {useSelector} from "react-redux";
+import Grid from "@mui/material/Grid";
 
 // Button with Lexend font
 export const LButton = styled(Button)`
@@ -50,6 +51,30 @@ export const SensorValueLabelTooltip = styled(FaInfoCircle)`
     align-self: center;
     color: rgba(0, 88, 153, 0.5);
     cursor: pointer;
+`;
+// Static page section for white background
+export const WhiteBackground = styled(Grid)`
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    background: #FFFFFF00;
+    width: 100%;
+    //min-height: 15rem;
+`;
+// Static page section for gradient blue background
+export const GradientBackground = styled.div`
+    margin-bottom: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-bottom: 4rem;
+    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    background: linear-gradient(
+        ${props => props.direction || 'to bottom'},
+        ${props => props.startColor || '#FFFFFF00'},
+        ${props => props.endColor || '#41B6E633'}
+    );
+    width: 100%;
+    //min-height: 20rem;
 `;
 // Static helper function to grab the most recent value from the built geojson data
 export const getLatestValue = (geojsonData, id) => {
@@ -107,4 +132,8 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
     time: `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`,
     date, iso, utc
   };
+}
+
+export const useSelectorAsState = (selector, reducer, dispatch) => {
+  return [ useSelector(selector), (s) => dispatch(reducer(s)) ];
 }

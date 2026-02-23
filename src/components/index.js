@@ -20,7 +20,7 @@ import Scaleable from './Layout/Scaleable';
 import Showcase from './Layout/Carousel/Carousel';
 import StaticNavbar from './Layout/StaticNavbar';
 import Table from './Layout/Table';
-import Geocoder from './Map/Geocoder';
+import { Geocoder } from './Map/Geocoder';
 
 // pages
 import About from './Pages/About';

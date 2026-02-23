@@ -10,12 +10,11 @@ import styled from 'styled-components';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
 import { useMediaQuery } from "@mui/material";
-import Geocoder from "./Geocoder";
 import {
-  selectClickedSensor,
-  selectSelectedSensors,
-  selectSensorValuesMeanPm25,
-  setLocale,
+  selectClickedSensor, selectSelectedAreas,
+  selectSelectedSensors, selectSensorLocations,
+  selectSensorValuesMeanPm25, setClickedSensor,
+  setLocale, setSelectedAreas, setSelectedSensors,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -26,11 +25,11 @@ import {FaGripLines} from "@react-icons/all-files/fa/FaGripLines";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import {ClickedSensorPanel} from "../VariablePanel/Panels/ClickedSensorPanel";
 import {SelectedAreaPanel} from "../VariablePanel/Panels/SelectedAreaPanel";
-import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
-import {LButton, Divider } from "../VariablePanel/common";
+import {LButton, Divider, useSelectorAsState} from "../VariablePanel/common";
 import {ClickedSensorDetailsPanel} from "../VariablePanel/Panels/ClickedSensorDetailsPanel";
 import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplainPanel";
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
+import {Geocoder} from "./Geocoder";
 
 const DataPanelContainer = styled.div`
     position:fixed;
@@ -118,21 +117,6 @@ const DataPanelContainer = styled.div`
   }
 `;
 
-const CustomGeocoder = ({ push, handleGeocoder }) => <>
-  <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
-    <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
-              <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address</span>
-    </Grid>
-    <Grid><LButton variant={'text'} onClick={() => push(['Map Layers'])}>Map Layers</LButton></Grid>
-  </Grid>
-  <Geocoder
-    id="Geocoder"
-    style={{ borderRadius: '100px' }}
-    placeholder={""}
-    onChange={handleGeocoder}
-  />
-</>;
-
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
   const dispatch = useDispatch();
@@ -145,6 +129,19 @@ const DataPanel = ({ handleGeocoder }) => {
   const selectedSensors = useSelector(selectSelectedSensors);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const clickedSensor = useSelector(selectClickedSensor);
+  const locations = useSelector(selectSensorLocations);
+  const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
+
+  // Called when Community or Zip code dropdowns change (future support for ward)
+  const handleDropdownChanged = (s, key = 'community') => {
+    setSelections({...selections, [key]: [s]});
+    const newSelectedSensors = locations.filter(l => l[key] === s)?.map(l => l.datasourceId);
+    dispatch(setSelectedSensors([...newSelectedSensors]));
+    if (!selectedSensors?.includes(clickedSensor)) {
+      dispatch(setClickedSensor());
+      popPage('root');
+    }
+  }
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
@@ -191,8 +188,9 @@ const DataPanel = ({ handleGeocoder }) => {
 
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
-          <CustomGeocoder push={pushPage} handleGeocoder={handleGeocoder} />
-          <AreaSelectionDropdowns pop={popPage} />
+          <Geocoder size={'small'} pop={popPage} onDropdownChange={handleDropdownChanged} extraButton={
+            <LButton as={Grid} variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
+          } />
         </>}
 
         {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={firstHourlyRow?.date} />}

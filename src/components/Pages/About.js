@@ -3,7 +3,7 @@ import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import {useMediaQuery} from "@mui/material";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
-import {GradientBackground, WhiteBackground} from "./Home";
+import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 
 const AboutPage = styled.div`
     background:white;

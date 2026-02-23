@@ -1,34 +1,21 @@
-import React, { useCallback } from "react";
-import {createSearchParams, NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 
 import Grid from "@mui/material/Grid";
 
-import { NavBar } from "../../components";
-import Geocoder from "../../components/Map/Geocoder";
+import {Geocoder, NavBar} from "../../components";
 import {Button, useMediaQuery} from "@mui/material";
-import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {selectSensorLocations, setSelectedAreas, setSelectedSensors} from "../../store/slices/sensorDataSlice";
-import {useDispatch, useSelector} from "react-redux";
 import {FaArrowRight} from "@react-icons/all-files/fa/FaArrowRight";
 import {FaExternalLinkAlt} from "@react-icons/all-files/fa/FaExternalLinkAlt";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
-
-const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
-
-
-
-const HomePage = styled.div`
-`;
-
-const GeocoderContainer = styled(Grid)`
-  margin: 0.5rem 0;
-    min-width: 45vw;
-  p {
-    max-width: 90%;
-  }
-`;
-
+import {GradientBackground, useSelectorAsState, WhiteBackground} from "../VariablePanel/common";
+import {
+  selectSelectedAreas,
+  selectSensorLocations,
+  setClickedSensor, setSelectedAreas,
+  setSelectedSensors
+} from "../../store/slices/sensorDataSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const TitleBanner = styled(Grid)`
     display: flex;
@@ -38,41 +25,38 @@ const TitleBanner = styled(Grid)`
     font-family: Lexend;
 `;
 
-
-
 const brandColors = {
   chiDarkBlue: '#005899',
   chiRed: '#E4002B',
   chiLightBlue: '#2D9ECD'
 }
 const ChiHeader = styled.h1`
-    font-family: Lexend !important;
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     font-size: ${({ largeScreen }) => largeScreen ? '64px' : '48px'};
     text-align: right;
 `;
 const ChiBlackText = styled.span`
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     font-weight: 400;
     font-style: normal;
 `;
 const ChiDarkBlueText = styled.span`
     margin-left: 0.5rem;
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     color: ${brandColors.chiDarkBlue};
     text-align: right;
     font-style: normal;
     font-weight: 700;
 `;
 const ChiLightBlueText = styled.span`
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     color: ${brandColors.chiLightBlue};
     font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
     font-weight: 400;
     text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
 `;
 const ChiRedText = styled.span`
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     color: ${brandColors.chiRed};
     font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
     font-weight: 700;
@@ -90,32 +74,9 @@ const ChiSubtitle = styled(Grid)`
     font-style: normal;
 `;
 
-export const WhiteBackground = styled(Grid)`
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    background: #FFFFFF00;
-    width: 100%;
-    //min-height: 15rem;
-`;
-
-export const GradientBackground = styled.div`
-    margin-bottom: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    padding-bottom: 4rem;
-    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    background: linear-gradient(
-        ${props => props.direction || 'to bottom'},
-        ${props => props.startColor || '#FFFFFF00'},
-        ${props => props.endColor || '#41B6E633'}
-    );
-    width: 100%;
-    //min-height: 20rem;
-`;
 
 const ViewMapButton = styled(Button)`
-    font-family: Space Grotesk !important;
+    font-family: Space Grotesk,serif;
     margin-top: 2rem;
     background: rgba(0, 88, 153, 1);
     font-weight: 500;
@@ -127,13 +88,28 @@ const ViewMapButton = styled(Button)`
     height:46px;
 
 `;
-const LButton = styled(Button)`
-    font-family: Lexend,serif;
-    text-transform: none;
+const ResourceLabel = styled.div`
+    text-align: center;
+    font-family: Lexend,sans-serif;
+    font-weight: 700;
+    font-size: 24px;
     color: #005899;
+    min-height: ${({ largeScreen }) => largeScreen ? '4rem' : ''}
+`;
+const ResourceDescription = styled.div`
+    text-align: center;
+    font-family: Space Grotesk,serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #444444;
+`;
+const ResourceLinkIcon = styled(FaExternalLinkAlt)`
+    font-size: 18px;
+    margin-left: 0.5rem;
+    color: #00589980;
 `;
 
-
+// No CMS system, define static data structure here instead
 const resources = [
   { url: '', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'Start with Air Quality 101', description: 'Dr. Erdal’s introduction to air quality presentation. More about this resource is here' },
   { url: '', icon: '/icons/chiair/resources-tools.svg', backdrop: true, name: 'Build your own Air Filter', description: 'Corsi-Rosenthal Box, more details about this resource is here' },
@@ -145,55 +121,26 @@ const resources = [
   { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' },
 ];
 
-const ResourceLabel = styled.div`
-    text-align: center;
-    font-family: Lexend;
-    font-weight: 700;
-    font-size: 24px;
-    color: #005899;
-    min-height: ${({ largeScreen }) => largeScreen ? '4rem' : ''}
-`;
-const ResourceDescription = styled.div`
-    text-align: center;
-    font-family: Space Grotesk;
-    font-weight: 400;
-    font-size: 18px;
-    color: #444444;
-`;
-const ResourceLinkIcon = styled(FaExternalLinkAlt)`
-    font-size: 18px;
-    margin-left: 0.5rem;
-    color: #00589980;
-`;
-
 export default function Home() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const locations = useSelector(selectSensorLocations);
+  const navigate = useNavigate();
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
-  const sensorCount = 'over 275'
+  const sensorCount = 'over 275';
 
-  const handleGeocoder = useCallback((location) => {
-    if (location?.center !== undefined) {
-      navigate({
-        pathname: "/map",
-        search: createSearchParams(
-          ['lon', 'lat'].reduce((obj, k, i) => ({...obj, [k]: location?.center?.[i] }), {})
-        ).toString()
-      });
-    }
-  }, [navigate]);
+  const locations = useSelector(selectSensorLocations);
+  const [, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
-  const handleDropdown = (s, key) => {
-    const matches = locations?.filter(l => l?.[key] === s)?.map(l => l?.datasourceId);
-    dispatch(setSelectedSensors(matches));
-    dispatch(setSelectedAreas({ [key]: [s] }))
-    navigate('/map');
+  const handleDropdownChanged = (s, key = 'community') => {
+    setSelections({[key]: [s]});
+    const newSelectedSensors = locations.filter(l => l[key] === s)?.map(l => l.datasourceId);
+    dispatch(setClickedSensor());
+    dispatch(setSelectedSensors([...newSelectedSensors]));
+    newSelectedSensors?.length ? navigate(`/map?location=${newSelectedSensors?.[0]}`) : navigate('/map');
   }
 
   return (
-    <HomePage>
+    <>
       <NavBar />
 
       <WhiteBackground largeScreen={largeScreen}>
@@ -225,31 +172,10 @@ export default function Home() {
       <GradientBackground largeScreen={largeScreen}>
         <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
           <Grid item sm={6} xs={12}>
-            <span style={{ marginLeft: '.85rem', fontSize: '18px', fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
-              <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address
-            </span>
-            <GeocoderContainer container spacing={0} alignItems="center">
-              <Geocoder
-                id="Geocoder"
-                style={{ borderRadius: '100px' }}
-                API_KEY={MAPBOX_ACCESS_TOKEN}
-                onChange={handleGeocoder}
-              />
-            </GeocoderContainer>
-            <Grid container spacing={4} marginLeft={'.5rem'}>
-              <DropdownButton ButtonComponent={LButton}
-                              buttonProps={{ size: 'large' }}
-                              label={'Community'}
-                              options={locations?.map(l => l?.community)}
-                              onChange={(s) => handleDropdown(s, 'community')} />
-
-              <DropdownButton ButtonComponent={LButton}
-                              buttonProps={{ size: 'large' }}
-                              label={'Zip code'}
-                              options={locations?.map(l => l?.zip)}
-                              onChange={(s) => handleDropdown(s, 'zip')} />
-              {/*<DropdownButton label={'Ward'} options={['zip1', 'zip2']} />*/}
-            </Grid>
+            <Geocoder size={'large'} style={{ margin: '0.5rem 0', minWidth: '45vw' }}
+                      showSelectedAreas={false}
+                      onDropdownChange={handleDropdownChanged}
+            />
           </Grid>
 
           <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
@@ -315,7 +241,7 @@ export default function Home() {
 
 
       <NavBar style={{ marginBottom: '2rem' }} />
-    </HomePage>
+    </>
   );
 }
 
