@@ -150,6 +150,21 @@ const DataPanelContainer = styled.div`
   }
 `;
 
+const CustomGeocoder = ({ push, handleGeocoder }) => <>
+  <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
+    <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
+              <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address</span>
+    </Grid>
+    <Grid><LButton variant={'text'} onClick={() => push(['Map Layers'])}>Map Layers</LButton></Grid>
+  </Grid>
+  <Geocoder
+    id="Geocoder"
+    style={{ borderRadius: '100px' }}
+    placeholder={""}
+    onChange={handleGeocoder}
+  />
+</>;
+
 
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
@@ -212,26 +227,13 @@ const DataPanel = ({ handleGeocoder }) => {
 
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
-          <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
-            <Grid size={6}><span style={{ fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
-              <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address</span>
-            </Grid>
-            <Grid><LButton variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton></Grid>
-          </Grid>
-          <Geocoder
-            id="Geocoder"
-            style={{ borderRadius: '100px' }}
-            placeholder={""}
-            onChange={handleGeocoder}
-          />
-
+          <CustomGeocoder push={pushPage} handleGeocoder={handleGeocoder} />
           <AreaSelectionDropdowns pop={popPage} />
         </>}
 
         {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay date={firstHourlyRow?.date} />}
-
         {(clickedSensor || selectedSensors?.length > 0) && <Divider />}
-        {!clickedSensor && selectedSensors?.length > 0 && <SelectedAreaPanel />}
+        {!clickedSensor && selectedSensors?.length > 0 && <SelectedAreaPanel  />}
         {clickedSensor && <ClickedSensorPanel push={pushPage} pop={popPage} />}
       </>}
 

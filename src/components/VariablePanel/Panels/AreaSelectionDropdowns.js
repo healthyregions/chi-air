@@ -26,6 +26,8 @@ export const AreaSelectionDropdowns = ({ push, pop }) => {
   const clearSelection = () => {
     setSelections({...selections, community: [], zip: [], ward: []});
   }
+
+  // Called when Community or Zip code dropdowns change (future support for ward)
   const handleDropdownChanged = (s, key = 'community') => {
     setSelections({...selections, [key]: [s]});
     const newSelectedSensors = locations.filter(l => l[key] === s)?.map(l => l.datasourceId);

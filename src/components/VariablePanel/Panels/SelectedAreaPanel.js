@@ -5,7 +5,7 @@ import {
   removeSensorsFromSelection,
   selectClickedSensor, selectSelectedAreas, selectSelectedSensors,
   selectSensorGeojsonData,
-  selectSensorLocations,
+  selectSensorLocations, selectSensorValuesMeanPm25,
   setClickedSensor, setSelectedAreas
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
@@ -51,7 +51,7 @@ const SensorIdColumn = styled(Grid)``;
 const LocationNameColumn = styled(Grid)``;
 
 
-export const SelectedAreaPanel = ({ firstHourlyRow }) => {
+export const SelectedAreaPanel = () => {
   const dispatch = useDispatch();
 
   const selections = useSelector(selectSelectedAreas);
@@ -60,7 +60,12 @@ export const SelectedAreaPanel = ({ firstHourlyRow }) => {
   const locations = useSelector(selectSensorLocations);
   const clickedSensor = useSelector(selectClickedSensor);
   const selectedSensors = useSelector(selectSelectedSensors);
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const geojsonData = useSelector(selectSensorGeojsonData);
+
+  // Grab our previously-fetched data to determine some stats
+  // TODO: we can do better for this logic, but for now this should work alright
+  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
 
   const resetAll = () => {
     setSelections({community:[],zip:[],ward:[]});

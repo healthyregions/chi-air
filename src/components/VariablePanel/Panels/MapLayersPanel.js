@@ -3,47 +3,11 @@ import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
 import VariablesDropdown from "../VariablesDropdown";
 import OverlaysDropdown from "../OverlaysDropdown";
 import OverlaysColorLegend from "../OverlaysColorLegend";
-import styled from "styled-components";
 import {Button} from "@mui/material";
-import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
+import {LButton, LHeader, LinkText, SensorValueLabelTooltip, SGBody} from "../common";
 
 
-const LButton = styled(Button)`
-    font-family: Lexend,serif;
-    text-transform: none;
-    color: #005899;
-`;
-const LHeader = styled.span`
-    font-size: 32px;
-    font-size: clamp(16px, 24px, 32px);
-    font-family: Lexend;
-    font-weight: 300;
-`;
-
-const SGBody = styled.div`
-    font-family: Space Grotesk;
-    font-weight: 300;
-    margin: 1rem 0;
-    font-style: normal;
-    font-size: 14px;
-    leading-trim: NONE;
-    line-height: 100%;
-    letter-spacing: 0%;
-
-`;
-const SensorValueLabelTooltip = styled(FaInfoCircle)`
-    width: 15px;
-    height: 15px;
-    margin-left: 0.5rem;
-    align-self: center;
-    color: rgba(0, 88, 153, 0.5);
-`;
-
-const LinkText = styled.span`
-    color: rgba(0, 88, 153, 1);
-    cursor: pointer;
-`;
 
 export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
 
