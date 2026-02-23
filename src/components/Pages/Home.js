@@ -12,6 +12,7 @@ import {selectSensorLocations, setSelectedSensors} from "../../store/slices/sens
 import {useDispatch, useSelector} from "react-redux";
 import {FaArrowRight} from "@react-icons/all-files/fa/FaArrowRight";
 import {FaExternalLinkAlt} from "@react-icons/all-files/fa/FaExternalLinkAlt";
+import {SectionHeader} from "../VariablePanel/SectionHeader";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -29,7 +30,7 @@ const GeocoderContainer = styled(Grid)`
 `;
 
 
-const TitleBanner = styled.div`
+const TitleBanner = styled(Grid)`
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -77,8 +78,7 @@ const ChiRedText = styled.span`
     text-align: right;
 `;
 
-const ChiSubtitle = styled.span`
-    max-width: 35vw;
+const ChiSubtitle = styled(Grid)`
     margin-top: 3rem;
     display: flex;
     align-self: end;
@@ -89,27 +89,28 @@ const ChiSubtitle = styled.span`
     font-style: normal;
 `;
 
-const WhiteBackground = styled.div`
+const WhiteBackground = styled(Grid)`
     margin-top: 2rem;
-    padding-bottom: 2rem;
-    padding-left: 6rem;
-    padding-right: 6rem;
+    margin-bottom: 2rem;
+    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
     background: #FFFFFF00;
     width: 100%;
-    min-height: 15rem;
+    //min-height: 15rem;
 `;
 
 const GradientBackground = styled.div`
-    padding-bottom: 2rem;
-    padding-left: 6rem;
-    padding-right: 6rem;
+    margin-bottom: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-bottom: 4rem;
+    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
     background: linear-gradient(
         ${props => props.direction || 'to bottom'},
         ${props => props.startColor || '#FFFFFF00'},
         ${props => props.endColor || '#41B6E633'}
     );
     width: 100%;
-    min-height: 20rem;
+    //min-height: 20rem;
 `;
 
 const ViewMapButton = styled(Button)`
@@ -175,14 +176,14 @@ export default function Home() {
     <HomePage>
       <NavBar />
 
-      <WhiteBackground>
-        <TitleBanner>
+      <WhiteBackground largeScreen={largeScreen}>
+        <TitleBanner container spacing={0}>
           <ChiHeader><ChiBlackText>Our </ChiBlackText><ChiDarkBlueText>Air</ChiDarkBlueText></ChiHeader>
 
           <ChiLightBlueText>Mapping the Open Air Network</ChiLightBlueText>
           <ChiRedText>Built for Chicago, with Chicago.</ChiRedText>
 
-          <ChiSubtitle>
+          <ChiSubtitle size={{ xs:12, md: 6 }}>
             Air pollution is often invisible, but its impact is real.
             Now, real-time air quality data is available for every
             neighborhood, for every Chicagoan, ensuring you and your
@@ -196,8 +197,8 @@ export default function Home() {
       </WhiteBackground>
 
 
-      <GradientBackground>
-        <Grid container spacing={0} alignItems={"center"} justifyContent={'space-between'}>
+      <GradientBackground largeScreen={largeScreen}>
+        <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
           <Grid item sm={6} xs={12}>
             <span style={{ marginLeft: '.85rem', fontSize: '18px', fontWeight: 200, flexDirection: 'column', alignContent:'center', fontFamily: 'Space Grotesk' }}>
               <strong style={{ fontWeight: 600 }}>Search</strong> any Chicago Address
@@ -232,25 +233,21 @@ export default function Home() {
         </Grid>
       </GradientBackground>
 
-      <WhiteBackground style={{ marginTop: '8rem' }}>
-        <Grid container spacing={0} justifyContent={'space-between'} alignItems={'start'}>
-          <LButton style={{ fontSize: '24px' }} onClick={() => navigate('/map')}>
-            View Chi Air Quality Network Map <FaArrowRight style={{ marginLeft: '.5rem' }}/>
-          </LButton>
-          <Grid container alignItems={'center'} spacing={8}>
-            <ChiBlackText style={{ fontSize: '32px', fontWeight: 400, textAlign: 'right' }}>
-              <div>Access useful</div>
-              <div style={{ fontWeight:700 }}>Air Quality <ChiRedText>Resources</ChiRedText></div>
-            </ChiBlackText>
-            <img src={'/icons/chiair/aq-resources-icon.svg'} alt={''} />
-          </Grid>
-        </Grid>
+      <WhiteBackground largeScreen={largeScreen}>
+        <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
+                       topRowText={'Access useful'}
+                       bottomRowTextBlack={'Air Quality'}
+                       bottomRowTextRed={'Resources'}
+                       buttonOnClick={() => navigate('/map')}
+                       buttonText={'View Chi Air Quality Network Map'}
+                       buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
+        />
       </WhiteBackground>
 
-      <GradientBackground>
+      <GradientBackground largeScreen={largeScreen}>
         <Grid container spacing={8} alignItems={'start'}>
           {resources?.map((resource, index) =>
-            <Grid key={'resources-'+index} size={{xs: 12, md:3 }} style={{ cursor: 'pointer' }}
+            <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
                   onClick={() => navigate(resource?.url)}
                   justifyItems={'center'}>
               <Grid container spacing={0} marginY={'1rem'}>
@@ -264,25 +261,26 @@ export default function Home() {
             </Grid>
           )}
         </Grid>
+      </GradientBackground>
 
 
-        <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'} marginTop={'10rem'} marginBottom={'4rem'}>
-          <Grid size={6}>
-            <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
-          </Grid>
-          <Grid size={6} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
-            <Grid container spacing={8} justifyContent={'right'} alignItems={'center'} marginBottom={'4rem'}>
-              <ChiBlackText style={{ fontSize: '32px', fontWeight: 400, textAlign: 'right' }}>
-                <div>Empowered by a</div>
-                <div style={{ fontWeight:700 }}>Record-Breaking <ChiRedText>Network</ChiRedText></div>
-              </ChiBlackText>
-              <img src={'/icons/chiair/aq-network.svg'} alt={''} />
-            </Grid>
+      <WhiteBackground largeScreen={largeScreen}>
+        <SectionHeader imgSrc={'/icons/chiair/aq-network.svg'}
+                       topRowText={'Empowered by a'}
+                       bottomRowTextBlack={'Record-Breaking'}
+                       bottomRowTextRed={'Network'}
+        />
+      </WhiteBackground>
+
+      <GradientBackground largeScreen={largeScreen}>
+        <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'center'}>
+          <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+          <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
             <Grid container spacing={0}>
               <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of over 277 high-precision sensors to blanket the city.</div>
-              <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.  <NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>
+              <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most. {!largeScreen && <br/> }<NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>
             </Grid>
-            <Grid container spacing={8} justifyContent={'right'}>
+            <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
               <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} />
               <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} />
             </Grid>
@@ -290,7 +288,7 @@ export default function Home() {
         </Grid>
       </GradientBackground>
 
-      <WhiteBackground>
+      <WhiteBackground largeScreen={largeScreen}>
         <NavBar />
       </WhiteBackground>
     </HomePage>
