@@ -59,3 +59,40 @@ export const getLatestValue = (geojsonData, id) => {
   });
   return first?.properties;
 }
+// Format dates consistently across DataPanel/Map components
+//    short => 02/22/26 10PM
+//     long => 10:00 PM, 02/22/26
+export const formatDate = (timestamp, type='long') => {
+  if (!timestamp) {
+    return { time:'', date:'', iso: '', utc: undefined };
+  }
+
+  const iso = timestamp?.split(' ')?.join('T') + 'Z';
+  const utc = new Date(iso);
+
+  // Use 'en-US' to ensure the Month/Day/Year order
+  const parts = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    month: '2-digit',
+    day: '2-digit',
+    year: '2-digit'
+  }).formatToParts(utc);
+
+  if (type === 'short') {
+    // Format: 02/22/26 10PM
+    // Reconstruct as short date followed by short hour format
+    const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
+    const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+
+    return {time, date, iso, utc};
+  }
+
+  // Format: 10:00 PM, 02/22/26
+  // Reconstruct to place the time before the date with a comma
+  const time = `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`;
+  const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+
+  return {time, date, iso, utc};
+}

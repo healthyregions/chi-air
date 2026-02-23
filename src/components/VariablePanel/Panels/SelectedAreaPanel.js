@@ -10,7 +10,7 @@ import {
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {LButton} from "../common";
+import {formatDate, LButton} from "../common";
 import {getLatestValue, LHeader} from "../common";
 
 const SelectedSensorsPanelContainer = styled.div`
@@ -102,22 +102,7 @@ export const SelectedAreaPanel = () => {
         const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(geojsonData, s);
         const fixed = Number(latest_mean_pm25)?.toFixed(1);
         const range = pm2_5Ranges.find(r => r.min <= fixed && fixed <= r.max);
-        const isoTimestamp = last_update.split(' ').join('T') + 'Z';
-        const lastUpdateDate = new Date(isoTimestamp);
-
-        // Use 'en-US' to ensure the Month/Day/Year order
-        const parts = new Intl.DateTimeFormat('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-          month: '2-digit',
-          day: '2-digit',
-          year: '2-digit'
-        }).formatToParts(lastUpdateDate);
-
-        // Reconstruct to place the time before the date with a comma
-        const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
-        const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+        const {time, date} = formatDate(last_update, 'short');
 
         return (
           <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`} onClick={() => dispatch(setClickedSensor(s))}>

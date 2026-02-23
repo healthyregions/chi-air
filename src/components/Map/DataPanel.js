@@ -231,7 +231,7 @@ const DataPanel = ({ handleGeocoder }) => {
           <AreaSelectionDropdowns pop={popPage} />
         </>}
 
-        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay date={firstHourlyRow?.date} />}
+        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={firstHourlyRow?.date} />}
         {(clickedSensor || selectedSensors?.length > 0) && <Divider />}
         {!clickedSensor && selectedSensors?.length > 0 && <SelectedAreaPanel  />}
         {clickedSensor && <ClickedSensorPanel push={pushPage} pop={popPage} />}
