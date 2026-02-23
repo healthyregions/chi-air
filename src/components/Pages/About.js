@@ -1,19 +1,13 @@
 import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
-import {Button, useMediaQuery} from "@mui/material";
+import {useMediaQuery} from "@mui/material";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "./Home";
 
 const AboutPage = styled.div`
     background:white;
 `;
-
-const brandColors = {
-  chiDarkBlue: '#005899',
-  chiRed: '#E4002B',
-  chiLightBlue: '#2D9ECD'
-}
 
 export default function About() {
     //const categories = ['Map', 'Protocol', 'Parameters'];

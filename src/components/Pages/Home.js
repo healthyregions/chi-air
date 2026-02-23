@@ -32,11 +32,12 @@ const GeocoderContainer = styled(Grid)`
 
 const TitleBanner = styled(Grid)`
     display: flex;
-    flex-direction: column;
     align-items: end;
-    text-align: right;
+    flex-direction: ${({ largeScreen }) => largeScreen ? 'column' : 'row-reverse'};
+    justify-content: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
     font-family: Lexend;
 `;
+
 
 
 const brandColors = {
@@ -47,7 +48,7 @@ const brandColors = {
 const ChiHeader = styled.h1`
     font-family: Lexend !important;
     font-family: Lexend;
-    font-size: 64px;
+    font-size: ${({ largeScreen }) => largeScreen ? '64px' : '48px'};
     text-align: right;
 `;
 const ChiBlackText = styled.span`
@@ -56,9 +57,9 @@ const ChiBlackText = styled.span`
     font-style: normal;
 `;
 const ChiDarkBlueText = styled.span`
+    margin-left: 0.5rem;
     font-family: Lexend;
     color: ${brandColors.chiDarkBlue};
-    font-size: 64px;
     text-align: right;
     font-style: normal;
     font-weight: 700;
@@ -66,14 +67,14 @@ const ChiDarkBlueText = styled.span`
 const ChiLightBlueText = styled.span`
     font-family: Lexend;
     color: ${brandColors.chiLightBlue};
-    font-size: 32px;
+    font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
     font-weight: 400;
-    text-align: right;
+    text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
 `;
 const ChiRedText = styled.span`
     font-family: Lexend;
     color: ${brandColors.chiRed};
-    font-size: 32px;
+    font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
     font-weight: 700;
     text-align: right;
 `;
@@ -82,7 +83,7 @@ const ChiSubtitle = styled(Grid)`
     margin-top: 3rem;
     display: flex;
     align-self: end;
-    text-align: right;
+    text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
     font-family: Space Grotesk;
     font-size: 18px;
     font-weight: 400;
@@ -152,13 +153,12 @@ export default function Home() {
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const handleGeocoder = useCallback((location) => {
-    if (location.center !== undefined) {
+    if (location?.center !== undefined) {
       navigate({
         pathname: "/map",
-        search: createSearchParams({
-          lat: location.center[1],
-          lon: location.center[0],
-       }).toString()
+        search: createSearchParams(
+          ['lon', 'lat'].reduce((obj, k, i) => ({...obj, [k]: location?.center?.[i] }), {})
+        ).toString()
       });
     }
   }, [navigate]);
@@ -177,11 +177,16 @@ export default function Home() {
       <NavBar />
 
       <WhiteBackground largeScreen={largeScreen}>
-        <TitleBanner container spacing={0}>
-          <ChiHeader><ChiBlackText>Our </ChiBlackText><ChiDarkBlueText>Air</ChiDarkBlueText></ChiHeader>
+        <TitleBanner container spacing={0} largeScreen={largeScreen}>
+          <ChiHeader largeScreen={largeScreen}>
+            <ChiBlackText largeScreen={largeScreen}>Our</ChiBlackText>
+            <ChiDarkBlueText largeScreen={largeScreen}>Air</ChiDarkBlueText>
+          </ChiHeader>
 
-          <ChiLightBlueText>Mapping the Open Air Network</ChiLightBlueText>
-          <ChiRedText>Built for Chicago, with Chicago.</ChiRedText>
+          <ChiLightBlueText largeScreen={largeScreen}>Mapping the Open Air Network.
+            {largeScreen && <br/>}
+            <ChiRedText largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
+          </ChiLightBlueText>
 
           <ChiSubtitle size={{ xs:12, md: 6 }}>
             Air pollution is often invisible, but its impact is real.

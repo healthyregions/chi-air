@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, NavLink, useLocation, useNavigate} from 'react-router-dom';
 import Popover from '@mui/material/Popover';
@@ -112,24 +112,30 @@ export default function Nav({
   const loc = useLocation();
   const navigate = useNavigate();
 
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const logoClicked = () => {
+    if (largeScreen) { return; }
+    setMobileNavOpen(!mobileNavOpen)
+  };
 
   return (
     <>
       <NavContainer>
-        <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'}>
+        <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
           <Grid size={4}>
-            <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-              <DropdownButton style={{fontSize:'24px'}} ButtonComponent={LButton}  label={'Eng'} options={['English', 'Español']} />
-              <LButton style={{fontSize:'24px' }} onClick={() => navigate('/')}><FaHome /></LButton>
+            {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
+              <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} />
+              <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
               {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
               <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
 
-              <LButton style={{fontSize:'24px'}} onClick={() => navigate('/map')}>Maps</LButton>
-              <LButton style={{fontSize:'24px'}} onClick={() => navigate('/about')}>About</LButton>
-            </Grid>
+              <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
+              <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
+            </Grid>}
           </Grid>
-          <Grid alignItems={'end'} justifyContent={'right'}>
+          <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}>
             <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
           </Grid>
         </Grid>
