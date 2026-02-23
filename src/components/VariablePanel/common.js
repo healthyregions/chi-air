@@ -80,19 +80,20 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
     year: '2-digit'
   }).formatToParts(utc);
 
-  if (format === 'short') {
-    // Format: 02/22/26 10PM
-    // Reconstruct as short date followed by short hour format
-    const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
-    const date = year ? `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}` : `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}`;
-
-    return {time, date, iso, utc};
-  }
-
-  // Format: 10:00 PM, 02/22/26
-  // Reconstruct to place the time before the date with a comma
-  const time = `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`;
+  // Format: MM/DD/YY (e.g. 02/22/26)
   const date = year ? `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}` : `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}`;
 
-  return {time, date, iso, utc};
+  // Format: hhA (e.g. 10PM)
+  if (format === 'short') {
+    return {
+      time: `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`,
+      date, iso, utc
+    };
+  }
+
+  // Format: hh:mm A (e.g. 10:00 PM)
+  return {
+    time: `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`,
+    date, iso, utc
+  };
 }
