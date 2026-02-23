@@ -89,7 +89,7 @@ const ChiSubtitle = styled(Grid)`
     font-style: normal;
 `;
 
-const WhiteBackground = styled(Grid)`
+export const WhiteBackground = styled(Grid)`
     margin-top: 2rem;
     margin-bottom: 2rem;
     padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
@@ -99,7 +99,7 @@ const WhiteBackground = styled(Grid)`
     //min-height: 15rem;
 `;
 
-const GradientBackground = styled.div`
+export const GradientBackground = styled.div`
     margin-bottom: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
     padding-bottom: 4rem;
     padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
