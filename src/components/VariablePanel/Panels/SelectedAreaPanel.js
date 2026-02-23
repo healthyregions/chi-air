@@ -1,0 +1,141 @@
+import Grid from "@mui/material/Grid";
+import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
+import {pm2_5Ranges} from "../../../config";
+import {
+  removeSensorsFromSelection,
+  selectClickedSensor, selectSelectedAreas, selectSelectedSensors,
+  selectSensorGeojsonData,
+  selectSensorLocations,
+  setClickedSensor, setSelectedAreas
+} from "../../../store/slices/sensorDataSlice";
+import styled from "styled-components";
+import {useDispatch, useSelector} from "react-redux";
+import {LButton} from "../common";
+import {getLatestValue, LHeader} from "../common";
+
+const SelectedSensorsPanelContainer = styled.div`
+    overflow-y: auto;
+    max-height: 40vh;
+`;
+
+const GridHeader = styled(Grid)`
+    font-family: Lexend;
+`;
+
+const GridBody = styled(Grid)`
+    font-family: Space Grotesk;
+    cursor: pointer;
+    &:hover {
+        background-color: #22222222;
+    }
+`;
+const Color = styled.span`
+    display: block;
+    background-color: ${({ color }) => color};
+    border: 1px solid ${({ border }) => border};
+    border-radius: 10px;
+    width: 16px;
+    height: 16px;
+`;
+const ColorColumn = styled(Grid)`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const TimestampColumn = styled(Grid)``;
+const AqiValueColumn = styled(Grid)`
+    text-align: right;
+`;
+const SensorIdColumn = styled(Grid)``;
+const LocationNameColumn = styled(Grid)``;
+
+
+export const SelectedAreaPanel = ({ firstHourlyRow }) => {
+  const dispatch = useDispatch();
+
+  const selections = useSelector(selectSelectedAreas);
+  const setSelections = (sel) => dispatch(setSelectedAreas(sel));
+
+  const locations = useSelector(selectSensorLocations);
+  const clickedSensor = useSelector(selectClickedSensor);
+  const selectedSensors = useSelector(selectSelectedSensors);
+  const geojsonData = useSelector(selectSensorGeojsonData);
+
+  const resetAll = () => {
+    setSelections({community:[],zip:[],ward:[]});
+    dispatch(removeSensorsFromSelection([...selectedSensors]));
+  };
+
+  return(
+    <SelectedSensorsPanelContainer>
+      <Grid container spacing={0} alignItems={'center'} marginTop={'2rem'}>
+        <Grid size={2}>
+          <LButton onClick={() => resetAll()}>
+            <FaArrowLeft style={{ width: '15px', height: '15px' }} />
+          </LButton>
+        </Grid>
+
+        {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <LHeader>Selected
+          {!selections?.community?.length && !selections?.zip?.length && <> Locations </>}
+          {selections?.community?.length > 0 && <> Community </>}
+          {selections?.zip?.length > 0 && <> Zip code </>}
+        </LHeader>}
+      </Grid>
+
+      {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
+        <TimestampColumn size={3}></TimestampColumn>
+        <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
+        <ColorColumn size={1}></ColorColumn>
+        <LocationNameColumn size={4}>Name</LocationNameColumn>
+        {selections?.community?.length === 0 && selections?.zip?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
+        {selections?.community?.length > 0 && <SensorIdColumn size={3}>Community</SensorIdColumn>}
+        {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}
+      </GridHeader>}
+
+      {!clickedSensor && selectedSensors?.map((s, index) => {
+        const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(geojsonData, s);
+        const fixed = Number(latest_mean_pm25)?.toFixed(1);
+        const range = pm2_5Ranges.find(r => r.min <= fixed && fixed <= r.max);
+        const isoTimestamp = last_update.split(' ').join('T') + 'Z';
+        const lastUpdateDate = new Date(isoTimestamp);
+
+        // Use 'en-US' to ensure the Month/Day/Year order
+        const parts = new Intl.DateTimeFormat('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+          month: '2-digit',
+          day: '2-digit',
+          year: '2-digit'
+        }).formatToParts(lastUpdateDate);
+
+        // Reconstruct to place the time before the date with a comma
+        const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
+        const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+
+        return (
+          <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`} onClick={() => dispatch(setClickedSensor(s))}>
+            <TimestampColumn size={3}>
+              <small>{date} {time}</small>
+            </TimestampColumn>
+            <AqiValueColumn size={1}>
+              <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
+            </AqiValueColumn>
+            <ColorColumn size={1}>
+              <Color color={range?.color} border={range?.border}></Color>
+            </ColorColumn>
+            <LocationNameColumn size={4}>
+              <small>{name}</small>
+            </LocationNameColumn>
+            <SensorIdColumn size={3}>
+              {selections?.community?.length === 0 && selections?.zip?.length === 0 && <small>{datasourceId}</small>}
+              {selections?.community?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.community}</small>}
+              {selections?.zip?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.zip}</small>}
+            </SensorIdColumn>
+          </GridBody>
+        );
+      })}
+    </SelectedSensorsPanelContainer>
+  );
+}

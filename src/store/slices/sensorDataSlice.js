@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  selectedAreas: {
+    community: [],
+    zip: [],
+    ward: [],
+  },
   selectedSensors: [],
   locations: [],
   mean_pm25: [],
@@ -14,6 +19,13 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setSelectedAreas: (state, action) => ({
+      ...state,
+      selectedAreas: {
+        ...state.selectedAreas,
+        ...action.payload,
+      }
+    }),
     setLocale: (state, action) => {
       console.log('Selected locale:', action.payload);
       return {
@@ -69,6 +81,7 @@ export const sensorDataSlice = createSlice({
     selectClickedSensor: state => state.clickedSensor,
     selectAverageType: state => state.averageType,
     selectLocale: state=> state.locale,
+    selectSelectedAreas: state => state.selectedAreas,
   }
 });
 
@@ -83,6 +96,7 @@ export const {
   setClickedSensor,
   setAverageType,
   setLocale,
+  setSelectedAreas,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
@@ -94,5 +108,6 @@ export const {
   selectClickedSensor,
   selectAverageType,
   selectLocale,
+  selectSelectedAreas,
 } = sensorDataSlice.selectors
 

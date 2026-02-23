@@ -25,7 +25,7 @@ const SGBody = styled.div`
     font-family: Space Grotesk;
     font-weight: 300;
     margin: 1rem 0;
-    font-style: Regular;
+    font-style: normal;
     font-size: 14px;
     leading-trim: NONE;
     line-height: 100%;

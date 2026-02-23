@@ -1,0 +1,166 @@
+import Grid from "@mui/material/Grid";
+import {
+  selectClickedSensor,
+  selectSelectedSensors, selectSensorGeojsonData,
+  selectSensorLocations, selectSensorValuesMeanPm25,
+  setClickedSensor
+} from "../../../store/slices/sensorDataSlice";
+import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
+import {ClickAwayListener, Tooltip, Zoom} from "@mui/material";
+import {FaCheckCircle} from "@react-icons/all-files/fa/FaCheckCircle";
+import {FaLink} from "@react-icons/all-files/fa/FaLink";
+import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
+import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft";
+import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
+import {SensorValueDisplay} from "../SensorValueDisplay";
+import {SensorBarChart} from "../SensorBarChart";
+import {getLatestValue, LButton, LHeader} from "../common";
+import {useSearchParams} from "react-router-dom";
+import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import styled from "styled-components";
+import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
+
+
+const SensorValueLabelTooltip = styled(FaInfoCircle)`
+    width: 15px;
+    height: 15px;
+    margin-left: 0.5rem;
+    align-self: center;
+    color: rgba(0, 88, 153, 0.5);
+    cursor: pointer;
+`;
+
+
+export const ClickedSensorPanel = ({ push, pop }) => {
+  const dispatch = useDispatch();
+  const [, setSearchParams] = useSearchParams();
+
+  const locations = useSelector(selectSensorLocations);
+  const selectedSensors = useSelector(selectSelectedSensors);
+  const clickedSensor = useSelector(selectClickedSensor);
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const geojsonData = useSelector(selectSensorGeojsonData);
+
+
+  const [linkCopied, setLinkCopied] = useState(false);
+  const handleTooltipOpen = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setLinkCopied(true);
+  };
+  const handleTooltipClose = () => {
+    setLinkCopied(false);
+  };
+
+  // Grab our previously-fetched data and use that to determine some stats
+  // TODO: we can do better for this logic, but for now this should work alright
+  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
+  const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
+  const latest = getLatestValue(geojsonData, clickedSensor);
+  const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
+    && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
+
+  const prevSensor = () => {
+    const index = selectedSensors?.indexOf(clickedSensor);
+    if (index === -1) { return; }
+    const newIndex = index === 0 ? selectedSensors?.length - 1 : index - 1;
+    dispatch(setClickedSensor(selectedSensors[newIndex]));
+  };
+  const nextSensor = () => {
+    const index = selectedSensors?.indexOf(clickedSensor);
+    if (index === -1) { return; }
+    const newIndex = index === (selectedSensors?.length - 1) ? 0 : index + 1;
+    dispatch(setClickedSensor(selectedSensors[newIndex]));
+  };
+
+  return(
+    <>
+      <Grid container spacing={0} alignItems={'center'} marginTop={'2rem'}>
+        <Grid size={2}>
+          <LButton onClick={() => dispatch(setClickedSensor()) && setSearchParams({})} >
+            <FaArrowLeft style={{ width: '15px', height: '15px' }} />
+          </LButton>
+        </Grid>
+
+        <Grid size={8}>
+          <LHeader>{clickedLocation?.name}</LHeader>
+        </Grid>
+
+        <Grid size={2} alignItems={'end'}>
+          <ClickAwayListener onClickAway={handleTooltipClose}>
+            <div>
+              <Tooltip
+                open={linkCopied}
+                onClose={handleTooltipClose}
+                onOpen={handleTooltipOpen}
+                placement={'left'}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                arrow={true}
+                title={<Grid container alignItems={'center'}>
+                  <FaCheckCircle style={{ marginRight: '.5rem' }} />
+                  Link copied
+                </Grid>}
+                slotProps={{
+                  popper: {
+                    disablePortal: true,
+                  },
+                }}
+                slots={{ transition: Zoom }}
+              >
+                <LButton onClick={handleTooltipOpen}>
+                  <FaLink style={{ width: '15px', height: '15px' }} />
+                </LButton>
+              </Tooltip>
+            </div>
+          </ClickAwayListener>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={0} alignItems={'center'}>
+        <Grid offset={2} size={7}>
+          <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
+        </Grid>
+        <Grid size={3}>
+          <LButton onClick={() => push(['Details'])}>Details &rarr;</LButton>
+        </Grid>
+      </Grid>
+
+      {selectedSensors?.includes(clickedSensor) && <Grid container spacing={0} justifyContent={"space-between"}>
+        <Grid size={6}>
+          <LButton style={{ position: 'absolute', left: '-2rem', marginTop: '2rem', fontSize: '28px',  width: '36px', height: '36px' }}
+                   onClick={() => prevSensor()}>
+            <FaChevronCircleLeft style={{ border: '2px solid white', borderRadius: '100px', backgroundColor: 'white',color: 'rgba(0, 88, 153, 1)' }} />
+          </LButton>
+        </Grid>
+        <Grid size={6}>
+          <LButton style={{ position: 'absolute', right: '-2rem', marginTop: '2rem', fontSize: '28px',  width: '36px', height: '36px' }}
+                   onClick={() => nextSensor()}>
+            <FaChevronCircleRight style={{ border: '2px solid white', borderRadius: '100px', backgroundColor: 'white',color: 'rgba(0, 88, 153, 1)' }} />
+          </LButton>
+        </Grid>
+      </Grid>}
+
+      {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount > 0 && <Grid container spacing={0} alignItems={'center'}>
+        <Grid offset={2} size={8}>
+          <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
+        </Grid>
+        <Grid size={2} onClick={() => push(['Color Coding Air Quality'])}><SensorValueLabelTooltip /></Grid>
+      </Grid>}
+
+      <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'}>
+        <Grid size={10}>
+          {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
+          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
+        </Grid>
+      </Grid>
+
+      <Grid container alignItems={'center'}>
+        <Grid offset={1} size={11}>
+          {recentValueCount > 0 && <SensorBarChart pageSize={40} datasourceId={clickedSensor} averageType={'hour'} dataset={mean_pm25?.filter(d => d.type === 'hour')?.map(r => ({ type: r.type, date: r.date, value:  r[clickedSensor] }))} />}
+        </Grid>
+      </Grid>
+    </>
+  );
+}

@@ -2,7 +2,7 @@
 import {colors, pm2_5Ranges} from "../../config";
 import styled from "styled-components";
 import Grid from "@mui/material/Grid";
-import {Tooltip} from "@mui/material";
+import {Tooltip, useMediaQuery} from "@mui/material";
 import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {FaKey} from "@react-icons/all-files/fa/FaKey";
@@ -15,7 +15,8 @@ const ColorScaleContainer = styled.div`
   border: 1px solid rgba(65, 182, 230, 1);
   min-width:433px;
   right:2rem;
-  bottom:2rem;
+  top: ${({ largeScreen }) => largeScreen ? '' : '1.5rem'};
+  bottom: ${({ largeScreen }) => largeScreen ? '2rem' : ''};
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
@@ -124,11 +125,12 @@ const ColorScaleContainer = styled.div`
 const AQIColorScale = () => {
   const dispatch = useDispatch();
   const panelState = useSelector(selectPanelState);
+  const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }))
 
   return (
-    <ColorScaleContainer className={panelState.key ? 'open' : ''}>
+    <ColorScaleContainer largeScreen={largeScreen} className={panelState.key ? 'open' : ''}>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem' }}>
         <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Air Quality Index'}>AQI</Tooltip>
