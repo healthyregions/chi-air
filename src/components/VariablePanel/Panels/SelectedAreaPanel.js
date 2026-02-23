@@ -10,8 +10,8 @@ import {
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {formatDate, LButton} from "../common";
-import {getLatestValue, LHeader} from "../common";
+import {formatDate, getLatestValue, LButton} from "../common";
+import {LHeader} from "../common";
 
 const SelectedSensorsPanelContainer = styled.div`
     overflow-y: auto;

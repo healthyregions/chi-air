@@ -24,7 +24,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
       {currentPage === 'Map Layers' && <Grid size={11}>
         <LHeader>Map Layers</LHeader>
 
-        <SGBody>
+        <SGBody style={{ margin: '0.5rem 0' }}>
           Customize your view to see how air quality intersects with
           your community. Use overlays and filters to explore how
           social determinants impact health outcomes in your area.

@@ -4,7 +4,7 @@ import {
   selectClickedSensor, selectSensorGeojsonData, selectSensorLocations,
   selectSensorValuesMeanPm25, setAverageType
 } from "../../../store/slices/sensorDataSlice";
-import {Divider, getLatestValue, getMetadata, LButton, LHeader, LinkText} from "../common";
+import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
@@ -12,10 +12,12 @@ import {FaChartLine} from "@react-icons/all-files/fa/FaChartLine";
 import {FormControl, InputLabel, MenuItem} from "@mui/material";
 import Select from "@mui/material/Select";
 import {SensorBarChart} from "../SensorBarChart";
+import {useState} from "react";
 
 
 export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
+  const [, setSelectedParameter] = useState(null);
   const averageType = useSelector(selectAverageType);
   const clickedSensor = useSelector(selectClickedSensor);
 
@@ -80,26 +82,23 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             <InputLabel htmlFor="paramSelect">Parameter</InputLabel>
             <Select
               variant={"filled"}
-              value={'pm25'}
-              MenuProps={{ id: "variableMenu" }}
+              value={'mean_pm25'}
+              onChange={(e) => setSelectedParameter(e.target.value)}
             >
-              <MenuItem value="pm25">PM 2.5</MenuItem>
-              <MenuItem value="aqi">AQI</MenuItem>
-              <MenuItem value="no2">NO₂</MenuItem>
-              <MenuItem value="bc">BC</MenuItem>
+              <MenuItem value="mean_pm25">PM 2.5</MenuItem>
+              <MenuItem value="mean_aqi">AQI</MenuItem>
+              <MenuItem value="mean_no2">NO₂</MenuItem>
+              <MenuItem value="mean_bc">BC</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid size={6}>
-          <FormControl id="paramSelect" variant="outlined" fullWidth>
-            <InputLabel htmlFor="paramSelect">View by</InputLabel>
+          <FormControl id="avgTypeSelect" variant="outlined" fullWidth>
+            <InputLabel htmlFor="avgTypeSelect">View by</InputLabel>
             <Select
               variant={"filled"}
               value={averageType}
-              onChange={(e) => {
-                dispatch(setAverageType(e.target.value))
-              }}
-              MenuProps={{ id: "variableMenu" }}
+              onChange={(e) => dispatch(setAverageType(e.target.value))}
             >
               <MenuItem value="hour">Hour</MenuItem>
               <MenuItem value="day">Day</MenuItem>
@@ -123,6 +122,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
         <SensorBarChart margin={{ left: 60 }}
                         showScroll={true}
                         averageType={averageType}
+                        selectedParameter={'mean_pm25'}
                         mean_pm25={mean_pm25?.filter(d => d.type === averageType)?.map(r =>
                           ({ type: r.type, date: r.date, mean_pm25: r[clickedSensor] })
                         )} />

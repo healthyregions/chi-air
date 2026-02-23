@@ -61,12 +61,9 @@ const NavItems = styled.ul`
       }
     }
   }
-`
-
+`;
 const NavContainer = styled.div`
-  padding-top: 4rem;
-  padding-left: 6rem;
-  padding-right: 6rem;
+  padding: 4rem 6rem 0 6rem;
   top:.5em;
   left:.5em;
   z-index:500;
@@ -77,24 +74,20 @@ const NavContainer = styled.div`
     padding-left: 15px;
     //border: 1px solid ${colors.chicagoBlue};
   }
-`
-
+`;
 const NavInner = styled(Box)`
   padding:1em;
   min-width: 11.5em;
 
-`
-
-
-
+`;
 const LButton = styled(Button)`
     font-family: Lexend,serif;
     text-transform: none;
     color: #005899;
 `;
-
 export default function Nav({
   showMapControls = false,
+  style,
   bounds,
   setViewState
 }) {
@@ -122,7 +115,7 @@ export default function Nav({
 
   return (
     <>
-      <NavContainer>
+      <NavContainer style={style}>
         <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
           <Grid size={4}>
             {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
@@ -174,7 +167,6 @@ export default function Nav({
           </NavInner>
         </Popover>
       </NavContainer>
-
     </>
   );
 }

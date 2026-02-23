@@ -152,6 +152,8 @@ export default function Home() {
   const locations = useSelector(selectSensorLocations);
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
+  const sensorCount = 'over 275'
+
   const handleGeocoder = useCallback((location) => {
     if (location?.center !== undefined) {
       navigate({
@@ -277,12 +279,12 @@ export default function Home() {
         />
       </WhiteBackground>
 
-      <GradientBackground largeScreen={largeScreen}>
+      <GradientBackground largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'center'}>
           <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
           <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
             <Grid container spacing={0}>
-              <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of over 277 high-precision sensors to blanket the city.</div>
+              <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of {sensorCount} high-precision sensors to blanket the city.</div>
               <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most. {!largeScreen && <br/> }<NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>
             </Grid>
             <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
@@ -293,9 +295,8 @@ export default function Home() {
         </Grid>
       </GradientBackground>
 
-      <WhiteBackground largeScreen={largeScreen}>
-        <NavBar />
-      </WhiteBackground>
+
+      <NavBar style={{ marginBottom: '2rem' }} />
     </HomePage>
   );
 }

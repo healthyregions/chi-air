@@ -14,7 +14,7 @@ const LButton = styled(Button)`
     color: #005899;
 `;
 
-export const SensorBarChart = ({ margin = {left:30}, style = {}, showScroll = false, pageSize = 24, mean_pm25, averageType }) => {
+export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left:30}, style = {}, showScroll = false, pageSize = 24, mean_pm25, averageType }) => {
   const [page, setPage] = useState(0);
 
   // Listen for changes to averageType
@@ -27,18 +27,26 @@ export const SensorBarChart = ({ margin = {left:30}, style = {}, showScroll = fa
     }
   }, [averageType]);
 
+  const scrollBack = () => page > 0 && setPage(page - 1);
+  const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
+
+  // Paging metadata: item count, number of pages, page number, page size, etc
+  // TODO: how to calculate this with multiple parameters?
+  const itemsCount = mean_pm25?.length;
+  const numPages = Math.ceil(itemsCount / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
+
+  // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => mean_pm25?.slice(pageStart, pageEnd)?.reverse(), [mean_pm25, pageStart, pageEnd]);
   const chartSettings = {
     dataset: filteredData,
     height: 175,
 
     // Data to graph: Mean PM2.5 Values
-    series: [{
-      dataKey: 'mean_pm25',
-      valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³`
-    }],
+    series: [
+      { dataKey: selectedParameter, valueFormatter: (v) => `${Number(v)?.toFixed(1)} ${selectedParameter === 'mean_aqi' ? 'AQI' : 'μg/m³'}`},
+   ],
 
     // Y-Axis: Mean PM2.5 values
     yAxis: [{
@@ -74,12 +82,6 @@ export const SensorBarChart = ({ margin = {left:30}, style = {}, showScroll = fa
       }
     }],
   };
-
-  // TODO: how to calculate this with multiple parameters?
-  const itemsCount = mean_pm25?.length;
-  const numPages = Math.ceil(itemsCount / pageSize);
-  const scrollBack = () => page > 0 && setPage(page - 1);
-  const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
 
   return (
     <>

@@ -14,7 +14,7 @@ import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft
 import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
 import {SensorValueDisplay} from "../SensorValueDisplay";
 import {SensorBarChart} from "../SensorBarChart";
-import {getLatestValue, getMetadata, LButton, LHeader, SensorValueLabelTooltip} from "../common";
+import {getMetadata, LButton, LHeader, SensorValueLabelTooltip} from "../common";
 import {useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";

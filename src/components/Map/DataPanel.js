@@ -32,8 +32,6 @@ import {ClickedSensorDetailsPanel} from "../VariablePanel/Panels/ClickedSensorDe
 import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplainPanel";
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
 
-//// Styled components CSS
-// Main container for entire panel
 const DataPanelContainer = styled.div`
     position:fixed;
     width: ${({ largeScreen }) => largeScreen ? '433px' : 'calc(100% - 1em)'};
@@ -118,36 +116,6 @@ const DataPanelContainer = styled.div`
       }
     }
   }
-
-  div {
-    div {
-      p {
-        line-height:1.5;
-        margin:0;
-        display:inline-block;
-      }
-    }
-  }
-  h2 {
-    padding:15px 0 5px 0;
-    margin:0;
-    display:inline-block;
-    max-width:200px;
-  }
-  h6, p {
-    padding:0 0 15px 0;
-    margin:0;
-    a {
-      color:${colors.yellow};
-      text-decoration:none;
-    }
-  }
-  .extraPadding {
-    padding-bottom:20vh;
-  }
-  p {
-    padding-right:10px;
-  }
 `;
 
 const CustomGeocoder = ({ push, handleGeocoder }) => <>
@@ -164,7 +132,6 @@ const CustomGeocoder = ({ push, handleGeocoder }) => <>
     onChange={handleGeocoder}
   />
 </>;
-
 
 // DataPanel Function Component
 const DataPanel = ({ handleGeocoder }) => {
