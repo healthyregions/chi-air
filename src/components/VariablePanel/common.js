@@ -62,7 +62,7 @@ export const getLatestValue = (geojsonData, id) => {
 // Format dates consistently across DataPanel/Map components
 //    short => 02/22/26 10PM
 //     long => 10:00 PM, 02/22/26
-export const formatDate = (timestamp, type='long') => {
+export const formatDate = ({ timestamp, year=true, format='long' }) => {
   if (!timestamp) {
     return { time:'', date:'', iso: '', utc: undefined };
   }
@@ -80,11 +80,11 @@ export const formatDate = (timestamp, type='long') => {
     year: '2-digit'
   }).formatToParts(utc);
 
-  if (type === 'short') {
+  if (format === 'short') {
     // Format: 02/22/26 10PM
     // Reconstruct as short date followed by short hour format
     const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
-    const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+    const date = year ? `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}` : `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}`;
 
     return {time, date, iso, utc};
   }
@@ -92,7 +92,7 @@ export const formatDate = (timestamp, type='long') => {
   // Format: 10:00 PM, 02/22/26
   // Reconstruct to place the time before the date with a comma
   const time = `${parts.find(p => p.type === 'hour').value}:${parts.find(p => p.type === 'minute').value} ${parts.find(p => p.type === 'dayPeriod').value}`;
-  const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}`;
+  const date = year ? `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}/${parts.find(p => p.type === 'year').value}` : `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}`;
 
   return {time, date, iso, utc};
 }

@@ -102,7 +102,10 @@ export const SelectedAreaPanel = () => {
         const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(geojsonData, s);
         const fixed = Number(latest_mean_pm25)?.toFixed(1);
         const range = pm2_5Ranges.find(r => r.min <= fixed && fixed <= r.max);
-        const {time, date} = formatDate(last_update, 'short');
+        const {time, date} = formatDate({
+          timestamp: last_update,
+          format: 'short'
+        });
 
         return (
           <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`} onClick={() => dispatch(setClickedSensor(s))}>

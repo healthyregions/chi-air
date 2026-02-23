@@ -6,36 +6,13 @@ import {Button} from "@mui/material";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft";
 import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
+import {formatDate} from "./common";
 
 const LButton = styled(Button)`
     font-family: Lexend,serif;
     text-transform: none;
     color: #005899;
 `;
-
-const dateTimeFormatter = (v, averageType) => {
-  if (averageType === 'week' || averageType === 'season') {
-    return v;
-  }
-  const isoTimestamp = v.split(' ').join('T') + 'Z';
-  const d = new Date(isoTimestamp);
-
-  // Use 'en-US' to ensure the Month/Day/Year order
-  const parts = new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-    month: '2-digit',
-    day: '2-digit',
-    year: '2-digit'
-  }).formatToParts(d);
-
-  // Reconstruct to place the time before the date with a comma
-  const time = `${parts.find(p => p.type === 'hour').value}${parts.find(p => p.type === 'dayPeriod').value}`;
-  const date = `${parts.find(p => p.type === 'month').value}/${parts.find(p => p.type === 'day').value}`;  //  /${parts.find(p => p.type === 'year').value}`;
-
-  return averageType === 'hour' ? `${date} ${time}` : date;
-}
 
 export const SensorBarChart = ({ DEBUG = false, reset = () => true, margin = {left:30}, style = {}, showScroll = false, pageSize = 24, dataset, datasourceId, averageType }) => {
   const [page, setPage] = useState(0);
@@ -72,7 +49,18 @@ export const SensorBarChart = ({ DEBUG = false, reset = () => true, margin = {le
       dataKey: 'date',
       barGapRatio: 3,
       tickPlacement: 'middle',
-      valueFormatter: (v) => dateTimeFormatter(v, averageType)
+      valueFormatter: (v) => {
+        // no-op for weekly / seasonal averages (e.g. 2026-W01, 2026-S1, etc)
+        if (averageType === 'week' || averageType === 'season') {
+          return v;
+        }
+        const {date, time} = formatDate({
+          timestamp: v,
+          format: 'short',
+          year: false
+        });
+        return averageType === 'hour' ? `${date} ${time}` : date;
+      }
     }],
     series: [{ dataKey: 'value', valueFormatter: (v) => `${Number(v)?.toFixed(1)} μg/m³` }],
     height: 175,

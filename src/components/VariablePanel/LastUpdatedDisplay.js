@@ -9,7 +9,10 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
   const geojsonData = useSelector(selectSensorGeojsonData);
 
   const latest = timestamp ?? getLatestValue(geojsonData, datasourceId)?.last_update;
-  const {time, date, utc} = formatDate(latest, 'long');
+  const {time, date, utc} = formatDate({
+    timestamp: latest,
+    format: 'long'
+  });
 
   return (
     <div style={{ margin: '0.5rem 0' }}>
