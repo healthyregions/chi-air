@@ -14,7 +14,7 @@ import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft
 import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
 import {SensorValueDisplay} from "../SensorValueDisplay";
 import {SensorBarChart} from "../SensorBarChart";
-import {getLatestValue, LButton, LHeader, SensorValueLabelTooltip} from "../common";
+import {getLatestValue, getMetadata, LButton, LHeader, SensorValueLabelTooltip} from "../common";
 import {useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -73,11 +73,7 @@ export const ClickedSensorPanel = ({ push, pop }) => {
 
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
-  const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
-  const latest = getLatestValue(geojsonData, clickedSensor);
-  const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
-    && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
+  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
 
   // Page backward by one, if our clicked sensor is in the list of selected sensors
   const prevSensor = () => {
@@ -153,7 +149,13 @@ export const ClickedSensorPanel = ({ push, pop }) => {
 
       <Grid container alignItems={'center'}>
         <Grid offset={1} size={11}>
-          {recentValueCount > 0 && <SensorBarChart pageSize={40} datasourceId={clickedSensor} averageType={'hour'} dataset={mean_pm25?.filter(d => d.type === 'hour')?.map(r => ({ type: r.type, date: r.date, value:  r[clickedSensor] }))} />}
+          {recentValueCount > 0 && <>
+            <SensorBarChart pageSize={40}
+                            averageType={'hour'}
+                            mean_pm25={mean_pm25?.filter(d => d.type === 'hour')?.map(r =>
+                              ({ type: r.type, date: r.date, mean_pm25:  r[clickedSensor] })
+                            )} />
+          </>}
         </Grid>
       </Grid>
     </>

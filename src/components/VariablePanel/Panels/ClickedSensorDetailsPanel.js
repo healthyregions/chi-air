@@ -4,7 +4,7 @@ import {
   selectClickedSensor, selectSensorGeojsonData, selectSensorLocations,
   selectSensorValuesMeanPm25, setAverageType
 } from "../../../store/slices/sensorDataSlice";
-import {Divider, getLatestValue, LButton, LHeader, LinkText} from "../common";
+import {Divider, getLatestValue, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
@@ -17,18 +17,15 @@ import {SensorBarChart} from "../SensorBarChart";
 export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
   const averageType = useSelector(selectAverageType);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const clickedSensor = useSelector(selectClickedSensor);
-  const geojsonData = useSelector(selectSensorGeojsonData);
+
   const locations = useSelector(selectSensorLocations);
+  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const geojsonData = useSelector(selectSensorGeojsonData);
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
-  const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
-  const latest = getLatestValue(geojsonData, clickedSensor);
-  const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
-    && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
+  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
 
   return(
     <Grid size={11}>
@@ -122,7 +119,14 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
         </Grid>
       </Grid>
 
-      {recentValueCount > 0 && <SensorBarChart margin={{ left: 60 }} DEBUG={true} showScroll={true} datasourceId={clickedSensor} averageType={averageType} dataset={mean_pm25?.filter(d => d.type === averageType)?.map(r => ({ type: r.type, date: r.date, value:  r[clickedSensor] }))} />}
+      {recentValueCount > 0 && <>
+        <SensorBarChart margin={{ left: 60 }}
+                        showScroll={true}
+                        averageType={averageType}
+                        mean_pm25={mean_pm25?.filter(d => d.type === averageType)?.map(r =>
+                          ({ type: r.type, date: r.date, mean_pm25: r[clickedSensor] })
+                        )} />
+      </>}
     </Grid>
   );
 };

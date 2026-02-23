@@ -59,6 +59,17 @@ export const getLatestValue = (geojsonData, id) => {
   });
   return first?.properties;
 }
+// Given a sensorId + related datasets, extract basic fragments needed by a few different views
+export const getMetadata = (clickedSensor, locations, geojsonData, mean_pm25) => {
+  // Grab our previously-fetched data to determine some stats
+  // TODO: we can do better for this logic, but for now this should work alright
+  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
+  const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
+  const latest = getLatestValue(geojsonData, clickedSensor);
+  const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
+    && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
+  return {firstHourlyRow, latest, clickedLocation, recentValueCount};
+}
 // Static helper function to format dates consistently across DataPanel/Map components
 //    short => 02/22/26 10PM
 //     long => 10:00 PM, 02/22/26

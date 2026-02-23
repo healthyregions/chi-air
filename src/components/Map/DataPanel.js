@@ -208,9 +208,6 @@ const DataPanel = ({ handleGeocoder }) => {
     }
   };
 
-
-
-
   return (
     <DataPanelContainer largeScreen={largeScreen} isOpen={!!panelState.info} id="data-panel">
       <Grid container spacing={4} alignItems={'center'}>
