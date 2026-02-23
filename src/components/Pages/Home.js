@@ -188,7 +188,7 @@ export default function Home() {
             <ChiRedText largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
           </ChiLightBlueText>
 
-          <ChiSubtitle size={{ xs:12, md: 6 }}>
+          <ChiSubtitle largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
             Air pollution is often invisible, but its impact is real.
             Now, real-time air quality data is available for every
             neighborhood, for every Chicagoan, ensuring you and your
