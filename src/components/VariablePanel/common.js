@@ -51,7 +51,7 @@ export const SensorValueLabelTooltip = styled(FaInfoCircle)`
     color: rgba(0, 88, 153, 0.5);
     cursor: pointer;
 `;
-// Static helper method to grab the most recent value from the built geojson data
+// Static helper function to grab the most recent value from the built geojson data
 export const getLatestValue = (geojsonData, id) => {
   if (!id) { return undefined; }
   const first = geojsonData?.features?.find(f => {
@@ -59,7 +59,7 @@ export const getLatestValue = (geojsonData, id) => {
   });
   return first?.properties;
 }
-// Format dates consistently across DataPanel/Map components
+// Static helper function to format dates consistently across DataPanel/Map components
 //    short => 02/22/26 10PM
 //     long => 10:00 PM, 02/22/26
 export const formatDate = ({ timestamp, year=true, format='long' }) => {
