@@ -85,6 +85,15 @@ const LButton = styled(Button)`
     text-transform: none;
     color: #005899;
 `;
+
+const ContentContainer = styled.div`
+    max-width: 1440px; /* Standard container width */
+    margin: 0 auto;    /* Centering the container */
+    padding: 0 2rem;   /* Prevents text from touching edges */
+    width: 100%;
+    box-sizing: border-box;
+`;
+
 export default function Nav({
   showMapControls = false,
   style,
@@ -116,56 +125,58 @@ export default function Nav({
   return (
     <>
       <NavContainer style={style}>
-        <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
-          <Grid size={4}>
-            {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-              <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} />
-              <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
-              {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
-              <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
+        <ContentContainer>
+          <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
+            <Grid size={4}>
+              {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'0rem'}>
+                <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} />
+                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
+                {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
+                <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
 
-              <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
-              <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
-            </Grid>}
+                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
+                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
+              </Grid>}
+            </Grid>
+            <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}>
+              <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+            </Grid>
           </Grid>
-          <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}>
-            <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-          </Grid>
-        </Grid>
 
-        {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
-          <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
-          {SVG.hamburger}
-        </LogoButtonContainer>*/}
-        <Popover
-          id="nav-container"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          className="menu-popover"
-          style={{
-            border: `1px solid ${colors.chicagoBlue}`,
-          }}
-        >
-          <NavInner>
-            {!!showMapControls && <>
-              <Typography>Map Controls</Typography>
+          {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
+            <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
+            {SVG.hamburger}
+          </LogoButtonContainer>*/}
+          <Popover
+            id="nav-container"
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            className="menu-popover"
+            style={{
+              border: `1px solid ${colors.chicagoBlue}`,
+            }}
+          >
+            <NavInner>
+              {!!showMapControls && <>
+                <Typography>Map Controls</Typography>
+                <NavItems>
+                  <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
+                  <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
+                </NavItems>
+              </>}
               <NavItems>
-                <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
-                <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
+                <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
+                <li><NavLink to="/map">Map</NavLink></li>
+                <li><NavLink to="/about">About</NavLink></li>
               </NavItems>
-            </>}
-            <NavItems>
-              <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
-              <li><NavLink to="/map">Map</NavLink></li>
-              <li><NavLink to="/about">About</NavLink></li>
-            </NavItems>
-          </NavInner>
-        </Popover>
+            </NavInner>
+          </Popover>
+        </ContentContainer>
       </NavContainer>
     </>
   );

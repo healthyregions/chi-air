@@ -109,6 +109,14 @@ const ResourceLinkIcon = styled(FaExternalLinkAlt)`
     color: #00589980;
 `;
 
+const ContentContainer = styled.div`
+    max-width: 1440px; /* Standard container width */
+    margin: 0 auto;    /* Centering the container */
+    padding: 0 2rem;   /* Prevents text from touching edges */
+    width: 100%;
+    box-sizing: border-box;
+`;
+
 // No CMS system, define static data structure here instead
 const resources = [
   { url: '', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'Start with Air Quality 101', description: 'Dr. Erdal’s introduction to air quality presentation. More about this resource is here' },
@@ -144,58 +152,66 @@ export default function Home() {
       <NavBar />
 
       <WhiteBackground largeScreen={largeScreen}>
-        <TitleBanner container spacing={0} largeScreen={largeScreen}>
-          <ChiHeader largeScreen={largeScreen}>
-            <ChiBlackText largeScreen={largeScreen}>Our</ChiBlackText>
-            <ChiDarkBlueText largeScreen={largeScreen}>Air</ChiDarkBlueText>
-          </ChiHeader>
+        <ContentContainer>
+          <TitleBanner container spacing={0} largeScreen={largeScreen}>
+            <ChiHeader largeScreen={largeScreen}>
+              <ChiBlackText largeScreen={largeScreen}>Our</ChiBlackText>
+              <ChiDarkBlueText largeScreen={largeScreen}>Air</ChiDarkBlueText>
+            </ChiHeader>
 
-          <ChiLightBlueText largeScreen={largeScreen}>Mapping the Open Air Network.
-            {largeScreen && <br/>}
-            <ChiRedText largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
-          </ChiLightBlueText>
+            <ChiLightBlueText largeScreen={largeScreen}>Mapping the Open Air Network.
+              {largeScreen && <br/>}
+              <ChiRedText largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
+            </ChiLightBlueText>
 
-          <ChiSubtitle largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
-            Air pollution is often invisible, but its impact is real.
-            Now, real-time air quality data is available for every
-            neighborhood, for every Chicagoan, ensuring you and your
-            loved ones have the information you need to breathe easier.
-          </ChiSubtitle>
+            <ChiSubtitle largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
+              Air pollution is often invisible, but its impact is real.
+              Now, real-time air quality data is available for every
+              neighborhood, for every Chicagoan, ensuring you and your
+              loved ones have the information you need to breathe easier.
+            </ChiSubtitle>
 
-          <ViewMapButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
-            View Map &rarr;
-          </ViewMapButton>
-        </TitleBanner>
+            <ViewMapButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
+              View Map &rarr;
+            </ViewMapButton>
+          </TitleBanner>
+        </ContentContainer>
       </WhiteBackground>
 
 
       <GradientBackground largeScreen={largeScreen}>
-        <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
-          <Grid item sm={6} xs={12}>
-            <Geocoder size={'large'} style={{ margin: '0.5rem 0', minWidth: '45vw' }}
-                      showSelectedAreas={false}
-                      onDropdownChange={handleDropdownChanged}
-            />
-          </Grid>
+        <ContentContainer>
+          <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
+            <Grid item sm={6} xs={12}>
+              <Geocoder size={'large'} style={{ margin: '0.5rem 0', minWidth: '45vw' }}
+                        showSelectedAreas={false}
+                        onDropdownChange={handleDropdownChanged}
+              />
+            </Grid>
 
-          <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
-            <img src={'/icons/homepage-map-mask.svg'} alt={''} />
+            <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
+              <img src={'/icons/homepage-map-mask.svg'} alt={''} />
+            </Grid>
           </Grid>
-        </Grid>
+        </ContentContainer>
       </GradientBackground>
 
+      
       <WhiteBackground largeScreen={largeScreen}>
-        <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
-                       topRowText={'Access useful'}
-                       bottomRowTextBlack={'Air Quality'}
-                       bottomRowTextRed={'Resources'}
-                       buttonOnClick={() => navigate('/map')}
-                       buttonText={'View Chi Air Quality Network Map'}
-                       buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
-        />
+        <ContentContainer>
+          <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
+                        topRowText={'Access useful'}
+                        bottomRowTextBlack={'Air Quality'}
+                        bottomRowTextRed={'Resources'}
+                        buttonOnClick={() => navigate('/map')}
+                        buttonText={'View Chi Air Quality Network Map'}
+                        buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
+          />
+        </ContentContainer>
       </WhiteBackground>
+      
 
-      <GradientBackground largeScreen={largeScreen}>
+      <ContentContainer>
         <Grid container spacing={8} alignItems={'start'}>
           {resources?.map((resource, index) =>
             <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
@@ -212,31 +228,37 @@ export default function Home() {
             </Grid>
           )}
         </Grid>
-      </GradientBackground>
+      </ContentContainer>
 
 
       <WhiteBackground largeScreen={largeScreen}>
-        <SectionHeader imgSrc={'/icons/chiair/aq-network.svg'}
-                       topRowText={'Empowered by a'}
-                       bottomRowTextBlack={'Record-Breaking'}
-                       bottomRowTextRed={'Network'}
-        />
+        <ContentContainer>
+          <SectionHeader imgSrc={'/icons/chiair/aq-network.svg'}
+                        topRowText={'Empowered by a'}
+                        bottomRowTextBlack={'Record-Breaking'}
+                        bottomRowTextRed={'Network'}
+          />
+        </ContentContainer>
       </WhiteBackground>
 
       <GradientBackground largeScreen={largeScreen} style={{ marginBottom: 0 }}>
-        <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'center'}>
-          <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
-          <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
-            <Grid container spacing={0}>
-              <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of {sensorCount} high-precision sensors to blanket the city.</div>
-              <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most. {!largeScreen && <br/> }<NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>
-            </Grid>
-            <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
-              <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} />
-              <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} />
+        <ContentContainer>
+          <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'center'}>
+            <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+            <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
+              
+              <Grid container spacing={0}>
+                <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of {sensorCount} high-precision sensors to blanket the city.</div>
+                <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most. {!largeScreen && <br/> }<NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>
+              </Grid>
+              <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
+                <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} />
+                <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} />
+              </Grid>
+              
             </Grid>
           </Grid>
-        </Grid>
+        </ContentContainer>
       </GradientBackground>
 
 
