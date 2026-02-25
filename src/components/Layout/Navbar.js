@@ -138,9 +138,9 @@ export default function Nav({
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
               </Grid>}
             </Grid>
-            <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}>
+            {/* <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}> */}
               <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-            </Grid>
+            {/* </Grid> */}
           </Grid>
 
           {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">

@@ -190,7 +190,7 @@ export default function Home() {
             </Grid>
 
             <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
-              <img src={'/icons/homepage-map-mask.svg'} alt={''} />
+              <img style={{ maxHeight: '350px'}} src={'/icons/homepage-map-mask.svg'} alt={''} />
             </Grid>
           </Grid>
         </ContentContainer>
@@ -198,13 +198,13 @@ export default function Home() {
 
       
       <WhiteBackground largeScreen={largeScreen}>
-        <ContentContainer>
+        <ContentContainer style={{marginBottom: 80}}>
           <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                         topRowText={'Access useful'}
                         bottomRowTextBlack={'Air Quality'}
                         bottomRowTextRed={'Resources'}
                         buttonOnClick={() => navigate('/map')}
-                        buttonText={'View Chi Air Quality Network Map'}
+                        buttonText={'View Our Air Map'}
                         buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
           />
         </ContentContainer>
@@ -212,7 +212,7 @@ export default function Home() {
       
 
       <ContentContainer>
-        <Grid container spacing={8} alignItems={'start'}>
+        <Grid container spacing={8} marginBottom={16} alignItems={'start'} rowSpacing={4}>
           {resources?.map((resource, index) =>
             <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
                   onClick={() => navigate(resource?.url)}
@@ -243,8 +243,8 @@ export default function Home() {
 
       <GradientBackground largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <ContentContainer>
-          <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'center'}>
-            <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+          <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'flex-start'}>
+            <img style={{ maxWidth: '300px', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               
               <Grid container spacing={0}>
@@ -255,14 +255,13 @@ export default function Home() {
                 <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} />
                 <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} />
               </Grid>
-              
             </Grid>
           </Grid>
         </ContentContainer>
       </GradientBackground>
 
 
-      <NavBar style={{ marginBottom: '2rem' }} />
+      <NavBar style={{ marginBottom: '4rem' }} />
     </>
   );
 }
