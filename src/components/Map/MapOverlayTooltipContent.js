@@ -1,5 +1,3 @@
-import React from 'react';
-
 // This component handles and formats the map tooltip info regarding the clicked Overlay point.
 // The props passed to this component should contain an object of the hovered object (from deck, info.object by default),
 // as well as a reference to the overlay that was clicked

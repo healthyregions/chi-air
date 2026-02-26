@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import booleanWithin from "@turf/boolean-within";
 import { quantileRank } from "simple-statistics";
 import { colors } from "../../config";

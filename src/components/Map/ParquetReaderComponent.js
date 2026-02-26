@@ -1,5 +1,5 @@
 import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
-import {useEffect, useMemo} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations,
@@ -23,7 +23,9 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
 
-  const sensorIds = useMemo(() => [...new Set(locations.map(l => l.datasourceId))], [locations]);
+  const [firstRows, setFirstRow] = useState({ year: 0, season: 0, month: 0, week: 0, day: 0, hour: 0 });
+
+  const sensorIds = useMemo(() => [...new Set(locations?.filter(l => l?.currentSourceId)?.map(l => l.datasourceId))], [locations]);
 
   const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
   const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
@@ -45,26 +47,62 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     });
   };
 
+  useEffect(() => {// TODO: Support multiple metrics?
+    const startTime = new Date().getTime();
+    // Fetch the metric data (currently just mean_pm25) using our list of locations
+    fetch({
+      url: meanPm25Url,
+      columns: ['type','date'],
+      rowStart: 0,
+      rowEnd: 500
+    }).then(d => {
+      setFirstRow({
+        year: d.findIndex(r => r.type === 'year'),
+        season: d.findIndex(r => r.type === 'season'),
+        month: d.findIndex(r => r.type === 'month'),
+        week: d.findIndex(r => r.type === 'week'),
+        day: d.findIndex(r => r.type === 'day'),
+        hour: d.findIndex(r => r.type === 'hour'),
+      });
+      dispatch(setSensorValuesMeanPm25(d));
+      const endTime = new Date().getTime();
+      console.log(`Finished locating first rows: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, meanPm25Url]);
+
   useEffect(() => {
+    const startTime = new Date().getTime();
     // Fetch the list of location id, name, coordinates
     fetch({
       url: locationsUrl,
-      columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags', 'community', 'zip'],
-    }).then(l => dispatch(setSensorLocations(l)));
+      columns: ['datasourceId', 'sourceId', 'currentSourceId', 'locationLatitude', 'locationLongitude', 'name', 'community', 'zip' /*'group', 'tags',*/ ],
+    }).then(l => {
+      dispatch(setSensorLocations(l));
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching sensor locations: ${endTime - startTime}ms`);
+    });
   }, [dispatch, locationsUrl]);
 
   useEffect(() => {
+    const startTime = new Date().getTime();
     // TODO: Support multiple metrics?
     // Fetch the metric data (currently just mean_pm25) using our list of locations
     fetch({
       url: meanPm25Url,
       columns: ['type','date', ...sensorIds],
-      rowStart: 0,
-      rowEnd: 100
-    }).then(d => dispatch(setSensorValuesMeanPm25(d)));
-  }, [dispatch, meanPm25Url, locations, sensorIds]);
+      rowStart: firstRows.hour,
+      rowEnd: firstRows.hour+1,
+    }).then(d => {
+      dispatch(setSensorValuesMeanPm25(d));
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching sensor mean_pm25: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, meanPm25Url, locations, sensorIds, firstRows.hour]);
 
   useEffect(() => {
+    // Skip rendering if we don't have enough data
+    if (locations?.length === 0 || mean_pm25?.length === 0) { return; }
+    const startTime = new Date().getTime();
     //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
     const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
       .sort((a, b) => a.date.localeCompare(b.date))
@@ -101,6 +139,9 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       }),
     };
     dispatch(setSensorGeojsonData(geojsonData));
+
+    const endTime = new Date().getTime();
+    console.log(`Finished building GeoJSON: ${endTime - startTime}ms`);
   }, [dispatch, locations, mean_pm25, sensorIds]);
 
   if (!mean_pm25) return <>Loading...</>;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
-import {useMediaQuery} from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 

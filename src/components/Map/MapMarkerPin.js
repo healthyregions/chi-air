@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import {memo} from "react";
 
 function MapMarkerPin({size = 30, imgSrc, imgAlt, clickable = true }) {
   const pinStyle = {
@@ -17,4 +16,4 @@ function MapMarkerPin({size = 30, imgSrc, imgAlt, clickable = true }) {
   );
 }
 
-export default React.memo(MapMarkerPin);
+export default memo(MapMarkerPin);

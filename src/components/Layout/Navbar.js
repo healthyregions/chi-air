@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, NavLink, useLocation, useNavigate} from 'react-router-dom';
 import Popover from '@mui/material/Popover';
@@ -96,7 +96,7 @@ export default function Nav({
   const panelState = useSelector(selectPanelState);
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
   };

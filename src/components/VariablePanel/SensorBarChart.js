@@ -1,18 +1,10 @@
 import {BarChart} from "@mui/x-charts/BarChart";
 import {pm2_5Ranges} from "../../config";
 import Grid from "@mui/material/Grid";
-import styled from "styled-components";
-import {Button} from "@mui/material";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft";
 import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
-import {formatDate} from "./common";
-
-const LButton = styled(Button)`
-    font-family: Lexend,serif;
-    text-transform: none;
-    color: #005899;
-`;
+import {formatDate, LButton} from "./common";
 
 export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left:30}, style = {}, showScroll = false, pageSize = 24, mean_pm25, averageType }) => {
   const [page, setPage] = useState(0);

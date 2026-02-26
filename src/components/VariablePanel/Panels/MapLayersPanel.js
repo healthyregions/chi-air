@@ -3,7 +3,7 @@ import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
 import VariablesDropdown from "../VariablesDropdown";
 import OverlaysDropdown from "../OverlaysDropdown";
 import OverlaysColorLegend from "../OverlaysColorLegend";
-import {Button} from "@mui/material";
+import Button from "@mui/material/Button";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
 import {LButton, LHeader, LinkText, SensorValueLabelTooltip, SGBody} from "../common";
 

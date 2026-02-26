@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors, selectSensorLocations,
