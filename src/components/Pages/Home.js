@@ -110,7 +110,7 @@ const ResourceLinkIcon = styled(FaExternalLinkAlt)`
 `;
 
 const ContentContainer = styled.div`
-    max-width: 1440px; /* Standard container width */
+    max-width: 1200px; /* Standard container width */
     margin: 0 auto;    /* Centering the container */
     padding: 0 2rem;   /* Prevents text from touching edges */
     width: 100%;
@@ -190,7 +190,7 @@ export default function Home() {
             </Grid>
 
             <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
-              <img style={{ maxHeight: '350px'}} src={'/icons/homepage-map-mask.svg'} alt={''} />
+              <img style={{ maxHeight: '300px'}} src={'/icons/homepage-map-mask.svg'} alt={''} />
             </Grid>
           </Grid>
         </ContentContainer>

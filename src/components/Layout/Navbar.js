@@ -87,7 +87,7 @@ const LButton = styled(Button)`
 `;
 
 const ContentContainer = styled.div`
-    max-width: 1440px; /* Standard container width */
+    max-width: 1200px; /* Standard container width */
     margin: 0 auto;    /* Centering the container */
     padding: 0 2rem;   /* Prevents text from touching edges */
     width: 100%;
