@@ -52,7 +52,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       url: meanPm25Url,
       columns: ['type','date'],
       rowStart: 0,
-      rowEnd: 50
+      rowEnd: 100
     }).then(d => {
       setFirstRow({
         year: d.findIndex(r => r.type === 'year'),
@@ -89,15 +89,40 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // TODO: Support multiple metrics?
     // Fetch the metric data (currently just mean_pm25) using our list of locations
     const uniqueSensorIds = [ ...new Set(locations?.filter(l => l?.currentSourceId)?.map(l => l.datasourceId)) ];
+    // Grab only this row to quickly color the map
     fetch({
       url: meanPm25Url,
       columns: ['type','date', ...uniqueSensorIds],
       rowStart: firstRows.hour,
-      rowEnd: firstRows.hour+24,
+      rowEnd: firstRows.hour,
     }).then(d => {
       dispatch(setSensorValuesMeanPm25(d));
       const endTime = new Date().getTime();
-      console.log(`Finished fetching sensor mean_pm25: ${endTime - startTime}ms`);
+      console.log(`Finished fetching latest sensor mean_pm25: ${endTime - startTime}ms`);
+
+      // Next, fill in with 24 hours of graph data
+      fetch({
+        url: meanPm25Url,
+        columns: ['type','date', ...uniqueSensorIds],
+        rowStart: firstRows.hour,
+        rowEnd: firstRows.hour+24,
+      }).then(d => {
+        dispatch(setSensorValuesMeanPm25(d));
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching last 24-hours mean_pm25: ${endTime - startTime}ms`);
+
+        // Now, fill in with historical data
+        fetch({
+          url: meanPm25Url,
+          columns: ['type','date', ...uniqueSensorIds],
+          rowStart: 0,
+          rowEnd: 100,
+        }).then(d => {
+          dispatch(setSensorValuesMeanPm25(d));
+          const endTime = new Date().getTime();
+          console.log(`Finished fetching historical mean_pm25: ${endTime - startTime}ms`);
+        });
+      });
     });
   }, [dispatch, meanPm25Url, locations, firstRows.hour]);
 
