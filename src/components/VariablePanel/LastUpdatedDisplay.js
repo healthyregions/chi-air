@@ -1,7 +1,7 @@
-import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
+import {FaHistory} from "react-icons/fa";
 import {selectSensorGeojsonData} from "../../store/slices/sensorDataSlice";
 import {useSelector} from "react-redux";
-import {Tooltip} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import {formatDate, getLatestValue} from "./common";
 
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, NavLink, useLocation, useNavigate} from 'react-router-dom';
 import Popover from '@mui/material/Popover';
@@ -6,13 +6,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { colors } from '../../config';
-import { Box } from '@mui/system';
+import Box from '@mui/material/Box';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {FaHome} from "@react-icons/all-files/fa/FaHome";
-import {useMediaQuery} from "@mui/material";
+import {FaHome} from "react-icons/fa";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -96,7 +96,7 @@ export default function Nav({
   const panelState = useSelector(selectPanelState);
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
   };

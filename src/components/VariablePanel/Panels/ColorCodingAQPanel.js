@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import {LButton, LHeader, SGBody} from "../common";
-import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
+import {FaArrowCircleLeft} from "react-icons/fa";
 import {pm2_5Ranges} from "../../../config";
 
 

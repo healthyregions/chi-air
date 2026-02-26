@@ -4,9 +4,10 @@ import styled from "styled-components";
 import Grid from "@mui/material/Grid";
 
 import {Geocoder, NavBar} from "../../components";
-import {Button, useMediaQuery} from "@mui/material";
-import {FaArrowRight} from "@react-icons/all-files/fa/FaArrowRight";
-import {FaExternalLinkAlt} from "@react-icons/all-files/fa/FaExternalLinkAlt";
+import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {FaArrowRight} from "react-icons/fa";
+import {FaExternalLinkAlt} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, useSelectorAsState, WhiteBackground} from "../VariablePanel/common";
 import {

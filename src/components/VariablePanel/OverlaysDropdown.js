@@ -1,4 +1,6 @@
-import { FormControl, MenuItem, Select } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import { parsedOverlays } from "../../config";
 import {selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";

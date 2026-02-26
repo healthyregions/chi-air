@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
+import {FaTimes} from "react-icons/fa";
 import {DropdownButton} from "../DropdownButton";
 import {
   selectSelectedAreas,

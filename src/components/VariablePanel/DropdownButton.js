@@ -2,7 +2,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
 import {useState} from "react";
-import {FaCaretDown} from "@react-icons/all-files/fa/FaCaretDown";
+import {FaCaretDown} from "react-icons/fa";
 
 const ITEM_HEIGHT = 48;
 

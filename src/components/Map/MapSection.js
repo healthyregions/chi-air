@@ -1,5 +1,5 @@
 // general imports, state
-import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
+import {useState, useEffect, useRef, useCallback, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 

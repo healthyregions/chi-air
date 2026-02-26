@@ -1,7 +1,7 @@
 // This components (often wrapping Scaleable()) houses a move-able panel
 
 // Import libraries
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components'
 

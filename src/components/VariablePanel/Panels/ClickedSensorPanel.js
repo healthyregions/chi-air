@@ -5,13 +5,15 @@ import {
   selectSensorLocations, selectSensorValuesMeanPm25,
   setClickedSensor
 } from "../../../store/slices/sensorDataSlice";
-import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
-import {ClickAwayListener, Tooltip, Zoom} from "@mui/material";
-import {FaCheckCircle} from "@react-icons/all-files/fa/FaCheckCircle";
-import {FaLink} from "@react-icons/all-files/fa/FaLink";
+import {FaArrowLeft} from "react-icons/fa";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
+import {FaCheckCircle} from "react-icons/fa";
+import {FaLink} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
-import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft";
-import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
+import {FaChevronCircleLeft} from "react-icons/fa";
+import {FaChevronCircleRight} from "react-icons/fa";
 import {SensorValueDisplay} from "../SensorValueDisplay";
 import {SensorBarChart} from "../SensorBarChart";
 import {getMetadata, LButton, LHeader, SensorValueLabelTooltip} from "../common";

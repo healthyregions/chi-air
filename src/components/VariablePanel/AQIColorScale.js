@@ -2,10 +2,11 @@
 import {colors, pm2_5Ranges} from "../../config";
 import styled from "styled-components";
 import Grid from "@mui/material/Grid";
-import {Tooltip, useMediaQuery} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {FaKey} from "@react-icons/all-files/fa/FaKey";
+import {FaKey} from "react-icons/fa";
 
 //// Styled components CSS
 // Main container for entire panel

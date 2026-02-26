@@ -1,3 +1,4 @@
+/*
 import { useTable } from 'react-table';
 import styled from 'styled-components';
 
@@ -9,7 +10,7 @@ const TableContainer = styled.div`
 
 const Table = styled.table`
   border-collapse: collapse;
-  
+
   tr, th, td {
     padding:0.25em 0.5em;
   }
@@ -35,7 +36,7 @@ export default function TableComponent({ columns, data, tableProps, rowProps, ov
       columns,
       data,
     })
-  
+
     // Render the UI for your table
     return (
       <TableContainer {...{overflowThreshold}}>
@@ -65,4 +66,4 @@ export default function TableComponent({ columns, data, tableProps, rowProps, ov
       </TableContainer>
     )
   }
-  
+  */

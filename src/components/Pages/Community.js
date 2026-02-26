@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import booleanWithin from "@turf/boolean-within";
 import { quantileRank } from "simple-statistics";
 import { colors } from "../../config";
@@ -15,14 +15,12 @@ import styled from "styled-components";
 
 import { ContentContainer } from "../../styled_components";
 import Autocomplete from "@mui/material/Autocomplete";
-import {
-  Box,
-  TextField,
-  Button,
-  ButtonGroup,
-  Typography,
-  Grid,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import TableComponent from "../Layout/Table";
 import { MapSection } from "../../components";
 import { fitBounds } from "@math.gl/web-mercator";

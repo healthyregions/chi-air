@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {selectLocale} from "../../store/slices/sensorDataSlice";

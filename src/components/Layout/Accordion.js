@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import {FaChevronDown} from "@react-icons/all-files/fa/FaChevronDown";
+import {FaChevronDown} from "react-icons/fa";
 import styled from "styled-components";
 // import { colors } from "../config";
 
