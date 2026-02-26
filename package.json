@@ -1,7 +1,7 @@
 {
-  "name": "chives",
+  "name": "chiair",
   "version": "1.0.0",
-  "description": "ChiVes harmonizes & standardizes environmental data across dozens of sources to make it accessible for full exploration, alongside a growing list of resources on the Chicago Environment, cultivated by a community of curators.",
+  "description": "Dashboard for displaying Clarity air quality sensor data from the Chicago's OurAir / Open Air Chicago projects",
   "private": true,
   "repository": {
     "type": "git",
