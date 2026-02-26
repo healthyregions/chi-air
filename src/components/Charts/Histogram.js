@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // Import helper libraries
@@ -11,7 +11,7 @@ import { applyFilterValues, removeFilterValues } from '../../store/slices/legacy
 import {colors, variablePresets} from '../../config';
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {IconButton} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
@@ -209,7 +209,7 @@ export default function Histogram({
     setSliderValue([range.min, range.max]);
   }
 
-  const [popoverAnchorEl, setPopoverAncherEl] = React.useState(null);
+  const [popoverAnchorEl, setPopoverAncherEl] = useState(null);
   const isPopoverOpen = Boolean(popoverAnchorEl)
   const popoverId = isPopoverOpen ? 'simple-popover' : undefined;
 

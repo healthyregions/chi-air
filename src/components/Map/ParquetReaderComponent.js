@@ -54,7 +54,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       url: meanPm25Url,
       columns: ['type','date'],
       rowStart: 0,
-      rowEnd: 500
+      rowEnd: 70
     }).then(d => {
       setFirstRow({
         year: d.findIndex(r => r.type === 'year'),
@@ -68,7 +68,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       const endTime = new Date().getTime();
       console.log(`Finished locating first rows: ${endTime - startTime}ms`);
     });
-  }, [dispatch, meanPm25Url]);
+
+  }, []);
 
   useEffect(() => {
     const startTime = new Date().getTime();

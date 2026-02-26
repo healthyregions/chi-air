@@ -6,7 +6,9 @@ import {
   setClickedSensor
 } from "../../../store/slices/sensorDataSlice";
 import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
-import {ClickAwayListener, Tooltip, Zoom} from "@mui/material";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
 import {FaCheckCircle} from "@react-icons/all-files/fa/FaCheckCircle";
 import {FaLink} from "@react-icons/all-files/fa/FaLink";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";

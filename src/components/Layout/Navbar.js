@@ -12,7 +12,7 @@ import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "@react-icons/all-files/fa/FaHome";
-import {useMediaQuery} from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const NavItems = styled.ul`
   margin-top:.25em;
