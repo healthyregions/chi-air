@@ -54,7 +54,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       url: meanPm25Url,
       columns: ['type','date'],
       rowStart: 0,
-      rowEnd: 70
+      rowEnd: 50
     }).then(d => {
       setFirstRow({
         year: d.findIndex(r => r.type === 'year'),
@@ -68,7 +68,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       const endTime = new Date().getTime();
       console.log(`Finished locating first rows: ${endTime - startTime}ms`);
     });
-
   }, [dispatch, meanPm25Url]);
 
   useEffect(() => {
@@ -98,7 +97,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       const endTime = new Date().getTime();
       console.log(`Finished fetching sensor mean_pm25: ${endTime - startTime}ms`);
     });
-  }, [dispatch, meanPm25Url, locations, sensorIds, firstRows.hour]);
+  }, [dispatch, meanPm25Url, sensorIds, firstRows.hour]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data
@@ -112,12 +111,11 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     const previousHourlyRow = sortedHourlyRows.slice(1).find(() => true);
     const geojsonData = {
       type: 'FeatureCollection',
-      features: sensorIds.map((datasourceId) => {
-        const location = locations.find(r => r.datasourceId === datasourceId);
+      features: locations?.filter(l => !!l?.currentSourceId && !!l?.datasourceId).map((location) => {
         const metric_pm25 = mean_pm25.map((r) => ({
           period: r.period || r.type,
           date: r.date,
-          [datasourceId]: r[datasourceId]
+          [location.datasourceId]: r[location.datasourceId]
         }));
 
         return {
@@ -132,8 +130,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           // Ensure this is valid GeoJSON format
           properties: {
             ...location,
-            last_update: latestHourlyRow?.[datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
-            latest_mean_pm25: latestHourlyRow?.[datasourceId] || previousHourlyRow?.[datasourceId],
+            last_update: latestHourlyRow?.[location.datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
+            latest_mean_pm25: latestHourlyRow?.[location.datasourceId] || previousHourlyRow?.[location.datasourceId],
             mean_pm25: metric_pm25
           },
         }
@@ -143,7 +141,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
 
     const endTime = new Date().getTime();
     console.log(`Finished building GeoJSON: ${endTime - startTime}ms`);
-  }, [dispatch, locations, mean_pm25, sensorIds]);
+  }, [dispatch, locations, mean_pm25]);
 
   if (!mean_pm25) return <>Loading...</>;
 
