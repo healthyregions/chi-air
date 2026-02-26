@@ -19,11 +19,11 @@ const SelectedSensorsPanelContainer = styled.div`
 `;
 
 const GridHeader = styled(Grid)`
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
 `;
 
 const GridBody = styled(Grid)`
-    font-family: Space Grotesk;
+    font-family: Space Grotesk,serif;
     cursor: pointer;
     &:hover {
         background-color: #22222222;
@@ -31,8 +31,8 @@ const GridBody = styled(Grid)`
 `;
 const Color = styled.span`
     display: block;
-    background-color: ${({ color }) => color};
-    border: 1px solid ${({ border }) => border};
+    background-color: ${({ $color }) => $color};
+    border: 1px solid ${({ $border }) => $border};
     border-radius: 10px;
     width: 16px;
     height: 16px;
@@ -98,7 +98,9 @@ export const SelectedAreaPanel = () => {
       </GridHeader>}
 
       {!clickedSensor && selectedSensors?.map((s, index) => {
-        const { latest_mean_pm25, datasourceId, name, last_update } = getLatestValue(geojsonData, s);
+        const latestValue = getLatestValue(geojsonData, s);
+        if (!latestValue) { return undefined; }
+        const { latest_mean_pm25, datasourceId, name, last_update } = latestValue;
         const fixed = Number(latest_mean_pm25)?.toFixed(1);
         const range = pm2_5Ranges.find(r => r.min <= fixed && fixed <= r.max);
         const {time, date} = formatDate({
@@ -115,7 +117,7 @@ export const SelectedAreaPanel = () => {
               <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
             </AqiValueColumn>
             <ColorColumn size={1}>
-              <Color color={range?.color} border={range?.border}></Color>
+              <Color $color={range?.color} $border={range?.border}></Color>
             </ColorColumn>
             <LocationNameColumn size={4}>
               <small>{name}</small>

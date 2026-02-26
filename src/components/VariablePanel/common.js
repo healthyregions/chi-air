@@ -3,12 +3,15 @@ import Button from "@mui/material/Button";
 import {FaInfoCircle} from "react-icons/fa";
 import {useSelector} from "react-redux";
 import Grid from "@mui/material/Grid";
+import {asyncBufferFromUrl, parquetReadObjects} from "hyparquet";
+import {compressors} from "hyparquet-compressors";
 
 // Button with Lexend font
 export const LButton = styled(Button)`
-    font-family: Lexend,serif;
+    font-family: Lexend,sans-serif;
     text-transform: none;
     color: #005899;
+    cursor: pointer;
 `;
 //Styled <hr />
 export const Divider = styled.hr`
@@ -19,12 +22,12 @@ export const Divider = styled.hr`
 // Header with Lexend font
 export const LHeader = styled.span`
     font-size: clamp(16px, 24px, 32px);
-    font-family: Lexend,serif;
+    font-family: Lexend,sans-serif;
     font-weight: 300;
 `;
 // Label with Lexend font
 export const LLabel = styled.span`
-    font-family: Lexend,serif;
+    font-family: Lexend,sans-serif;
     box-shadow: none;
     color: rgba(65, 182, 230, 1);
     margin-top: 0.5rem;
@@ -56,29 +59,29 @@ export const SensorValueLabelTooltip = styled(FaInfoCircle)`
 export const WhiteBackground = styled(Grid)`
     margin-top: 2rem;
     margin-bottom: 2rem;
-    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-left: ${({ $largeScreen }) => $largeScreen ? '6rem' : '2rem'};
+    padding-right: ${({ $largeScreen }) => $largeScreen ? '6rem' : '2rem'};
     background: #FFFFFF00;
     width: 100%;
     //min-height: 15rem;
 `;
 // Static page section for gradient blue background
 export const GradientBackground = styled.div`
-    margin-bottom: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    margin-bottom: ${({ $largeScreen }) => $largeScreen ? '6rem' : '2rem'};
     padding-bottom: 4rem;
-    padding-left: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
-    padding-right: ${({ largeScreen }) => largeScreen ? '6rem' : '2rem'};
+    padding-left: ${({ $largeScreen }) => $largeScreen ? '6rem' : '2rem'};
+    padding-right: ${({ $largeScreen }) => $largeScreen ? '6rem' : '2rem'};
     background: linear-gradient(
-        ${props => props.direction || 'to bottom'},
-        ${props => props.startColor || '#FFFFFF00'},
-        ${props => props.endColor || '#41B6E633'}
+        ${({ $direction }) => $direction || 'to bottom'},
+        ${({ $startColor }) => $startColor || '#FFFFFF00'},
+        ${({ $endColor }) => $endColor || '#41B6E633'}
     );
     width: 100%;
     //min-height: 20rem;
 `;
 // Static helper function to grab the most recent value from the built geojson data
 export const getLatestValue = (geojsonData, id) => {
-  if (!id) { return undefined; }
+  if (!id) { return {}; }
   const first = geojsonData?.features?.find(f => {
     return f.properties['datasourceId'] === id;
   });
@@ -134,6 +137,30 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
   };
 }
 
+// Adapter to provide a selector/reducer as a drop-in replacement for useState
 export const useSelectorAsState = (selector, reducer, dispatch) => {
   return [ useSelector(selector), (s) => dispatch(reducer(s)) ];
 }
+
+// Given a url, columns, & start/end index, fetch from a Parquet dataset
+const maxRetries = 5;
+export const fetchPq = async ({ url, columns, rowStart, rowEnd }) => {
+  let retries = 0;
+  // Fetch the list of location id, name, coordinates
+  while (retries < maxRetries) {
+    try {
+      return await parquetReadObjects({
+        file: await asyncBufferFromUrl({url}),
+        columns,
+        rowStart,
+        rowEnd,
+        compressors
+      });
+    } catch (e) {
+      console.warn(`Warning: Failed fetching (${retries}/${maxRetries}) from ${url}. Retrying...`, e);
+      retries = retries+1;
+    }
+  }
+
+  console.error(`ERROR: Failed to fetch Parquet dataset from ${url} after ${maxRetries} retries.`);
+};

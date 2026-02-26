@@ -21,8 +21,8 @@ import {useDispatch, useSelector} from "react-redux";
 const TitleBanner = styled(Grid)`
     display: flex;
     align-items: end;
-    flex-direction: ${({ largeScreen }) => largeScreen ? 'column' : 'row-reverse'};
-    justify-content: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
+    flex-direction: ${({ $largeScreen }) => $largeScreen ? 'column' : 'row-reverse'};
+    justify-content: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
     font-family: Lexend;
 `;
 
@@ -33,7 +33,7 @@ const brandColors = {
 }
 const ChiHeader = styled.h1`
     font-family: Lexend,sans-serif;
-    font-size: ${({ largeScreen }) => largeScreen ? '64px' : '48px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '64px' : '48px'};
     text-align: right;
 `;
 const ChiBlackText = styled.span`
@@ -52,14 +52,14 @@ const ChiDarkBlueText = styled.span`
 const ChiLightBlueText = styled.span`
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiLightBlue};
-    font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '24px'};
     font-weight: 400;
-    text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
+    text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
 `;
 const ChiRedText = styled.span`
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiRed};
-    font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '24px'};
     font-weight: 700;
     text-align: right;
 `;
@@ -68,7 +68,7 @@ const ChiSubtitle = styled(Grid)`
     margin-top: 3rem;
     display: flex;
     align-self: end;
-    text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
+    text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
     font-family: Space Grotesk;
     font-size: 18px;
     font-weight: 400;
@@ -95,7 +95,7 @@ const ResourceLabel = styled.div`
     font-weight: 700;
     font-size: 24px;
     color: #005899;
-    min-height: ${({ largeScreen }) => largeScreen ? '4rem' : ''}
+    min-height: ${({ $largeScreen }) => $largeScreen ? '4rem' : ''}
 `;
 const ResourceDescription = styled.div`
     text-align: center;
@@ -144,19 +144,19 @@ export default function Home() {
     <>
       <NavBar />
 
-      <WhiteBackground largeScreen={largeScreen}>
-        <TitleBanner container spacing={0} largeScreen={largeScreen}>
-          <ChiHeader largeScreen={largeScreen}>
-            <ChiBlackText largeScreen={largeScreen}>Our</ChiBlackText>
-            <ChiDarkBlueText largeScreen={largeScreen}>Air</ChiDarkBlueText>
+      <WhiteBackground $largeScreen={largeScreen}>
+        <TitleBanner container spacing={0} $largeScreen={largeScreen}>
+          <ChiHeader $largeScreen={largeScreen}>
+            <ChiBlackText $largeScreen={largeScreen}>Our</ChiBlackText>
+            <ChiDarkBlueText $largeScreen={largeScreen}>Air</ChiDarkBlueText>
           </ChiHeader>
 
-          <ChiLightBlueText largeScreen={largeScreen}>Mapping the Open Air Network.
+          <ChiLightBlueText $largeScreen={largeScreen}>Mapping the Open Air Network.
             {largeScreen && <br/>}
-            <ChiRedText largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
+            <ChiRedText $largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
           </ChiLightBlueText>
 
-          <ChiSubtitle largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
+          <ChiSubtitle $largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
             Air pollution is often invisible, but its impact is real.
             Now, real-time air quality data is available for every
             neighborhood, for every Chicagoan, ensuring you and your
@@ -170,22 +170,22 @@ export default function Home() {
       </WhiteBackground>
 
 
-      <GradientBackground largeScreen={largeScreen}>
+      <GradientBackground $largeScreen={largeScreen}>
         <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
-          <Grid item sm={6} xs={12}>
+          <Grid size={{ sm: 6, xs: 12}}>
             <Geocoder size={'large'} style={{ margin: '0.5rem 0', minWidth: '45vw' }}
                       showSelectedAreas={false}
                       onDropdownChange={handleDropdownChanged}
             />
           </Grid>
 
-          <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
+          <Grid size={{ sm: 6, xs: 12}} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
             <img src={'/icons/homepage-map-mask.svg'} alt={''} />
           </Grid>
         </Grid>
       </GradientBackground>
 
-      <WhiteBackground largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen}>
         <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                        topRowText={'Access useful'}
                        bottomRowTextBlack={'Air Quality'}
@@ -196,7 +196,7 @@ export default function Home() {
         />
       </WhiteBackground>
 
-      <GradientBackground largeScreen={largeScreen}>
+      <GradientBackground $largeScreen={largeScreen}>
         <Grid container spacing={8} alignItems={'start'}>
           {resources?.map((resource, index) =>
             <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
@@ -207,7 +207,7 @@ export default function Home() {
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <ResourceLabel largeScren={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
+                <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
                 <ResourceDescription>{resource?.description}</ResourceDescription>
               </Grid>
             </Grid>
@@ -216,7 +216,7 @@ export default function Home() {
       </GradientBackground>
 
 
-      <WhiteBackground largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen}>
         <SectionHeader imgSrc={'/icons/chiair/aq-network.svg'}
                        topRowText={'Empowered by a'}
                        bottomRowTextBlack={'Record-Breaking'}
@@ -224,7 +224,7 @@ export default function Home() {
         />
       </WhiteBackground>
 
-      <GradientBackground largeScreen={largeScreen} style={{ marginBottom: 0 }}>
+      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'center'}>
           <img style={{ maxWidth: '350px', maxHeight: '500px', marginLeft: '-6rem' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
           <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
