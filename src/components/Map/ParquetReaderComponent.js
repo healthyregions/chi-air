@@ -69,7 +69,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       console.log(`Finished locating first rows: ${endTime - startTime}ms`);
     });
 
-  }, []);
+  }, [dispatch, meanPm25Url]);
 
   useEffect(() => {
     const startTime = new Date().getTime();
