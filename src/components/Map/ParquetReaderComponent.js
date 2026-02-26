@@ -1,10 +1,11 @@
 import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations,
   setSensorGeojsonData
 } from '../../store/slices/sensorDataSlice';
+import {compressors} from "hyparquet-compressors";
 
 // Cache values as they are read
 /*const SensorDataStore = ({  }) => {
@@ -25,25 +26,22 @@ const ParquetReaderComponent = ({ DEBUG }) => {
 
   const [firstRows, setFirstRow] = useState({ year: 0, season: 0, month: 0, week: 0, day: 0, hour: 0 });
 
-  const sensorIds = useMemo(() => [...new Set(locations?.filter(l => l?.currentSourceId)?.map(l => l.datasourceId))], [locations]);
-
   const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
   const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
 
   // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
   // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
-  const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet`;
-  const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet`;
+  const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet.brotli`;
+  const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet.brotli`;
 
   const fetch = async ({ url, columns, rowStart, rowEnd, predicate = undefined }) => {
     // Fetch the list of location id, name, coordinates
     return await parquetReadObjects({
-      file: await asyncBufferFromUrl({
-        url
-      }),
+      file: await asyncBufferFromUrl({ url }),
       columns,
       rowStart,
       rowEnd,
+      compressors
     });
   };
 
@@ -84,20 +82,24 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   }, [dispatch, locationsUrl]);
 
   useEffect(() => {
+    // Skip fetching if we don't have enough data
+    if (locations?.length === 0) { return; }
+
     const startTime = new Date().getTime();
     // TODO: Support multiple metrics?
     // Fetch the metric data (currently just mean_pm25) using our list of locations
+    const uniqueSensorIds = [ ...new Set(locations?.filter(l => l?.currentSourceId)?.map(l => l.datasourceId)) ];
     fetch({
       url: meanPm25Url,
-      columns: ['type','date', ...sensorIds],
+      columns: ['type','date', ...uniqueSensorIds],
       rowStart: firstRows.hour,
-      rowEnd: firstRows.hour+1,
+      rowEnd: firstRows.hour+24,
     }).then(d => {
       dispatch(setSensorValuesMeanPm25(d));
       const endTime = new Date().getTime();
       console.log(`Finished fetching sensor mean_pm25: ${endTime - startTime}ms`);
     });
-  }, [dispatch, meanPm25Url, sensorIds, firstRows.hour]);
+  }, [dispatch, meanPm25Url, locations, firstRows.hour]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data
@@ -107,8 +109,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
       .sort((a, b) => a.date.localeCompare(b.date))
       .reverse();
-    const latestHourlyRow = sortedHourlyRows.find(() => true);
-    const previousHourlyRow = sortedHourlyRows.slice(1).find(() => true);
+    const latestHourlyRow = sortedHourlyRows?.find(() => true);
+    const previousHourlyRow = sortedHourlyRows?.slice(1).find(() => true);
     const geojsonData = {
       type: 'FeatureCollection',
       features: locations?.filter(l => !!l?.currentSourceId && !!l?.datasourceId).map((location) => {
