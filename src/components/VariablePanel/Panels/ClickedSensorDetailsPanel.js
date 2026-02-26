@@ -8,7 +8,7 @@ import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
-import {FaChartLine} from "@react-icons/all-files/fa/FaChartLine";
+import {FaChartLine} from "react-icons/fa";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";

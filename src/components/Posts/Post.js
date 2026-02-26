@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../config";
-import { FaArrowCircleLeft } from "@react-icons/all-files/fa/FaArrowCircleLeft";
+import { FaArrowCircleLeft, FaTimes } from "react-icons/fa";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Divider from '@mui/material/Divider';
@@ -13,7 +13,6 @@ import IconButton from "@mui/material/IconButton";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import styled from "styled-components";
-import {FaTimes} from "@react-icons/all-files/fa/FaTimes";
 import TagsDisplay from "./TagsDisplay";
 
 

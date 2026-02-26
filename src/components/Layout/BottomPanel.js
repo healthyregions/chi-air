@@ -1,6 +1,6 @@
 // DEPRICATED: Bottom panel container
 // Now container in Legend.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';

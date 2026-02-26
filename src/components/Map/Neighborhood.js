@@ -1,3 +1,4 @@
+/*
 import styled from 'styled-components';
 import { ContentContainer } from '../../styled_components';
 import Grid from "@mui/material/Grid";
@@ -8,3 +9,4 @@ import Tabs from "@mui/material/Tabs";
 
 
 
+*/

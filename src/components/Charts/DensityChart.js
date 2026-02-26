@@ -1,3 +1,4 @@
+/*
 import React, {useEffect, useState} from 'react';
 import { AreaChart, Area,CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
@@ -24,10 +25,10 @@ export default function BarChartComponent({data, dataKey, color}){
           <XAxis dataKey="value" tickCount={5} padding={{ top: 0, bottom: 0, left:0, right:0 }} minTickGap={1} tickFormatter={tickFormatter}/>
           <YAxis dataKey="density" domain={yRange} ticks={[]} hide/>
           <defs>
-            <linearGradient 
+            <linearGradient
                 id={`splitColor${color}`}
-                x1="0" 
-                y1="0" 
+                x1="0"
+                y1="0"
                 x2="0"
                 y2={`50px`}
                 >
@@ -40,3 +41,4 @@ export default function BarChartComponent({data, dataKey, color}){
       </ResponsiveContainer>
     );
 }
+*/

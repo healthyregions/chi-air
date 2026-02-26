@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import {FaArrowLeft} from "@react-icons/all-files/fa/FaArrowLeft";
+import {FaArrowLeft} from "react-icons/fa";
 import {pm2_5Ranges} from "../../../config";
 import {
   removeSensorsFromSelection,

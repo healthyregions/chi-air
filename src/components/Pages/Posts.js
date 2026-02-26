@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ContentContainer } from '../../styled_components';
 import { NavBar, Footer } from '..';
 

@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { colors } from '../../config';
-import { Box } from '@mui/system';
+import Box from '@mui/material/Box';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {FaHome} from "@react-icons/all-files/fa/FaHome";
+import {FaHome} from "react-icons/fa";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const NavItems = styled.ul`

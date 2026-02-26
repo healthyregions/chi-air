@@ -1,3 +1,4 @@
+/*
 import React, {useState} from 'react';
 import { BarChart, Bar, LabelList, CartesianGrid, ResponsiveContainer, XAxis } from 'recharts';
 
@@ -10,7 +11,7 @@ export default function BarChartComponent({data, dataKey, color, x, y, stroke, v
 
     const handleHover = (e) => setHoverVal(e.binNumber);
     const resetHover = () => setHoverVal(null);
-    
+
     return (
       <ResponsiveContainer width="100%">
         <BarChart
@@ -26,8 +27,8 @@ export default function BarChartComponent({data, dataKey, color, x, y, stroke, v
             barSize={300}
         >
             <CartesianGrid horizontal={false}/>
-            <Bar 
-                dataKey={dataKey} 
+            <Bar
+                dataKey={dataKey}
                 stroke={color}
                 strokeWidth={1}
                 fill={'rgb(200,200,200)'}
@@ -37,8 +38,9 @@ export default function BarChartComponent({data, dataKey, color, x, y, stroke, v
                 <LabelList dataKey={dataKey}  content={renderLabel}/>
             </Bar>
             <XAxis dataKey={'min'} tickLine={false} tickFormatter={x => x.toFixed(2)} minTickGap={-5}/>
-            {/* <YAxis dataKey={'count'} label={{ value: "count", angle: -90, position: 'insideLeft' }} /> */}
+            {/!* <YAxis dataKey={'count'} label={{ value: "count", angle: -90, position: 'insideLeft' }} /> *!/}
         </BarChart>
       </ResponsiveContainer>
     );
 }
+*/

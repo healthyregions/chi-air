@@ -18,8 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import {PureComponent} from 'react';
+//import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {Waypoint} from 'react-waypoint';
 
@@ -46,10 +46,10 @@ const Item = styled.div`
 
 export default class Carousel extends PureComponent {
   static propTypes = {
-    children: PropTypes.node,
+    /*children: PropTypes.node,
     selectedIndex: PropTypes.number.isRequired,
     xOffset: PropTypes.number,
-    zOffset: PropTypes.number
+    zOffset: PropTypes.number*/
   };
 
   static defaultProps = {

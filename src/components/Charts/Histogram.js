@@ -1,3 +1,4 @@
+/*
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -14,7 +15,7 @@ import clsx from "clsx";
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
+import {FaInfoCircle} from "react-icons/fa";
 
 const HistogramContainer = styled.div`
   position:relative;
@@ -33,7 +34,7 @@ const ChartContainer = styled.div`
   margin-top:5px;
   height:125px;
   cursor:crosshair !important;
-  .recharts-cartesian-axis-tick {    
+  .recharts-cartesian-axis-tick {
     font-size: .55rem;
     font-family: Roboto, sans-serif;
   }
@@ -286,3 +287,4 @@ export default function Histogram({
     </HistogramContainer>
   )
 }
+*/

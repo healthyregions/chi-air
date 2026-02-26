@@ -19,9 +19,9 @@ import {
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
+import {FaArrowCircleLeft} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
-import {FaGripLines} from "@react-icons/all-files/fa/FaGripLines";
+import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import {ClickedSensorPanel} from "../VariablePanel/Panels/ClickedSensorPanel";
 import {SelectedAreaPanel} from "../VariablePanel/Panels/SelectedAreaPanel";

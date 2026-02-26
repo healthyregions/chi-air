@@ -2,8 +2,8 @@ import {BarChart} from "@mui/x-charts/BarChart";
 import {pm2_5Ranges} from "../../config";
 import Grid from "@mui/material/Grid";
 import {useEffect, useMemo, useRef, useState} from "react";
-import {FaChevronCircleLeft} from "@react-icons/all-files/fa/FaChevronCircleLeft";
-import {FaChevronCircleRight} from "@react-icons/all-files/fa/FaChevronCircleRight";
+import {FaChevronCircleLeft} from "react-icons/fa";
+import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
 export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left:30}, style = {}, showScroll = false, pageSize = 24, mean_pm25, averageType }) => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Button from "@mui/material/Button";
-import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
+import {FaInfoCircle} from "react-icons/fa";
 import {useSelector} from "react-redux";
 import Grid from "@mui/material/Grid";
 

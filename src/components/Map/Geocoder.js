@@ -4,7 +4,7 @@ import {createSearchParams, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import {colors} from "../../config";
 import TextField from "@mui/material/TextField";
-import {FaSearch} from "@react-icons/all-files/fa/FaSearch";
+import {FaSearch} from "react-icons/fa";
 import Autocomplete from "@mui/material/Autocomplete";
 import {debounce} from "@mui/material/utils";
 import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
