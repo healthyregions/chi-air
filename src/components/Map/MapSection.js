@@ -39,8 +39,9 @@ import MapMarkerPopup from "./MapMarkerPopup";
 import {
   selectClickedSensor,
   selectSelectedSensors,
-  selectSensorLocations,
-  selectSensorValuesMeanPm25, setClickedSensor, setSensorGeojsonData
+  selectSensorGeojsonData,
+  selectSensorValuesMeanPm25,
+  setClickedSensor
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
 
@@ -113,13 +114,12 @@ const HoverDiv = styled.div`
 
 const MapButtonContainer = styled.div`
   position: absolute;
-  right: ${(props) =>
-    props.infoPanel ? "0.75em" : "0.75em"};
+  right: ${({ $infoPanel }) => $infoPanel ? "0.75em" : "0.75em"};
   bottom: 0;
   z-index: 10;
   transition: 250ms all;
   @media (max-width: 1000px) {
-    right: ${(props) => (props.infoPanel ? "35%" : "0.75em")};
+    right: ${({ $infoPanel }) => ($infoPanel ? "35%" : "0.75em")};
   }
   @media (max-width: 768px) {
     bottom: 100px;
@@ -147,14 +147,13 @@ const NavInlineButton = styled.button`
   padding: 5px;
   display: block;
   fill: rgb(60, 60, 60);
-  background-color: ${(props) =>
-    props.isActive ? colors.lightblue : colors.buttongray};
+  background-color: ${({ $isActive }) => $isActive ? colors.lightblue : colors.buttongray};
   outline: none;
   border: none;
   transition: 250ms all;
   cursor: pointer;
   :after {
-    opacity: ${(props) => (props.shareNotification ? 1 : 0)};
+    opacity: ${({ $shareNotification }) => ($shareNotification ? 1 : 0)};
     content: "Map Link Copied to Clipboard!";
     background: ${colors.buttongray};
     -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
@@ -171,7 +170,7 @@ const NavInlineButton = styled.button`
   }
   svg {
     transition: 250ms all;
-    transform: ${(props) => (props.tilted ? "rotate(30deg)" : "none")};
+    transform: ${({ $tilted }) => ($tilted ? "rotate(30deg)" : "none")};
   }
 `;
 
@@ -191,8 +190,9 @@ const NavInlineButton = styled.button`
 function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
 
-  const locations = useSelector(selectSensorLocations);
+  const [searchParams, setSearchParams] = useSearchParams();
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const geojsonData = useSelector(selectSensorGeojsonData);
   const selectedSensors = useSelector(selectSelectedSensors);
   const clickedSensor = useSelector(selectClickedSensor);
 
@@ -203,6 +203,9 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const urlParams = useSelector(selectUrlParams);
   const filterValues = useSelector(selectFilterValues);
   const use3d = useSelector(selectUse3d);
+
+  const latestHourlyRow = useMemo(() => mean_pm25?.find((r) => r.type === 'hour'), [mean_pm25]);
+
   // component state elements
   // hover and highlight geographies
   const [hoverInfo, setHoverInfo] = useState({
@@ -587,21 +590,21 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const overlayLayers = parsedOverlays
       .filter(({ id }) => mapParams.overlays.includes(id))
       .map((parsedOverlay) => {
-    const colors = JSON.parse(parsedOverlay.fillColor);
+    const colors = JSON.parse(parsedOverlay?.fillColor);
     return new GeoJsonLayer({
       // Accounting
-      id: parsedOverlay.id,
-      data: parsedOverlay.data,
+      id: parsedOverlay?.id,
+      data: parsedOverlay?.data,
 
       // Behavior
-      pickable: parsedOverlay.geometryType === 'point',    // TODO: point data should be clickable (optionally?)
+      pickable: parsedOverlay?.geometryType === 'point',    // TODO: point data should be clickable (optionally?)
 
       // Look & Feel
       opacity: (JSON.stringify(colors) === JSON.stringify([0,0,0,0]) || JSON.stringify(colors) === JSON.stringify([0,0,0])) ? 1.0 : 0.8,
       material: false,
-      stroked: !!parsedOverlay.lineColor,
-      filled: !!parsedOverlay.fillColor,
-      extruded: parsedOverlay.geometryType === 'point',
+      stroked: !!parsedOverlay?.lineColor,
+      filled: !!parsedOverlay?.fillColor,
+      extruded: parsedOverlay?.geometryType === 'point',
       getElevation: 20,
       //getPosition: (d) => [d.x_coordinate, d.y_coordinate],
       //getText: f => f.properties[parsedOverlay.symbolProp],
@@ -609,18 +612,18 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         // If single color, use that color
         // If mapping of colors, choose color based on symbolProp
         const { symbolProp } = parsedOverlay;
-        const symbolKey = feature.properties[symbolProp];
+        const symbolKey = feature?.properties[symbolProp];
 
-        if (typeof symbolKey === 'object' && symbolKey.sort) {
+        if (typeof symbolKey === 'object' && symbolKey?.sort) {
           // Treat as array of strings
-          const key = symbolKey.sort().join(" & ");
+          const key = symbolKey?.sort()?.join(" & ");
           return colors[key];
         } else if (typeof symbolKey === 'object') {
           // Treat as a mapping of strings
           console.error('ERROR: Currently unsupported - please use an array of strings for your symbol instead');
         }
 
-        return colors[symbolKey];
+        return colors?.[symbolKey];
       },
 
       lineWidthScale: 1,
@@ -628,7 +631,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       lineWidthMaxPixels: 4,
 
       getLineWidth: 1,
-      getLineColor: Number(parsedOverlay.lineColor) || [0,0,0,255],
+      getLineColor: Number(parsedOverlay?.lineColor) || [0,0,0,255],
 
       getPointRadius: 4,
       getTextSize: 12,
@@ -637,59 +640,19 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       onClick: (feature) => handleMapClick(feature, parsedOverlay),
 
       // Visibility
-      visible: mapParams.overlays.includes(parsedOverlay?.id),
+      visible: mapParams?.overlays?.includes(parsedOverlay?.id),
       updateTriggers: {
-        visible: [mapParams.overlay, mapParams.overlays],
+        visible: [mapParams?.overlay, mapParams?.overlays],
       },
       beforeId: "state-label",
     })
   });
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sensorIds = [...new Set(locations.map(l => l.datasourceId))];
-
-  //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
-  const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .reverse();
-  const latestHourlyRow = sortedHourlyRows.find(() => true);
-  const previousHourlyRow = sortedHourlyRows.slice(1).find(() => true);
-  const geojsonData = {
-    type: 'FeatureCollection',
-    features: sensorIds.map((datasourceId) => {
-      const location = locations?.find(r => r.datasourceId === datasourceId);
-      const metric_pm25 = mean_pm25.map((r) => ({
-        period: r.period || r.type,
-        date: r.date,
-        [datasourceId]: r[datasourceId]
-      }));
-
-      return {
-        type: 'Feature',
-        geometry: {
-          type: "Point",
-          coordinates: [
-            location.locationLongitude,
-            location.locationLatitude
-          ],
-        },
-        // Ensure this is valid GeoJSON format
-        properties: {
-          ...location,
-          last_update: latestHourlyRow?.[datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
-          latest_mean_pm25: latestHourlyRow?.[datasourceId] || previousHourlyRow?.[datasourceId],
-          mean_pm25: metric_pm25
-        },
-      }
-    }),
-  };
-  dispatch(setSensorGeojsonData(geojsonData));
   baseLayers.push(
     new GeoJsonLayer({
       id: "sensors",
       data: {
         ...geojsonData,
-        features: geojsonData.features.filter(f =>
+        features: geojsonData?.features?.filter(f =>
           !selectedSensors?.includes(f.properties['datasourceId']) && clickedSensor !== f.properties['datasourceId']
         )
       },
@@ -702,7 +665,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
           return [250, 250, 250];
         }
         // Detect loading state, display soft colors while loading
-        if (Object.keys(latestHourlyRow)?.length <= 2) {
+        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
           return [229, 238, 245];
         }
         const latest = feature.properties.latest_mean_pm25;
@@ -722,7 +685,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       getLineWidth: 35,
       getLineColor: (feature) => {
         // Detect loading state, display soft colors while loading
-        if (Object.keys(latestHourlyRow)?.length <= 2) {
+        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
           return [79, 143, 197];
         }
         const latest = feature.properties.latest_mean_pm25;
@@ -756,7 +719,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       id: "selected-sensors",
       data: {
         ...geojsonData,
-        features: geojsonData.features.filter(f =>
+        features: geojsonData?.features?.filter(f =>
           selectedSensors?.includes(f.properties['datasourceId']) || clickedSensor === f.properties['datasourceId']
         )
       },
@@ -769,7 +732,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       getTextSize: 12,*/
       getFillColor: (feature) => {
         // Detect loading state, display soft colors while loading
-        if (Object.keys(latestHourlyRow)?.length <= 2) {
+        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
           return [79, 143, 197];
         }
         const latest = feature.properties.latest_mean_pm25;
@@ -789,7 +752,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       getLineWidth: 35,
       getLineColor: (feature) => {
         // Detect loading state, display soft colors while loading
-        if (Object.keys(latestHourlyRow)?.length <= 2) {
+        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
           return [229, 238, 245];
         }
         const latest = feature.properties.latest_mean_pm25;
@@ -847,7 +810,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   }
 
   return (
-    <MapContainer infoPanel={panelState.info} ref={mapContainerRef}>
+    <MapContainer ref={mapContainerRef}>
       <MapboxGLMap
         ref={mapRef}
         mapStyle={
@@ -923,7 +886,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
         />
       </MapboxGLMap>
       {!geoids.length && (
-        <MapButtonContainer infoPanel={panelState.info}>
+        <MapButtonContainer $infoPanel={panelState.info}>
           <NavInlineButtonGroup>
             <NavInlineButton
               title="Geolocate"
@@ -952,7 +915,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
             <NavInlineButton
               title="Reset Tilt"
               id="resetTilt"
-              tilted={mapIsTilted}
+              $tilted={mapIsTilted}
               onClick={() => resetTilt()}
             >
               {SVG.compass}

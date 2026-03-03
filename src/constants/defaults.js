@@ -1,7 +1,10 @@
 import { defaultData, defaultVariable, variablePresets } from "../config";
 
 export const INITIAL_STATE = {
-  storedGeojson: {},
+  storedGeojson: {
+    type: "FeatureCollection",
+    features: []
+  },
   aqSummary: [],
   aqLastUpdated: {
     start:null,

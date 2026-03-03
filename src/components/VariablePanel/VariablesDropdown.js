@@ -1,5 +1,4 @@
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import ListSubheader from "@mui/material/ListSubheader";
 import Select from "@mui/material/Select";
 import {variablePresets} from "../../config";
@@ -30,7 +29,7 @@ const VariablesDropdown = () => {
   return (
     <>
       <FormControl id="newVariableSelect" variant="outlined" fullWidth>
-        <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
+        {/*<InputLabel htmlFor="newVariableSelect">Variable</InputLabel>*/}
         <Select
           variant={"filled"}
           value={mapParams.variableName || ''}

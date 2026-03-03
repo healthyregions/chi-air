@@ -6,6 +6,7 @@ export const loadData = async () => {
         ).then((r) => r.json())
 
     const mergedData = {
+        type: 'FeatureCollection',
         ...data,
         features: data.features.map((feature) => {
             return {

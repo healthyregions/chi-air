@@ -33,17 +33,17 @@ import {Geocoder} from "./Geocoder";
 
 const DataPanelContainer = styled.div`
     position:fixed;
-    width: ${({ largeScreen }) => largeScreen ? '433px' : 'calc(100% - 1em)'};
-    top: ${({ largeScreen }) => largeScreen ? '2rem' : 'calc(60% + 45px)'};
-    left: ${({ largeScreen }) => largeScreen ? '' : '.75em'};
-    right: ${({ largeScreen }) => largeScreen ? '2rem' : ''};
-    z-index: ${({ largeScreen }) => largeScreen ? 5 : 51};
-    display: ${({ largeScreen, otherPanels, dataLength }) => largeScreen && (otherPanels || dataLength === 0) ? 'none' : 'initial'};
+    width: ${({ $large }) => $large ? '433px' : 'calc(100% - 1em)'};
+    top: ${({ $large }) => $large ? '2rem' : 'calc(60% + 45px)'};
+    left: ${({ $large }) => $large ? '' : '.75em'};
+    right: ${({ $large }) => $large ? '2rem' : ''};
+    z-index: ${({ $large }) => $large ? 5 : 51};
+    display: ${({ $large, $otherPanels, $dataLength }) => $large && ($otherPanels || $dataLength === 0) ? 'none' : 'initial'};
 
     transition:250ms all;
-    transform: ${({ largeScreen, isOpen }) => isOpen ? 'none' : (largeScreen ? 'translateX(calc(100% + 2rem))' : 'translateX(calc(-100% - 1em))')};
+    transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(100% + 2rem))' : 'translateX(calc(-100% - 1em))')};
         
-    padding: ${({ largeScreen }) => largeScreen ? '36px 29px' : '2em 0 0 0'};
+    padding: ${({ $large }) => $large ? '36px 29px' : '2em 0 0 0'};
     background: linear-gradient(180deg, #e3f4fb 0%, #ffffff 80%);
     border: 1px solid rgba(65, 182, 230, 1);
     border-radius: 8px;
@@ -145,7 +145,7 @@ const DataPanel = ({ handleGeocoder }) => {
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25.find((r) => r.type === 'hour');
+  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
@@ -173,7 +173,7 @@ const DataPanel = ({ handleGeocoder }) => {
   };
 
   return (
-    <DataPanelContainer largeScreen={largeScreen} isOpen={!!panelState.info} id="data-panel">
+    <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={(l) => dispatch(setLocale(l?.toLowerCase()?.slice(0,2)))} options={['English','Español']} /></Grid>

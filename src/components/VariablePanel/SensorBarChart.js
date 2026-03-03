@@ -84,9 +84,9 @@ export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left
           </LButton>}
         </Grid>}
 
-        <Grid size={showScroll ? 10 : 12}>
+        {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
           <BarChart {...chartSettings} margin={margin} />
-        </Grid>
+        </Grid>}
 
         {showScroll && <Grid size={1}>
           {page > 0 && <LButton style={{ fontSize: '28px', right: '2rem', width: '36px', height: '36px' }} onClick={scrollBack}>
