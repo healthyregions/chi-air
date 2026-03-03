@@ -1,7 +1,7 @@
 {
   "name": "chiair",
   "version": "1.0.0",
-  "description": "Dashboard for displaying Clarity air quality sensor data from the Chicago's OurAir / Open Air Chicago projects",
+  "description": "Dashboard for displaying Clarity air quality sensor data from the Chicago OurAir / Open Air Chicago projects",
   "private": true,
   "repository": {
     "type": "git",
