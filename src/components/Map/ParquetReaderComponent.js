@@ -6,7 +6,9 @@ import {
   setSensorValuesMeanPm25,
   selectSensorValuesMeanPm25,
   selectSensorLocations,
-  setSensorGeojsonData, setFirstRowIndices, selectFirstRowIndices
+  setSensorGeojsonData,
+  setFirstRowIndices,
+  selectFirstRowIndices,
 } from '../../store/slices/sensorDataSlice';
 import {compressors} from "hyparquet-compressors";
 
@@ -59,14 +61,17 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     console.error(`ERROR: Failed to fetch Parquet dataset from ${url} after ${maxRetries} retries.`);
   };
 
-  useEffect(() => {// TODO: Support multiple metrics?
+  // TODO: pipeline could produce these indices to save us another ~500ms
+  // TODO: Support multiple metrics?
+  useEffect(() => {
     const startTime = new Date().getTime();
+    console.log(`Finding first indices...`);
     // Fetch the metric data (currently just mean_pm25) using our list of locations
     fetchPq({
       url: meanPm25Url,
       columns: ['type','date'],
       rowStart: 0,
-      rowEnd: 100
+      rowEnd: 500
     }).then(d => {
       dispatch(setFirstRowIndices({
         year: d?.findIndex(r => r.type === 'year'),
@@ -76,7 +81,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         day: d?.findIndex(r => r.type === 'day'),
         hour: d?.findIndex(r => r.type === 'hour'),
       }));
-      dispatch(setSensorValuesMeanPm25(d));
       const endTime = new Date().getTime();
       console.log(`Finished locating first rows: ${endTime - startTime}ms`);
     });
@@ -87,7 +91,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch the list of location id, name, coordinates
     fetchPq({
       url: locationsUrl,
-      columns: ['datasourceId', 'sourceId', 'currentSourceId', 'locationLatitude', 'locationLongitude', 'name', 'community', 'zip' /*'group', 'tags',*/ ],
     }).then(l => {
       dispatch(setSensorLocations(l?.filter(loc => loc?.currentSourceId)));
       const endTime = new Date().getTime();
@@ -97,18 +100,20 @@ const ParquetReaderComponent = ({ DEBUG }) => {
 
   useEffect(() => {
     // Skip fetching if we don't have enough data
-    if (locations?.length === 0 || firstRowIndices.hour === 0) { return; }
+    if (locations?.length === 0 || firstRowIndices.hour < 0) { return; }
+    const startIndex = firstRowIndices.hour;
+    const endIndex = startIndex + 24;
 
     const startTime = new Date().getTime();
     // TODO: Support multiple metrics?
     // Fetch the metric data (currently just mean_pm25) using our list of locations
-    const columns = [ 'type','date',...new Set(locations?.map(l => l.datasourceId)) ];
+    const columns = [ 'type','date', ...new Set(locations?.map(l => l.datasourceId)) ];
     // Grab only this row to quickly color the map
     fetchPq({
       url: meanPm25Url,
       columns,
-      rowStart: firstRowIndices.hour,
-      rowEnd: firstRowIndices.hour+2,
+      rowStart: startIndex,
+      rowEnd: endIndex,
     }).then(d => {
       dispatch(setSensorValuesMeanPm25(d));
       const endTime = new Date().getTime();
@@ -125,10 +130,10 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         const endTime = new Date().getTime();
         console.log(`Finished fetching last 24-hours mean_pm25: ${endTime - startTime}ms`);
 
-        // Now, fill in with historical data
+        // fill in with historical data
         fetchPq({
           url: meanPm25Url,
-          columns,
+          columns
         }).then(d => {
           dispatch(setSensorValuesMeanPm25(d));
           const endTime = new Date().getTime();
@@ -136,14 +141,14 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         });
       });
     });
-  }, [dispatch, locations, firstRowIndices.hour]);
+  }, [dispatch, locations, firstRowIndices]);
 
   useEffect(() => {
-    if (locations?.length === 0 || mean_pm25?.length === 0) { return; }
+    if (locations?.length === 0 || !mean_pm25?.find((r) => r.type === 'hour')) { return; }
     // Skip rendering if we don't have enough data
     const startTime = new Date().getTime();
     //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
-    const sortedHourlyRows = mean_pm25?.filter(r => r?.type === 'hour' || r?.period === 'hour')
+    const sortedHourlyRows = mean_pm25?.filter(r => r?.type === 'hour');
       //.sort((a, b) => a.date.localeCompare(b.date))
       //.reverse();
     const latestHourlyRow = sortedHourlyRows?.find(() => true);
@@ -152,7 +157,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       type: 'FeatureCollection',
       features: locations?.filter(l => !!l?.currentSourceId && !!l?.datasourceId)?.map((location) => {
         const metric_pm25 = mean_pm25?.map((r) => ({
-          period: r.period || r.type,
+          type: r.type,
           date: r.date,
           [location.datasourceId]: r[location.datasourceId]
         }));

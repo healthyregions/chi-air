@@ -25,7 +25,7 @@ export const sensorDataSlice = createSlice({
   reducers: {
     setFirstRowIndices: (state, action) => ({
       ...state,
-      firstRowIndex: {
+      firstRowIndices: {
         ...action.payload,
       }
     }),
@@ -77,10 +77,31 @@ export const sensorDataSlice = createSlice({
         ...state,
         mean_pm25: action.payload,
     }),
-    setSensorGeojsonData: (state, action) => ({
-      ...state,
-      geojsonData: action.payload,
-    }),
+    setSensorGeojsonData: (state, action) => {
+      const missingRows = (action.payload?.features || [])?.filter(newFeature =>
+        !state.geojsonData.features.find(existingFeature =>
+          newFeature?.properties?.datasourceId === existingFeature?.properties?.datasourceId
+        )
+      );
+      const mergedRows = state.geojsonData.features?.map(existingFeature => {
+        const newData = action.payload?.features?.find(newFeature =>
+          newFeature?.properties?.datasourceId === existingFeature?.properties?.datasourceId
+        )
+        return {
+          ...existingFeature,
+          ...newData
+        }
+      });
+      const features = [...mergedRows, ...missingRows];
+
+      return {
+        ...state,
+        geojsonData: {
+          type: "FeatureCollection",
+          features
+        },
+      };
+    },
   },
   selectors: {
     selectSensorLocations: state => state.locations,
