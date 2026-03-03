@@ -144,7 +144,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   }, [dispatch, locations, firstRowIndices]);
 
   useEffect(() => {
-    if (locations?.length === 0 || mean_pm25?.length === 0) { return; }
+    if (locations?.length === 0) { return; }
     // Skip rendering if we don't have enough data
     const startTime = new Date().getTime();
     //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
