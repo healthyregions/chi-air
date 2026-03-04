@@ -31,7 +31,6 @@ import {
   selectFilterValues,
   selectMapParams,
   selectPanelState,
-  selectUrlParams,
   selectUse3d
 } from "../../store/slices/legacyStoreSlice";
 import MapMarkerPin from "./MapMarkerPin";
@@ -191,6 +190,9 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const dispatch = useDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const lon = searchParams.get('lon');
+  const lat = searchParams.get('lat');
+  const zoom = searchParams.get('z');
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const geojsonData = useSelector(selectSensorGeojsonData);
   const selectedSensors = useSelector(selectSelectedSensors);
@@ -200,7 +202,6 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const { storedGeojson } = useChivesData();
   const panelState = useSelector(selectPanelState);
   const mapParams = useSelector(selectMapParams);
-  const urlParams = useSelector(selectUrlParams);
   const filterValues = useSelector(selectFilterValues);
   const use3d = useSelector(selectUse3d);
 
@@ -263,9 +264,9 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   const mapContainerRef = useRef(null);
   // map view location
   const [viewState, setViewState] = useState({
-    latitude: +urlParams.lat || bounds.latitude,
-    longitude: +urlParams.lon || bounds.longitude,
-    zoom: +urlParams.z || bounds.zoom,
+    latitude: +lat || bounds.latitude,
+    longitude: +lon || bounds.longitude,
+    zoom: +zoom || bounds.zoom,
     bearing: 0,
     pitch: 0,
   });
@@ -287,18 +288,6 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
       event.preventDefault();
     });
   }, []);
-
-  useEffect(() => {
-    setViewState((view) => ({
-      ...view,
-      latitude: +urlParams.lat || bounds.latitude,
-      longitude: +urlParams.lon || bounds.longitude,
-      zoom: +urlParams.z || bounds.zoom,
-      bearing: 0,
-      pitch: 0,
-    }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urlParams]);
 
   useEffect(() => {
     let handler = (e) => {
@@ -792,6 +781,15 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   }, []);
 
   useEffect(() => {
+    if (lon && lat) {
+      const center = [+lon, +lat];
+      handleGeocoder({
+        center,
+      });
+    }
+  }, [handleGeocoder, searchParams, lat, lon]);
+
+  useEffect(() => {
     if (use3d) {
       handleTilt();
     } else {
@@ -849,16 +847,6 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
             width: window.innerWidth,
             height: window.innerHeight,
           });
-        }}
-        onLoad={(e) => {
-          const queryString = window.location.search;
-          const urlParams = new URLSearchParams(queryString);
-          if (urlParams.has("lat") && urlParams.has("lon")) {
-            const center = [+urlParams.get("lon"), +urlParams.get("lat")];
-            handleGeocoder({
-              center,
-            });
-          }
         }}
       >
         {mapParams.overlays.includes('aq-monitoring-sites') && mapStickers}
