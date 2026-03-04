@@ -71,7 +71,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       url: meanPm25Url,
       columns: ['type','date'],
       rowStart: 0,
-      rowEnd: 500
+      rowEnd: 100
     }).then(d => {
       dispatch(setFirstRowIndices({
         year: d?.findIndex(r => r.type === 'year'),
