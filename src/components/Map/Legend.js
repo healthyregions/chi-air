@@ -111,7 +111,7 @@ const BinBars = styled.div`
         display: flex;
     }
     .color-bars.with-labels {
-        margin-bottom: 0;
+        margin-bottom: 5px;
     }
     .bin {
         height:5px;
