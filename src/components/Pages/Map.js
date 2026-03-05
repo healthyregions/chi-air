@@ -66,11 +66,7 @@ function Map() {
       <div id="mainContainer">
         { mapParams && <>
             <MapSection bounds={defaultBounds} mapRef={mapRef} handlePanMap={handlePanMap} handleGeocoder={handleGeocoder} />
-            <Legend
-              label={`${mapParams.variableName} ${
-                mapParams?.units ? `(${mapParams?.units})` : ""
-              }`}
-            />
+            {mapParams?.variableName && <Legend />}
             {/*<VariablePanel />*/}
             <DataPanel handleGeocoder={handleGeocoder} />
             <AQIColorScale />
