@@ -250,14 +250,6 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
 
   const [popupInfo, setPopupInfo] = useState(null);
 
-  const handlePanMap = useCallback((viewState) => {
-    mapRef?.current?.flyTo({
-      center: [viewState.longitude, viewState.latitude],
-      zoom: viewState.zoom,
-      bearing: viewState.bearing,
-      pitch: viewState.pitch,
-    });
-  }, [mapRef]);
   const hoverRef = useRef();
   const hoverCcRef = useRef();
   const viewRef = useRef(null);
