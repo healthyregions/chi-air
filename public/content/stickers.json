@@ -5,6 +5,7 @@
     "address": "3535 E. 114th St",
     "icon": "../../icons/stickers/noun-flag.svg",
     "logo": "../../icons/stickers/noun-flag.svg",
+    "color": [80, 80, 80],
     "long": -87.5395,
     "lat": 41.6872,
     "monitors": ["PM2.5"]
@@ -15,6 +16,7 @@
     "address": "7801 Lawndale",
     "icon": "../../icons/stickers/noun-flag.svg",
     "logo": "../../icons/stickers/noun-flag.svg",
+    "color": [0, 128, 127],
     "long": -87.7135,
     "lat": 41.7514,
     "monitors": ["PM2.5", "NO2"]
@@ -25,6 +27,7 @@
     "address": "4850 Wilson Ave.",
     "icon": "../../icons/stickers/noun-flag.svg",
     "logo": "../../icons/stickers/noun-flag.svg",
+    "color": [80, 80, 80],
     "long": -87.7499,
     "lat": 41.9655,
     "monitors": ["PM2.5"]
@@ -35,6 +38,7 @@
     "address": "1745 N. Springfield Ave.",
     "icon": "../../icons/stickers/noun-flag.svg",
     "logo": "../../icons/stickers/noun-flag.svg",
+    "color": [80, 80, 80],
     "long": -87.7227,
     "lat": 41.9127,
     "monitors": ["PM2.5"]
@@ -45,6 +49,7 @@
     "address": "Kennedy Expy & W. Webster Ave",
     "icon": "../../icons/stickers/noun-flag.svg",
     "logo": "../../icons/stickers/noun-flag.svg",
+    "color": [162, 45, 43],
     "long": -87.6744,
     "lat": 41.9207,
     "monitors": ["NO2"]

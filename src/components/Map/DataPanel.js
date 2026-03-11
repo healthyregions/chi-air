@@ -118,7 +118,7 @@ const DataPanelContainer = styled.div`
 `;
 
 // DataPanel Function Component
-const DataPanel = ({ handleGeocoder }) => {
+const DataPanel = ({ mapRef }) => {
   const dispatch = useDispatch();
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
