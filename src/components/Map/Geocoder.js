@@ -61,10 +61,11 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
     if (location?.center !== undefined) {
       navigate({
         pathname: "/map",
-        search: createSearchParams(
-          ['lon', 'lat'].reduce((obj, k, i) =>
-            ({...obj, [k]: location?.center?.[i]}), {})
-        ).toString()
+        search: createSearchParams({
+          lon: location?.center?.[0],
+          lat: location?.center?.[1],
+          z: 13
+        }).toString()
       });
     }
   }, [navigate]);

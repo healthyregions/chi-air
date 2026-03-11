@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import { useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import { fitBounds } from "@math.gl/web-mercator";
 import {

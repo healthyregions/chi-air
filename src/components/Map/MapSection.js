@@ -186,7 +186,7 @@ const NavInlineButton = styled.button`
 `;*/
 
 
-function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
+function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -269,7 +269,7 @@ function MapSection({ mapRef, setViewStateFn = () => {}, bounds, geoids = [], sh
   useEffect(() => {
     setViewState(bounds);
     handlePanMap(bounds);
-  }, [JSON.stringify(bounds)]); //eslint-disable-line
+  }, [bounds]); //eslint-disable-line
 
   useEffect(() => {
     setViewStateFn(setViewState);
