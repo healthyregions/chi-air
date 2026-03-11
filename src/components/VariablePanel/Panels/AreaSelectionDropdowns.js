@@ -11,6 +11,51 @@ import {LButton, LLabel, useSelectorAsState} from "../common";
 import centroid from "@turf/centroid";
 import {createSearchParams, useNavigate} from "react-router-dom";
 
+export const getBoundariesPath = (key) => {
+  switch (key) {
+    case 'community':
+      return '/geojson/community_areas.geojson';
+    case 'zip':
+      return '/geojson/chiZipCodes.geojson';
+    case 'ward':
+      return '/geojson/boundaries_wards_2015_.geojson';
+    default:
+      console.error('Unrecognized selection key encountered: ' + key)
+  }
+};
+
+const getBoundaries = (key) => {
+  return fetch(getBoundariesPath(key));
+}
+
+export const getFeature = (boundaries, name, key) => {
+  return boundaries?.features?.find(b => b?.properties[key] === name);
+}
+
+const flyToCenter = (boundaries, name, key, navigate) => {
+  const feature = getFeature(boundaries, name, key);
+  if (!feature) {
+    console.error('Feature not found:', `${key}=${name}`);
+    return;
+  }
+  const centerPoint = centroid(feature);
+  const [lon, lat] = centerPoint?.geometry?.coordinates;
+  if (!lon || !lat) {
+    console.error(`Failed to navigate to user selection ${key}=${name} - Invalid lon/lat:`, [lon, lat]);
+    return;
+  }
+
+  navigate({
+    pathname: "/map",
+    search: createSearchParams({
+      lon,
+      lat,
+      key,
+      z: 12
+    }).toString()
+  });
+}
+
 
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size }) => {
   const dispatch = useDispatch();
@@ -20,50 +65,13 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   const locations = useSelector(selectSensorLocations);
 
-  const communityBoundariesPath = '/geojson/community_areas.geojson';
-  const zipBoundariesPath = '/geojson/chiZipCodes.geojson';
-  const wardBoundariesPath = '/geojson/boundaries_wards_2015_.geojson';
-  const getBoundaries = (key) => {
-    switch (key) {
-      case 'community':
-        return fetch(communityBoundariesPath);
-      case 'zip':
-        return fetch(zipBoundariesPath);
-      case 'ward':
-        return fetch(wardBoundariesPath);
-      default:
-        console.error('Unrecognized selection key encountered: ' + key)
-        return Promise.default;
-    }
-  }
-
-  const flyToCenter = (boundaries, name, key) => {
-    const feature = boundaries?.features?.find(b => b?.properties[key] === name);
-    if (!feature) {
-      console.error('Feature not found:', `${key}=${name}`);
-      return;
-    }
-    const centerPoint = centroid(feature);
-    const [lon, lat] = centerPoint.geometry.coordinates;
-
-    navigate({
-      pathname: "/map",
-      search: createSearchParams({
-        lon,
-        lat,
-        key,
-        z: 13
-      }).toString()
-    });
-  }
-
   // Runs user's onChange, then our magic handling to fly to the center
   const handleChange = async (name, key) => {
     onChange(name, key);
     const boundariesResponse = await getBoundaries(key);
     const boundaries = await boundariesResponse.json();
     console.log(`Boundaries fetched for ${key}:`, boundaries);
-    flyToCenter(boundaries, name, key);
+    flyToCenter(boundaries, name, key, navigate);
   }
 
   const clearSelection = () => {
