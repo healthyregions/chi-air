@@ -70,11 +70,11 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   // TODO: we can do better for this logic, but for now this should work alright
   const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
 
-  const downloadGeoJson = (geojsonData, filename = 'chicago_mean_pm25.geojson') => {
+  const downloadGeoJson = (geojsonData = sensorGeojson, filename = 'chicago_mean_pm25.geojson') => {
     downloadFile(JSON.stringify(geojsonData, null, 2), filename);
   };
 
-  const downloadCsv = (geojsonData, separator= ',', filename = 'chicago_mean_pm25.csv') => {
+  const downloadCsv = (geojsonData = sensorGeojson, separator= ',', filename = 'chicago_mean_pm25.csv') => {
     downloadFile(convertGeoJsonToCsv(geojsonData), filename);
   };
 
@@ -133,8 +133,8 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             },
           }}
         >
-          <MenuItem onClick={() => {downloadCsv(geojsonData);handleClose();}}>CSV</MenuItem>
-          <MenuItem onClick={() => {downloadGeoJson(geojsonData);handleClose();}}>GeoJSON</MenuItem>
+          <MenuItem onClick={() => {downloadCsv();handleClose();}}>CSV</MenuItem>
+          <MenuItem onClick={() => {downloadGeoJson();handleClose();}}>GeoJSON</MenuItem>
           <MenuItem onClick={() => {downloadParquet();handleClose();}}>Parquet</MenuItem>
         </Menu>
       </Grid>
