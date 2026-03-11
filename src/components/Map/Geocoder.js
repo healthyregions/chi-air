@@ -91,7 +91,6 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
     () =>
       debounce((text, callback) => {
         (async (text, callback) => fetch(url).then(r => r.json()).then(r => {
-          console.log("result:", r);
           callback(r.features);
         }))(text, callback)
       }, 200),

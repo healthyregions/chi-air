@@ -8,14 +8,63 @@ import {
 } from "../../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {LButton, LLabel, useSelectorAsState} from "../common";
+import centroid from "@turf/centroid";
+import {createSearchParams, useNavigate} from "react-router-dom";
 
 
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
   const locations = useSelector(selectSensorLocations);
+
+  const communityBoundariesPath = '/geojson/community_areas.geojson';
+  const zipBoundariesPath = '/geojson/chiZipCodes.geojson';
+  const wardBoundariesPath = '/geojson/boundaries_wards_2015_.geojson';
+  const getBoundaries = (key) => {
+    switch (key) {
+      case 'community':
+        return fetch(communityBoundariesPath);
+      case 'zip':
+        return fetch(zipBoundariesPath);
+      case 'ward':
+        return fetch(wardBoundariesPath);
+      default:
+        console.error('Unrecognized selection key encountered: ' + key)
+        return Promise.default;
+    }
+  }
+
+  const flyToCenter = (boundaries, name, key) => {
+    const feature = boundaries?.features?.find(b => b?.properties[key] === name);
+    if (!feature) {
+      console.error('Feature not found:', `${key}=${name}`);
+      return;
+    }
+    const centerPoint = centroid(feature);
+    const [lon, lat] = centerPoint.geometry.coordinates;
+
+    navigate({
+      pathname: "/map",
+      search: createSearchParams({
+        lon,
+        lat,
+        key,
+        z: 13
+      }).toString()
+    });
+  }
+
+  // Runs user's onChange, then our magic handling to fly to the center
+  const handleChange = async (name, key) => {
+    onChange(name, key);
+    const boundariesResponse = await getBoundaries(key);
+    const boundaries = await boundariesResponse.json();
+    console.log(`Boundaries fetched for ${key}:`, boundaries);
+    flyToCenter(boundaries, name, key);
+  }
 
   const clearSelection = () => {
     setSelections({...selections, community: [], zip: [], ward: []});
@@ -27,7 +76,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     <>
       {(noSelection || !showSelectedAreas) && <Grid container size={size === 'small' ? 12 : 8}>
         <Grid size={4}>
-          <DropdownButton onChange={(s) => onChange(s, 'community')}
+          <DropdownButton onChange={(s) => handleChange(s, 'community')}
                           ButtonComponent={LButton}
                           label={'Community'}
                           buttonProps={{ size }}
@@ -36,7 +85,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                           options={locations?.map(l => l.community)} />
         </Grid>
         <Grid size={8}>
-          <DropdownButton onChange={(s) => onChange(s, 'zip')}
+          <DropdownButton onChange={(s) => handleChange(s, 'zip')}
                           ButtonComponent={LButton}
                           label={'Zip code'}
                           buttonProps={{ size }}

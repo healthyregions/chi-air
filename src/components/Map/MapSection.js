@@ -275,9 +275,9 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     id: "sensors",
     data: {
       ...geojsonData,
-      features: geojsonData?.features
-        ?.filter(f => !selectedSensors?.includes(f.properties['datasourceId']))
-        ?.filter(f => f.properties['datasourceId'] !== clickedSensor)
+      features: geojsonData?.features?.filter(f =>
+        !selectedSensors?.includes(f.properties['datasourceId']) && clickedSensor !== f.properties['datasourceId']
+      )
     },
     pickable: true,
     stroked: true,
@@ -340,9 +340,9 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     id: "selected-sensors",
     data: {
       ...geojsonData,
-      features: geojsonData?.features
-        ?.filter(f => selectedSensors?.includes(f.properties['datasourceId'])
-          || f.properties['datasourceId'] !== clickedSensor)
+      features: geojsonData?.features?.filter(f =>
+        selectedSensors?.includes(f.properties?.datasourceId) && clickedSensor !== f.properties?.datasourceId
+      )
     },
     pickable: true,
     stroked: true,
@@ -403,12 +403,14 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-    new GeoJsonLayer({
+  new GeoJsonLayer({
     id: "clicked-sensor",
     data: {
       ...geojsonData,
-      features: geojsonData?.features?.filter(f => !!f.properties['datasourceId']
-        && f.properties['datasourceId'] === clickedSensor)
+      features: clickedSensor ? [
+        geojsonData?.features?.find(f =>
+          f.properties['datasourceId'] && f.properties['datasourceId'] === clickedSensor)
+      ] : []
     },
     pickable: true,
     stroked: true,
@@ -863,7 +865,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const geocoderLayers = useMemo(() => {
     const lat = searchParams.get('lat');
     const lon = searchParams.get('lon');
-    if (!lat || !lon) { return []; }
+    const key = searchParams.get('key');
+    if (!lat || !lon || key) { return []; }
     console.log('Rendering geocoder result:', [lon,lat])
 
     const iconLayer = new IconLayer({
@@ -926,8 +929,6 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     }
     return layers;
   }, [baseLayers, overlayLayers, sensorLayers, geocoderLayers, mapParams?.overlays]);
-
-  console.log(geocoderLayers);
 
   return (
     <MapContainer ref={mapContainerRef}>
