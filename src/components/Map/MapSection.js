@@ -868,7 +868,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
 
     const iconLayer = new IconLayer({
       id: 'geocoder-icon',
-      data: [{ coordinates: [-87.659809, 41.955657] }],
+      data: [{ coordinates: [+lon, +lat] }],
       getPosition: d => d.coordinates,
       getPixelOffset: [0, -7],
       getColor: d => [0, 88, 153, 255],
@@ -878,13 +878,13 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         height: 128,
         mask: true
       }),
-      sizeScale: 25,
+      getSize: 40,
       pickable: true
     });
 
     const radiusLayer = new ScatterplotLayer({
       id: 'geocoder-radius',
-      data: [{ coordinates: [-87.659809, 41.955657] }],
+      data: [{ coordinates: [+lon, +lat] }],
 
       getFillColor: [65, 182, 230, 128],
       getPosition: d => d.coordinates,
