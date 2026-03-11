@@ -906,7 +906,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const allLayers = useMemo(() => {
     const layers = [...baseLayers, ...overlayLayers, ...sensorLayers, ...geocoderLayers];
     if (mapParams?.overlays?.includes('aq-monitoring-sites')) {
-      allLayers.push(
+      layers.push(
         new IconLayer({
           id: 'aq-monitoring-sites',
           data: '/content/stickers.json',
