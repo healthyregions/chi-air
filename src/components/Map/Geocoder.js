@@ -141,7 +141,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
             const parts = parse(option.place_name, matches);
 
             return (
-              <li {...props}>
+              <li {...props} key={props.key}>
                 <div style={{ paddingLeft: '1rem' }}>
                   {parts?.map((part, index) => (
                     <span
