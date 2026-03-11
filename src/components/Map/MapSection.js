@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 // deck GL and helper function import
 import { MapView, FlyToInterpolator } from "@deck.gl/core";
-import {GeoJsonLayer, IconLayer} from "@deck.gl/layers";
+import {GeoJsonLayer, IconLayer, ScatterplotLayer} from "@deck.gl/layers";
 import { fitBounds } from "@math.gl/web-mercator";
 import MapboxGLMap, {Popup} from "react-map-gl";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
@@ -489,14 +489,14 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     };
     document.addEventListener("mousedown", handler);
   });
-  const GetMapView = () => {
+  const GetMapView = useCallback(() => {
     try {
       const currView = viewRef.current;
       return currView || { ...viewState };
     } catch {
       return { ...viewState };
     }
-  };
+  }, [viewState, viewRef]);
 
   const deckRef = useRef({
     deck: {
@@ -596,8 +596,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     }
   }, [handlePanMap]);
 
-  const COLOR_SCALE = (x) =>
-    scaleColor(x, mapParams.bins, mapParams.colorScale);
+  const COLOR_SCALE = useCallback((x) =>
+    scaleColor(x, mapParams.bins, mapParams.colorScale), [mapParams.colorScale, mapParams.bins]);
 
   const isVisible = (feature, filters) => {
     for (const property in filters) {
@@ -615,14 +615,14 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       return true;
     };
 
-      const DISPLACEMENT_COLOR_SCALE = {
-        // Displacement Pressure
-        '0': [225,225,225],
-        'vulnerable, prices not rising': [252,146,114],
-        'vulnerable, prices rising':  [222,45,38]
-      };
+  const DISPLACEMENT_COLOR_SCALE = useMemo(() => ({
+    // Displacement Pressure
+    '0': [225,225,225],
+    'vulnerable, prices not rising': [252,146,114],
+    'vulnerable, prices rising':  [222,45,38]
+  }), []);
 
-  const mapAlphaFunc = (feature, color) => {
+  const mapAlphaFunc = useCallback((feature, color) => {
     const variableName = mapParams.variableName?.toLowerCase();
     switch (true) {
       // example of putting a legend on for a variable
@@ -636,9 +636,9 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       default:
         return color;
     }
-  };
+  }, [DISPLACEMENT_COLOR_SCALE, mapParams.variableName]);
 
-  const baseLayers = [
+  const baseLayers = useMemo(() => ([
     new GeoJsonLayer({
       id: "highlighted-geoids",
       data: storedGeojson,
@@ -763,7 +763,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       extensions: [new FillStyleExtension({ pattern: true })],
       beforeId: "water",
     }),
-  ];
+  ]), [COLOR_SCALE, GetMapView, filterValues, geoids, hoverGeog, mapAlphaFunc, mapParams.accessor, mapParams.bins, mapParams.colorScale, mapParams.useCustom, mapParams.variableName, storedGeojson]);
 
   // Layers parsed from newer pattern for storing Data Overlays
   // See https://github.com/healthyregions/chicago-environment-explorer/issues/168
@@ -828,7 +828,6 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     })
   }), [mapParams.overlays, mapParams.overlay]);
 
-
   useEffect(() => {
     const location = searchParams.get('location');
     location && !clickedSensor && dispatch(setClickedSensor(location));
@@ -861,28 +860,74 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
             (`Monitors for: ${object.monitors.join(', ')}\n`));
   }
 
+  const geocoderLayers = useMemo(() => {
+    const lat = searchParams.get('lat');
+    const lon = searchParams.get('lon');
+    if (!lat || !lon) { return []; }
+    console.log('Rendering geocoder result:', [lon,lat])
+
+    const iconLayer = new IconLayer({
+      id: 'geocoder-icon',
+      data: [{ coordinates: [-87.659809, 41.955657] }],
+      getPosition: d => d.coordinates,
+      getPixelOffset: [0, -7],
+      getColor: d => [0, 88, 153, 255],
+      getIcon: d => ({
+        url: '/icons/chiair/geocoder-pin.svg',
+        width: 128,
+        height: 128,
+        mask: true
+      }),
+      sizeScale: 25,
+      pickable: true
+    });
+
+    const radiusLayer = new ScatterplotLayer({
+      id: 'geocoder-radius',
+      data: [{ coordinates: [-87.659809, 41.955657] }],
+
+      getFillColor: [65, 182, 230, 128],
+      getPosition: d => d.coordinates,
+      getRadius: d => 200,
+      radiusUnits: 'meters',
+      getLineWidth: 0,
+      lineWidthScale: 1,
+      lineWidthUnits: 'pixels',
+      radiusScale: 10,
+      radiusMaxPixels: 200,
+      radiusMinPixels: 50,
+      opacity: 0.25,
+    });
+    return [radiusLayer, iconLayer];
+  }, [lon, lat]);
+
   //const clickableOverlays = overlayLayers?.filter((layer) => layer?.pickable);
   //const backgroundOverlays = overlayLayers?.filter((layer) => !layer?.pickable);
-  const allLayers = [...baseLayers, ...overlayLayers, ...sensorLayers];
-  if (mapParams?.overlays?.includes('aq-monitoring-sites')) {
-    allLayers.push(
-      new IconLayer({
-        id: 'aq-monitoring-sites',
-        data: '/content/stickers.json',
-        getPosition: d => [d.long, d.lat],
-        getPixelOffset: [6, 0],
-        getColor: d => d.color,
-        getIcon: () => ({
-          url: '/icons/stickers/noun-flag.svg',
-          width: 128,
-          height: 128,
-          mask: true
-        }),
-        sizeScale: 25,
-        pickable: true
-      })
-    );
-  }
+  const allLayers = useMemo(() => {
+    const allLayers = [...baseLayers, ...overlayLayers, /*...sensorLayer,s*/ ...geocoderLayers];
+    if (mapParams?.overlays?.includes('aq-monitoring-sites')) {
+      allLayers.push(
+        new IconLayer({
+          id: 'aq-monitoring-sites',
+          data: '/content/stickers.json',
+          getPosition: d => [d.long, d.lat],
+          getPixelOffset: [6, 0],
+          getColor: d => d.color,
+          getIcon: () => ({
+            url: '/icons/stickers/noun-flag.svg',
+            width: 128,
+            height: 128,
+            mask: true
+          }),
+          sizeScale: 25,
+          pickable: true
+        })
+      );
+    }
+    return allLayers;
+  }, [baseLayers, overlayLayers, /*sensorLayers,*/ geocoderLayers, mapParams?.overlays]);
+
+  console.log(geocoderLayers);
 
   return (
     <MapContainer ref={mapContainerRef}>
