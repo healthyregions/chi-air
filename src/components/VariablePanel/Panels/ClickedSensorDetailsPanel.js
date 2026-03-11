@@ -15,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import {SensorBarChart} from "../SensorBarChart";
 import {useState} from "react";
-import {selectStoredGeojson} from "../../../store/slices/legacyStoreSlice";
 import Menu from "@mui/material/Menu";
 
 const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
@@ -43,13 +42,10 @@ const convertGeoJsonToCsv = (geojsonData, separator= ',') => {
   const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', 'mean_pm25'];
   let csvString = csvHeaders.join(separator) + '\n';
   geojsonData?.features?.forEach(f => {
-    console.log(f);
-    const { datasourceId, type, date, mean_pm25 } = f.properties;
-    const { coordinates } = f.geometry;
-    const [ longitude, latitude ] = coordinates;
+    const { datasourceId, mean_pm25, locationLongitude, locationLatitude } = f.properties;
     mean_pm25.forEach((reading) => {
       const { type, date, value, mean_pm25 } = reading;
-      csvString += [datasourceId, longitude, latitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
+      csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
     });
   });
   return csvString;
