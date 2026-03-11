@@ -15,13 +15,52 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import {SensorBarChart} from "../SensorBarChart";
 import {useState} from "react";
+import {selectStoredGeojson} from "../../../store/slices/legacyStoreSlice";
+import Menu from "@mui/material/Menu";
 
+const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
+const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+
+const downloadFile = (fileContents, filename) => {
+  // Create a Blob w/ a temporary URL from JSON string
+  const blob = new Blob([fileContents], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // Create an invisible anchor element and click it to trigger download
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link); // Required for some browsers
+  link.click();
+
+  // Cleanup: remove the link and revoke the URL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+const convertGeoJsonToCsv = (geojsonData, separator= ',') => {
+  // Build up our CSV rows as text, starting with the headers
+  const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', 'mean_pm25'];
+  let csvString = csvHeaders.join(separator) + '\n';
+  geojsonData?.features?.forEach(f => {
+    console.log(f);
+    const { datasourceId, type, date, mean_pm25 } = f.properties;
+    const { coordinates } = f.geometry;
+    const [ longitude, latitude ] = coordinates;
+    mean_pm25.forEach((reading) => {
+      const { type, date, value, mean_pm25 } = reading;
+      csvString += [datasourceId, longitude, latitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
+    });
+  });
+  return csvString;
+}
 
 export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
   const [, setSelectedParameter] = useState(null);
   const averageType = useSelector(selectAverageType);
   const clickedSensor = useSelector(selectClickedSensor);
+  const sensorGeojson = useSelector(selectSensorGeojsonData);
 
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
@@ -30,6 +69,25 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
   const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
+
+  const downloadGeoJson = (geojsonData, filename = 'chicago_mean_pm25.geojson') => {
+    downloadFile(JSON.stringify(geojsonData, null, 2), filename);
+  };
+
+  const downloadCsv = (geojsonData, separator= ',', filename = 'chicago_mean_pm25.csv') => {
+    downloadFile(convertGeoJsonToCsv(geojsonData), filename);
+  };
+
+  // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
+  // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
+  const downloadParquet = () => {
+    window.open(`${s3endpoint}/${bucketName}/current/mean_pm25.parquet.brotli`, '_blank');
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   return(
     <Grid size={11}>
@@ -63,19 +121,22 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
           <FaChartLine style={{ width: '28px', height: '28px', color: 'rgba(65, 182, 230, 1)' }} />
           <LHeader style={{ marginLeft: '0.5rem', fontSize: '18px' }}>Historical Trends</LHeader>
         </div>
-        <LButton onClick={() => {
-          const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
-          const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
-
-          // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
-          // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
-          const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet`;
-          //const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet`;
-          window.open(meanPm25Url, '_blank');
-          //window.open(locationsUrl, '_blank');
-
-          // TODO: transfer to CSV before download?
-        }}>Download &rarr;</LButton>
+        <LButton onClick={handleClick}>Download &rarr;</LButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          slotProps={{
+            list: {
+              'aria-labelledby': 'basic-button',
+            },
+          }}
+        >
+          <MenuItem onClick={() => {downloadCsv(geojsonData);handleClose();}}>CSV</MenuItem>
+          <MenuItem onClick={() => {downloadGeoJson(geojsonData);handleClose();}}>GeoJSON</MenuItem>
+          <MenuItem onClick={() => {downloadParquet();handleClose();}}>Parquet</MenuItem>
+        </Menu>
       </Grid>
 
       <Grid container spacing={2}>

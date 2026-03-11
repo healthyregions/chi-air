@@ -14,13 +14,11 @@
   },
   "homepage": "https://chichives.com",
   "dependencies": {
-    "@deck.gl/aggregation-layers": "9.2.9",
     "@deck.gl/core": "9.2.9",
     "@deck.gl/extensions": "9.2.9",
     "@deck.gl/geo-layers": "9.2.9",
     "@deck.gl/layers": "9.2.9",
     "@deck.gl/mapbox": "9.2.9",
-    "@deck.gl/mesh-layers": "9.2.9",
     "@deck.gl/react": "9.2.9",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",

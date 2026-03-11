@@ -1424,17 +1424,6 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz#2cbcf822bf3764c9658c4d2e568bd0c0cb748016"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
-"@deck.gl/aggregation-layers@9.2.9":
-  version "9.2.9"
-  resolved "https://registry.yarnpkg.com/@deck.gl/aggregation-layers/-/aggregation-layers-9.2.9.tgz#ef1fc97aa2735648442e8e4d1e62aa3aa6171d57"
-  integrity sha512-wWwDmRDn9ycc1fn5Cc9zjCAmsNt1TccUKlzK3lM8+CwLpyIW0iBjujXK+KpMKW1UJox1COW6/a9+FYwroYggOA==
-  dependencies:
-    "@luma.gl/constants" "^9.2.6"
-    "@luma.gl/shadertools" "^9.2.6"
-    "@math.gl/core" "^4.1.0"
-    "@math.gl/web-mercator" "^4.1.0"
-    d3-hexbin "^0.2.1"
-
 "@deck.gl/core@9.2.9":
   version "9.2.9"
   resolved "https://registry.yarnpkg.com/@deck.gl/core/-/core-9.2.9.tgz#fb2c0cdf56b1f61d8f4e49b0fdc16312c637078a"
@@ -1511,16 +1500,6 @@
   dependencies:
     "@luma.gl/constants" "^9.2.6"
     "@math.gl/web-mercator" "^4.1.0"
-
-"@deck.gl/mesh-layers@9.2.9":
-  version "9.2.9"
-  resolved "https://registry.yarnpkg.com/@deck.gl/mesh-layers/-/mesh-layers-9.2.9.tgz#b9e13c10b072c1a761b57e2ba33a2f0c1d272cc4"
-  integrity sha512-JxsCLZGqczS9RSbdFZQ7o57sTVg7ryMsBoSuGJ/xN829kAsfi4NGirxquv9McuSqWS9ncYaBiZ8Vve6vUDsJyA==
-  dependencies:
-    "@loaders.gl/gltf" "^4.3.4"
-    "@loaders.gl/schema" "^4.3.4"
-    "@luma.gl/gltf" "^9.2.6"
-    "@luma.gl/shadertools" "^9.2.6"
 
 "@deck.gl/react@9.2.9":
   version "9.2.9"
@@ -2115,7 +2094,7 @@
     "@math.gl/polygon" "^4.1.0"
     pbf "^3.2.1"
 
-"@loaders.gl/gltf@4.3.4", "@loaders.gl/gltf@^4.2.0", "@loaders.gl/gltf@^4.3.4":
+"@loaders.gl/gltf@4.3.4", "@loaders.gl/gltf@^4.2.0":
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/@loaders.gl/gltf/-/gltf-4.3.4.tgz#1981e1013ece61fe93033f11362ad3818ab68238"
   integrity sha512-EiUTiLGMfukLd9W98wMpKmw+hVRhQ0dJ37wdlXK98XPeGGB+zTQxCcQY+/BaMhsSpYt/OOJleHhTfwNr8RgzRg==
@@ -6543,11 +6522,6 @@ d3-geo@3.1.0:
   integrity sha512-JEo5HxXDdDYXCaWdwLRt79y7giK8SbhZJbFWXqbRTolCHFI5jRqteLzCsq51NKbUoX0PjBVSohxrx+NoOUujYA==
   dependencies:
     d3-array "2.5.0 - 3"
-
-d3-hexbin@^0.2.1:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/d3-hexbin/-/d3-hexbin-0.2.2.tgz#9c5837dacfd471ab05337a9e91ef10bfc4f98831"
-  integrity sha512-KS3fUT2ReD4RlGCjvCEm1RgMtp2NFZumdMu4DBzQK8AZv3fXRM6Xm8I4fSU07UXvH4xxg03NwWKWdvxfS/yc4w==
 
 d3-hierarchy@^1.1.4:
   version "1.1.9"
