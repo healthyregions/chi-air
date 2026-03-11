@@ -895,7 +895,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       lineWidthUnits: 'pixels',
       radiusScale: 10,
       radiusMaxPixels: 200,
-      radiusMinPixels: 50,
+      radiusMinPixels: 20,
       opacity: 0.25,
     });
     return [radiusLayer, iconLayer];
