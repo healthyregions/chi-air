@@ -5,9 +5,9 @@ import styled from "styled-components";
 
 // deck GL and helper function import
 import { MapView, FlyToInterpolator } from "@deck.gl/core";
-import { GeoJsonLayer } from "@deck.gl/layers";
+import {GeoJsonLayer, IconLayer} from "@deck.gl/layers";
 import { fitBounds } from "@math.gl/web-mercator";
-import MapboxGLMap, {Marker, Popup} from "react-map-gl";
+import MapboxGLMap, {Popup} from "react-map-gl";
 import { DataFilterExtension, FillStyleExtension } from "@deck.gl/extensions";
 
 // component, action, util, and config import
@@ -15,7 +15,6 @@ import MapTooltipContent from "./MapTooltipContent";
 import { scaleColor } from "../../utils";
 import {
   colors,
-  loadStickers,
   parsedOverlays,
   pm2_5Ranges
 } from "../../config";
@@ -33,7 +32,6 @@ import {
   selectPanelState,
   selectUse3d
 } from "../../store/slices/legacyStoreSlice";
-import MapMarkerPin from "./MapMarkerPin";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
   selectClickedSensor,
@@ -223,7 +221,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const [censorPopupFeature, setCensorPopupFeature] = useState(null);
 
   // AQ monitoring stations as stickers (similar to ChiVes community stickers)
-  const [stickers, setStickers] = useState([]);
+  /*const [stickers, setStickers] = useState([]);
   useEffect( () => {
     loadStickers('/content/stickers.json').then(s => setStickers(s))
   }, []);
@@ -234,6 +232,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         longitude={sticker.long||sticker.longitude}
         latitude={sticker.lat||sticker.latitude}
         anchor="bottom"
+        color={sticker.color}
         offset={[7, 8]}
         onClick={e => {
           // If we let the click event propagates to the map, it will immediately close the popup
@@ -245,7 +244,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       >
         <MapMarkerPin size={32} imgSrc={sticker?.icon} imgAlt={sticker?.title} />
       </Marker>
-    )), [stickers]);
+    )), [stickers]);*/
 
 
   const [popupInfo, setPopupInfo] = useState(null);
@@ -564,12 +563,11 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       beforeId: "water",
     }),
   ];
-  const customLayers = [];
 
   // Layers parsed from newer pattern for storing Data Overlays
   // See https://github.com/healthyregions/chicago-environment-explorer/issues/168
-  const overlayLayers = parsedOverlays
-      .filter(({ id }) => mapParams.overlays.includes(id))
+  const overlayLayers = useMemo(() => parsedOverlays
+      .filter(({ id }) => id !== 'aq-monitoring-sites' && mapParams.overlays.includes(id))
       .map((parsedOverlay) => {
     const colors = JSON.parse(parsedOverlay?.fillColor);
     return new GeoJsonLayer({
@@ -627,144 +625,231 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       },
       beforeId: "state-label",
     })
-  });
-  baseLayers.push(
-    new GeoJsonLayer({
-      id: "sensors",
-      data: {
-        ...geojsonData,
-        features: geojsonData?.features?.filter(f =>
-          !selectedSensors?.includes(f.properties['datasourceId']) && clickedSensor !== f.properties['datasourceId']
-        )
-      },
-      pickable: true,
-      stroked: true,
-      filled: true,
-      extruded: false,
-      getFillColor: (feature) => {
-        if (selectedSensors?.length > 0) {
-          return [250, 250, 250];
-        }
-        // Detect loading state, display soft colors while loading
-        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
-          return [229, 238, 245];
-        }
-        const latest = feature.properties.latest_mean_pm25;
-        if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
-          //return [79, 143, 197];
-          return [200, 200, 200];
-        }
+  }), [mapParams.overlays, mapParams.overlay]);
 
-        const bins = pm2_5Ranges.map(r => r.max);
-        if (clickedSensor === feature.properties['datasourceId']) {
-          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
-        }
-        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
-      },
-      opacity: selectedSensors?.length > 0 ? 0.15 : .85,
-      getPointRadius: 400,
-      getLineWidth: 35,
-      getLineColor: (feature) => {
-        // Detect loading state, display soft colors while loading
-        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
-          return [79, 143, 197];
-        }
-        const latest = feature.properties.latest_mean_pm25;
-        if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
-          return [229, 238, 245];
-          //return [68, 68, 68];
-        }
+  const unselectedSensorsLayer = new GeoJsonLayer({
+    id: "sensors",
+    data: {
+      ...geojsonData,
+      features: geojsonData?.features
+        ?.filter(f => !selectedSensors?.includes(f.properties['datasourceId']))
+        ?.filter(f => f.properties['datasourceId'] !== clickedSensor)
+    },
+    pickable: true,
+    stroked: true,
+    filled: true,
+    extruded: false,
+    getFillColor: (feature) => {
+      if (selectedSensors?.length > 0) {
+        return [250, 250, 250];
+      }
+      // Detect loading state, display soft colors while loading
+      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+        return [229, 238, 245];
+      }
+      const latest = feature.properties.latest_mean_pm25;
+      if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
+        //return [79, 143, 197];
+        return [200, 200, 200];
+      }
 
-        const bins = pm2_5Ranges.map(r => r.max);
-        if (clickedSensor === feature.properties['datasourceId']) {
-          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
-        }
+      const bins = pm2_5Ranges.map(r => r.max);
+      if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
-      },
-      pointRadiusUnits: 'meters',
-      visible: true,
-      onClick: (feature) => {
-        const id = feature?.object?.properties?.['datasourceId'];
-        //dispatch(addSensorsToSelection([id]));
-        dispatch(setClickedSensor(id));
-        id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
-      },
-      onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+    },
+    opacity: selectedSensors?.length > 0 ? 0.15 : .85,
+    getPointRadius: 400,
+    getLineWidth: 35,
+    getLineColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+        return [79, 143, 197];
+      }
+      const latest = feature.properties.latest_mean_pm25;
+      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+        return [229, 238, 245];
+        //return [68, 68, 68];
+      }
+
+      const bins = pm2_5Ranges.map(r => r.max);
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+    },
+    pointRadiusUnits: 'meters',
+    visible: true,
+    onClick: (feature) => {
+      const id = feature?.object?.properties?.['datasourceId'];
+      //dispatch(addSensorsToSelection([id]));
+      dispatch(setClickedSensor(id));
+      id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
+    },
+    onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
+      popupTitle: "{datasourceId}",
+      popupContent: `{"id": "datasourceId"}`
+    }})}
+  });
+  const selectedSensorsLayer = new GeoJsonLayer({
+    id: "selected-sensors",
+    data: {
+      ...geojsonData,
+      features: geojsonData?.features
+        ?.filter(f => selectedSensors?.includes(f.properties['datasourceId'])
+          || f.properties['datasourceId'] !== clickedSensor)
+    },
+    pickable: true,
+    stroked: true,
+    filled: true,
+    extruded: false,
+    /*pointType: 'circle+text',
+    getText: f => f?.properties?.name,
+    getTextSize: 12,*/
+    getFillColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+        return [79, 143, 197];
+      }
+      const latest = feature.properties.latest_mean_pm25;
+      if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
+        //return [79, 143, 197];
+        return [100, 100, 100];
+      }
+
+      const bins = pm2_5Ranges.map(r => r.max);
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+    },
+    opacity: 0.85,
+    getPointRadius: 400,
+    getLineWidth: 35,
+    getLineColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+        return [229, 238, 245];
+      }
+      const latest = feature.properties.latest_mean_pm25;
+      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+        //return [229, 238, 245];
+        //return [68, 68, 68];
+        return [200, 200, 200];
+      }
+
+      const bins = pm2_5Ranges.map(r => r.max);
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+    },
+    pointRadiusUnits: 'meters',
+    visible: true,
+    onClick: (feature) => {
+      const id = feature?.object?.properties?.['datasourceId'];
+      //dispatch(removeSensorsFromSelection([id]));
+      dispatch(setClickedSensor(id));
+      id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
+    },
+    beforeId: "state-label",
+    onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
       }})}
-    })
-  )
-  baseLayers.push(
-    new GeoJsonLayer({
-      id: "selected-sensors",
-      data: {
-        ...geojsonData,
-        features: geojsonData?.features?.filter(f =>
-          selectedSensors?.includes(f.properties['datasourceId']) || clickedSensor === f.properties['datasourceId']
-        )
-      },
-      pickable: true,
-      stroked: true,
-      filled: true,
-      extruded: false,
-      /*pointType: 'circle+text',
-      getText: f => f?.properties?.name,
-      getTextSize: 12,*/
-      getFillColor: (feature) => {
-        // Detect loading state, display soft colors while loading
-        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
-          return [79, 143, 197];
-        }
-        const latest = feature.properties.latest_mean_pm25;
-        if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
-          //return [79, 143, 197];
-          return [100, 100, 100];
-        }
+  });
+  const clickedSensorLayer = new GeoJsonLayer({
+    id: "clicked-sensor",
+    data: {
+      ...geojsonData,
+      features: geojsonData?.features?.filter(f => !!f.properties['datasourceId']
+        && f.properties['datasourceId'] === clickedSensor)
+    },
+    pickable: true,
+    stroked: true,
+    filled: true,
+    extruded: false,
+    /*pointType: 'circle+text',
+    getText: f => f?.properties?.name,
+    getTextSize: 12,*/
+    getFillColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+        return [79, 143, 197];
+      }
+      const latest = feature.properties.latest_mean_pm25;
+      if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
+        //return [79, 143, 197];
+        return [100, 100, 100];
+      }
 
-        const bins = pm2_5Ranges.map(r => r.max);
-        if (clickedSensor === feature.properties['datasourceId']) {
-          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
-        }
-        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
-      },
-      opacity: 0.85,
-      getPointRadius: 400,
-      getLineWidth: 35,
-      getLineColor: (feature) => {
-        // Detect loading state, display soft colors while loading
-        if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
-          return [229, 238, 245];
-        }
-        const latest = feature.properties.latest_mean_pm25;
-        if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
-          //return [229, 238, 245];
-          //return [68, 68, 68];
-          return [200, 200, 200];
-        }
-
-        const bins = pm2_5Ranges.map(r => r.max);
-        if (clickedSensor === feature.properties['datasourceId']) {
-          return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
-        }
+      const bins = pm2_5Ranges.map(r => r.max);
+      if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
-      },
-      pointRadiusUnits: 'meters',
-      visible: true,
-      onClick: (feature) => {
-        const id = feature?.object?.properties?.['datasourceId'];
-        //dispatch(removeSensorsFromSelection([id]));
-        dispatch(setClickedSensor(id));
-        id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
-      },
-      beforeId: "state-label",
-      onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
-          popupTitle: "{datasourceId}",
-          popupContent: `{"id": "datasourceId"}`
-        }})}
-    })
-  )
-  const allLayers = [...baseLayers, ...customLayers, overlayLayers];
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+    },
+    opacity: 0.85,
+    getPointRadius: 400,
+    getLineWidth: 35,
+    getLineColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+        return [229, 238, 245];
+      }
+      const latest = feature.properties.latest_mean_pm25;
+      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+        //return [229, 238, 245];
+        //return [68, 68, 68];
+        return [200, 200, 200];
+      }
+
+      const bins = pm2_5Ranges.map(r => r.max);
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+    },
+    pointRadiusUnits: 'meters',
+    visible: true,
+    onClick: (feature) => {
+      const id = feature?.object?.properties?.['datasourceId'];
+      //dispatch(removeSensorsFromSelection([id]));
+      dispatch(setClickedSensor(id));
+      id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
+    },
+    beforeId: "state-label",
+    onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
+        popupTitle: "{datasourceId}",
+        popupContent: `{"id": "datasourceId"}`
+      }})}
+  });
+
+  //const clickableOverlays = overlayLayers?.filter((layer) => layer?.pickable);
+  //const backgroundOverlays = overlayLayers?.filter((layer) => !layer?.pickable);
+  const sensorLayers = [unselectedSensorsLayer, selectedSensorsLayer];
+  const allLayers = [...baseLayers, ...overlayLayers, ...sensorLayers, clickedSensorLayer];
+
+  if (mapParams?.overlays?.includes('aq-monitoring-sites')) {
+    allLayers.push(
+      new IconLayer({
+        id: 'aq-monitoring-sites',
+        data: '/content/stickers.json',
+        getPosition: d => [d.long, d.lat],
+        getPixelOffset: [6, 0],
+        getColor: d => d.color,
+        getIcon: () => ({
+          url: '/icons/stickers/noun-flag.svg',
+          width: 128,
+          height: 128,
+          mask: true
+        }),
+        sizeScale: 25,
+        pickable: true
+      })
+    );
+  }
 
   useEffect(() => {
     const location = searchParams.get('location');
@@ -791,12 +876,11 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
 
   const view = new MapView({ repeat: true });
 
-  const getCoolingCenterTooltip = ({object}) => {
-    return object && (object.properties.site_name) &&
-        (`${object.properties.site_type}: ${object.properties.site_name}\n` +
-            (object.properties.address ? object.properties.address + '\n' : '') +
-            (object.properties.phone ? object.properties.phone + '\n' : '') +
-            (object.properties.hours_of_operation ? object.properties.hours_of_operation : ''));
+  const getPointTooltip = ({object}) => {
+    return object && (object.title) &&
+        (`${object.title} (${object.owner})\n` +
+            (`${object.address}\n`) +
+            (`Monitors for: ${object.monitors.join(', ')}\n`));
   }
 
   return (
@@ -841,7 +925,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
           });
         }}
       >
-        {mapParams.overlays.includes('aq-monitoring-sites') && mapStickers}
+        {/*{mapParams.overlays.includes('aq-monitoring-sites') && mapStickers}*/}
         {popupInfo && (
           <Popup
             anchor="top"
@@ -862,7 +946,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
           height={"100%"}
           layers={allLayers}
           onClick={handleMapClick}
-          getTooltip={getCoolingCenterTooltip}
+          getTooltip={getPointTooltip}
         />
       </MapboxGLMap>
       {!geoids.length && (
