@@ -899,12 +899,12 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       opacity: 0.25,
     });
     return [radiusLayer, iconLayer];
-  }, [lon, lat]);
+  }, [searchParams]);
 
   //const clickableOverlays = overlayLayers?.filter((layer) => layer?.pickable);
   //const backgroundOverlays = overlayLayers?.filter((layer) => !layer?.pickable);
   const allLayers = useMemo(() => {
-    const allLayers = [...baseLayers, ...overlayLayers, /*...sensorLayer,s*/ ...geocoderLayers];
+    const layers = [...baseLayers, ...overlayLayers, ...sensorLayers, ...geocoderLayers];
     if (mapParams?.overlays?.includes('aq-monitoring-sites')) {
       allLayers.push(
         new IconLayer({
@@ -924,8 +924,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         })
       );
     }
-    return allLayers;
-  }, [baseLayers, overlayLayers, /*sensorLayers,*/ geocoderLayers, mapParams?.overlays]);
+    return layers;
+  }, [baseLayers, overlayLayers, sensorLayers, geocoderLayers, mapParams?.overlays]);
 
   console.log(geocoderLayers);
 
