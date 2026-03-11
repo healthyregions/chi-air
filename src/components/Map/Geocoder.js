@@ -9,6 +9,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {debounce} from "@mui/material/utils";
 import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
 
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
+
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const GeocoderContainer = styled.div`
@@ -133,7 +136,28 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
           //     </StyledOption>
           // </React.Fragment>
           // }
+          renderOption={(props, option, { inputValue }) => {
+            const matches = match(option.place_name, inputValue);
+            const parts = parse(option.place_name, matches);
 
+            return (
+              <li {...props}>
+                <div style={{ paddingLeft: '1rem' }}>
+                  {parts?.map((part, index) => (
+                    <span
+                      key={index}
+                      style={{
+                        color: part.highlight ? '#444444' : '#005899',
+                        fontWeight: part.highlight ? 700 : 400,
+                      }}
+                    >
+              {part.text}
+            </span>
+                  ))}
+                </div>
+              </li>
+            );
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
