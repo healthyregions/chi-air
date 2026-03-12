@@ -2,7 +2,6 @@ import Grid from "@mui/material/Grid";
 import {useCallback, useMemo, useState} from "react";
 import {createSearchParams, useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {colors} from "../../config";
 import TextField from "@mui/material/TextField";
 import {FaSearch} from "react-icons/fa";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -14,36 +13,12 @@ import match from 'autosuggest-highlight/match';
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-const GeocoderContainer = styled.div`
-    flex:auto;
-    width:100%;
-    .MuiFormControl-root {
-        margin:0;
-        background: rgba( 255, 255, 255, 0.85 );
-        backdrop-filter: blur( 20px );
-        -webkit-backdrop-filter: blur( 20px );
-    }
-
+const GeocoderContainer = styled(Grid)`
     .MuiAutocomplete-inputRoot {
         background:white;
         height:${({height}) => height||36}px;
         padding:0;
         border-radius: 100px;
-    }
-    .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input:first-child {
-        padding:0;
-        color:${colors.black};
-    }
-    .MuiFormControl-root .MuiInputBase-adornedEnd:before {
-        display: block;
-        content: ' ';
-        background-image: url("${process.env.PUBLIC_URL}/assets/img/search.svg");
-        background-size: 20px 20px;
-        height: 20px;
-        width: 20px;
-        transform:translate(8px, -9px);
-        border-bottom:none !important;
-        border:1px solid ${colors.forest};
     }
 `;
 const GeocoderHeader = styled.span`
@@ -112,10 +87,10 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
         </Grid>
         {extraButton}
       </Grid>
-      <Grid container spacing={0} alignItems="center">
+      <Grid container spacing={0} alignItems="center" marginTop={0}>
         <Autocomplete
           id="geocoder-search"
-          style={{ width: '100%', borderRadius: '100px' }}
+          style={{ width: '100%', borderRadius: '100px'}}
           freeSolo
           disableClearable
           filterOptions={(x) => x}
@@ -160,7 +135,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
           renderInput={(params) => (
             <TextField
               {...params}
-              margin="normal"
+              margin="dense"
               style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
               placeholder={placeholder}
               slotProps={{

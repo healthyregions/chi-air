@@ -5,6 +5,8 @@ import {useSelector} from "react-redux";
 import Grid from "@mui/material/Grid";
 import {asyncBufferFromUrl, parquetReadObjects} from "hyparquet";
 import {compressors} from "hyparquet-compressors";
+import {createSearchParams} from "react-router-dom";
+import centroid from "@turf/centroid";
 
 // Button with Lexend font
 export const LButton = styled(Button)`
@@ -33,7 +35,7 @@ export const LLabel = styled.span`
     margin-top: 0.5rem;
 `;
 // Body text in Space Grotesk font
-export const SGBody = styled.div`
+export const SGBody = styled(Grid)`
     font-family: Space Grotesk,serif;
     font-weight: 300;
     font-style: normal;
@@ -164,3 +166,48 @@ export const fetchPq = async ({ url, columns, rowStart, rowEnd }) => {
 
   console.error(`ERROR: Failed to fetch Parquet dataset from ${url} after ${maxRetries} retries.`);
 };
+
+export const getBoundariesPath = (key) => {
+  switch (key) {
+    case 'community':
+      return '/geojson/community_areas.geojson';
+    case 'zip':
+      return '/geojson/chiZipCodes.geojson';
+    case 'ward':
+      return '/geojson/boundaries_wards_2015_.geojson';
+    default:
+      console.error('Unrecognized selection key encountered: ' + key)
+  }
+};
+
+export const getBoundaries = (key) => {
+  return fetch(getBoundariesPath(key));
+}
+
+export const getFeature = (boundaries, name, key) => {
+  return boundaries?.features?.find(b => b?.properties[key] === name);
+}
+
+export const flyToCenter = (boundaries, name, key, navigate) => {
+  const feature = getFeature(boundaries, name, key);
+  if (!feature) {
+    console.error('Feature not found:', `${key}=${name}`);
+    return;
+  }
+  const centerPoint = centroid(feature);
+  const [lon, lat] = centerPoint?.geometry?.coordinates;
+  if (!lon || !lat) {
+    console.error(`Failed to navigate to user selection ${key}=${name} - Invalid lon/lat:`, [lon, lat]);
+    return;
+  }
+
+  navigate({
+    pathname: "/map",
+    search: createSearchParams({
+      lon,
+      lat,
+      key,
+      z: 12
+    }).toString()
+  });
+}

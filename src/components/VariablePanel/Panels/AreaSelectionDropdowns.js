@@ -1,77 +1,47 @@
 import Grid from "@mui/material/Grid";
-import {FaTimes} from "react-icons/fa";
-import {DropdownButton} from "../DropdownButton";
+import {FaCaretDown, FaTimes} from "react-icons/fa";
 import {
   selectSelectedAreas,
   selectSensorLocations,
   setSelectedAreas
 } from "../../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {LButton, LLabel, useSelectorAsState} from "../common";
-import centroid from "@turf/centroid";
-import {createSearchParams, useNavigate} from "react-router-dom";
-
-export const getBoundariesPath = (key) => {
-  switch (key) {
-    case 'community':
-      return '/geojson/community_areas.geojson';
-    case 'zip':
-      return '/geojson/chiZipCodes.geojson';
-    case 'ward':
-      return '/geojson/boundaries_wards_2015_.geojson';
-    default:
-      console.error('Unrecognized selection key encountered: ' + key)
-  }
-};
-
-const getBoundaries = (key) => {
-  return fetch(getBoundariesPath(key));
-}
-
-export const getFeature = (boundaries, name, key) => {
-  return boundaries?.features?.find(b => b?.properties[key] === name);
-}
-
-const flyToCenter = (boundaries, name, key, navigate) => {
-  const feature = getFeature(boundaries, name, key);
-  if (!feature) {
-    console.error('Feature not found:', `${key}=${name}`);
-    return;
-  }
-  const centerPoint = centroid(feature);
-  const [lon, lat] = centerPoint?.geometry?.coordinates;
-  if (!lon || !lat) {
-    console.error(`Failed to navigate to user selection ${key}=${name} - Invalid lon/lat:`, [lon, lat]);
-    return;
-  }
-
-  navigate({
-    pathname: "/map",
-    search: createSearchParams({
-      lon,
-      lat,
-      key,
-      z: 12
-    }).toString()
-  });
-}
-
+import {flyToCenter, getBoundaries, LButton, LLabel, useSelectorAsState} from "../common";
+import {useNavigate} from "react-router-dom";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import {useCallback, useMemo, useState} from "react";
 
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Keep track of our anchor element
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = !!anchorEl;
+  const [type, setType] = useState(null);
+
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
   const locations = useSelector(selectSensorLocations);
+
+  // Handle user opening or closing the dropdown
+  const handleOpen = (e, key) => {
+    setAnchorEl(e?.currentTarget);
+    setType(key);
+  }
+  const handleClose = () => {
+    setAnchorEl(null);
+    setType(null);
+  }
 
   // Runs user's onChange, then our magic handling to fly to the center
   const handleChange = async (name, key) => {
     onChange(name, key);
     const boundariesResponse = await getBoundaries(key);
     const boundaries = await boundariesResponse.json();
-    console.log(`Boundaries fetched for ${key}:`, boundaries);
     flyToCenter(boundaries, name, key, navigate);
+    handleClose();
   }
 
   const clearSelection = () => {
@@ -80,33 +50,59 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const noSelection = selections?.zip?.length === 0 && selections?.community?.length === 0;
   const hasSelection = selections?.zip?.length > 0 || selections?.community?.length > 0;
 
+  const prettyTypeName = useCallback((t) => t === 'zip' ? 'Zip code' : t === 'community' ? 'Community' : 'Ward', []);
+
+  const options = useMemo(() => {
+    return [...new Set(locations?.map(l => l[type]))];
+  }, [type, locations]);
+
+
   return(
     <>
-      {(noSelection || !showSelectedAreas) && <Grid container size={size === 'small' ? 12 : 8}>
-        <Grid size={4}>
-          <DropdownButton onChange={(s) => handleChange(s, 'community')}
-                          ButtonComponent={LButton}
-                          label={'Community'}
-                          buttonProps={{ size }}
-                          style={{ textTransform: 'capitalize' }}
-                          menuStyle={{ textTransform: 'capitalize' }}
-                          options={locations?.map(l => l.community)} />
-        </Grid>
-        <Grid size={8}>
-          <DropdownButton onChange={(s) => handleChange(s, 'zip')}
-                          ButtonComponent={LButton}
-                          label={'Zip code'}
-                          buttonProps={{ size }}
-                          options={locations?.map(l => l.zip)} />
-        </Grid>
+      {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={'space-around'} alignItems={'center'}>
+        {!type && [ 'community', 'zip', /*'ward'*/ ]?.map((key) => <Grid size key={key}>
+          <LButton
+            id={`basic-button-${key}`}
+            size={'small'}
+
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={(e) => handleOpen(e, key)}
+          >
+            {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px' }} />
+          </LButton>
+        </Grid>)}
+
+        {type && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
+          <Autocomplete
+            options={options.sort()}
+            openOnFocus
+            onBlur={handleClose}
+            autoComplete
+            onChange={(e, s) => handleChange(s, type)}
+            slotProps={{ listbox: { sx: { fontFamily: 'Lexend' } } }}
+            renderInput={params => (
+              <TextField
+                {...params}
+                margin={'none'}
+                variant="filled"
+                autoFocus={true}
+                InputProps={{ ...params.InputProps, startAdornment: (<></>) }}
+                placeholder={`Search ${prettyTypeName(type)} here...`}
+                fullWidth
+              />
+            )}
+          />
+        </Grid>}
       </Grid>}
 
-      {showSelectedAreas && (!noSelection || hasSelection) && <Grid container spacing={0} marginTop={'0.5rem'} alignItems={'center'}>
-        <Grid>
+      {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} marginTop={'0.5rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
+        <Grid size>
           {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {selections?.community?.[0]}</span>}
           {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}
         </Grid>
-        <Grid size={1}>
+        <Grid size={2}>
           <LButton variant={'text'} size={'small'} onClick={clearSelection}><FaTimes /></LButton>
         </Grid>
       </Grid>}

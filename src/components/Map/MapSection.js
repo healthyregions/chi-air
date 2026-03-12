@@ -41,7 +41,7 @@ import {
   setClickedSensor
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
-import {getBoundariesPath, getFeature} from "../VariablePanel/Panels/AreaSelectionDropdowns";
+import {getBoundariesPath, getFeature} from "../VariablePanel/common";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -905,28 +905,27 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     return [radiusLayer, iconLayer];
   }, [searchParams]);
 
-  const parseBoundaries = async (name, key) => {
-    const boundariesResponse = await fetch(getBoundariesPath(key));
-    const boundaries = await boundariesResponse.json();
-    const feature = getFeature(boundaries, name, key);
-
-    setSelectedAreaLayers([new GeoJsonLayer({
-      id: 'selected-areas',
-      data: { type: "FeatureCollection", features: [feature] },
-      getFillColor: [65, 182, 230, 75],
-      getLineColor: [65, 182, 230, 255],
-    })]);
-  };
 
   const [selectedAreaLayers, setSelectedAreaLayers] = useState([]);
   useEffect(() => {
     const lon = searchParams.get('lon');
     const lat = searchParams.get('lat');
     const key = searchParams.get('key');
-    if (!lat || !lon || !key) { return []; }
+    if (!lat || !lon || !key) { return; }
 
     const name = selectedAreas[key]?.find(() => true);
-    parseBoundaries(name, key);
+    fetch(getBoundariesPath(key)).then(async resp => {
+      const boundaries = await resp.json();
+      const feature = getFeature(boundaries, name, key);
+
+      const selectedArea = feature ? [new GeoJsonLayer({
+        id: 'selected-areas',
+        data: { type: "FeatureCollection", features: [feature] },
+        getFillColor: [65, 182, 230, 75],
+        getLineColor: [65, 182, 230, 255],
+      })] : [];
+      setSelectedAreaLayers(selectedArea);
+    })
   }, [searchParams, selectedAreas]);
 
 

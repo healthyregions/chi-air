@@ -1,12 +1,14 @@
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 const ITEM_HEIGHT = 48;
 
-export const DropdownButton = ({ buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -20,6 +22,10 @@ export const DropdownButton = ({ buttonProps = {}, width, menuStyle, style, onCh
     onChange && onChange(e?.target?.textContent);
     handleClose();
   };
+
+  useEffect(() => {
+    open && onOpen();
+  }, [open, onOpen]);
 
   // Allow user to provide custom Button component
   const Btn = ButtonComponent || Button;
@@ -47,31 +53,31 @@ export const DropdownButton = ({ buttonProps = {}, width, menuStyle, style, onCh
         {label} <FaCaretDown style={{ marginLeft: '2px' }} />
       </Btn>
       <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        style={menuStyle}
-        slotProps={{
-          paper: {
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: '18rem',
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          style={menuStyle}
+          slotProps={{
+            paper: {
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: '18rem',
+              },
             },
-          },
-          list: {
-            'aria-labelledby': 'basic-button',
-          },
-        }}
-      >
-        {displayOps?.map((op, index) =>
-          <MenuItem key={`dropdown-button-${op}-${index}`}
-                    onClick={handleChange}
-                    value={op}>
-            {op}
-          </MenuItem>
-        )}
-      </Menu>
+            list: {
+              'aria-labelledby': 'basic-button',
+            },
+          }}
+        >
+          {displayOps?.map((op, index) =>
+            <MenuItem key={`dropdown-button-${op}-${index}`}
+                      onClick={handleChange}
+                      value={op}>
+              {op}
+            </MenuItem>
+          )}
+        </Menu>
     </>
   );
 
