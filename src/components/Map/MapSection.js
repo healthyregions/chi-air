@@ -955,6 +955,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     return layers;
   }, [baseLayers, overlayLayers, sensorLayers, geocoderLayers, selectedAreaLayers, mapParams?.overlays]);
 
+
   return (
     <MapContainer ref={mapContainerRef}>
       <MapboxGLMap
