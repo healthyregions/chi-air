@@ -34,13 +34,14 @@ import {
 } from "../../store/slices/legacyStoreSlice";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
-  selectClickedSensor,
+  selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors,
   selectSensorGeojsonData,
   selectSensorValuesMeanPm25,
   setClickedSensor
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
+import {getBoundariesPath, getFeature} from "../VariablePanel/common";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -195,6 +196,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const geojsonData = useSelector(selectSensorGeojsonData);
   const selectedSensors = useSelector(selectSelectedSensors);
   const clickedSensor = useSelector(selectClickedSensor);
+  const selectedAreas = useSelector(selectSelectedAreas);
 
   // fetch pieces of state from store
   const { storedGeojson } = useChivesData();
@@ -275,9 +277,9 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     id: "sensors",
     data: {
       ...geojsonData,
-      features: geojsonData?.features
-        ?.filter(f => !selectedSensors?.includes(f.properties['datasourceId']))
-        ?.filter(f => f.properties['datasourceId'] !== clickedSensor)
+      features: geojsonData?.features?.filter(f =>
+        !selectedSensors?.includes(f.properties['datasourceId']) && clickedSensor !== f.properties['datasourceId']
+      )
     },
     pickable: true,
     stroked: true,
@@ -340,9 +342,9 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     id: "selected-sensors",
     data: {
       ...geojsonData,
-      features: geojsonData?.features
-        ?.filter(f => selectedSensors?.includes(f.properties['datasourceId'])
-          || f.properties['datasourceId'] !== clickedSensor)
+      features: geojsonData?.features?.filter(f =>
+        selectedSensors?.includes(f.properties?.datasourceId) && clickedSensor !== f.properties?.datasourceId
+      )
     },
     pickable: true,
     stroked: true,
@@ -403,12 +405,14 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-    new GeoJsonLayer({
+  new GeoJsonLayer({
     id: "clicked-sensor",
     data: {
       ...geojsonData,
-      features: geojsonData?.features?.filter(f => !!f.properties['datasourceId']
-        && f.properties['datasourceId'] === clickedSensor)
+      features: clickedSensor ? [
+        geojsonData?.features?.find(f =>
+          f.properties['datasourceId'] && f.properties['datasourceId'] === clickedSensor)
+      ] : []
     },
     pickable: true,
     stroked: true,
@@ -571,7 +575,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const handleGeocoder = useCallback((location) => {
     if (location.center !== undefined) {
       let center = location.center;
-      let zoom = 13;
+      let zoom = 12.5;
 
       if (location.bbox) {
         let bounds = fitBounds({
@@ -863,8 +867,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const geocoderLayers = useMemo(() => {
     const lat = searchParams.get('lat');
     const lon = searchParams.get('lon');
-    if (!lat || !lon) { return []; }
-    console.log('Rendering geocoder result:', [lon,lat])
+    const key = searchParams.get('key');
+    if (!lat || !lon || key) { return []; }
 
     const iconLayer = new IconLayer({
       id: 'geocoder-icon',
@@ -901,10 +905,34 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     return [radiusLayer, iconLayer];
   }, [searchParams]);
 
+
+  const [selectedAreaLayers, setSelectedAreaLayers] = useState([]);
+  useEffect(() => {
+    const lon = searchParams.get('lon');
+    const lat = searchParams.get('lat');
+    const key = searchParams.get('key');
+    if (!lat || !lon || !key) { return; }
+
+    const name = selectedAreas[key]?.find(() => true);
+    fetch(getBoundariesPath(key)).then(async resp => {
+      const boundaries = await resp.json();
+      const feature = getFeature(boundaries, name, key);
+
+      const selectedArea = feature ? [new GeoJsonLayer({
+        id: 'selected-areas',
+        data: { type: "FeatureCollection", features: [feature] },
+        getFillColor: [65, 182, 230, 75],
+        getLineColor: [65, 182, 230, 255],
+      })] : [];
+      setSelectedAreaLayers(selectedArea);
+    })
+  }, [searchParams, selectedAreas]);
+
+
   //const clickableOverlays = overlayLayers?.filter((layer) => layer?.pickable);
   //const backgroundOverlays = overlayLayers?.filter((layer) => !layer?.pickable);
   const allLayers = useMemo(() => {
-    const layers = [...baseLayers, ...overlayLayers, ...sensorLayers, ...geocoderLayers];
+    const layers = [...baseLayers, ...overlayLayers, ...sensorLayers, ...selectedAreaLayers, ...geocoderLayers];
     if (mapParams?.overlays?.includes('aq-monitoring-sites')) {
       layers.push(
         new IconLayer({
@@ -925,7 +953,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       );
     }
     return layers;
-  }, [baseLayers, overlayLayers, sensorLayers, geocoderLayers, mapParams?.overlays]);
+  }, [baseLayers, overlayLayers, sensorLayers, geocoderLayers, selectedAreaLayers, mapParams?.overlays]);
+
 
   return (
     <MapContainer ref={mapContainerRef}>
