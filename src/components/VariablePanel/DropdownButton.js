@@ -3,8 +3,6 @@ import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
 import {useEffect, useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 
 const ITEM_HEIGHT = 48;
 
