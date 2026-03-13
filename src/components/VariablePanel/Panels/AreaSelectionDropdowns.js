@@ -67,8 +67,6 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
 
-  console.log(locations)
-
   return(
     <>
       {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={'space-around'} alignItems={'center'}>
