@@ -46,7 +46,11 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     const overlay_id = key === 'community' ? 'community_areas' : (key === 'zip' ? 'zip_codes' : 'wards');
     dispatch(setMapParams({
       ...mapParams,
-      overlays: [...mapParams.overlays?.filter(k => k !== 'community_areas' && k !== 'zip_codes' && k !== 'wards'), overlay_id]
+      overlays: [
+        ...mapParams.overlays
+          ?.filter(k => k !== 'community_areas' && k !== 'zip_codes' && k !== 'wards'),
+        overlay_id
+      ]
     }));
     handleClose();
   }
