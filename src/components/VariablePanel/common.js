@@ -174,7 +174,9 @@ export const getBoundariesPath = (key) => {
     case 'zip':
       return '/geojson/chiZipCodes.geojson';
     case 'ward':
-      return '/geojson/boundaries_wards_2023_.geojson';
+      // TODO: use newer Ward boundaries
+      // return '/geojson/boundaries_wards_2023_.geojson';
+      return '/geojson/boundaries_wards_2015_.geojson';
     default:
       console.error('Unrecognized selection key encountered: ' + key)
   }
