@@ -81,9 +81,10 @@ export const SelectedAreaPanel = () => {
         </Grid>
 
         {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <LHeader>Selected
-          {!selections?.community?.length && !selections?.zip?.length && <> Locations </>}
+          {!selections?.community?.length && !selections?.zip?.length && !selections?.ward?.length && <> Locations </>}
           {selections?.community?.length > 0 && <> Community </>}
           {selections?.zip?.length > 0 && <> Zip code </>}
+          {selections?.ward?.length > 0 && <> Ward </>}
         </LHeader>}
       </Grid>
 
@@ -92,9 +93,10 @@ export const SelectedAreaPanel = () => {
         <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
         <ColorColumn size={1}></ColorColumn>
         <LocationNameColumn size={4}>Name</LocationNameColumn>
-        {selections?.community?.length === 0 && selections?.zip?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
+        {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
         {selections?.community?.length > 0 && <SensorIdColumn size={3}>Community</SensorIdColumn>}
         {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}
+        {selections?.ward?.length > 0 && <SensorIdColumn size={3}>Ward</SensorIdColumn>}
       </GridHeader>}
 
       {!clickedSensor && selectedSensors?.map((s, index) => {
@@ -123,9 +125,10 @@ export const SelectedAreaPanel = () => {
               <small>{name}</small>
             </LocationNameColumn>
             <SensorIdColumn size={3}>
-              {selections?.community?.length === 0 && selections?.zip?.length === 0 && <small>{datasourceId}</small>}
+              {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <small>{datasourceId}</small>}
               {selections?.community?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.community}</small>}
               {selections?.zip?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.zip}</small>}
+              {selections?.ward?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.ward}</small>}
             </SensorIdColumn>
           </GridBody>
         );

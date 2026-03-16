@@ -11,10 +11,12 @@ import {useNavigate} from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import {useCallback, useMemo, useState} from "react";
+import {selectMapParams, setMapParams} from "../../../store/slices/legacyStoreSlice";
 
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const mapParams = useSelector(selectMapParams);
 
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,26 +43,34 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     const boundariesResponse = await getBoundaries(key);
     const boundaries = await boundariesResponse.json();
     flyToCenter(boundaries, name, key, navigate);
+    const overlay_id = key === 'community' ? 'community_areas' : (key === 'zip' ? 'zip_codes' : 'wards');
+    dispatch(setMapParams({
+      ...mapParams,
+      overlays: [
+        ...mapParams.overlays
+          ?.filter(k => k !== 'community_areas' && k !== 'zip_codes' && k !== 'wards'),
+        overlay_id
+      ]
+    }));
     handleClose();
   }
 
   const clearSelection = () => {
     setSelections({...selections, community: [], zip: [], ward: []});
   }
-  const noSelection = selections?.zip?.length === 0 && selections?.community?.length === 0;
-  const hasSelection = selections?.zip?.length > 0 || selections?.community?.length > 0;
+  const noSelection = selections?.zip?.length === 0 && selections?.community?.length === 0 && selections?.ward?.length === 0;
+  const hasSelection = selections?.zip?.length > 0 || selections?.community?.length > 0 || selections?.ward?.length > 0;
 
   const prettyTypeName = useCallback((t) => t === 'zip' ? 'Zip code' : t === 'community' ? 'Community' : 'Ward', []);
 
   const options = useMemo(() => {
-    return [...new Set(locations?.map(l => l[type]))];
+    return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
-
 
   return(
     <>
       {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={'space-around'} alignItems={'center'}>
-        {!type && [ 'community', 'zip', /*'ward'*/ ]?.map((key) => <Grid size key={key}>
+        {!type && [ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
@@ -101,6 +111,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
         <Grid size>
           {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {selections?.community?.[0]}</span>}
           {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}
+          {selections?.ward?.length > 0 && <span><LLabel>Ward:</LLabel> {selections?.ward?.[0]}</span>}
         </Grid>
         <Grid size={2}>
           <LButton variant={'text'} size={'small'} onClick={clearSelection}><FaTimes /></LButton>
