@@ -146,8 +146,8 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             >
               <MenuItem value="mean_pm25">PM 2.5</MenuItem>
               <MenuItem value="mean_aqi">AQI</MenuItem>
-              <MenuItem value="mean_no2">NO₂</MenuItem>
-              <MenuItem value="mean_bc">BC</MenuItem>
+              {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
+              {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
             </Select>
           </FormControl>
         </Grid>
