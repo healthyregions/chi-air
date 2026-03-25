@@ -9,6 +9,7 @@ const initialState = {
   selectedSensors: [],
   locations: [],
   mean_pm25: [],
+  selectedParameter: 'mean_pm25',
   geojsonData: {
     type: 'FeatureCollection',
     features: []
@@ -23,6 +24,10 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setSensorParameter: (state, action) => ({
+      ...state,
+      selectedParameter: action.payload,
+    }),
     setFirstRowIndices: (state, action) => ({
       ...state,
       firstRowIndices: {
@@ -113,6 +118,7 @@ export const sensorDataSlice = createSlice({
     selectLocale: state=> state.locale,
     selectSelectedAreas: state => state.selectedAreas,
     selectFirstRowIndices: state => state.firstRowIndices,
+    selectSensorParameter: state => state.selectedParameter,
   }
 });
 
@@ -129,6 +135,7 @@ export const {
   setLocale,
   setSelectedAreas,
   setFirstRowIndices,
+  setSensorParameter,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
@@ -142,5 +149,6 @@ export const {
   selectLocale,
   selectSelectedAreas,
   selectFirstRowIndices,
+  selectSensorParameter,
 } = sensorDataSlice.selectors
 
