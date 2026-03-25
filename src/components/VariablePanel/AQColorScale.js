@@ -146,8 +146,8 @@ export const AQColorScale = () => {
       </Grid>
       { pm2_5Ranges?.map(({ pm25_min, pm25_max, aqi_min, aqi_max, label, color, border}, index) => (
         <Grid key={`color-range-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk', margin: '0.5rem 0' }}>
-          {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right', }}><small>{aqi_min}{aqi_max > 999 ? '+' : <> - {aqi_max}</>}</small></Grid>}
-          {selectedParameter === 'mean_pm25' && <Grid size={3} style={{ textAlign: 'right', }}><small>{pm25_min}{pm25_max > 9999 ? '+' : <> - {pm25_max}</>}</small></Grid>}
+          {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right', }}><small>{aqi_min.toFixed(1)}{aqi_max.toFixed(1) > 999 ? '+' : <> - {aqi_max.toFixed(1)}</>}</small></Grid>}
+          {selectedParameter === 'mean_pm25' && <Grid size={3} style={{ textAlign: 'right', }}><small>{pm25_min.toFixed(1)}{pm25_max.toFixed(1) > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>}</small></Grid>}
           <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span
               key={`overlay-key-${index}-${label}`}
