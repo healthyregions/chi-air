@@ -7,7 +7,7 @@ import {
   DataPanel,
 } from "../../components";
 import { selectMapParams } from "../../store/slices/legacyStoreSlice";
-import AQIColorScale from "../VariablePanel/AQIColorScale";
+import { AQColorScale } from "../VariablePanel/AQColorScale";
 
 // US bounds
 export const defaultBounds = fitBounds({
@@ -41,7 +41,7 @@ function Map() {
             {mapParams?.variableName && <Legend />}
             {/*<VariablePanel />*/}
             <DataPanel mapRef={mapRef} handlePanMap={handlePanMap} />
-            <AQIColorScale />
+            <AQColorScale />
           </>
         }
       </div>

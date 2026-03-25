@@ -123,7 +123,7 @@ const ColorScaleContainer = styled.div`
     
 `;
 
-const AQIColorScale = () => {
+export const AQColorScale = () => {
   const dispatch = useDispatch();
   const panelState = useSelector(selectPanelState);
   const largeScreen = useMediaQuery('(min-width: 600px)');
@@ -166,4 +166,3 @@ const AQIColorScale = () => {
   );
 }
 
-export default AQIColorScale;
