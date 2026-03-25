@@ -139,9 +139,9 @@ export const AQColorScale = () => {
         <Grid size={1}></Grid>
         <Grid size={8}>Health Category</Grid>
       </Grid>
-      { pm2_5Ranges?.map(({ range, label, color, border}, index) => (
+      { pm2_5Ranges?.map(({ aqi_min, aqi_max, label, color, border}, index) => (
         <Grid key={`${index}-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk', margin: '0.5rem 0' }}>
-          <Grid size={3} style={{ textAlign: 'right', }}><small>{range}</small></Grid>
+          <Grid size={3} style={{ textAlign: 'right', }}><small>{aqi_min}{aqi_max > 999 ? '+' : <> - {aqi_max}</>}</small></Grid>
           <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span
               key={`overlay-key-${index}-${label}`}

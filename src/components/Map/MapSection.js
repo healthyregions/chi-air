@@ -299,7 +299,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [200, 200, 200];
       }
 
-      const bins = pm2_5Ranges.map(r => r.max);
+      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       }
@@ -319,7 +319,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         //return [68, 68, 68];
       }
 
-      const bins = pm2_5Ranges.map(r => r.max);
+      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
@@ -364,7 +364,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [100, 100, 100];
       }
 
-      const bins = pm2_5Ranges.map(r => r.max);
+      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       }
@@ -385,7 +385,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [200, 200, 200];
       }
 
-      const bins = pm2_5Ranges.map(r => r.max);
+      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
@@ -432,7 +432,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [100, 100, 100];
       }
 
-      const bins = pm2_5Ranges.map(r => r.max);
+      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       }
@@ -453,7 +453,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [200, 200, 200];
       }
 
-      const bins = pm2_5Ranges.map(r => r.max);
+      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
