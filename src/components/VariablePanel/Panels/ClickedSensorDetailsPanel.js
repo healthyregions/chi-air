@@ -97,14 +97,14 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + latest?.latest_mean_pm25} disabled />
         </Grid>
       </Grid>
-      <Grid container spacing={2} marginTop={'1rem'}>
+      {/*<Grid container spacing={2} marginTop={'1rem'}>
         <Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'NO₂ : ??'} disabled />
         </Grid>
         <Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled />
         </Grid>
-      </Grid>
+      </Grid>*/}
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'center'}>
         <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
         <LButton onClick={() => push(['Explain'])}>Explain &rarr;</LButton>
