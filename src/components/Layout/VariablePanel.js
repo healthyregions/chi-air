@@ -10,7 +10,6 @@ import {
 } from "../../store/slices/legacyStoreSlice";
 import {colors} from "../../config";
 import * as SVG from "../../config/svg";
-import { AQColorScale } from "../VariablePanel/AQColorScale";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import EnabledOverlayDisplay from "../VariablePanel/EnabledOverlaysDisplay";
