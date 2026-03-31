@@ -1,4 +1,3 @@
-import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,7 +9,7 @@ import {
   setFirstRowIndices,
   selectFirstRowIndices,
 } from '../../store/slices/sensorDataSlice';
-import {compressors} from "hyparquet-compressors";
+import {fetchPq} from "../VariablePanel/common";
 
 // TODO: Cache values as they are read?
 /*const SensorDataStore = ({  }) => {
@@ -30,7 +29,6 @@ const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
 const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet.brotli`;
 const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet.brotli`;
 
-const maxRetries = 5;
 
 // Given a URL to a Parquet file, read it into memory
 // There will always be at least 2 of these - one for locations.parquet and one for each metric displayed (e.g. mean_pm25)
@@ -39,27 +37,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const firstRowIndices = useSelector(selectFirstRowIndices);
-
-  const fetchPq = async ({ url, columns, rowStart, rowEnd }) => {
-    let retries = 0;
-    // Fetch the list of location id, name, coordinates
-    while (retries < maxRetries) {
-      try {
-        return await parquetReadObjects({
-          file: await asyncBufferFromUrl({url}),
-          columns,
-          rowStart,
-          rowEnd,
-          compressors
-        });
-      } catch (e) {
-        console.warn(`Warning: Failed fetching (${retries}/${maxRetries}) from ${url}. Retrying...`, e);
-        retries = retries+1;
-      }
-    }
-
-    console.error(`ERROR: Failed to fetch Parquet dataset from ${url} after ${maxRetries} retries.`);
-  };
 
   // TODO: pipeline could produce these indices to save us another ~500ms
   // TODO: Support multiple metrics?
@@ -92,7 +69,12 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     fetchPq({
       url: locationsUrl,
     }).then(l => {
-      dispatch(setSensorLocations(l?.filter(loc => loc?.currentSourceId)));
+      dispatch(
+        setSensorLocations(
+          l?.filter(loc => loc?.currentSourceId)
+            ?.filter(loc => loc?.sourceType === 'CLARITY_NODE')
+        )
+      );
       const endTime = new Date().getTime();
       console.log(`Finished fetching sensor locations: ${endTime - startTime}ms`);
     });
