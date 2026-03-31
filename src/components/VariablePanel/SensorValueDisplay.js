@@ -47,7 +47,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value, scale = 'AQ
   }
 
   const rounded = Math.round(value * 10) / 10;
-  const range = pm2_5Ranges?.find(r => r.min <= rounded && rounded <= r.max);
+  const range = pm2_5Ranges?.find(r => r.pm25_min <= rounded && rounded <= r.pm25_max);
 
   const invertedColors = ['Good', 'Moderate'];
 

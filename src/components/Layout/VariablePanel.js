@@ -10,7 +10,6 @@ import {
 } from "../../store/slices/legacyStoreSlice";
 import {colors} from "../../config";
 import * as SVG from "../../config/svg";
-import AQIColorScale from "../VariablePanel/AQIColorScale";
 import OverlaysDropdown from "../VariablePanel/OverlaysDropdown";
 import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import EnabledOverlayDisplay from "../VariablePanel/EnabledOverlaysDisplay";
@@ -225,7 +224,7 @@ const VariablePanel = (props) => {
         <span className="data-description">
           Points on the map show PM 2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
         </span>
-        <AQIColorScale></AQIColorScale>
+        {/*<AQColorScale></AQColorScale>*/}
         <span className="data-description">
           {lastUpdated ? `last updated: ${lastUpdated.toLocaleDateString('en-US')} ${lastUpdated.toLocaleTimeString('en-US')}` : "loading data..."}
         </span>

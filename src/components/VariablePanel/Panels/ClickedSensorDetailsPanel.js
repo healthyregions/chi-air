@@ -1,8 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
   selectAverageType,
-  selectClickedSensor, selectSensorGeojsonData, selectSensorLocations,
-  selectSensorValuesMeanPm25, setAverageType
+  selectClickedSensor, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
+  selectSensorValuesMeanPm25, setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
 import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
@@ -53,7 +53,7 @@ const convertGeoJsonToCsv = (geojsonData, separator= ',') => {
 
 export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
-  const [, setSelectedParameter] = useState(null);
+
   const averageType = useSelector(selectAverageType);
   const clickedSensor = useSelector(selectClickedSensor);
   const sensorGeojson = useSelector(selectSensorGeojsonData);
@@ -61,6 +61,9 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const locations = useSelector(selectSensorLocations);
   const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
   const geojsonData = useSelector(selectSensorGeojsonData);
+
+  const selectedParameter = useSelector(selectSensorParameter);
+  const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
@@ -141,11 +144,11 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             <InputLabel htmlFor="paramSelect">Parameter</InputLabel>
             <Select
               variant={"filled"}
-              value={'mean_pm25'}
+              value={selectedParameter}
               onChange={(e) => setSelectedParameter(e.target.value)}
             >
               <MenuItem value="mean_pm25">PM 2.5</MenuItem>
-              <MenuItem value="mean_aqi">AQI</MenuItem>
+              <MenuItem value="nowcast_aqi">AQI</MenuItem>
               {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
               {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
             </Select>
