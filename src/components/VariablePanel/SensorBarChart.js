@@ -47,7 +47,7 @@ export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left
       width: 60,
       colorMap: {
         type: 'piecewise',
-        thresholds: pm2_5Ranges?.map(r => r.max),
+        thresholds: pm2_5Ranges?.map(r => selectedParameter === 'nowcast_aqi' ? r.aqi_max : r.pm25_max),
         colors: pm2_5Ranges?.map(r => r.color),
       },
     }],
