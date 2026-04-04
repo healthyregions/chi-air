@@ -230,9 +230,10 @@ export default function Home() {
           <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
             <Grid container spacing={0}>
               <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of {sensorCount} high-precision sensors to blanket the city.</div>
-              <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most. {!largeScreen && <br/> }<NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>
+              <div style={{ margin: '2rem 0 1rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), the <NavLink to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Open Air Network</NavLink> sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
+              <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations across Chicago to ensure the data is easily accessible, in context, and ready for action. <NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink>.</div>{!largeScreen && <br/> }
             </Grid>
-            <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
+            <Grid container spacing={10} justifyContent={'right'} marginBottom={'4rem'}>
               <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} />
               <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} />
             </Grid>
