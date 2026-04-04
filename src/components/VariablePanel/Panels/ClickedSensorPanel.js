@@ -16,7 +16,7 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {SensorValueDisplay} from "../SensorValueDisplay";
 import {SensorBarChart} from "../SensorBarChart";
-import {getMetadata, LButton, LHeader, SensorValueLabelTooltip} from "../common";
+import {getLocation, getMetadata, LButton, LHeader, SensorValueLabelTooltip} from "../common";
 import {useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -74,9 +74,11 @@ export const ClickedSensorPanel = ({ push, pop }) => {
   const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
 
+  const clickedLocation = getLocation(locations, clickedSensor);
+
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, metricData);
+  const {latestValue, latestRow} = getMetadata({parameter: selectedParameter, datasourceId: clickedSensor, geojsonData});
 
   // Page backward by one, if our clicked sensor is in the list of selected sensors
   const prevSensor = () => {
@@ -136,30 +138,27 @@ export const ClickedSensorPanel = ({ push, pop }) => {
         </Grid>
       </Grid>}
 
-      {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount > 0 && <Grid container spacing={0} alignItems={'center'}>
+      {latestRow && Object.keys(latestRow)?.length > 2 && <Grid container spacing={0} alignItems={'center'}>
         <Grid offset={2} size={8}>
-          <SensorValueDisplay scale={'μg/m³'} value={latest?.latest_mean_pm25}></SensorValueDisplay>
+          <SensorValueDisplay value={latestValue}></SensorValueDisplay>
         </Grid>
         <Grid size={2} onClick={() => push(['Color Coding Air Quality'])}><SensorValueLabelTooltip /></Grid>
       </Grid>}
 
       <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'}>
         <Grid size={10}>
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
+          {latestRow && Object.keys(latestRow)?.length <= 2 && <>Loading, Please Wait...</>}
         </Grid>
       </Grid>
 
       <Grid container alignItems={'center'}>
         <Grid offset={1} size={11}>
-          {recentValueCount > 0 && <>
-            <SensorBarChart pageSize={40}
-                            averageType={'hour'}
-                            selectedParameter={selectedParameter}
-                            metricData={metricData?.filter(d => d.type === 'hour')?.map(r =>
-                              ({ type: r.type, date: r.date, [selectedParameter]:  r[clickedSensor] })
-                            )} />
-          </>}
+          <SensorBarChart pageSize={40}
+                          averageType={'hour'}
+                          selectedParameter={selectedParameter}
+                          metricData={metricData?.filter(d => d.type === 'hour')?.map(r =>
+                            ({ type: r.type, date: r.date, [selectedParameter]: r[clickedSensor] })
+                          )} />
         </Grid>
       </Grid>
     </>

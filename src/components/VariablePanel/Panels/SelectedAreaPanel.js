@@ -10,7 +10,7 @@ import {
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {formatDate, getLatestValue, LButton, useSelectorAsState} from "../common";
+import {formatDate, getMetadata, LButton, useSelectorAsState} from "../common";
 import {LHeader} from "../common";
 
 const SelectedSensorsPanelContainer = styled.div`
@@ -101,7 +101,7 @@ export const SelectedAreaPanel = () => {
       </GridHeader>}
 
       {!clickedSensor && selectedSensors?.map((s, index) => {
-        const latestValue = getLatestValue(geojsonData, s);
+        const { latestValue } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId: s });
         if (!latestValue) { return undefined; }
         const { latest_mean_pm25, datasourceId, name, last_update } = latestValue;
         const fixed = Number(latest_mean_pm25)?.toFixed(1);

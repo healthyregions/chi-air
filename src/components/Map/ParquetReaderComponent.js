@@ -7,7 +7,6 @@ import {
   selectSensorParameter,
   setMetricData,
   selectMetricData,
-  selectMetricIndex,
   setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
@@ -28,7 +27,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const metrics = useSelector(selectMetrics);
   const metricData = useSelector(selectMetricData);
   const breadcrumbs = useSelector(selectBreadcrumbs);
-  const firstRowIndices = useSelector(selectMetricIndex);
 
   // Awareness of current dataset
   // TODO: Only fetch new data if we don't already have it?

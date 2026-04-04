@@ -5,7 +5,7 @@ import {
   selectMetrics, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
   setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
-import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
+import {Divider, getLocation, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
@@ -69,7 +69,12 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {clickedLocation, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, metricData);
+  const clickedLocation = getLocation(locations, clickedSensor);
+  const {latestRow} = getMetadata({
+    parameter: selectedParameter,
+    datasourceId: clickedSensor,
+    geojsonData
+  });
 
   const downloadGeoJson = (geojsonData = sensorGeojson, filename = 'chicago_mean_pm25.geojson') => {
     downloadFile(JSON.stringify(geojsonData, null, 2), filename);
@@ -90,16 +95,18 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  const latestAqi = metrics?.['nowcast_aqi']?.data?.find(() => true)?.[clickedSensor];
+  const latestPm25 = Number(metrics?.['mean_pm25']?.data?.find(() => true)?.[clickedSensor]).toFixed(1);
   return(
     <Grid size={11}>
       <LHeader><LinkText onClick={() => pop('root')}>{clickedLocation?.name}</LinkText> / Details</LHeader>
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ' + metrics?.['nowcast_aqi']?.data?.find(() => true)?.[clickedSensor] + ' AQI'} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`AQI : ${latestAqi ? latestAqi + ' AQI' : '??'}`} disabled />
         </Grid>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + (Number(metrics?.['mean_pm25']?.data?.find(() => true)?.[clickedSensor]).toFixed(1)) + ' μg/m³'} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM 2.5 : ${latestPm25 ? latestPm25 + ' μg/m³' : '??'}`} disabled />
         </Grid>
       </Grid>
       {/*<Grid container spacing={2} marginTop={'1rem'}>
@@ -177,20 +184,17 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={0}>
         <Grid offset={2} size={10}>
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
+          {!latestRow && <Grid>No recent readings found.</Grid> }
         </Grid>
       </Grid>
 
-      {recentValueCount > 0 && <>
-        <SensorBarChart margin={{ left: 60 }}
-                        showScroll={true}
-                        averageType={averageType}
-                        selectedParameter={selectedParameter}
-                        metricData={metricData?.filter(d => d.type === averageType)?.map(r =>
-                          ({ type: r.type, date: r.date, [selectedParameter]: r[clickedSensor] })
-                        )} />
-      </>}
+      <SensorBarChart margin={{ left: 60 }}
+                      showScroll={true}
+                      averageType={averageType}
+                      selectedParameter={selectedParameter}
+                      metricData={metricData?.filter(d => d.type === averageType)?.map(r =>
+                        ({ type: r.type, date: r.date, [selectedParameter]: r[clickedSensor] })
+                      )} />
     </Grid>
   );
 };
