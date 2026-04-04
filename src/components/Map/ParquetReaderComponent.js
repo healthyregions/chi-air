@@ -126,6 +126,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date', clickedSensor],
+      rowStart: 0,
+      rowEnd: 24
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
 
