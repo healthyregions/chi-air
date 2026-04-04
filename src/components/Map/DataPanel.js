@@ -2,7 +2,6 @@
 // and displays it in the right side panel.
 
 // Import main libraries
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import helper libraries
@@ -11,6 +10,7 @@ import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSli
 import {colors} from '../../config';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
+  selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
   selectClickedSensor, selectMetricData, selectSelectedAreas,
   selectSelectedSensors, selectSensorLocations, selectSensorParameter,
   setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors,
@@ -151,7 +151,8 @@ const DataPanel = ({ mapRef }) => {
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
 
   // Breadcrumbs help us track what page we're on
-  const [breadcrumbs, setBreadcrumbs] = useState(['root']);
+  const breadcrumbs = useSelector(selectBreadcrumbs);
+  const setBreadcrumbs = (bc) => dispatch(setBreadcrumbsAction(bc));
 
   // Page selector logic for navigating the panel via breadcrumbs and links
   const currentPage = breadcrumbs[breadcrumbs.length - 1];

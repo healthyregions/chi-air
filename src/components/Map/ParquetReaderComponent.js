@@ -8,7 +8,7 @@ import {
   setMetricData,
   selectMetricData,
   selectMetricIndex,
-  setMetricIndex, selectMetrics, selectClickedSensor,
+  setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
@@ -27,6 +27,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const selectedParameter = useSelector(selectSensorParameter);
   const metrics = useSelector(selectMetrics);
   const metricData = useSelector(selectMetricData);
+  const breadcrumbs = useSelector(selectBreadcrumbs);
   const firstRowIndices = useSelector(selectMetricIndex);
 
   // Awareness of current dataset
@@ -130,11 +131,34 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       rowEnd: 24
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
-
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
     });
   }, [dispatch, clickedSensor, selectedParameter]);
+
+  useEffect(() => {
+    const currentPage = breadcrumbs[breadcrumbs.length - 1];
+    if (!clickedSensor || currentPage === 'Details') {
+      // No sensor clicked? No-op
+      return;
+    }
+    /*if (metricData?.filter(r => r.type === 'hour')?.length < 20) {
+      console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
+      return;
+    }*/
+    // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
+    allMetrics.forEach(parameter => {
+      fetchPq({
+        url: `${s3prefix}/${parameter}.parquet.brotli`,
+        columns: ['type', 'date', clickedSensor]
+      }).then(data => {
+        dispatch(setMetricData({ parameter, data }));
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+      });
+    });
+  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data

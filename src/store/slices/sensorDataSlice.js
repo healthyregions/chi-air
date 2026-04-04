@@ -17,6 +17,7 @@ const initialState = {
     type: 'FeatureCollection',
     features: []
   },
+  breadcrumbs: ['root'],
 
   // User selections
   selectedAreas: {
@@ -35,6 +36,10 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setBreadcrumbs: (state, action) => ({
+      ...state,
+      breadcrumbs: action.payload
+    }),
     setMetricIndex: (state, action) => ({
       ...state,
       metrics: {
@@ -78,13 +83,10 @@ export const sensorDataSlice = createSlice({
         ...action.payload,
       }
     }),
-    setLocale: (state, action) => {
-      console.log('Selected locale:', action.payload);
-      return {
-        ...state,
-        locale: action.payload
-      }
-    },
+    setLocale: (state, action) => ({
+      ...state,
+      locale: action.payload
+    }),
     setAverageType: (state, action) => ({
       ...state,
       averageType: action.payload
@@ -116,10 +118,6 @@ export const sensorDataSlice = createSlice({
         ...state,
         locations: action.payload,
     }),
-    setSensorValuesMeanPm25: (state, action) => ({
-        ...state,
-        mean_pm25: action.payload,
-    }),
     setSensorGeojsonData: (state, action) => {
       const missingRows = (action.payload?.features || [])?.filter(newFeature =>
         !state.geojsonData.features.find(existingFeature =>
@@ -148,7 +146,6 @@ export const sensorDataSlice = createSlice({
   },
   selectors: {
     selectSensorLocations: state => state.locations,
-    selectSensorValuesMeanPm25: state => state.mean_pm25,
     selectSelectedSensors: state => state.selectedSensors,
     selectSensorGeojsonData: state => state.geojsonData,
     selectClickedSensor: state => state.clickedSensor,
@@ -159,6 +156,7 @@ export const sensorDataSlice = createSlice({
     selectMetricIndex: state => state.metrics?.[state.selectedParameter]?.index,
     selectMetricData: state => state.metrics?.[state.selectedParameter]?.data,
     selectMetrics: state => state.metrics,
+    selectBreadcrumbs: state => state.breadcrumbs,
   }
 });
 
@@ -177,12 +175,12 @@ export const {
   setSensorParameter,
   setMetricIndex,
   setMetricData,
+  setBreadcrumbs,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
 export const {
   selectSensorLocations,
-  //selectSensorValuesMeanPm25,
   selectSelectedSensors,
   selectSensorGeojsonData,
   selectClickedSensor,
@@ -193,5 +191,6 @@ export const {
   selectMetricIndex,
   selectMetricData,
   selectMetrics,
+  selectBreadcrumbs
 } = sensorDataSlice.selectors
 

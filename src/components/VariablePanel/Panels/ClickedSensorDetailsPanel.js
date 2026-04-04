@@ -96,10 +96,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ' + metrics?.['mean_pm25']?.data?.find(() => true)?.value} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ' + metrics?.['nowcast_aqi']?.data?.find(() => true)?.[clickedSensor] + ' AQI'} disabled />
         </Grid>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + metrics?.['mean_pm25']?.data?.find(() => true)?.value} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + (Number(metrics?.['mean_pm25']?.data?.find(() => true)?.[clickedSensor]).toFixed(1)) + ' μg/m³'} disabled />
         </Grid>
       </Grid>
       {/*<Grid container spacing={2} marginTop={'1rem'}>
