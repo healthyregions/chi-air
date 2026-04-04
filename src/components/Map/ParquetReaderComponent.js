@@ -185,7 +185,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
                 data: metrics?.[metric]?.data?.map(d => ({
                   type: d.type,
                   date: d.date,
-                  value: d[location.datasourceId],
+                  value: Number(d[location.datasourceId]),
                 }))
               }
             }), {}),

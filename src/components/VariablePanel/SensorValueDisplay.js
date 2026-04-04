@@ -48,7 +48,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
 
   const scale = selectedParameter === 'nowcast_aqi' ? 'AQI' : 'μg/m³';
 
-  const rounded = selectedParameter === 'nowcast_aqi' ? Number(value) : Math.round(value * 10) / 10;
+  const rounded = selectedParameter === 'nowcast_aqi' ? value : Math.round(value * 10) / 10;
   const range = pm2_5Ranges?.find(r => {
     if (selectedParameter === 'nowcast_aqi') {
       return r.aqi_min <= rounded && rounded <= r.aqi_max;
