@@ -11,9 +11,9 @@ import {colors} from '../../config';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
-  selectClickedSensor, selectMetricData, selectSelectedAreas,
+  selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors, selectSensorLocations, selectSensorParameter,
-  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors,
+  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -24,7 +24,7 @@ import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import {ClickedSensorPanel} from "../VariablePanel/Panels/ClickedSensorPanel";
 import {SelectedAreaPanel} from "../VariablePanel/Panels/SelectedAreaPanel";
-import {LButton, Divider, useSelectorAsState} from "../VariablePanel/common";
+import {LButton, Divider, useSelectorAsState, getMetadata} from "../VariablePanel/common";
 import {ClickedSensorDetailsPanel} from "../VariablePanel/Panels/ClickedSensorDetailsPanel";
 import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplainPanel";
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
@@ -127,7 +127,7 @@ const DataPanel = ({ mapRef }) => {
   // New sensor data
   const selectedSensors = useSelector(selectSelectedSensors);
   const selectedParameter = useSelector(selectSensorParameter);
-  const metricData = useSelector(selectMetricData)?.[selectedParameter]?.['data'];
+  const geojsonData = useSelector(selectSensorGeojsonData);
   const clickedSensor = useSelector(selectClickedSensor);
   const locations = useSelector(selectSensorLocations);
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
@@ -145,7 +145,7 @@ const DataPanel = ({ mapRef }) => {
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = metricData?.find((r) => r.type === 'hour');
+  const latestRow = geojsonData?.features?.[0]?.properties?.metrics?.[selectedParameter]?.data?.[0];
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
@@ -194,7 +194,7 @@ const DataPanel = ({ mapRef }) => {
           } />
         </>}
 
-        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={firstHourlyRow?.date} />}
+        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={latestRow?.date} />}
         {(clickedSensor || selectedSensors?.length > 0) && <Divider />}
         {!clickedSensor && selectedSensors?.length > 0 && <SelectedAreaPanel  />}
         {clickedSensor && <ClickedSensorPanel push={pushPage} pop={popPage} />}

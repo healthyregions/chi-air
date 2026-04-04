@@ -60,7 +60,7 @@ export const SelectedAreaPanel = () => {
   const clickedSensor = useSelector(selectClickedSensor);
   const selectedSensors = useSelector(selectSelectedSensors);
   const selectedParameter = useSelector(selectSensorParameter);
-  const metricData = useSelector(selectMetricData(selectedParameter));
+  const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
 
   // Grab our previously-fetched data to determine some stats
@@ -101,13 +101,18 @@ export const SelectedAreaPanel = () => {
       </GridHeader>}
 
       {!clickedSensor && selectedSensors?.map((s, index) => {
-        const { latestValue } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId: s });
+        const { feature, latestRow, latestValue } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId: s });
         if (!latestValue) { return undefined; }
-        const { latest_mean_pm25, datasourceId, name, last_update } = latestValue;
-        const fixed = Number(latest_mean_pm25)?.toFixed(1);
-        const range = pm2_5Ranges.find(r => r.min <= fixed && fixed <= r.max);
+        const fixed = Number(latestValue)?.toFixed(1);
+        const range = pm2_5Ranges.find(r => {
+          if (selectedParameter === 'nowcast_aqi') {
+            return r.aqi_min <= fixed && fixed <= r.aqi_max;
+          } else if (selectedParameter === 'mean_pm25') {
+            return r.pm25_min <= fixed && fixed <= r.pm25_max;
+          }
+        });
         const {time, date} = formatDate({
-          timestamp: last_update,
+          timestamp: latestRow?.date,
           format: 'short'
         });
 
@@ -117,19 +122,19 @@ export const SelectedAreaPanel = () => {
               <small>{date} {time}</small>
             </TimestampColumn>
             <AqiValueColumn size={1}>
-              <small>{Number(latest_mean_pm25)?.toFixed(1)}</small>
+              <small>{Number(latestValue)?.toFixed(1)}</small>
             </AqiValueColumn>
             <ColorColumn size={1}>
               <Color $color={range?.color} $border={range?.border}></Color>
             </ColorColumn>
             <LocationNameColumn size={4}>
-              <small>{name}</small>
+              <small>{feature?.properties?.name}</small>
             </LocationNameColumn>
             <SensorIdColumn size={3}>
-              {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <small>{datasourceId}</small>}
-              {selections?.community?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.community}</small>}
-              {selections?.zip?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.zip}</small>}
-              {selections?.ward?.length > 0 && <small>{locations?.find(l => l.datasourceId === datasourceId)?.ward}</small>}
+              {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <small>{feature?.properties?.datasourceId}</small>}
+              {selections?.community?.length > 0 && <small>{locations?.find(l => l.datasourceId === feature?.properties?.datasourceId)?.community}</small>}
+              {selections?.zip?.length > 0 && <small>{locations?.find(l => l.datasourceId === feature?.properties?.datasourceId)?.zip}</small>}
+              {selections?.ward?.length > 0 && <small>{locations?.find(l => l.datasourceId === feature?.properties?.datasourceId)?.ward}</small>}
             </SensorIdColumn>
           </GridBody>
         );
