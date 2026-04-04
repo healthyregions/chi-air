@@ -4,7 +4,8 @@ import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
-import {NavLink, useNavigate} from "react-router-dom";
+// import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 
 const AboutPage = styled.div`
