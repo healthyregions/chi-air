@@ -37,7 +37,17 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
 
     // Data to graph: Mean PM2.5 Values
     series: [
-      { dataKey: selectedParameter, valueFormatter: (v) => `${Number(v)?.toFixed(1)} ${selectedParameter === 'mean_aqi' ? 'AQI' : 'μg/m³'}`},
+      {
+        dataKey: selectedParameter, valueFormatter: (v) => {
+          if (selectedParameter === 'nowcast_aqi') {
+            return `${Number(v)} AQI`;
+          } else if (selectedParameter === 'mean_pm25') {
+            return `${Number(v)?.toFixed(1)} μg/m³`;
+          } else {
+            return `ERR`;
+          }
+        }
+      }
    ],
 
     // Y-Axis: Mean PM2.5 values

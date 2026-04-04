@@ -8,7 +8,7 @@ import {
   setMetricData,
   selectMetricData,
   selectMetricIndex,
-  setMetricIndex, selectMetrics,
+  setMetricIndex, selectMetrics, selectClickedSensor,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
@@ -23,6 +23,7 @@ const allMetrics = ['nowcast_aqi', 'mean_pm25'];
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
+  const clickedSensor = useSelector(selectClickedSensor);
   const selectedParameter = useSelector(selectSensorParameter);
   const metrics = useSelector(selectMetrics);
   const metricData = useSelector(selectMetricData);
@@ -110,6 +111,28 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     //   });
     // });
   }, [dispatch, locations, selectedParameter]);
+
+  useEffect(() => {
+    if (!clickedSensor){
+      // No sensor clicked? No-op
+      return;
+    }
+    /*if (metricData?.filter(r => r.type === 'hour')?.length < 20) {
+      console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
+      return;
+    }*/
+    // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date', clickedSensor],
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, clickedSensor, selectedParameter]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data

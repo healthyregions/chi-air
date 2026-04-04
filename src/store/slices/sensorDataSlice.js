@@ -50,8 +50,21 @@ export const sensorDataSlice = createSlice({
       metrics: {
         ...state.metrics,
         [action.payload.parameter]: {
-          ...state.metrics[action.payload.parameter],
-          data: action.payload.data
+          ...state.metrics?.[action.payload.parameter],
+          data: Object.values(
+            [...state.metrics?.[action.payload.parameter]?.data, ...action.payload.data].reduce((acc, row) => {
+              // 1. Create a unique string key from the two columns
+              const compositeKey = `${row.type}_${row.date}`;
+
+              // 2. Merge the current row into the existing data for that key
+              acc[compositeKey] = {
+                ...(acc[compositeKey] || {}),
+                ...row
+              };
+
+              return acc;
+            }, {})
+          )
         },
       }
     }),

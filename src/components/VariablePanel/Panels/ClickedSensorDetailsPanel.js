@@ -1,7 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
   selectAverageType,
-  selectClickedSensor, selectMetricData, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
+  selectClickedSensor, selectMetricData,
+  selectMetrics, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
   setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
 import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
@@ -62,12 +63,13 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const selectedParameter = useSelector(selectSensorParameter);
   const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
+  const metrics = useSelector(selectMetrics);
 
   const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, metricData);
+  const {clickedLocation, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, metricData);
 
   const downloadGeoJson = (geojsonData = sensorGeojson, filename = 'chicago_mean_pm25.geojson') => {
     downloadFile(JSON.stringify(geojsonData, null, 2), filename);
@@ -80,7 +82,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
   // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
   const downloadParquet = () => {
-    window.open(`${s3endpoint}/${bucketName}/current/mean_pm25.parquet.brotli`, '_blank');
+    window.open(`${s3endpoint}/${bucketName}/current/${selectedParameter}.parquet.brotli`, '_blank');
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -94,10 +96,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ??'} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ' + metrics?.['mean_pm25']?.data?.find(() => true)?.value} disabled />
         </Grid>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + latest?.latest_mean_pm25} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + metrics?.['mean_pm25']?.data?.find(() => true)?.value} disabled />
         </Grid>
       </Grid>
       {/*<Grid container spacing={2} marginTop={'1rem'}>

@@ -423,7 +423,6 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     getFillColor: (feature) => {
       // Detect loading state, display soft colors while loading
       const data = feature.properties.metrics?.[selectedParameter]?.data;
-      console.log(data);
       if (!data?.length) {
         return [79, 143, 197];
       }
