@@ -3,9 +3,9 @@ import {FaArrowLeft} from "react-icons/fa";
 import {pm2_5Ranges} from "../../../config";
 import {
   removeSensorsFromSelection,
-  selectClickedSensor, selectSelectedAreas, selectSelectedSensors,
+  selectClickedSensor, selectMetricData, selectSelectedAreas, selectSelectedSensors,
   selectSensorGeojsonData,
-  selectSensorLocations, selectSensorValuesMeanPm25,
+  selectSensorLocations, selectSensorParameter,
   setClickedSensor, setSelectedAreas
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
@@ -59,12 +59,13 @@ export const SelectedAreaPanel = () => {
   const locations = useSelector(selectSensorLocations);
   const clickedSensor = useSelector(selectClickedSensor);
   const selectedSensors = useSelector(selectSelectedSensors);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metricData = useSelector(selectMetricData(selectedParameter));
   const geojsonData = useSelector(selectSensorGeojsonData);
 
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
+  const firstHourlyRow = metricData?.find((r) => r.type === 'hour');
 
   const resetAll = () => {
     setSelections({community:[],zip:[],ward:[]});

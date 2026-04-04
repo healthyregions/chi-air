@@ -1,8 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
   selectAverageType,
-  selectClickedSensor, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
-  selectSensorValuesMeanPm25, setAverageType, setSensorParameter
+  selectClickedSensor, selectMetricData, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
+  setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
 import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
@@ -59,15 +59,15 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const sensorGeojson = useSelector(selectSensorGeojsonData);
 
   const locations = useSelector(selectSensorLocations);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metricData = useSelector(selectMetricData(selectedParameter));
   const geojsonData = useSelector(selectSensorGeojsonData);
 
-  const selectedParameter = useSelector(selectSensorParameter);
   const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
+  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, metricData);
 
   const downloadGeoJson = (geojsonData = sensorGeojson, filename = 'chicago_mean_pm25.geojson') => {
     downloadFile(JSON.stringify(geojsonData, null, 2), filename);
@@ -184,9 +184,9 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
         <SensorBarChart margin={{ left: 60 }}
                         showScroll={true}
                         averageType={averageType}
-                        selectedParameter={'mean_pm25'}
-                        mean_pm25={mean_pm25?.filter(d => d.type === averageType)?.map(r =>
-                          ({ type: r.type, date: r.date, mean_pm25: r[clickedSensor] })
+                        selectedParameter={selectedParameter}
+                        metricData={metricData?.filter(d => d.type === averageType)?.map(r =>
+                          ({ type: r.type, date: r.date, [selectedParameter]: r[clickedSensor] })
                         )} />
       </>}
     </Grid>

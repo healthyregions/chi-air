@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import {
-  selectClickedSensor,
+  selectClickedSensor, selectMetricData,
   selectSelectedSensors, selectSensorGeojsonData,
-  selectSensorLocations, selectSensorValuesMeanPm25,
+  selectSensorLocations, selectSensorParameter,
   setClickedSensor
 } from "../../../store/slices/sensorDataSlice";
 import {FaArrowLeft} from "react-icons/fa";
@@ -70,12 +70,13 @@ export const ClickedSensorPanel = ({ push, pop }) => {
   const locations = useSelector(selectSensorLocations);
   const selectedSensors = useSelector(selectSelectedSensors);
   const clickedSensor = useSelector(selectClickedSensor);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
 
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
+  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, metricData);
 
   // Page backward by one, if our clicked sensor is in the list of selected sensors
   const prevSensor = () => {
@@ -154,8 +155,9 @@ export const ClickedSensorPanel = ({ push, pop }) => {
           {recentValueCount > 0 && <>
             <SensorBarChart pageSize={40}
                             averageType={'hour'}
-                            mean_pm25={mean_pm25?.filter(d => d.type === 'hour')?.map(r =>
-                              ({ type: r.type, date: r.date, mean_pm25:  r[clickedSensor] })
+                            selectedParameter={selectedParameter}
+                            metricData={metricData?.filter(d => d.type === 'hour')?.map(r =>
+                              ({ type: r.type, date: r.date, [selectedParameter]:  r[clickedSensor] })
                             )} />
           </>}
         </Grid>

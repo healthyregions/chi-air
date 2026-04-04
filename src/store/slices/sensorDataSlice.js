@@ -1,20 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  // Fetch / cached server data
+  locations: [],
+  metrics: {
+    mean_pm25: {
+      index: { hour: -1, day: -1, week: -1, month: -1, season: -1, year: -1 },
+      data: []
+    },
+    nowcast_aqi: {
+      index: { hour: -1, day: -1, week: -1, month: -1, season: -1, year: -1 },
+      data: []
+    },
+  },
+  geojsonData: {
+    type: 'FeatureCollection',
+    features: []
+  },
+
+  // User selections
   selectedAreas: {
     community: [],
     zip: [],
     ward: [],
   },
   selectedSensors: [],
-  locations: [],
-  mean_pm25: [],
-  selectedParameter: 'mean_pm25',
-  geojsonData: {
-    type: 'FeatureCollection',
-    features: []
-  },
-  firstRowIndices: { hour: -1, day: -1, week: -1, month: -1, season: -1, year: -1 },
+  selectedParameter: 'nowcast_aqi',
   clickedSensor: undefined,
   averageType: 'hour',
   locale: 'en',
@@ -24,15 +35,29 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setMetricIndex: (state, action) => ({
+      ...state,
+      metrics: {
+        ...state.metrics,
+        [action.payload.parameter]: {
+          ...state.metrics[action.payload.parameter],
+          index: action.payload.index
+        },
+      }
+    }),
+    setMetricData: (state, action) => ({
+      ...state,
+      metrics: {
+        ...state.metrics,
+        [action.payload.parameter]: {
+          ...state.metrics[action.payload.parameter],
+          data: action.payload.data
+        },
+      }
+    }),
     setSensorParameter: (state, action) => ({
       ...state,
       selectedParameter: action.payload,
-    }),
-    setFirstRowIndices: (state, action) => ({
-      ...state,
-      firstRowIndices: {
-        ...action.payload,
-      }
     }),
     setSelectedAreas: (state, action) => ({
       ...state,
@@ -117,15 +142,17 @@ export const sensorDataSlice = createSlice({
     selectAverageType: state => state.averageType,
     selectLocale: state=> state.locale,
     selectSelectedAreas: state => state.selectedAreas,
-    selectFirstRowIndices: state => state.firstRowIndices,
     selectSensorParameter: state => state.selectedParameter,
+    selectMetricIndex: state => state.metrics?.[state.selectedParameter]?.index,
+    selectMetricData: state => state.metrics?.[state.selectedParameter]?.data,
+    selectMetrics: state => state.metrics,
   }
 });
 
 // useDispatch + an action to update the state
 export const {
   setSensorLocations,
-  setSensorValuesMeanPm25,
+  //setSensorValuesMeanPm25,
   addSensorsToSelection,
   removeSensorsFromSelection,
   setSensorGeojsonData,
@@ -134,21 +161,24 @@ export const {
   setAverageType,
   setLocale,
   setSelectedAreas,
-  setFirstRowIndices,
   setSensorParameter,
+  setMetricIndex,
+  setMetricData,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
 export const {
   selectSensorLocations,
-  selectSensorValuesMeanPm25,
+  //selectSensorValuesMeanPm25,
   selectSelectedSensors,
   selectSensorGeojsonData,
   selectClickedSensor,
   selectAverageType,
   selectLocale,
   selectSelectedAreas,
-  selectFirstRowIndices,
   selectSensorParameter,
+  selectMetricIndex,
+  selectMetricData,
+  selectMetrics,
 } = sensorDataSlice.selectors
 

@@ -11,10 +11,9 @@ import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSli
 import {colors} from '../../config';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
-  selectClickedSensor, selectSelectedAreas,
-  selectSelectedSensors, selectSensorLocations,
-  selectSensorValuesMeanPm25, setClickedSensor,
-  setLocale, setSelectedAreas, setSelectedSensors,
+  selectClickedSensor, selectMetricData, selectSelectedAreas,
+  selectSelectedSensors, selectSensorLocations, selectSensorParameter,
+  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -127,7 +126,8 @@ const DataPanel = ({ mapRef }) => {
 
   // New sensor data
   const selectedSensors = useSelector(selectSelectedSensors);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metricData = useSelector(selectMetricData)?.[selectedParameter]?.['data'];
   const clickedSensor = useSelector(selectClickedSensor);
   const locations = useSelector(selectSensorLocations);
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
@@ -145,7 +145,7 @@ const DataPanel = ({ mapRef }) => {
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
+  const firstHourlyRow = metricData?.find((r) => r.type === 'hour');
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))

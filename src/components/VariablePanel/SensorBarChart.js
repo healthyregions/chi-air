@@ -6,7 +6,7 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
-export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left:30}, style = {}, showScroll = false, pageSize = 24, mean_pm25, averageType }) => {
+export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
   // Listen for changes to averageType
@@ -24,13 +24,13 @@ export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left
 
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
-  const itemsCount = mean_pm25?.length;
+  const itemsCount = metricData?.length;
   const numPages = Math.ceil(itemsCount / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
 
   // Filter the data and build a bar graph from it
-  const filteredData = useMemo(() => mean_pm25?.slice(pageStart, pageEnd)?.reverse(), [mean_pm25, pageStart, pageEnd]);
+  const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
   const chartSettings = {
     dataset: filteredData,
     height: 175,

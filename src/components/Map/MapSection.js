@@ -36,8 +36,7 @@ import MapMarkerPopup from "./MapMarkerPopup";
 import {
   selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors,
-  selectSensorGeojsonData,
-  selectSensorValuesMeanPm25,
+  selectSensorGeojsonData, selectSensorParameter,
   setClickedSensor
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
@@ -192,7 +191,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const lon = searchParams.get('lon');
   const lat = searchParams.get('lat');
   const zoom = searchParams.get('z');
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
   const geojsonData = useSelector(selectSensorGeojsonData);
   const selectedSensors = useSelector(selectSelectedSensors);
   const clickedSensor = useSelector(selectClickedSensor);
@@ -205,7 +204,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const filterValues = useSelector(selectFilterValues);
   const use3d = useSelector(selectUse3d);
 
-  const latestHourlyRow = useMemo(() => mean_pm25?.find((r) => r.type === 'hour'), [mean_pm25]);
+  const bins = pm2_5Ranges.map(r => selectedParameter === 'nowcast_aqi' ? r.aqi_max : r.pm25_max);
 
   // component state elements
   // hover and highlight geographies
@@ -290,16 +289,16 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [250, 250, 250];
       }
       // Detect loading state, display soft colors while loading
-      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = feature.properties.latest_mean_pm25;
+      const latest = data?.find(() => true)?.value;
       if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
         //return [79, 143, 197];
         return [200, 200, 200];
       }
 
-      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       }
@@ -310,16 +309,16 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     getLineWidth: 35,
     getLineColor: (feature) => {
       // Detect loading state, display soft colors while loading
-      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = feature.properties.latest_mean_pm25;
+      const latest = data?.find(() => true)?.value;
       if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
         return [229, 238, 245];
         //return [68, 68, 68];
       }
 
-      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
@@ -355,16 +354,16 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     getTextSize: 12,*/
     getFillColor: (feature) => {
       // Detect loading state, display soft colors while loading
-      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = feature.properties.latest_mean_pm25;
+      const latest = data?.find(() => true)?.value;
       if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
         //return [79, 143, 197];
         return [100, 100, 100];
       }
 
-      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       }
@@ -375,17 +374,17 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     getLineWidth: 35,
     getLineColor: (feature) => {
       // Detect loading state, display soft colors while loading
-      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = feature.properties.latest_mean_pm25;
+      const latest = data?.find(() => true)?.value;
       if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
         //return [229, 238, 245];
         //return [68, 68, 68];
         return [200, 200, 200];
       }
 
-      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
@@ -423,16 +422,17 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     getTextSize: 12,*/
     getFillColor: (feature) => {
       // Detect loading state, display soft colors while loading
-      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      console.log(data);
+      if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = feature.properties.latest_mean_pm25;
+      const latest = data?.find(() => true)?.value;
       if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
-        //return [79, 143, 197];
+      //return [79, 143, 197];
         return [100, 100, 100];
       }
 
-      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
       }
@@ -443,17 +443,18 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     getLineWidth: 35,
     getLineColor: (feature) => {
       // Detect loading state, display soft colors while loading
-      if (!latestHourlyRow || Object.keys(latestHourlyRow)?.length <= 2) {
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = feature.properties.latest_mean_pm25;
+
+      const latest = data?.find(() => true)?.value;
       if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
         //return [229, 238, 245];
         //return [68, 68, 68];
         return [200, 200, 200];
       }
 
-      const bins = pm2_5Ranges.map(r => r.pm25_max);
       if (clickedSensor === feature.properties['datasourceId']) {
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
@@ -473,7 +474,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, latestHourlyRow]);
+  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter]);
 
   useEffect(() => {
     setViewStateFn(setViewState);

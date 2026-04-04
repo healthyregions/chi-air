@@ -2,72 +2,56 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations,
-  setSensorValuesMeanPm25,
-  selectSensorValuesMeanPm25,
   selectSensorLocations,
   setSensorGeojsonData,
-  setFirstRowIndices,
-  selectFirstRowIndices,
+  selectSensorParameter,
+  setMetricData,
+  selectMetricData,
+  selectMetricIndex,
+  setMetricIndex, selectMetrics,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
-// TODO: Cache values as they are read?
-/*const SensorDataStore = ({  }) => {
-  const [yearly, setYearly] = useState(null);
-  const [seasonal, setSeasonal] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [week, setWeek] = useState(null);
-  const [day, setDay] = useState(null);
-  const [hour, setHour] = useState(null);
-}*/
-
-const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
-const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
-
 // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
 // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
-const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet.brotli`;
-const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet.brotli`;
+const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
+const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+const s3prefix = `${s3endpoint}/${bucketName}/current`;
 
+const allMetrics = ['nowcast_aqi', 'mean_pm25'];
 
-// Given a URL to a Parquet file, read it into memory
-// There will always be at least 2 of these - one for locations.parquet and one for each metric displayed (e.g. mean_pm25)
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
-  const firstRowIndices = useSelector(selectFirstRowIndices);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metrics = useSelector(selectMetrics);
+  const metricData = useSelector(selectMetricData);
+  const firstRowIndices = useSelector(selectMetricIndex);
 
-  // TODO: pipeline could produce these indices to save us another ~500ms
-  // TODO: Support multiple metrics?
+  // Awareness of current dataset
+  // TODO: Only fetch new data if we don't already have it?
+  // const mean_pm25 = metricData?.['mean_pm25']?.data;
+  // const nowcast_aqi = metricData?.['nowcast_aqi']?.data;
+
   useEffect(() => {
+    // Fetch index JSON file for each metric
+    // This will tell us the first occurrence of each type (e.g. "hour", "day", etc)
     const startTime = new Date().getTime();
-    console.log(`Finding first indices...`);
-    // Fetch the metric data (currently just mean_pm25) using our list of locations
-    fetchPq({
-      url: meanPm25Url,
-      columns: ['type','date'],
-      rowStart: 0,
-      rowEnd: 100
-    }).then(d => {
-      dispatch(setFirstRowIndices({
-        year: d?.findIndex(r => r.type === 'year'),
-        season: d?.findIndex(r => r.type === 'season'),
-        month: d?.findIndex(r => r.type === 'month'),
-        week: d?.findIndex(r => r.type === 'week'),
-        day: d?.findIndex(r => r.type === 'day'),
-        hour: d?.findIndex(r => r.type === 'hour'),
-      }));
-      const endTime = new Date().getTime();
-      console.log(`Finished locating first rows: ${endTime - startTime}ms`);
+    allMetrics.forEach(metric_name => {
+      fetch(`${s3prefix}/${metric_name}.index.json`)
+        .then(async index_file_json => {
+          dispatch(setMetricIndex({ parameter: metric_name, index: await index_file_json.json() }));
+          const endTime = new Date().getTime();
+          console.log(`Finished locating first rows for ${metric_name}: ${endTime - startTime}ms`);
+        });
     });
   }, [dispatch]);
 
   useEffect(() => {
+    // Fetch the list of location id, name, coordinates for all sensors
     const startTime = new Date().getTime();
-    // Fetch the list of location id, name, coordinates
     fetchPq({
-      url: locationsUrl,
+      url: `${s3prefix}/locations.parquet.brotli`,
     }).then(l => {
       dispatch(
         setSensorLocations(
@@ -81,69 +65,60 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    // Skip fetching if we don't have enough data
-    if (locations?.length === 0 || firstRowIndices.hour < 0) { return; }
-    const startIndex = firstRowIndices.hour;
-    const endIndex = startIndex + 24;
-
     const startTime = new Date().getTime();
-    // TODO: Support multiple metrics?
-    // Fetch the metric data (currently just mean_pm25) using our list of locations
-    const columns = [ 'type','date', ...new Set(locations?.map(l => l.datasourceId)) ];
-    // Grab only this row to quickly color the map
+    // Fetch initial metric data for the map
     fetchPq({
-      url: meanPm25Url,
-      columns,
-      rowStart: startIndex,
-      rowEnd: endIndex,
-    }).then(d => {
-      dispatch(setSensorValuesMeanPm25(d));
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      rowStart: 0,
+      rowEnd: 2,
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
       const endTime = new Date().getTime();
-      console.log(`Finished fetching latest sensor mean_pm25: ${endTime - startTime}ms`);
-
-      // Next, fill in with 24 hours of graph data
-      fetchPq({
-        url: meanPm25Url,
-        columns,
-        rowStart: firstRowIndices.hour,
-        rowEnd: firstRowIndices.hour+24,
-      }).then(d => {
-        dispatch(setSensorValuesMeanPm25(d));
-        const endTime = new Date().getTime();
-        console.log(`Finished fetching last 24-hours mean_pm25: ${endTime - startTime}ms`);
-
-        // fill in with historical data
-        fetchPq({
-          url: meanPm25Url,
-          columns
-        }).then(d => {
-          dispatch(setSensorValuesMeanPm25(d));
-          const endTime = new Date().getTime();
-          console.log(`Finished fetching historical mean_pm25: ${endTime - startTime}ms`);
-        });
-      });
+      console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
     });
-  }, [dispatch, locations, firstRowIndices]);
+
+    // Grab only this row to quickly color the map
+    // fetchPq({
+    //   url: meanPm25Url,
+    //   columns,
+    //   rowStart: startIndex,
+    //   rowEnd: endIndex,
+    // }).then(d => {
+    //   dispatch(setSensorValuesMeanPm25(d));
+    //   const endTime = new Date().getTime();
+    //   console.log(`Finished fetching latest sensor mean_pm25: ${endTime - startTime}ms`);
+    //
+    //   fetchPq({
+    //     url: meanPm25Url,
+    //     columns,
+    //     rowStart: firstRowIndices.hour,
+    //     rowEnd: firstRowIndices.hour+24,
+    //   }).then(d => {
+    //     dispatch(setSensorValuesMeanPm25(d));
+    //     const endTime = new Date().getTime();
+    //     console.log(`Finished fetching last 24-hours mean_pm25: ${endTime - startTime}ms`);
+    //
+    //     fetchPq({
+    //       url: meanPm25Url,
+    //       columns
+    //     }).then(d => {
+    //       dispatch(setSensorValuesMeanPm25(d));
+    //       const endTime = new Date().getTime();
+    //       console.log(`Finished fetching historical mean_pm25: ${endTime - startTime}ms`);
+    //     });
+    //   });
+    // });
+  }, [dispatch, locations, firstRowIndices, selectedParameter]);
 
   useEffect(() => {
-    if (locations?.length === 0) { return; }
     // Skip rendering if we don't have enough data
+    if (!locations?.length || !metricData?.length) { return; }
+    console.log(`Building GeoJSON from metricData:`, metricData);
     const startTime = new Date().getTime();
-    //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
-    const sortedHourlyRows = mean_pm25?.filter(r => r?.type === 'hour');
-      //.sort((a, b) => a.date.localeCompare(b.date))
-      //.reverse();
-    const latestHourlyRow = sortedHourlyRows?.find(() => true);
-    const previousHourlyRow = sortedHourlyRows?.slice(1)?.find(() => true);
     const geojsonData = {
       type: 'FeatureCollection',
       features: locations?.filter(l => !!l?.currentSourceId && !!l?.datasourceId)?.map((location) => {
-        const metric_pm25 = mean_pm25?.map((r) => ({
-          type: r.type,
-          date: r.date,
-          [location.datasourceId]: r[location.datasourceId]
-        }));
-
         return {
           type: 'Feature',
           geometry: {
@@ -156,26 +131,36 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           // Ensure this is valid GeoJSON format
           properties: {
             ...location,
-            last_update: latestHourlyRow?.[location.datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
-            latest_mean_pm25: latestHourlyRow?.[location.datasourceId] || previousHourlyRow?.[location.datasourceId],
-            mean_pm25: metric_pm25
+            metrics: allMetrics.reduce((acc, metric) => ({
+              ...acc,
+              [metric]: {
+                index: metrics?.[metric]?.index,
+                data: metrics?.[metric]?.data?.map(d => ({
+                  type: d.type,
+                  date: d.date,
+                  value: d[location.datasourceId],
+                }))
+              }
+            }), {}),
           },
         }
       }) || [],
     };
+
+    console.log(`Built GeoJSON from sensor data: `, geojsonData);
     dispatch(setSensorGeojsonData(geojsonData));
 
     const endTime = new Date().getTime();
     console.log(`Finished building GeoJSON: ${endTime - startTime}ms`);
-  }, [dispatch, locations, mean_pm25]);
+  }, [dispatch, locations, metricData, metrics]);
 
-  if (!mean_pm25) return <>Loading...</>;
+  if (!metricData) return <>Loading...</>;
 
   return (
     DEBUG ? <>
       <h3>Parquet Data:</h3>
       <ul>
-        {mean_pm25.map((record, index) => (
+        {metricData[selectedParameter].map((record, index) => (
           <li key={index}>{/* Render your data here, e.g., record.columnName */}</li>
         ))}
       </ul>
