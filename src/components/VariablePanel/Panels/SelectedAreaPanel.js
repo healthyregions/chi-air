@@ -109,6 +109,9 @@ export const SelectedAreaPanel = () => {
             return r.aqi_min <= fixed && fixed <= r.aqi_max;
           } else if (selectedParameter === 'mean_pm25') {
             return r.pm25_min <= fixed && fixed <= r.pm25_max;
+          } else {
+            console.warn('WARNING: selectedParameter not supported:', selectedParameter);
+            return undefined;
           }
         });
         const {time, date} = formatDate({

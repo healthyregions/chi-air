@@ -24,7 +24,7 @@ import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import {ClickedSensorPanel} from "../VariablePanel/Panels/ClickedSensorPanel";
 import {SelectedAreaPanel} from "../VariablePanel/Panels/SelectedAreaPanel";
-import {LButton, Divider, useSelectorAsState, getMetadata} from "../VariablePanel/common";
+import {LButton, Divider, useSelectorAsState} from "../VariablePanel/common";
 import {ClickedSensorDetailsPanel} from "../VariablePanel/Panels/ClickedSensorDetailsPanel";
 import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplainPanel";
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
