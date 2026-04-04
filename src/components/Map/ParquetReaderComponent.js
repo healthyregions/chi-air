@@ -65,8 +65,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    const startTime = new Date().getTime();
     // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       rowStart: 0,
@@ -109,7 +109,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     //     });
     //   });
     // });
-  }, [dispatch, locations, firstRowIndices, selectedParameter]);
+  }, [dispatch, locations, selectedParameter]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data

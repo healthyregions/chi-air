@@ -474,7 +474,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter]);
+  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins]);
 
   useEffect(() => {
     setViewStateFn(setViewState);

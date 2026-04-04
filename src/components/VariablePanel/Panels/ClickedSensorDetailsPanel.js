@@ -60,7 +60,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
   const locations = useSelector(selectSensorLocations);
   const selectedParameter = useSelector(selectSensorParameter);
-  const metricData = useSelector(selectMetricData(selectedParameter));
+  const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
 
   const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
