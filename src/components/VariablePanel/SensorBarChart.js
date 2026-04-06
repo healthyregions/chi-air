@@ -40,7 +40,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
       {
         dataKey: selectedParameter, valueFormatter: (v) => {
           if (selectedParameter === 'nowcast_aqi') {
-            return `${Number(v)} AQI`;
+            return `${Math.round(Number(v))} AQI`;
           } else if (selectedParameter === 'mean_pm25') {
             return `${Number(v)?.toFixed(1)} μg/m³`;
           } else {
