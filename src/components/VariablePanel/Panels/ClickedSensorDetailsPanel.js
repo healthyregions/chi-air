@@ -95,8 +95,13 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const latestAqi = metrics?.['nowcast_aqi']?.data?.find(() => true)?.[clickedSensor];
-  const latestPm25 = Number(metrics?.['mean_pm25']?.data?.find(() => true)?.[clickedSensor]).toFixed(1);
+  const latestAqi = metrics?.['nowcast_aqi']?.data?.[0]?.[clickedSensor];
+  const prevAqi = metrics?.['nowcast_aqi']?.data?.[1]?.[clickedSensor];
+  const latestPm25 = metrics?.['mean_pm25']?.data?.[0]?.[clickedSensor];
+  const prevPm25 = metrics?.['mean_pm25']?.data?.[1]?.[clickedSensor];
+
+  const displayedAqi = latestAqi || prevAqi;
+  const displayedPm25 = latestPm25 || prevPm25;
 
   return(
     <Grid size={11}>
@@ -104,10 +109,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`AQI : ${latestAqi ? latestAqi + ' AQI' : '??'}`} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`AQI : ${displayedAqi ? Number(displayedAqi).toFixed(0) + ' AQI' : '??'}`} disabled />
         </Grid>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM 2.5 : ${latestPm25 ? latestPm25 + ' μg/m³' : '??'}`} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM 2.5 : ${displayedPm25 ? Number(displayedPm25).toFixed(1) + ' μg/m³' : '??'}`} disabled />
         </Grid>
       </Grid>
       {/*<Grid container spacing={2} marginTop={'1rem'}>

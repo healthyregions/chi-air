@@ -91,7 +91,7 @@ export const SelectedAreaPanel = () => {
 
       {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
         <TimestampColumn size={3}></TimestampColumn>
-        <AqiValueColumn size={1}>PM2.5</AqiValueColumn>
+        <AqiValueColumn size={1}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : 'PM2.5'}</AqiValueColumn>
         <ColorColumn size={1}></ColorColumn>
         <LocationNameColumn size={4}>Name</LocationNameColumn>
         {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
@@ -125,7 +125,7 @@ export const SelectedAreaPanel = () => {
               <small>{date} {time}</small>
             </TimestampColumn>
             <AqiValueColumn size={1}>
-              <small>{Number(latestValue)?.toFixed(1)}</small>
+              <small>{Number(latestValue)?.toFixed(selectedParameter === 'nowcast_aqi' ? 0 : 1)}</small>
             </AqiValueColumn>
             <ColorColumn size={1}>
               <Color $color={range?.color} $border={range?.border}></Color>
