@@ -9,15 +9,20 @@ import {formatDate, LButton} from "./common";
 export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
-  // Listen for changes to averageType
-  // Reset page number when averageType changes
+  // Listen for changes to averageType or selectedParameter
+  // Reset page number when averageType or selectedParameter changes
   const prevType = useRef();
+  const prevParam = useRef();
   useEffect(() => {
     if (prevType.current !== averageType) {
       prevType.current = averageType;
       setPage(0);
     }
-  }, [averageType]);
+    if (prevParam.current !== selectedParameter) {
+      prevParam.current = selectedParameter;
+      setPage(0);
+    }
+  }, [averageType, selectedParameter]);
 
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
@@ -38,7 +43,8 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
     // Data to graph: Mean PM2.5 Values
     series: [
       {
-        dataKey: selectedParameter, valueFormatter: (v) => {
+        dataKey: selectedParameter,
+        valueFormatter: (v) => {
           if (selectedParameter === 'nowcast_aqi') {
             return `${Math.round(Number(v))} AQI`;
           } else if (selectedParameter === 'mean_pm25') {
