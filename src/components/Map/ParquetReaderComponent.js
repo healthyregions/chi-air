@@ -7,7 +7,7 @@ import {
   selectSensorParameter,
   setMetricData,
   selectMetricData,
-  setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs,
+  setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
@@ -27,6 +27,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const metrics = useSelector(selectMetrics);
   const metricData = useSelector(selectMetricData);
   const breadcrumbs = useSelector(selectBreadcrumbs);
+  const metricIndex = useSelector(selectMetricIndex);
+  const averageType = useSelector(selectAverageType);
 
   // Awareness of current dataset
   // TODO: Only fetch new data if we don't already have it?
@@ -40,7 +42,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     allMetrics.forEach(metric_name => {
       fetch(`${s3prefix}/${metric_name}.index.json`)
         .then(async index_file_json => {
-          dispatch(setMetricIndex({ parameter: metric_name, index: await index_file_json.json() }));
+          const respJson = await index_file_json.json();
+          dispatch(setMetricIndex({ parameter: metric_name, index: respJson }));
           const endTime = new Date().getTime();
           console.log(`Finished locating first rows for ${metric_name}: ${endTime - startTime}ms`);
         });
@@ -120,7 +123,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
       return;
     }*/
-    // Fetch initial metric data for the map
+    // Fetch ~24hrs graph data for the graph when a sensor is clicked
     const startTime = new Date().getTime();
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
@@ -130,13 +133,13 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
-      console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+      console.log(`Finished fetching 24hr clicked sensor data: ${endTime - startTime}ms`);
     });
   }, [dispatch, clickedSensor, selectedParameter]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
-    if (!clickedSensor || currentPage === 'Details') {
+    if (!clickedSensor || currentPage !== 'Details') {
       // No sensor clicked? No-op
       return;
     }
@@ -144,19 +147,26 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
       return;
     }*/
-    // Fetch initial metric data for the map
+
+    // FIXME: Determine row indices for target data
+    const rowStart = metricIndex[averageType];
+    const rowEnd = Object.keys(metricIndex).find(key => metricIndex[key] > rowStart);
+    console.log(metricIndex);
+    console.log(`Fetching from ${rowStart} to ${rowEnd} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
+
+    // Fetch metric for the Historical Trends graph with the given parameters
     const startTime = new Date().getTime();
-    allMetrics.forEach(parameter => {
-      fetchPq({
-        url: `${s3prefix}/${parameter}.parquet.brotli`,
-        columns: ['type', 'date', clickedSensor]
-      }).then(data => {
-        dispatch(setMetricData({ parameter, data }));
-        const endTime = new Date().getTime();
-        console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
-      });
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date', clickedSensor],
+      rowStart,
+      rowEnd: rowEnd === -1 ? rowEnd : undefined
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
     });
-  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs]);
+  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data
