@@ -158,7 +158,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         console.log(`Finished fetching initial Details panel data: ${endTime - startTime}ms`);
       });
     });
-  });
+  }, [dispatch, clickedSensor, breadcrumbs]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
