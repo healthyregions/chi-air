@@ -95,8 +95,9 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const latestAqi = metrics?.['nowcast_aqi']?.data?.find(r => r[clickedSensor] > 0)?.[clickedSensor];
-  const latestPm25 = Number(metrics?.['mean_pm25']?.data?.find(r => r[clickedSensor] > 0)?.[clickedSensor]).toFixed(1);
+  const latestAqi = metrics?.['nowcast_aqi']?.data?.find(() => true)?.[clickedSensor];
+  const latestPm25 = Number(metrics?.['mean_pm25']?.data?.find(() => true)?.[clickedSensor]).toFixed(1);
+
   return(
     <Grid size={11}>
       <LHeader><LinkText onClick={() => pop('root')}>{clickedLocation?.name}</LinkText> / Details</LHeader>

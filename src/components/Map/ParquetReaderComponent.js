@@ -137,6 +137,29 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     });
   }, [dispatch, clickedSensor, selectedParameter]);
 
+  // Fetch latest row(s) of PM2.5 when Details panel opens
+  useEffect(() => {
+    const currentPage = breadcrumbs[breadcrumbs.length - 1];
+    if (!clickedSensor || currentPage !== 'Details') {
+      // No sensor clicked? No-op
+      return;
+    }
+
+    const startTime = new Date().getTime();
+    allMetrics.forEach(parameter => {
+      fetchPq({
+        url: `${s3prefix}/${parameter}.parquet.brotli`,
+        columns: ['type', 'date', clickedSensor],
+        rowStart: 0,
+        rowEnd: 2
+      }).then(data => {
+        dispatch(setMetricData({ parameter, data }));
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching initial Details panel data: ${endTime - startTime}ms`);
+      });
+    });
+  });
+
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
     if (!clickedSensor || currentPage !== 'Details') {
