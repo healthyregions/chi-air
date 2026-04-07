@@ -68,19 +68,17 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
     setSearchState({ results: [], value: '' });
   }
 
-  const url = useMemo(
-    () => `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchState.value}.json?access_token=${MAPBOX_ACCESS_TOKEN}&country=US&autocomplete=true&types=region%2Cdistrict%2Cpostcode%2Clocality%2Cplace%2Caddress&bbox=-88.28487843194713%2C41.54199009379835%2C-87.52216519803295%2C42.16483530634653`,
-    [searchState.value]
-  );
   const queryMapbox = useMemo(
     () =>
       debounce((text, callback) => {
-        (async (text, callback) => fetch(url).then(r => r.json()).then(r => {
-          callback(r.features);
-        }))(text, callback)
+        text && ((text, callback) =>
+          fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?access_token=${MAPBOX_ACCESS_TOKEN}&country=US&autocomplete=true&types=region%2Cdistrict%2Cpostcode%2Clocality%2Cplace%2Caddress&bbox=-88.28487843194713%2C41.54199009379835%2C-87.52216519803295%2C42.16483530634653`
+          ).then(r => r.json()).then(r => {
+            callback(r.features);
+          }))(text, callback)
       }, 200),
-    // eslint-disable-next-line
-    [url],
+    [],
   );
 
   const onInputChange = async (e) => {
@@ -124,7 +122,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
             autoComplete
             clearOnEscape
             inputValue={searchState.value}
-            options={searchState.results}
+            options={searchState.results || []}
             getOptionLabel={option => option.place_name}
             onChange={(source, selectedOption) => {
               clearInput();
