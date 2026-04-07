@@ -6,38 +6,54 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
-export const SensorBarChart = ({ selectedParameter = 'mean_pm25', margin = {left:30}, style = {}, showScroll = false, pageSize = 24, mean_pm25, averageType }) => {
+export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
-  // Listen for changes to averageType
-  // Reset page number when averageType changes
+  // Listen for changes to averageType or selectedParameter
+  // Reset page number when averageType or selectedParameter changes
   const prevType = useRef();
+  const prevParam = useRef();
   useEffect(() => {
     if (prevType.current !== averageType) {
       prevType.current = averageType;
       setPage(0);
     }
-  }, [averageType]);
+    if (prevParam.current !== selectedParameter) {
+      prevParam.current = selectedParameter;
+      setPage(0);
+    }
+  }, [averageType, selectedParameter]);
 
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
 
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
-  const itemsCount = mean_pm25?.length;
+  const itemsCount = metricData?.length;
   const numPages = Math.ceil(itemsCount / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
 
   // Filter the data and build a bar graph from it
-  const filteredData = useMemo(() => mean_pm25?.slice(pageStart, pageEnd)?.reverse(), [mean_pm25, pageStart, pageEnd]);
+  const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
   const chartSettings = {
     dataset: filteredData,
     height: 175,
 
     // Data to graph: Mean PM2.5 Values
     series: [
-      { dataKey: selectedParameter, valueFormatter: (v) => `${Number(v)?.toFixed(1)} ${selectedParameter === 'mean_aqi' ? 'AQI' : 'μg/m³'}`},
+      {
+        dataKey: selectedParameter,
+        valueFormatter: (v) => {
+          if (selectedParameter === 'nowcast_aqi') {
+            return `${Math.round(Number(v))} AQI`;
+          } else if (selectedParameter === 'mean_pm25') {
+            return `${Number(v)?.toFixed(1)} μg/m³`;
+          } else {
+            return `ERR`;
+          }
+        }
+      }
    ],
 
     // Y-Axis: Mean PM2.5 values

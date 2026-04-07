@@ -86,7 +86,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
         {type && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
           <Autocomplete
-            options={options.sort()}
+            options={type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b))}
             openOnFocus
             onBlur={handleClose}
             autoComplete

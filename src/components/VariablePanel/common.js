@@ -81,25 +81,21 @@ export const GradientBackground = styled.div`
     width: 100%;
     //min-height: 20rem;
 `;
-// Static helper function to grab the most recent value from the built geojson data
-export const getLatestValue = (geojsonData, id) => {
-  if (!id) { return {}; }
-  const first = geojsonData?.features?.find(f => {
-    return f.properties['datasourceId'] === id;
-  });
-  return first?.properties;
-}
+
+export const getLocation = (locations, datasourceId) => {
+  return locations?.find(s => s.datasourceId === datasourceId);
+};
+
 // Given a sensorId + related datasets, extract basic fragments needed by a few different views
-export const getMetadata = (clickedSensor, locations, geojsonData, mean_pm25) => {
+export const getMetadata = ({ geojsonData, parameter, datasourceId }) => {
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
-  const clickedLocation = locations?.find(s => s.datasourceId === clickedSensor);
-  const latest = getLatestValue(geojsonData, clickedSensor);
-  const recentValueCount = latest?.mean_pm25?.filter((r) => r[clickedLocation.datasourceId] != null
-    && r[clickedLocation.datasourceId] !== "None" && r[clickedLocation.datasourceId] !== "NaN")?.length
-  return {firstHourlyRow, latest, clickedLocation, recentValueCount};
+  const feature = geojsonData?.features?.find(f => f?.properties?.datasourceId === datasourceId);
+  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[0];
+  const latestValue = latestRow?.value;
+  return { feature, latestRow, latestValue };
 }
+
 // Static helper function to format dates consistently across DataPanel/Map components
 //    short => 02/22/26 10PM
 //     long => 10:00 PM, 02/22/26
