@@ -22,7 +22,7 @@ export default function About() {
 
          <WhiteBackground $largeScreen={largeScreen}>
            <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
-             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
+             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
                About 
              </Grid>
            </Grid>
@@ -33,8 +33,9 @@ export default function About() {
            </Grid> */}
            <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
              <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-              <b>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data and community advocacy, making city-wide metrics legible for all. 
-               We build on the largest sensor network in the country with community and cross-sector collaborations to ensure the data is easily accessible, in context, and ready 
+              <b>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy, 
+               making city-wide metrics legible for all. We build on the largest sensor network in the country with community and 
+               cross-sector collaborations to ensure the data is easily accessible, in context, and ready 
                for action. We will continue to refine and add to the dashboard with improvements and more resources over time.
                </Grid>
 {/*               <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
@@ -47,16 +48,19 @@ export default function About() {
 
 
          <WhiteBackground $largeScreen={largeScreen}>
-           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
+           <Grid container spacing={3} justifyContent={'left'} textAlign={'left'}>
              <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
                Building on Open Air
              </Grid>
            </Grid>
-           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'2rem'}>
+           <Grid container spacing={3} justifyContent={'left'} textAlign={'left'} marginTop={'2rem'}>
              <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-              <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Open Air Network </a>
-               is a citywide project consisting of 277 non-regulatory, air sensors installed in Summer 2025.                The sensor network has a five-year lifespan, with continuous monitoring, calibration, and refinement anticipated. </Grid>
-
+              The <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Open Air Network </a>
+               is a citywide project consisting of 277 non-regulatory air sensors installed in Summer 2025. 
+                The sensor network has a five-year lifespan, with continuous monitoring, calibration, and refinement anticipated. 
+                It was founded by the University of Illinois at Chicago and Chicago Department of Public Health, in collaboration with 
+                dozens of advisory board and other partners. Learn more about University of Illinois & Community teams <a href=""style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>here.</a>
+                </Grid> 
 {/*               
               It was founded by the Chicago Department of Public Health (CDPH) and the University of Illinois at Chicago School of Public Health (UIC SPH). 
               The development of the network was supported by an advisory board and other partners, including the following: 
@@ -77,6 +81,18 @@ export default function About() {
              from UIC SPH led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional 
              Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon, 
              LLC from 2025 through 2026.  */}      
+              </Grid>
+              <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+               The grid-based design of the air monitoring network was based on the EPA’s <a href="https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+               > Network Design Criteria for Ambient Air Quality Monitoring</a> under the Clean Air Act. We  added additional sensors in areas that have experienced environmental injustices more than others, known as 
+               <i> Environmental Justice (EJ)</i> communities. Neighborhoods in or near EJ zones have sensors every 1.4 kilometers (0.87 miles), and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles). By placing sensors
+               across the city using a grid design, we can follow the path of air pollution as it moves above, between, and through Chicago.
+             </Grid> 
+             <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+            <a href="https://publichealth.uic.edu/profiles/serap-erdal/" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Dr. Serap Erdal </a> 
+             from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional 
+             Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon, 
+             LLC from 2025 through 2026.     
               </Grid>
          </WhiteBackground>
 
