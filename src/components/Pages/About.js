@@ -5,6 +5,13 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 import {NavLink} from "react-router-dom";
+import {useState} from "react";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
+import {FaCaretDown, FaCaretUp} from "react-icons/fa";
 // import {NavLink, useNavigate} from "react-router-dom";
 
 const AboutPage = styled.div`
@@ -12,9 +19,31 @@ const AboutPage = styled.div`
 `;
 
 export default function About() {
-    //const categories = ['Map', 'Protocol', 'Parameters'];
-    //const [selectedCategories, setSelectedCategories] = useState([]);
+    const [expandAll, setExpandAll] = useState(false);
+    const categories = ['Map', 'Protocol', 'Parameters'];
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
     const largeScreen = useMediaQuery('(min-width: 600px)');
+
+    const toggleCategory = (category) => {
+      console.log('Clicked: ', category);
+      if (selectedCategories?.includes(category?.toLowerCase())) {
+        setSelectedCategories(selectedCategories?.filter(c => c !== category?.toLowerCase()))
+      } else {
+        setSelectedCategories([...selectedCategories, category?.toLowerCase()])
+      }
+    };
+
+    const faqs = [
+      {
+        category: "map",
+        question: "What do the colors on the map mean?",
+        answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide.",
+        //    ...    ...    ...    ...    ...    ...
+        // Insert contents from Box spreadsheet:
+        //    See https://uofi.app.box.com/file/2139463971757?s=ee3f7ar6kbrltnysgyfz0ewhtg2xod7o
+      }
+    ];
 
     return (
        <AboutPage>
@@ -110,10 +139,45 @@ export default function About() {
                           bottomRowTextBlack={'Frequently Asked'}
                           bottomRowTextRed={'Questions'}
                           buttonText={'Expand all'}
-                          buttonOnClick={() => true}
+                          buttonOnClick={() => {setSelectedCategories([]);setExpandAll(!expandAll)}}
 
            />
          </GradientBackground>
+
+
+         <WhiteBackground $largeScreen={largeScreen}>
+           <Stack direction="row" spacing={1} justifyContent={'flex-end'}>
+             <Chip clickable label="All"
+                   onClick={() => setSelectedCategories([])}
+                   variant={!selectedCategories?.length ? '' : 'outlined'}
+             />
+             { categories?.map((category) =>
+               <Chip clickable label={category}
+                     onClick={() => toggleCategory(category)}
+                     variant={selectedCategories?.includes(category?.toLowerCase()) ? '' : 'outlined'}
+               />
+             )}
+           </Stack>
+
+           {categories
+             ?.filter(c => !selectedCategories?.length || selectedCategories?.includes(c?.toLowerCase()))
+             ?.map(category => <>
+                 <h3>{category}</h3>
+                 {faqs?.filter(f => f.category?.toLowerCase() === category?.toLowerCase())?.map((faq) =>
+                   <Accordion expanded={expandAll}>
+                     <AccordionSummary
+                       expandIcon={selectedCategories?.includes(category?.toLowerCase()) ? <FaCaretUp /> : <FaCaretDown />}
+                     >
+                       {faq.question}
+                     </AccordionSummary>
+                     <AccordionDetails>
+                       {faq.answer}
+                     </AccordionDetails>
+                   </Accordion>)
+                 }
+               </>
+             )}
+         </WhiteBackground>
 
          <NavBar />
        </AboutPage>
