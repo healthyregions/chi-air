@@ -1,86 +1,204 @@
-import { asyncBufferFromUrl, parquetReadObjects } from 'hyparquet';
-import {useEffect, useMemo} from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setSensorLocations, setSensorValuesMeanPm25, selectSensorValuesMeanPm25, selectSensorLocations,
-  setSensorGeojsonData
+  setSensorLocations,
+  selectSensorLocations,
+  setSensorGeojsonData,
+  selectSensorParameter,
+  setMetricData,
+  selectMetricData,
+  setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
 } from '../../store/slices/sensorDataSlice';
+import {fetchPq} from "../VariablePanel/common";
 
-// Cache values as they are read
-/*const SensorDataStore = ({  }) => {
-  const [yearly, setYearly] = useState(null);
-  const [seasonal, setSeasonal] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [week, setWeek] = useState(null);
-  const [day, setDay] = useState(null);
-  const [hour, setHour] = useState(null);
-}*/
+// MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
+// AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
+const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
+const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+const s3prefix = `${s3endpoint}/${bucketName}/current`;
 
-// Given a URL to a Parquet file, read it into memory
-// There will always be at least 2 of these - one for locations.parquet and one for each metric displayed (e.g. mean_pm25)
+const allMetrics = ['nowcast_aqi', 'mean_pm25'];
+
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
   const locations = useSelector(selectSensorLocations);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const clickedSensor = useSelector(selectClickedSensor);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metrics = useSelector(selectMetrics);
+  const metricData = useSelector(selectMetricData);
+  const breadcrumbs = useSelector(selectBreadcrumbs);
+  const metricIndex = useSelector(selectMetricIndex);
+  const averageType = useSelector(selectAverageType);
 
-  const sensorIds = useMemo(() => [...new Set(locations.map(l => l.datasourceId))], [locations]);
+  // Awareness of current dataset
+  // TODO: Only fetch new data if we don't already have it?
+  // const mean_pm25 = metricData?.['mean_pm25']?.data;
+  // const nowcast_aqi = metricData?.['nowcast_aqi']?.data;
 
-  const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
-  const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
-
-  // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
-  // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
-  const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet`;
-  const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet`;
-
-  const fetch = async ({ url, columns, rowStart, rowEnd, predicate = undefined }) => {
-    // Fetch the list of location id, name, coordinates
-    return await parquetReadObjects({
-      file: await asyncBufferFromUrl({
-        url
-      }),
-      columns,
-      rowStart,
-      rowEnd,
+  useEffect(() => {
+    // Fetch index JSON file for each metric
+    // This will tell us the first occurrence of each type (e.g. "hour", "day", etc)
+    const startTime = new Date().getTime();
+    allMetrics.forEach(metric_name => {
+      fetch(`${s3prefix}/${metric_name}.index.json`)
+        .then(async index_file_json => {
+          const respJson = await index_file_json.json();
+          dispatch(setMetricIndex({ parameter: metric_name, index: respJson }));
+          const endTime = new Date().getTime();
+          console.log(`Finished locating first rows for ${metric_name}: ${endTime - startTime}ms`);
+        });
     });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    // Fetch the list of location id, name, coordinates
-    fetch({
-      url: locationsUrl,
-      columns: ['datasourceId', 'sourceId', 'locationLatitude', 'locationLongitude', 'name', 'group', 'tags', 'community', 'zip'],
-    }).then(l => dispatch(setSensorLocations(l)));
-  }, [dispatch, locationsUrl]);
+    // Fetch the list of location id, name, coordinates for all sensors
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/locations.parquet.brotli`,
+    }).then(l => {
+      dispatch(
+        setSensorLocations(
+          l?.filter(loc => loc?.currentSourceId)
+            ?.filter(loc => loc?.sourceType === 'CLARITY_NODE')
+        )
+      );
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching sensor locations: ${endTime - startTime}ms`);
+    });
+  }, [dispatch]);
 
   useEffect(() => {
-    // TODO: Support multiple metrics?
-    // Fetch the metric data (currently just mean_pm25) using our list of locations
-    fetch({
-      url: meanPm25Url,
-      columns: ['type','date', ...sensorIds],
+    // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       rowStart: 0,
-      rowEnd: 100
-    }).then(d => dispatch(setSensorValuesMeanPm25(d)));
-  }, [dispatch, meanPm25Url, locations, sensorIds]);
+      rowEnd: 2,
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    });
+
+    // Grab only this row to quickly color the map
+    // fetchPq({
+    //   url: meanPm25Url,
+    //   columns,
+    //   rowStart: startIndex,
+    //   rowEnd: endIndex,
+    // }).then(d => {
+    //   dispatch(setSensorValuesMeanPm25(d));
+    //   const endTime = new Date().getTime();
+    //   console.log(`Finished fetching latest sensor mean_pm25: ${endTime - startTime}ms`);
+    //
+    //   fetchPq({
+    //     url: meanPm25Url,
+    //     columns,
+    //     rowStart: firstRowIndices.hour,
+    //     rowEnd: firstRowIndices.hour+24,
+    //   }).then(d => {
+    //     dispatch(setSensorValuesMeanPm25(d));
+    //     const endTime = new Date().getTime();
+    //     console.log(`Finished fetching last 24-hours mean_pm25: ${endTime - startTime}ms`);
+    //
+    //     fetchPq({
+    //       url: meanPm25Url,
+    //       columns
+    //     }).then(d => {
+    //       dispatch(setSensorValuesMeanPm25(d));
+    //       const endTime = new Date().getTime();
+    //       console.log(`Finished fetching historical mean_pm25: ${endTime - startTime}ms`);
+    //     });
+    //   });
+    // });
+  }, [dispatch, locations, selectedParameter]);
 
   useEffect(() => {
-    //const geojsonUrl = "https://chicago-aq.s3.us-east-2.amazonaws.com/latest.geojson"
-    const sortedHourlyRows = mean_pm25.filter(r => r.period === 'hour' || r.type === 'hour')
-      .sort((a, b) => a.date.localeCompare(b.date))
-      .reverse();
-    const latestHourlyRow = sortedHourlyRows.find(() => true);
-    const previousHourlyRow = sortedHourlyRows.slice(1).find(() => true);
+    if (!clickedSensor){
+      // No sensor clicked? No-op
+      return;
+    }
+    /*if (metricData?.filter(r => r.type === 'hour')?.length < 20) {
+      console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
+      return;
+    }*/
+    // Fetch ~24hrs graph data for the graph when a sensor is clicked
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date', clickedSensor],
+      rowStart: 0,
+      rowEnd: 24
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching 24hr clicked sensor data: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, clickedSensor, selectedParameter]);
+
+  // Fetch latest row(s) of PM2.5 when Details panel opens
+  useEffect(() => {
+    const currentPage = breadcrumbs[breadcrumbs.length - 1];
+    if (!clickedSensor || currentPage !== 'Details') {
+      // No sensor clicked? No-op
+      return;
+    }
+
+    const startTime = new Date().getTime();
+    allMetrics.forEach(parameter => {
+      fetchPq({
+        url: `${s3prefix}/${parameter}.parquet.brotli`,
+        columns: ['type', 'date', clickedSensor],
+        rowStart: 0,
+        rowEnd: 2
+      }).then(data => {
+        dispatch(setMetricData({ parameter, data }));
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching initial Details panel data: ${endTime - startTime}ms`);
+      });
+    });
+  }, [dispatch, clickedSensor, breadcrumbs]);
+
+  useEffect(() => {
+    const currentPage = breadcrumbs[breadcrumbs.length - 1];
+    if (!clickedSensor || currentPage !== 'Details') {
+      // No sensor clicked? No-op
+      return;
+    }
+    /*if (metricData?.filter(r => r.type === 'hour')?.length < 20) {
+      console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
+      return;
+    }*/
+
+    // FIXME: Determine row indices for target data
+    const rowStart = metricIndex[averageType];
+    const rowEnd = Object.keys(metricIndex).find(key => metricIndex[key] > rowStart);
+    console.log(metricIndex);
+    console.log(`Fetching from ${rowStart} to ${rowEnd} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
+
+    // Fetch metric for the Historical Trends graph with the given parameters
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date', clickedSensor],
+      rowStart,
+      rowEnd: rowEnd === -1 ? rowEnd : undefined
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
+
+  useEffect(() => {
+    // Skip rendering if we don't have enough data
+    if (!locations?.length || !metricData?.length) { return; }
+    console.log(`Building GeoJSON from metricData:`, metricData);
+    const startTime = new Date().getTime();
     const geojsonData = {
       type: 'FeatureCollection',
-      features: sensorIds.map((datasourceId) => {
-        const location = locations.find(r => r.datasourceId === datasourceId);
-        const metric_pm25 = mean_pm25.map((r) => ({
-          period: r.period || r.type,
-          date: r.date,
-          [datasourceId]: r[datasourceId]
-        }));
-
+      features: locations?.filter(l => !!l?.currentSourceId && !!l?.datasourceId)?.map((location) => {
         return {
           type: 'Feature',
           geometry: {
@@ -93,23 +211,36 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           // Ensure this is valid GeoJSON format
           properties: {
             ...location,
-            last_update: latestHourlyRow?.[datasourceId] ? latestHourlyRow?.['date'] : previousHourlyRow?.['date'],
-            latest_mean_pm25: latestHourlyRow?.[datasourceId] || previousHourlyRow?.[datasourceId],
-            mean_pm25: metric_pm25
+            metrics: allMetrics.reduce((acc, metric) => ({
+              ...acc,
+              [metric]: {
+                index: metrics?.[metric]?.index,
+                data: metrics?.[metric]?.data?.map(d => ({
+                  type: d.type,
+                  date: d.date,
+                  value: Number(d[location.datasourceId]),
+                }))
+              }
+            }), {}),
           },
         }
-      }),
+      }) || [],
     };
-    dispatch(setSensorGeojsonData(geojsonData));
-  }, [dispatch, locations, mean_pm25, sensorIds]);
 
-  if (!mean_pm25) return <>Loading...</>;
+    console.log(`Built GeoJSON from sensor data: `, geojsonData);
+    dispatch(setSensorGeojsonData(geojsonData));
+
+    const endTime = new Date().getTime();
+    console.log(`Finished building GeoJSON: ${endTime - startTime}ms`);
+  }, [dispatch, locations, metricData, metrics]);
+
+  if (!metricData) return <>Loading...</>;
 
   return (
     DEBUG ? <>
       <h3>Parquet Data:</h3>
       <ul>
-        {mean_pm25.map((record, index) => (
+        {metricData[selectedParameter].map((record, index) => (
           <li key={index}>{/* Render your data here, e.g., record.columnName */}</li>
         ))}
       </ul>

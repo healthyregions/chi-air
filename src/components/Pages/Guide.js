@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import ResourceList from '../../config/resources.json';
 import { ContentContainer } from '../../styled_components';
@@ -21,9 +20,9 @@ const Guide = () => {
                 <h1>Resource Guide</h1>
                 <hr />
                 <p>
-                    The resource guide provides information about relevant websites, toolkits, 
+                    The resource guide provides information about relevant websites, toolkits,
                     and related items that relate to the Chicago environment at a local scale.
-                    The Guide includes information from featured partners, as well as a 
+                    The Guide includes information from featured partners, as well as a
                     curated list of additional resources discovered & recommended.
                     <Gutter height={20}/>
                     Resources are included that are:
@@ -34,15 +33,15 @@ const Guide = () => {
                              website or media attachment, short description of resource &amp; source, and featured image.
                         </li>
                         <li>
-                            <b>Relevant. </b> The resource includes information about Chicago's 
+                            <b>Relevant. </b> The resource includes information about Chicago's
                             environment at a local scale.
                         </li>
                         <li>
-                            <b>Transparent.</b> Funding sources for the resource provided must be 
+                            <b>Transparent.</b> Funding sources for the resource provided must be
                             disclosed during submission.
                         </li>
                         <li>
-                            <b>Equitable. </b> Resources should be accessible for community members 
+                            <b>Equitable. </b> Resources should be accessible for community members
                             and not cost prohibitive. Free and/or open resources will be prioritized.
                         </li>
                     </ul>

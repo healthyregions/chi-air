@@ -24,14 +24,14 @@ export const ClickedSensorExplain = ({ pop }) => {
           <SGHeader>PM 2.5 - Particulate Matter 2.5</SGHeader>
           <SGBody>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</SGBody>
         </Grid>
-        <Grid size={12}>
+        {/*<Grid size={12}>
           <SGHeader>NO2 - Nitrogen Dioxide</SGHeader>
           <SGBody>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</SGBody>
-        </Grid>
-        <Grid size={12}>
+        </Grid>*/}
+        {/*<Grid size={12}>
           <SGHeader>BC - Black Carbon</SGHeader>
           <SGBody>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</SGBody>
-        </Grid>
+        </Grid>*/}
       </Grid>
     </Grid>
   );

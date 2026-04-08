@@ -1,7 +1,10 @@
-import {FormControl, InputLabel, ListSubheader, MenuItem, Select, } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import ListSubheader from "@mui/material/ListSubheader";
+import Select from "@mui/material/Select";
 import {variablePresets} from "../../config";
 import {changeVariable, selectMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
+import MenuItem from "@mui/material/MenuItem";
 
 const VariablesDropdown = () => {
   const mapParams = useSelector(selectMapParams);
@@ -26,7 +29,7 @@ const VariablesDropdown = () => {
   return (
     <>
       <FormControl id="newVariableSelect" variant="outlined" fullWidth>
-        <InputLabel htmlFor="newVariableSelect">Variable</InputLabel>
+        {/*<InputLabel htmlFor="newVariableSelect">Variable</InputLabel>*/}
         <Select
           variant={"filled"}
           value={mapParams.variableName || ''}

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
-import {useMediaQuery} from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 
@@ -18,7 +18,7 @@ export default function About() {
        <AboutPage>
          <NavBar />
 
-         <WhiteBackground largeScreen={largeScreen}>
+         <WhiteBackground $largeScreen={largeScreen}>
            <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
              <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
                About the Network
@@ -38,7 +38,7 @@ export default function About() {
 
          <hr style={{ margin: '3rem 0', borderColor: '#41B6E6' }} />
 
-         <GradientBackground largeScreen={largeScreen}>
+         <GradientBackground $largeScreen={largeScreen}>
            <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                           topRowText={'Some'}
                           bottomRowTextBlack={'Frequently Asked'}

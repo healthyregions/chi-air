@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+/*
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // Import helper libraries
@@ -11,10 +12,10 @@ import { applyFilterValues, removeFilterValues } from '../../store/slices/legacy
 import {colors, variablePresets} from '../../config';
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {IconButton} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import {FaInfoCircle} from "@react-icons/all-files/fa/FaInfoCircle";
+import {FaInfoCircle} from "react-icons/fa";
 
 const HistogramContainer = styled.div`
   position:relative;
@@ -33,7 +34,7 @@ const ChartContainer = styled.div`
   margin-top:5px;
   height:125px;
   cursor:crosshair !important;
-  .recharts-cartesian-axis-tick {    
+  .recharts-cartesian-axis-tick {
     font-size: .55rem;
     font-family: Roboto, sans-serif;
   }
@@ -209,7 +210,7 @@ export default function Histogram({
     setSliderValue([range.min, range.max]);
   }
 
-  const [popoverAnchorEl, setPopoverAncherEl] = React.useState(null);
+  const [popoverAnchorEl, setPopoverAncherEl] = useState(null);
   const isPopoverOpen = Boolean(popoverAnchorEl)
   const popoverId = isPopoverOpen ? 'simple-popover' : undefined;
 
@@ -286,3 +287,4 @@ export default function Histogram({
     </HistogramContainer>
   )
 }
+*/

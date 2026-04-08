@@ -2,26 +2,25 @@
 // and displays it in the right side panel.
 
 // Import main libraries
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import helper libraries
 import styled from 'styled-components';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import {colors} from '../../config';
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {
+  selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
   selectClickedSensor, selectSelectedAreas,
-  selectSelectedSensors, selectSensorLocations,
-  selectSensorValuesMeanPm25, setClickedSensor,
-  setLocale, setSelectedAreas, setSelectedSensors,
+  selectSelectedSensors, selectSensorLocations, selectSensorParameter,
+  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
+import {FaArrowCircleLeft} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
-import {FaGripLines} from "@react-icons/all-files/fa/FaGripLines";
+import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import {ClickedSensorPanel} from "../VariablePanel/Panels/ClickedSensorPanel";
 import {SelectedAreaPanel} from "../VariablePanel/Panels/SelectedAreaPanel";
@@ -33,17 +32,17 @@ import {Geocoder} from "./Geocoder";
 
 const DataPanelContainer = styled.div`
     position:fixed;
-    width: ${({ largeScreen }) => largeScreen ? '433px' : 'calc(100% - 1em)'};
-    top: ${({ largeScreen }) => largeScreen ? '2rem' : 'calc(60% + 45px)'};
-    left: ${({ largeScreen }) => largeScreen ? '' : '.75em'};
-    right: ${({ largeScreen }) => largeScreen ? '2rem' : ''};
-    z-index: ${({ largeScreen }) => largeScreen ? 5 : 51};
-    display: ${({ largeScreen, otherPanels, dataLength }) => largeScreen && (otherPanels || dataLength === 0) ? 'none' : 'initial'};
+    width: ${({ $large }) => $large ? '433px' : 'calc(100% - 1em)'};
+    top: ${({ $large }) => $large ? '2rem' : 'calc(60% + 45px)'};
+    left: ${({ $large }) => $large ? '' : '.75em'};
+    right: ${({ $large }) => $large ? '2rem' : ''};
+    z-index: ${({ $large }) => $large ? 5 : 51};
+    display: ${({ $large, $otherPanels, $dataLength }) => $large && ($otherPanels || $dataLength === 0) ? 'none' : 'initial'};
 
     transition:250ms all;
-    transform: ${({ largeScreen, isOpen }) => isOpen ? 'none' : (largeScreen ? 'translateX(calc(100% + 2rem))' : 'translateX(calc(-100% - 1em))')};
+    transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(100% + 2rem))' : 'translateX(calc(-100% - 1em))')};
         
-    padding: ${({ largeScreen }) => largeScreen ? '36px 29px' : '2em 0 0 0'};
+    padding: ${({ $large }) => $large ? '36px 29px' : '2em 0 0 0'};
     background: linear-gradient(180deg, #e3f4fb 0%, #ffffff 80%);
     border: 1px solid rgba(65, 182, 230, 1);
     border-radius: 8px;
@@ -118,7 +117,7 @@ const DataPanelContainer = styled.div`
 `;
 
 // DataPanel Function Component
-const DataPanel = ({ handleGeocoder }) => {
+const DataPanel = ({ mapRef }) => {
   const dispatch = useDispatch();
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
@@ -127,7 +126,8 @@ const DataPanel = ({ handleGeocoder }) => {
 
   // New sensor data
   const selectedSensors = useSelector(selectSelectedSensors);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const geojsonData = useSelector(selectSensorGeojsonData);
   const clickedSensor = useSelector(selectClickedSensor);
   const locations = useSelector(selectSensorLocations);
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
@@ -145,13 +145,14 @@ const DataPanel = ({ handleGeocoder }) => {
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25.find((r) => r.type === 'hour');
+  const latestRow = geojsonData?.features?.[0]?.properties?.metrics?.[selectedParameter]?.data?.[0];
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
 
   // Breadcrumbs help us track what page we're on
-  const [breadcrumbs, setBreadcrumbs] = useState(['root']);
+  const breadcrumbs = useSelector(selectBreadcrumbs);
+  const setBreadcrumbs = (bc) => dispatch(setBreadcrumbsAction(bc));
 
   // Page selector logic for navigating the panel via breadcrumbs and links
   const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -173,7 +174,7 @@ const DataPanel = ({ handleGeocoder }) => {
   };
 
   return (
-    <DataPanelContainer largeScreen={largeScreen} isOpen={!!panelState.info} id="data-panel">
+    <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={(l) => dispatch(setLocale(l?.toLowerCase()?.slice(0,2)))} options={['English','Español']} /></Grid>
@@ -193,7 +194,7 @@ const DataPanel = ({ handleGeocoder }) => {
           } />
         </>}
 
-        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={firstHourlyRow?.date} />}
+        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={latestRow?.date} />}
         {(clickedSensor || selectedSensors?.length > 0) && <Divider />}
         {!clickedSensor && selectedSensors?.length > 0 && <SelectedAreaPanel  />}
         {clickedSensor && <ClickedSensorPanel push={pushPage} pop={popPage} />}

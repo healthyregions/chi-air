@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Grid } from '@mui/material';
-    
+import Grid from '@mui/material/Grid';
+
 const TeamBio = styled(Grid)`
     display:flex;
     h4 {
@@ -41,7 +41,7 @@ const TeamBio = styled(Grid)`
     }
 `
 
-const CoreMemberBio = ({member, columns}) => 
+const CoreMemberBio = ({member, columns}) =>
     <TeamBio item xs={12} {...columns}>
         <img src={`${process.env.PUBLIC_URL}/img/people/${member.img}`} alt={`${member.name}`}/>
         <span>

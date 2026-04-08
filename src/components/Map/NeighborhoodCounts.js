@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {  useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 // Import helper libraries
 import styled from 'styled-components';

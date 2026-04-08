@@ -1,16 +1,22 @@
-import {FaHistory} from "@react-icons/all-files/fa/FaHistory";
-import {selectSensorGeojsonData} from "../../store/slices/sensorDataSlice";
+import {FaHistory} from "react-icons/fa";
+import {
+  selectSensorGeojsonData,
+  selectSensorParameter
+} from "../../store/slices/sensorDataSlice";
 import {useSelector} from "react-redux";
-import {Tooltip} from "@mui/material";
-import {formatDate, getLatestValue} from "./common";
+import Tooltip from "@mui/material/Tooltip";
+import {formatDate, getMetadata} from "./common";
 
 
 export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
   const geojsonData = useSelector(selectSensorGeojsonData);
+  const selectedParameter = useSelector(selectSensorParameter);
+  //const locations = useSelector(selectSensorLocations);
+  //const metricData = useSelector(selectMetricData);
 
-  const latest = timestamp ?? getLatestValue(geojsonData, datasourceId)?.last_update;
+  const { latestRow } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId });
   const {time, date, utc} = formatDate({
-    timestamp: latest,
+    timestamp: timestamp || latestRow?.['date'],
     format: 'long'
   });
 

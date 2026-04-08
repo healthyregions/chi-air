@@ -1,33 +1,107 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
   selectAverageType,
-  selectClickedSensor, selectSensorGeojsonData, selectSensorLocations,
-  selectSensorValuesMeanPm25, setAverageType
+  selectClickedSensor, selectMetricData,
+  selectMetrics, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
+  setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
-import {Divider, getMetadata, LButton, LHeader, LinkText} from "../common";
+import {Divider, getLocation, getMetadata, LButton, LHeader, LinkText} from "../common";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {LastUpdatedDisplay} from "../LastUpdatedDisplay";
-import {FaChartLine} from "@react-icons/all-files/fa/FaChartLine";
-import {FormControl, InputLabel, MenuItem} from "@mui/material";
+import {FaChartLine} from "react-icons/fa";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import {SensorBarChart} from "../SensorBarChart";
 import {useState} from "react";
+import Menu from "@mui/material/Menu";
 
+const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
+const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+
+const downloadFile = (fileContents, filename) => {
+  // Create a Blob w/ a temporary URL from JSON string
+  const blob = new Blob([fileContents], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  // Create an invisible anchor element and click it to trigger download
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link); // Required for some browsers
+  link.click();
+
+  // Cleanup: remove the link and revoke the URL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+const convertGeoJsonToCsv = (geojsonData, separator= ',') => {
+  // Build up our CSV rows as text, starting with the headers
+  const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', 'mean_pm25'];
+  let csvString = csvHeaders.join(separator) + '\n';
+  geojsonData?.features?.forEach(f => {
+    const { datasourceId, mean_pm25, locationLongitude, locationLatitude } = f.properties;
+    mean_pm25.forEach((reading) => {
+      const { type, date, value, mean_pm25 } = reading;
+      csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
+    });
+  });
+  return csvString;
+}
 
 export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
-  const [, setSelectedParameter] = useState(null);
+
   const averageType = useSelector(selectAverageType);
   const clickedSensor = useSelector(selectClickedSensor);
+  const sensorGeojson = useSelector(selectSensorGeojsonData);
 
   const locations = useSelector(selectSensorLocations);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
+  const metrics = useSelector(selectMetrics);
+
+  const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {clickedLocation, latest, firstHourlyRow, recentValueCount} = getMetadata(clickedSensor, locations, geojsonData, mean_pm25);
+  const clickedLocation = getLocation(locations, clickedSensor);
+  const {latestRow} = getMetadata({
+    parameter: selectedParameter,
+    datasourceId: clickedSensor,
+    geojsonData
+  });
+
+  const downloadGeoJson = (geojsonData = sensorGeojson, filename = 'chicago_mean_pm25.geojson') => {
+    downloadFile(JSON.stringify(geojsonData, null, 2), filename);
+  };
+
+  const downloadCsv = (geojsonData = sensorGeojson, separator= ',', filename = 'chicago_mean_pm25.csv') => {
+    downloadFile(convertGeoJsonToCsv(geojsonData), filename);
+  };
+
+  // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
+  // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
+  const downloadParquet = () => {
+    window.open(`${s3endpoint}/${bucketName}/current/${selectedParameter}.parquet.brotli`, '_blank');
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
+  const latestAqi = metrics?.['nowcast_aqi']?.data?.[0]?.[clickedSensor];
+  const prevAqi = metrics?.['nowcast_aqi']?.data?.[1]?.[clickedSensor];
+  const latestPm25 = metrics?.['mean_pm25']?.data?.[0]?.[clickedSensor];
+  const prevPm25 = metrics?.['mean_pm25']?.data?.[1]?.[clickedSensor];
+
+  const displayedAqi = latestAqi || prevAqi;
+  const displayedPm25 = latestPm25 || prevPm25;
 
   return(
     <Grid size={11}>
@@ -35,20 +109,20 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'AQI : ??'} disabled textAlign={'center'} />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`AQI : ${displayedAqi ? Number(displayedAqi).toFixed(0) + ' AQI' : '??'}`} disabled />
         </Grid>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'PM 2.5 : ' + latest?.latest_mean_pm25} disabled textAlign={'center'} />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM 2.5 : ${displayedPm25 ? Number(displayedPm25).toFixed(1) + ' μg/m³' : '??'}`} disabled />
         </Grid>
       </Grid>
-      <Grid container spacing={2} marginTop={'1rem'}>
+      {/*<Grid container spacing={2} marginTop={'1rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'NO₂ : ??'} disabled textAlign={'center'} />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'NO₂ : ??'} disabled />
         </Grid>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled textAlign={'center'} />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled />
         </Grid>
-      </Grid>
+      </Grid>*/}
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'center'}>
         <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
         <LButton onClick={() => push(['Explain'])}>Explain &rarr;</LButton>
@@ -61,19 +135,22 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
           <FaChartLine style={{ width: '28px', height: '28px', color: 'rgba(65, 182, 230, 1)' }} />
           <LHeader style={{ marginLeft: '0.5rem', fontSize: '18px' }}>Historical Trends</LHeader>
         </div>
-        <LButton onClick={() => {
-          const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
-          const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
-
-          // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
-          // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
-          const meanPm25Url = `${s3endpoint}/${bucketName}/current/mean_pm25.parquet`;
-          //const locationsUrl = `${s3endpoint}/${bucketName}/current/locations.parquet`;
-          window.open(meanPm25Url, '_blank');
-          //window.open(locationsUrl, '_blank');
-
-          // TODO: transfer to CSV before download?
-        }}>Download &rarr;</LButton>
+        <LButton onClick={handleClick}>Download &rarr;</LButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          slotProps={{
+            list: {
+              'aria-labelledby': 'basic-button',
+            },
+          }}
+        >
+          <MenuItem onClick={() => {downloadCsv();handleClose();}}>CSV</MenuItem>
+          <MenuItem onClick={() => {downloadGeoJson();handleClose();}}>GeoJSON</MenuItem>
+          <MenuItem onClick={() => {downloadParquet();handleClose();}}>Parquet</MenuItem>
+        </Menu>
       </Grid>
 
       <Grid container spacing={2}>
@@ -82,13 +159,13 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             <InputLabel htmlFor="paramSelect">Parameter</InputLabel>
             <Select
               variant={"filled"}
-              value={'mean_pm25'}
+              value={selectedParameter}
               onChange={(e) => setSelectedParameter(e.target.value)}
             >
+              <MenuItem value="nowcast_aqi">AQI</MenuItem>
               <MenuItem value="mean_pm25">PM 2.5</MenuItem>
-              <MenuItem value="mean_aqi">AQI</MenuItem>
-              <MenuItem value="mean_no2">NO₂</MenuItem>
-              <MenuItem value="mean_bc">BC</MenuItem>
+              {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
+              {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
             </Select>
           </FormControl>
         </Grid>
@@ -113,20 +190,17 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={0}>
         <Grid offset={2} size={10}>
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 && <>Loading, Please Wait...</>}
-          {firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && recentValueCount === 0 && <Grid>No recent readings found.</Grid> }
+          {!latestRow && <Grid>No recent readings found.</Grid> }
         </Grid>
       </Grid>
 
-      {recentValueCount > 0 && <>
-        <SensorBarChart margin={{ left: 60 }}
-                        showScroll={true}
-                        averageType={averageType}
-                        selectedParameter={'mean_pm25'}
-                        mean_pm25={mean_pm25?.filter(d => d.type === averageType)?.map(r =>
-                          ({ type: r.type, date: r.date, mean_pm25: r[clickedSensor] })
-                        )} />
-      </>}
+      <SensorBarChart margin={{ left: 60 }}
+                      showScroll={true}
+                      averageType={averageType}
+                      selectedParameter={selectedParameter}
+                      metricData={metricData?.filter(d => d.type === averageType)?.map(r =>
+                        ({ type: r.type, date: r.date, [selectedParameter]: r[clickedSensor] })
+                      )} />
     </Grid>
   );
 };

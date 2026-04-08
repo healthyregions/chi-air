@@ -4,9 +4,10 @@ import styled from "styled-components";
 import Grid from "@mui/material/Grid";
 
 import {Geocoder, NavBar} from "../../components";
-import {Button, useMediaQuery} from "@mui/material";
-import {FaArrowRight} from "@react-icons/all-files/fa/FaArrowRight";
-import {FaExternalLinkAlt} from "@react-icons/all-files/fa/FaExternalLinkAlt";
+import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {FaArrowRight} from "react-icons/fa";
+import {FaExternalLinkAlt} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, useSelectorAsState, WhiteBackground} from "../VariablePanel/common";
 import {
@@ -20,8 +21,8 @@ import {useDispatch, useSelector} from "react-redux";
 const TitleBanner = styled(Grid)`
     display: flex;
     align-items: end;
-    flex-direction: ${({ largeScreen }) => largeScreen ? 'column' : 'row-reverse'};
-    justify-content: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
+    flex-direction: ${({ $largeScreen }) => $largeScreen ? 'column' : 'row-reverse'};
+    justify-content: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
     font-family: Lexend;
 `;
 
@@ -32,7 +33,7 @@ const brandColors = {
 }
 const ChiHeader = styled.h1`
     font-family: Lexend,sans-serif;
-    font-size: ${({ largeScreen }) => largeScreen ? '64px' : '48px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '64px' : '48px'};
     text-align: right;
 `;
 const ChiBlackText = styled.span`
@@ -51,14 +52,14 @@ const ChiDarkBlueText = styled.span`
 const ChiLightBlueText = styled.span`
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiLightBlue};
-    font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '24px'};
     font-weight: 400;
-    text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
+    text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
 `;
 const ChiRedText = styled.span`
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiRed};
-    font-size: ${({ largeScreen }) => largeScreen ? '32px' : '24px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '24px'};
     font-weight: 700;
     text-align: right;
 `;
@@ -67,7 +68,7 @@ const ChiSubtitle = styled(Grid)`
     margin-top: 3rem;
     display: flex;
     align-self: end;
-    text-align: ${({ largeScreen }) => largeScreen ? 'right' : 'center'};
+    text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
     font-family: Space Grotesk;
     font-size: 18px;
     font-weight: 400;
@@ -94,7 +95,7 @@ const ResourceLabel = styled.div`
     font-weight: 700;
     font-size: 24px;
     color: #005899;
-    min-height: ${({ largeScreen }) => largeScreen ? '4rem' : ''}
+    min-height: ${({ $largeScreen }) => $largeScreen ? '4rem' : ''}
 `;
 const ResourceDescription = styled.div`
     text-align: center;
@@ -151,20 +152,20 @@ export default function Home() {
     <>
       <NavBar />
 
-      <WhiteBackground largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
-          <TitleBanner container spacing={0} largeScreen={largeScreen}>
-            <ChiHeader largeScreen={largeScreen}>
-              <ChiBlackText largeScreen={largeScreen}>Our</ChiBlackText>
-              <ChiDarkBlueText largeScreen={largeScreen}>Air</ChiDarkBlueText>
+          <TitleBanner container spacing={0} $largeScreen={largeScreen}>
+            <ChiHeader $largeScreen={largeScreen}>
+              <ChiBlackText $largeScreen={largeScreen}>Our</ChiBlackText>
+              <ChiDarkBlueText $largeScreen={largeScreen}>Air</ChiDarkBlueText>
             </ChiHeader>
 
-            <ChiLightBlueText largeScreen={largeScreen}>Mapping the Open Air Network.
+            <ChiLightBlueText $largeScreen={largeScreen}>Mapping the Open Air Network.
               {largeScreen && <br/>}
-              <ChiRedText largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
+              <ChiRedText $largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
             </ChiLightBlueText>
 
-            <ChiSubtitle largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
+            <ChiSubtitle $largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
               Air pollution is often invisible, but its impact is real.
               Now, real-time air quality data is available for every
               neighborhood, for every Chicagoan, ensuring you and your
@@ -179,7 +180,7 @@ export default function Home() {
       </WhiteBackground>
 
 
-      <GradientBackground largeScreen={largeScreen}>
+      <GradientBackground $largeScreen={largeScreen}>
         <ContentContainer>
           <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
             <Grid item sm={6} xs={12}>
@@ -196,8 +197,7 @@ export default function Home() {
         </ContentContainer>
       </GradientBackground>
 
-      
-      <WhiteBackground largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer style={{marginBottom: 80}}>
           <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                         topRowText={'Access useful'}
@@ -209,7 +209,7 @@ export default function Home() {
           />
         </ContentContainer>
       </WhiteBackground>
-      
+
 
       <ContentContainer>
         <Grid container spacing={8} marginBottom={16} alignItems={'start'} rowSpacing={4}>
@@ -222,7 +222,7 @@ export default function Home() {
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <ResourceLabel largeScren={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
+                <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
                 <ResourceDescription>{resource?.description}</ResourceDescription>
               </Grid>
             </Grid>
@@ -231,7 +231,7 @@ export default function Home() {
       </ContentContainer>
 
 
-      <WhiteBackground largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
           <SectionHeader imgSrc={'/icons/chiair/aq-network.svg'}
                         topRowText={'Empowered by a'}
@@ -241,12 +241,12 @@ export default function Home() {
         </ContentContainer>
       </WhiteBackground>
 
-      <GradientBackground largeScreen={largeScreen} style={{ marginBottom: 0 }}>
+      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <ContentContainer>
           <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'flex-start'}>
             <img style={{ maxWidth: '300px', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
-              
+
               <Grid container spacing={0}>
                 <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of {sensorCount} high-precision sensors to blanket the city.</div>
                 <div style={{ margin: '2rem 0 3rem' }}>By operating the largest community air monitoring network in the United States (and the second largest in the world), The Chi Air Quality Network sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most. {!largeScreen && <br/> }<NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>

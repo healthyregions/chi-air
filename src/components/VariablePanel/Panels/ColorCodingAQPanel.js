@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import {LButton, LHeader, SGBody} from "../common";
-import {FaArrowCircleLeft} from "@react-icons/all-files/fa/FaArrowCircleLeft";
+import {FaArrowCircleLeft} from "react-icons/fa";
 import {pm2_5Ranges} from "../../../config";
 
 
@@ -20,7 +20,7 @@ export const ColorCodingAQPanel = ({ pop }) => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis Ut enim ad minim veniam, quis Ut enim ad minim veniam, quis.
           </SGBody>
 
-          {pm2_5Ranges?.map(({ range, label, color, border}, index) => <Grid container spacing={2}>
+          {pm2_5Ranges?.map(({ range, label, color, border}, index) => <Grid key={`color-coding-${index}`} container spacing={2}>
             <Grid size={12} key={`overlay-key-${index}-${label}`} alignItems={'center'} display={'flex'}>
               <span style={{ display: 'inline-block', backgroundColor: color, width: '19px', height: '64px', margin: '0.3rem 0' }}></span>
               <div style={{ marginLeft: '1rem' }}>

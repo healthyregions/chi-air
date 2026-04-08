@@ -1,5 +1,4 @@
-import {Chip} from "@mui/material";
-import React from "react";
+import Chip from "@mui/material/Chip";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 

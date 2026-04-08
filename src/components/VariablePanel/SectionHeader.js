@@ -1,10 +1,11 @@
 import Grid from "@mui/material/Grid";
 import styled from "styled-components";
-import {Button, useMediaQuery} from "@mui/material";
+import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 
 const LButton = styled(Button)`
-    font-family: Lexend,serif;
+    font-family: Lexend,sans-serif;
     text-transform: none;
     color: #005899;
 `;
@@ -14,12 +15,12 @@ const brandColors = {
   chiLightBlue: '#2D9ECD'
 }
 const ChiBlackText = styled(Grid)`
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     font-weight: 400;
     font-style: normal;
 `;
 const ChiRedText = styled.span`
-    font-family: Lexend;
+    font-family: Lexend,sans-serif;
     color: ${brandColors.chiRed};
     font-weight: 700;
     text-align: right;

@@ -1,11 +1,13 @@
-// AQIColorScale.js
+// AQColorScale.js
 import {colors, pm2_5Ranges} from "../../config";
 import styled from "styled-components";
 import Grid from "@mui/material/Grid";
-import {Tooltip, useMediaQuery} from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {FaKey} from "@react-icons/all-files/fa/FaKey";
+import {FaKey} from "react-icons/fa";
+import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -15,8 +17,8 @@ const ColorScaleContainer = styled.div`
   border: 1px solid rgba(65, 182, 230, 1);
   min-width:433px;
   right:2rem;
-  top: ${({ largeScreen }) => largeScreen ? '' : '1.5rem'};
-  bottom: ${({ largeScreen }) => largeScreen ? '2rem' : ''};
+  top: ${({ $large }) => $large ? '' : '1.5rem'};
+  bottom: ${({ $large }) => $large ? '2rem' : ''};
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
@@ -122,25 +124,30 @@ const ColorScaleContainer = styled.div`
     
 `;
 
-const AQIColorScale = () => {
+export const AQColorScale = () => {
   const dispatch = useDispatch();
   const panelState = useSelector(selectPanelState);
+  const selectedParameter = useSelector(selectSensorParameter);
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
-  const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }))
+  const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }));
 
   return (
-    <ColorScaleContainer largeScreen={largeScreen} className={panelState.key ? 'open' : ''}>
+    <ColorScaleContainer $large={largeScreen} className={panelState.key ? 'open' : ''}>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem' }}>
-        <Grid size={3} style={{ textAlign: 'right' }}>
+        {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Air Quality Index'}>AQI</Tooltip>
-        </Grid>
+        </Grid>}
+        {selectedParameter === 'mean_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM 2.5</Tooltip>
+        </Grid>}
         <Grid size={1}></Grid>
         <Grid size={8}>Health Category</Grid>
       </Grid>
-      { pm2_5Ranges?.map(({ range, label, color, border}, index) => (
-        <Grid key={`${index}-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk', margin: '0.5rem 0' }}>
-          <Grid size={3} style={{ textAlign: 'right', }}><small>{range}</small></Grid>
+      { pm2_5Ranges?.map(({ pm25_min, pm25_max, aqi_min, aqi_max, label, color, border}, index) => (
+        <Grid key={`color-range-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk', margin: '0.5rem 0' }}>
+          {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right', }}><small>{Number(aqi_min)}{Number(aqi_max) > 999 ? '+' : <> - {Number(aqi_max)}</>}</small></Grid>}
+          {selectedParameter === 'mean_pm25' && <Grid size={3} style={{ textAlign: 'right', }}><small>{pm25_min.toFixed(1)}{pm25_max.toFixed(1) > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>}</small></Grid>}
           <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span
               key={`overlay-key-${index}-${label}`}
@@ -165,4 +172,3 @@ const AQIColorScale = () => {
   );
 }
 
-export default AQIColorScale;
