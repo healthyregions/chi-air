@@ -2,7 +2,6 @@
 // and displays it in the right side panel.
 
 // Import main libraries
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // Import helper libraries
@@ -11,10 +10,10 @@ import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSli
 import {colors} from '../../config';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
+  selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
   selectClickedSensor, selectSelectedAreas,
-  selectSelectedSensors, selectSensorLocations,
-  selectSensorValuesMeanPm25, setClickedSensor,
-  setLocale, setSelectedAreas, setSelectedSensors,
+  selectSelectedSensors, selectSensorLocations, selectSensorParameter,
+  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -127,7 +126,8 @@ const DataPanel = ({ mapRef }) => {
 
   // New sensor data
   const selectedSensors = useSelector(selectSelectedSensors);
-  const mean_pm25 = useSelector(selectSensorValuesMeanPm25);
+  const selectedParameter = useSelector(selectSensorParameter);
+  const geojsonData = useSelector(selectSensorGeojsonData);
   const clickedSensor = useSelector(selectClickedSensor);
   const locations = useSelector(selectSensorLocations);
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
@@ -145,13 +145,14 @@ const DataPanel = ({ mapRef }) => {
 
   // Grab our previously-fetched data and use that to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const firstHourlyRow = mean_pm25?.find((r) => r.type === 'hour');
+  const latestRow = geojsonData?.features?.[0]?.properties?.metrics?.[selectedParameter]?.data?.[0];
 
   // handles panel open/close
   const handleOpenClose = () => dispatch(setPanelState({ info: !panelState.info }))
 
   // Breadcrumbs help us track what page we're on
-  const [breadcrumbs, setBreadcrumbs] = useState(['root']);
+  const breadcrumbs = useSelector(selectBreadcrumbs);
+  const setBreadcrumbs = (bc) => dispatch(setBreadcrumbsAction(bc));
 
   // Page selector logic for navigating the panel via breadcrumbs and links
   const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -193,7 +194,7 @@ const DataPanel = ({ mapRef }) => {
           } />
         </>}
 
-        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={firstHourlyRow?.date} />}
+        {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={latestRow?.date} />}
         {(clickedSensor || selectedSensors?.length > 0) && <Divider />}
         {!clickedSensor && selectedSensors?.length > 0 && <SelectedAreaPanel  />}
         {clickedSensor && <ClickedSensorPanel push={pushPage} pop={popPage} />}
