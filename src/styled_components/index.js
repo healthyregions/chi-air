@@ -159,9 +159,9 @@ export const ContentContainer = styled.div`
     padding-left:20px;
   }
   a {
-    font-weight:bold;
+    font-weight:700;
     text-decoration:none;
-    color: ${colors.chicagoDarkBlue};
+    color: '#005899';
   }
   hr {
     display: block;
