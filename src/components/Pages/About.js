@@ -6,7 +6,6 @@ import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 // import {NavLink, useNavigate} from "react-router-dom";
 
-
 const AboutPage = styled.div`
     background:white;
 `;
@@ -44,6 +43,12 @@ export default function About() {
                 By prioritizing clear visual hierarchy and transparent metadata, the dashboard reflects our mission of providing easy access to Chicago's air quality information.
              </Grid> */}
            </Grid>
+         </WhiteBackground>
+
+         <WhiteBackground $largeScreen={largeScreen}>
+            <Grid container spacing={3} justifyContent={'center'} textAlign={'center'}>
+              <div class="item"><img src="/img/sensor-calibration.jpg" /></div>
+            </Grid>
          </WhiteBackground>
 
 
