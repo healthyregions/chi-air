@@ -119,7 +119,7 @@ export default function Nav({
         <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
           <Grid size={4}>
             {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-              <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} />
+              {/* <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} /> */}
               <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
               {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
               <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
