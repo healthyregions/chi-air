@@ -114,13 +114,13 @@ export default function Nav({
   const loc = useLocation();
   const navigate = useNavigate();
 
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  //const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const largeScreen = useMediaQuery('(min-width: 600px)');
-  const logoClicked = () => {
-    if (largeScreen) { return; }
-    setMobileNavOpen(!mobileNavOpen)
-  };
+  // const logoClicked = () => {
+  //   if (largeScreen) { return; }
+  //   setMobileNavOpen(!mobileNavOpen)
+  // };
 
   return (
     <>
@@ -128,7 +128,7 @@ export default function Nav({
         <ContentContainer>
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size={4}>
-              {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'0rem'}>
+              {(largeScreen /*|| mobileNavOpen*/) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'0rem'}>
                 <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} />
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
                 {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
