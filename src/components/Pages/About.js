@@ -42,9 +42,27 @@ export default function About() {
         //    ...    ...    ...    ...    ...    ...
         // Insert contents from Box spreadsheet:
         //    See https://uofi.app.box.com/file/2139463971757?s=ee3f7ar6kbrltnysgyfz0ewhtg2xod7o
+      },
+      {
+        category: "map",
+        question: "Test 123?",
+        answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide.",
+        //    ...    ...    ...    ...    ...    ...
+        // Insert contents from Box spreadsheet:
+        //    See https://uofi.app.box.com/file/2139463971757?s=ee3f7ar6kbrltnysgyfz0ewhtg2xod7o
+      },
+            {
+        category: "map",
+        question: "Test 456?",
+        answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide.",
+        //    ...    ...    ...    ...    ...    ...
+        // Insert contents from Box spreadsheet:
+        //    See https://uofi.app.box.com/file/2139463971757?s=ee3f7ar6kbrltnysgyfz0ewhtg2xod7o
       }
     ];
 
+
+    
     return (
        <AboutPage>
          <NavBar />
@@ -178,6 +196,9 @@ export default function About() {
                </>
              )}
          </WhiteBackground>
+
+
+
 
          <NavBar />
        </AboutPage>
