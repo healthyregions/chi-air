@@ -19,8 +19,8 @@ const AboutPage = styled.div`
 `;
 
 export default function About() {
-    const [expandAll, setExpandAll] = useState(false);
-    const categories = ['Map', 'Protocol', 'Parameters'];
+    const [expandAll, setExpandAll] = useState(true);
+    const categories = ['Data', 'Protocol', 'Parameters','Map'];
     const [selectedCategories, setSelectedCategories] = useState([]);
 
     const largeScreen = useMediaQuery('(min-width: 600px)');
@@ -36,9 +36,9 @@ export default function About() {
 
     const faqs = [
       {
-        category: "map",
-        question: "What do the colors on the map mean?",
-        answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide."
+        category: "data",
+        question: "How can I access the data?",
+        answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map) and direct download on the City Data Portal."
       },
       {
         category: "parameters",
@@ -52,18 +52,8 @@ export default function About() {
       },
       {
         category: "protocol",
-        question: "How often is the data updated?",
-        answer: "We update the dashboard hourly. However, some sensors may have a slight delay depending on their connectivity. Always check the 'Last Updated' timestamp at the top of the map."
-      },
-      {
-        category: "protocol",
         question: "Where does this data come from and where is it stored?",
         answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface."
-      },
-      {
-        category: "protocol",
-        question: "Are there plans to increase the frequency of how often the data is uploaded?",
-        answer: "Data updates are limited in part by sensor connectivity, programming interface restrictions, and quality assurance. To ensure the highest quality of data, we do not plan to update the frequency of data until the beginning of 2027, at the earliest. At that time, we may have sufficient data for sensor calibration and sensitivity analyses."
       },
       {
         category: "protocol",
@@ -76,15 +66,26 @@ export default function About() {
         answer: "Sensors are maintained by the Chicago Department of Transportation, as contracted through sensor owners."
       },
       {
-        category: "data",
-        question: "How can I access the data?",
-        answer: "Data can be accessed in a number of ways, including: direct download on this website and direct download on the City Data Portal."
+        category: "protocol",
+        question: "How often is the data updated?",
+        answer: "We update the dashboard hourly. However, some sensors may have a slight delay depending on their connectivity. Always check the 'Last Updated' timestamp at the top of the map."
+      },
+      {
+        category: "protocol",
+        question: "Are there plans to increase the frequency of how often the data is uploaded?",
+        answer: "Data updates are limited in part by sensor connectivity, programming interface restrictions, and quality assurance. To ensure the highest quality of data, we do not plan to update the frequency of data until the beginning of 2027, at the earliest. At that time, we may have sufficient data for sensor calibration and sensitivity analyses."
       },
       {
         category: "protocol",
         question: "Can I get access to raw, uncalibrated data? If not, how can I trust the data provided?",
-        answer: "We follow best practices and recommendations as communicated by Clarity, the manufactuers of the air quality sensors, as well as evidence-based, published research on air quality sensor handling. We recommend using data available for download, as it is the highest quality measurements we are able to provide. NowCast AQI measures by Clarity have already undergone data cleaning and calibration, with Clarity processes published and available on their website. Particulate matter data cleaning processes we implement on calibrated Clarity measures include checking for faulty or offline sensors. Any additional calibration will occur after one year of data measurements, in line with standard practices in environmental sensor research. Our final protocol is undergoing manuscript review, and will be made available on this website upon publication."
-      }
+        answer: "Raw measures are available on the City of Chicago Data Portal. However, we recommend using calibrated measurements that take into account the limits of Clarity sensor technology and related processes, as raw measurements may not measure actual air quality estimates (versus noise from sensors that changes in different environmental conditions). We follow best practices and recommendations as communicated by Clarity, the manufactuers of the air quality sensors, as well as evidence-based, published research on air quality sensor handling. We recommend using data available for download, as it is the highest quality measurements we are able to provide. NowCast AQI measures by Clarity have already undergone data cleaning and calibration, with Clarity processes published and available on their website. Particulate matter data cleaning processes we implement on calibrated Clarity measures include checking for faulty or offline sensors. Any additional calibration will occur after one year of data measurements, in line with standard practices in environmental sensor research. Our final protocol is undergoing manuscript review, and will be made available on this website upon publication."
+      },
+      {
+        category: "map",
+        question: "What do the colors on the map mean?",
+        answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide."
+      },
+
       ];
 
 
