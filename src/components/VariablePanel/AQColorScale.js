@@ -15,9 +15,8 @@ const ColorScaleContainer = styled.div`
   position:fixed;
   border-radius: 8px;
   border: 1px solid rgba(65, 182, 230, 1);
-  min-width:433px;
-  right:2rem;
-  top: ${({ $large }) => $large ? '' : '1.5rem'};
+  width:433px;
+  top: ${({ $large }) => $large ? '' : '0'};
   bottom: ${({ $large }) => $large ? '2rem' : ''};
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
@@ -40,7 +39,7 @@ const ColorScaleContainer = styled.div`
     @media (max-width:600px) {
         width:calc(100% - 1em);
         bottom:calc(1em + 45px);
-        height:calc(100% - 55em);
+        height: max-content; // calc(100% - 55em);
         left:.75em;
         padding-top:2em;
         transform:translateX(calc(-100% - 1em));

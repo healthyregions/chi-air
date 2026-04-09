@@ -31,11 +31,12 @@ import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
 import {Geocoder} from "./Geocoder";
 
 const DataPanelContainer = styled.div`
-    position:fixed;
-    width: ${({ $large }) => $large ? '433px' : 'calc(100% - 1em)'};
-    top: ${({ $large }) => $large ? '2rem' : 'calc(60% + 45px)'};
-    left: ${({ $large }) => $large ? '' : '.75em'};
-    right: ${({ $large }) => $large ? '2rem' : ''};
+    position: fixed;
+    width: ${({ $large }) => $large ? '433px' : '100%'};
+    top: ${({ $large }) => $large ? '2rem' : ''};
+    bottom: ${({ $large }) => $large ? '' : '0'};
+    left: ${({ $large }) => $large ? '' : '0'};
+    right: ${({ $large }) => $large ? '2rem' : '0'};
     z-index: ${({ $large }) => $large ? 5 : 51};
     display: ${({ $large, $otherPanels, $dataLength }) => $large && ($otherPanels || $dataLength === 0) ? 'none' : 'initial'};
 
