@@ -10,19 +10,40 @@ import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropd
 
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import {useDispatch, useSelector} from "react-redux";
+import {selectSensorParameter, setSensorParameter} from "../../store/slices/sensorDataSlice";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {useDispatch, useSelector} from "react-redux";
-import {selectSensorParameter, setSensorParameter} from "../../store/slices/sensorDataSlice";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
-const GeocoderContainer = styled(Grid)``;
+const GeocoderContainer = styled(Grid)`
+    .MuiAutocomplete-inputRoot {
+        background:white;
+        height:${({height}) => height||36}px;
+        padding:0;
+        border-radius: 100px;
+    }
+`;
+const GeocoderHeader = styled.span`
+    margin-left: .85rem;
+    font-size: ${({ size }) => size === 'small' ? '14px' : '18px'};
+    font-weight: 200;
+    flex-direction: column;
+    align-content: center;
+    font-family: Space Grotesk;
 
-export const Geocoder = ({ variant = 'standard', showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', extraButton = <></> }) => {
+    strong { font-weight: 600; }
+`;
+
+export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', extraButton = <></> }) => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const selectedParameter = useSelector(selectSensorParameter);
+  const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   const onChange = useCallback((location) => {
     if (location?.center !== undefined) {
@@ -68,13 +89,33 @@ export const Geocoder = ({ variant = 'standard', showSelectedAreas = true, onDro
 
   return(
     <GeocoderContainer style={style}>
+      <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
+        <Grid size={8}>
+          <GeocoderHeader size={size}><strong>Search</strong> any Chicago Address</GeocoderHeader>
+        </Grid>
+        {extraButton}
+      </Grid>
       <Grid container spacing={0} alignItems="center" marginTop={0}>
-        <Grid size={{ xs: 12 }}>
+        <Grid size={{ xs: 3 }}>
+          <FormControl id="paramSelect" variant="outlined" fullWidth>
+            <InputLabel htmlFor="paramSelect">Indicator</InputLabel>
+            <Select
+              variant={"outlined"}
+              size={'small'}
+              value={selectedParameter}
+              onChange={(e) => setSelectedParameter(e.target.value)}
+            >
+              <MenuItem value="nowcast_aqi">AQI</MenuItem>
+              <MenuItem value="mean_pm25">PM 2.5</MenuItem>
+              {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
+              {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid size={{ xs: 9 }}>
           <Autocomplete
             id="geocoder-search"
-            style={{ borderRadius: variant === 'rounded' ? '100ox' : '5px' }}
-            fullWidth
-            size={size}
+            style={{ width: '100%', borderRadius: '100px'}}
             freeSolo
             disableClearable
             filterOptions={(x) => x}
@@ -120,10 +161,7 @@ export const Geocoder = ({ variant = 'standard', showSelectedAreas = true, onDro
               <TextField
                 {...params}
                 margin="dense"
-                style={{
-                  borderRadius: variant === 'rounded' ? '100ox' : '5px',
-                  border: '1px solid rgba(0, 88, 153, 0.5)'
-                }}
+                style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
                 placeholder={placeholder}
                 slotProps={{
                   input: { ...params.InputProps, type: 'search', startAdornment:
@@ -142,9 +180,9 @@ export const Geocoder = ({ variant = 'standard', showSelectedAreas = true, onDro
           />
         </Grid>
       </Grid>
-      {/*<Grid container justifyContent={'space-between'}>*/}
-      {/*  <AreaSelectionDropdowns showSelectedAreas={showSelectedAreas} onChange={onDropdownChange} size={size} pop={pop} />*/}
-      {/*</Grid>*/}
+      <Grid container justifyContent={'space-between'}>
+        <AreaSelectionDropdowns showSelectedAreas={showSelectedAreas} onChange={onDropdownChange} size={size} pop={pop} />
+      </Grid>
     </GeocoderContainer>
   );
 }
