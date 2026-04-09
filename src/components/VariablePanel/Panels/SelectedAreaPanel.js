@@ -52,7 +52,7 @@ const LocationNameColumn = styled(Grid)``;
 export const SelectedAreaPanel = () => {
   const dispatch = useDispatch();
 
-  const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
+  const [, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
   //const locations = useSelector(selectSensorLocations);
   const clickedSensor = useSelector(selectClickedSensor);

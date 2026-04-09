@@ -30,7 +30,6 @@ import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplain
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
 import {Geocoder} from "./Geocoder";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
