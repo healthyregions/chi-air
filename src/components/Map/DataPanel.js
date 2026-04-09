@@ -13,12 +13,12 @@ import {
   selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
   selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors, selectSensorLocations, selectSensorParameter,
-  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData,
+  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData, setSensorParameter,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {FaArrowCircleLeft} from "react-icons/fa";
+import {FaArrowCircleLeft, FaInfoCircle} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
@@ -29,6 +29,11 @@ import {ClickedSensorDetailsPanel} from "../VariablePanel/Panels/ClickedSensorDe
 import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplainPanel";
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
 import {Geocoder} from "./Geocoder";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
 
 const DataPanelContainer = styled.div`
     position: fixed;
@@ -41,23 +46,26 @@ const DataPanelContainer = styled.div`
     display: ${({ $large, $otherPanels, $dataLength }) => $large && ($otherPanels || $dataLength === 0) ? 'none' : 'initial'};
 
     transition:250ms all;
-    transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(100% + 2rem))' : 'translateX(calc(-100% - 1em))')};
-        
-    padding: ${({ $large }) => $large ? '36px 29px' : '2em 0 0 0'};
+    transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(100% + 2rem))' : 'translateY(calc(100%))')};
+    
+    padding: ${({ $large }) => $large ? '36px 29px' : '2em 1rem'};
     background: linear-gradient(180deg, #e3f4fb 0%, #ffffff 80%);
-    border: 1px solid rgba(65, 182, 230, 1);
-    border-radius: 8px;
+    border: ${({ $large }) => $large ? '1px solid rgba(65, 182, 230, 1)' : ''};
+    border-top: ${({ $large }) => $large ? '' : '1px solid rgba(65, 182, 230, 1)'};
+    border-radius: ${({ $large }) => $large ? '8px' : ''};
     
   button#showHideRight {
-    position:absolute;    
-    right:calc(100% - 20px);
-    top:20px;
-    width:40px;
-    height:40px;
+    position:absolute;
+
+    right: ${({ $large }) => $large ? 'calc(100% - 20px)' : ''};
+    top: ${({ $large, $open }) => $large ? '20px' : $open ? '-20px' : '-50px' };
+    left: ${({ $large }) => $large ? '' : '45vw'};
+    width: ${({ $large }) => $large ? '40px' : '3em'};
+    height: ${({ $large }) => $large ? '40px' : '3em'};
     padding:0;
     margin:0;
     background-color: ${colors.white};
-    box-shadow: 2px 0px 2px ${colors.gray}44;
+    box-shadow: 2px 0 2px ${colors.gray}44;
     border:1px solid ${colors.chicagoBlue};
     // border-radius:20px;
     cursor: pointer;
@@ -84,37 +92,27 @@ const DataPanelContainer = styled.div`
       right:50px;
       z-index:4;
     }  
-    &.hidden {
-      right:105%;
-      svg {
-        transform:rotate(0deg);
-      }
-      :after {
-        opacity:1;
-      }
-    }
-    @media (max-width:768px){
-      top:120px;
-    }
-    @media (max-width:600px) {
-      left:calc(100% + 4.5em);
-      width:3em;
-      height:3em;
-      top:0;
-      &.hidden svg {
-        transform:rotate(0deg);
-      }
-      :after {
-        display:none;
-      }
-      &.active {
-        left:90%;
-      }
-      &.active svg {
-        transform:rotate(90deg);
-      }
-    }
   }
+`;
+
+const GeocoderHeader = styled.span`
+    margin-left: .85rem;
+    font-size: ${({ size }) => size === 'small' ? '14px' : '18px'};
+    font-weight: 200;
+    flex-direction: column;
+    align-content: center;
+    font-family: Space Grotesk;
+
+    strong { font-weight: 600; }
+`;
+const DropdownHeader = styled.span`
+    font-size: ${({ size }) => size === 'small' ? '14px' : '18px'};
+    font-weight: 200;
+    flex-direction: column;
+    align-content: center;
+    font-family: Space Grotesk;
+
+    strong { font-weight: 600; }
 `;
 
 // DataPanel Function Component
@@ -132,6 +130,8 @@ const DataPanel = ({ mapRef }) => {
   const clickedSensor = useSelector(selectClickedSensor);
   const locations = useSelector(selectSensorLocations);
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
+
+  const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   // Called when Community or Zip code dropdowns change (future support for ward)
   const handleDropdownChanged = (s, key = 'community') => {
@@ -180,19 +180,61 @@ const DataPanel = ({ mapRef }) => {
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={(l) => dispatch(setLocale(l?.toLowerCase()?.slice(0,2)))} options={['English','Español']} /></Grid>
       </Grid>
-      <LButton
-        component={NavLink} // Use the NavLink component for routing
-        to="/"         // Specify the destination path
-        variant="text" // Optional: apply Material UI button styles
-      >
-        &larr; Homepage
-      </LButton>
 
+      <Grid container spacing={5} alignItems={'center'}>
+        <LButton
+          component={NavLink} // Use the NavLink component for routing
+          to="/"         // Specify the destination path
+          variant="text" // Optional: apply Material UI button styles
+          style={{ paddingLeft: '0'}}
+        >
+          &larr; Home
+        </LButton>
+        <LButton variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
+      </Grid>
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
-          <Geocoder size={'small'} pop={popPage} onDropdownChange={handleDropdownChanged} extraButton={
-            <LButton as={Grid} variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
-          } />
+          <Grid container spacing={2} alignItems={'center'}>
+            <Grid size={{ xs: 3 }}>
+              <DropdownHeader htmlFor="paramSelect" size={'small'}>Indicator</DropdownHeader>
+            </Grid>
+            <Grid size={{ xs: 9 }}>
+              <GeocoderHeader size={'small'}><strong>Search</strong> any Chicago Address</GeocoderHeader>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} alignItems={'center'}>
+            <Grid size={{ xs: 3 }}>
+              <FormControl id="paramSelect" variant="outlined" fullWidth margin={'dense'} style={{
+                border: '1px solid rgba(0, 88, 153, 0.5)',
+                borderRadius: '5px'
+              }}>
+                <Select
+                  variant={"outlined"}
+                  size={'small'}
+                  value={selectedParameter}
+                  onChange={(e) => setSelectedParameter(e.target.value)}
+                >
+                  <MenuItem value="nowcast_aqi">AQI</MenuItem>
+                  <MenuItem value="mean_pm25">PM 2.5</MenuItem>
+                  {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
+                  {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 9 }}>
+              <Geocoder size={'small'} pop={popPage} onDropdownChange={handleDropdownChanged} />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} alignItems={'center'}>
+            <Grid size={{ xs: 3 }}>
+              <LButton as={Grid} size={'small'} justifyContent={'start'}>
+                <FaInfoCircle style={{ marginLeft: '.2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
+              </LButton>
+            </Grid>
+            <Grid size={{ xs: 9 }}>
+              <AreaSelectionDropdowns size={'small'} onChange={handleDropdownChanged} pop={popPage} />
+            </Grid>
+          </Grid>
         </>}
 
         {!clickedSensor && selectedSensors?.length === 0 && <LastUpdatedDisplay timestamp={latestRow?.date} />}
