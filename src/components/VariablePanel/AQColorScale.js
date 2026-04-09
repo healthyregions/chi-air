@@ -12,17 +12,17 @@ import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
 //// Styled components CSS
 // Main container for entire panel
 const ColorScaleContainer = styled.div`
-  position:fixed;
+  position: fixed;
   border-radius: 8px;
   border: 1px solid rgba(65, 182, 230, 1);
-  width:433px;
-  top: ${({ $large }) => $large ? '' : '0'};
-  bottom: ${({ $large }) => $large ? '2rem' : ''};
+  width: 433px;
+  left: ${({ $open }) => $open ? '2rem' : '0'};
+  top: ${({ $large }) => $large ? '2rem' : '0'};
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
   -webkit-backdrop-filter: blur( 20px );
-  box-shadow: 2px 0px 5px ${colors.gray}44;
+  box-shadow: ${({ $open }) => $open ? `2px 0px 5px ${colors.gray}44` : 'none'};
   border:1px solid ${colors.chicagoBlue};
   padding: 36px 29px;
   box-sizing: border-box;
@@ -31,32 +31,23 @@ const ColorScaleContainer = styled.div`
   color:${colors.black};
   font-size:100%;
   z-index:7;
-  transform: translateX(calc(100% + 2.5em));
+  transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(-100%))' : 'translateX(calc(-100% - 1em))')};
 
-    @media (max-width:1024px) {
-        min-width:50vw;
-    }
     @media (max-width:600px) {
-        width:calc(100% - 1em);
+        width:calc(100% - 1em); 
         bottom:calc(1em + 45px);
         height: max-content; // calc(100% - 55em);
-        left:.75em;
-        padding-top:2em;
-        transform:translateX(calc(-100% - 1em));
+        top:.5em;
+        left: ${({ $large, $open }) => $open ?  '.5em' : '' };
+        padding-top: 2em;
         z-index:51;
-        &.open {
-            transform:none;
-        }
         display: ${props => (props.otherPanels || props.dataLength === 0) ? 'none' : 'initial'};
-    }
-    &.open {
-        transform:none;
     }
 
     button#showHideRight {
         position:absolute;
-        right:calc(100% - 20px);
         top:20px;
+        right: ${({  $open }) => $open ? '-20px' : '-60px'};
         width:40px;
         height:40px;
         padding:0;
@@ -90,7 +81,6 @@ const ColorScaleContainer = styled.div`
             z-index:4;
         }
         &.hidden {
-            right:105%;
             svg {
                 transform:rotate(0deg);
             }
@@ -98,7 +88,7 @@ const ColorScaleContainer = styled.div`
                 opacity:1;
             }
         }
-        @media (max-width:768px){
+        @media (max-width:768px) {
             top:120px;
         }
         @media (max-width:600px) {
@@ -132,7 +122,7 @@ export const AQColorScale = () => {
   const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }));
 
   return (
-    <ColorScaleContainer $large={largeScreen} className={panelState.key ? 'open' : ''}>
+    <ColorScaleContainer $large={largeScreen} $open={panelState.key}>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem' }}>
         {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Air Quality Index'}>AQI</Tooltip>
