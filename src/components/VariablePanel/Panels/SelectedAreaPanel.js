@@ -5,7 +5,7 @@ import {
   removeSensorsFromSelection,
   selectClickedSensor, selectMetricData, selectSelectedAreas, selectSelectedSensors,
   selectSensorGeojsonData,
-  selectSensorLocations, selectSensorParameter,
+  /*selectSensorLocations,*/ selectSensorParameter,
   setClickedSensor, setSelectedAreas
 } from "../../../store/slices/sensorDataSlice";
 import styled from "styled-components";
@@ -32,7 +32,7 @@ const GridBody = styled(Grid)`
 const Color = styled.span`
     display: block;
     background-color: ${({ $color }) => $color};
-    border: 1px solid ${({ $border }) => $border};
+    border: 2px solid ${({ $border }) => $border};
     border-radius: 10px;
     width: 16px;
     height: 16px;
@@ -44,10 +44,8 @@ const ColorColumn = styled(Grid)`
 `;
 
 const TimestampColumn = styled(Grid)``;
-const AqiValueColumn = styled(Grid)`
-    text-align: right;
-`;
-const SensorIdColumn = styled(Grid)``;
+const AqiValueColumn = styled(Grid)``;
+//const SensorIdColumn = styled(Grid)``;
 const LocationNameColumn = styled(Grid)``;
 
 
@@ -56,7 +54,7 @@ export const SelectedAreaPanel = () => {
 
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
-  const locations = useSelector(selectSensorLocations);
+  //const locations = useSelector(selectSensorLocations);
   const clickedSensor = useSelector(selectClickedSensor);
   const selectedSensors = useSelector(selectSelectedSensors);
   const selectedParameter = useSelector(selectSensorParameter);
@@ -72,6 +70,11 @@ export const SelectedAreaPanel = () => {
     dispatch(removeSensorsFromSelection([...selectedSensors]));
   };
 
+  const invertedColors = ['Good', 'Moderate'];
+
+  const primary = (range) => invertedColors?.includes(range?.label) ? range?.border : range?.color;
+  const secondary = (range) => invertedColors?.includes(range?.label) ? range?.color : range?.border;
+
   return(
     <SelectedSensorsPanelContainer>
       <Grid container spacing={0} alignItems={'center'} marginTop={'2rem'}>
@@ -81,23 +84,20 @@ export const SelectedAreaPanel = () => {
           </LButton>
         </Grid>
 
-        {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <LHeader>Selected
-          {!selections?.community?.length && !selections?.zip?.length && !selections?.ward?.length && <> Locations </>}
-          {selections?.community?.length > 0 && <> Community </>}
-          {selections?.zip?.length > 0 && <> Zip code </>}
-          {selections?.ward?.length > 0 && <> Ward </>}
-        </LHeader>}
+        {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <LHeader>Sensors in location</LHeader>}
       </Grid>
 
       {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
-        <TimestampColumn size={3}></TimestampColumn>
-        <AqiValueColumn size={1}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : 'PM2.5'}</AqiValueColumn>
         <ColorColumn size={1}></ColorColumn>
+        <AqiValueColumn size={2}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : 'PM 2.5'}</AqiValueColumn>
         <LocationNameColumn size={4}>Name</LocationNameColumn>
+        <TimestampColumn size={3}></TimestampColumn>
+        {/*
         {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}
         {selections?.community?.length > 0 && <SensorIdColumn size={3}>Community</SensorIdColumn>}
         {selections?.zip?.length > 0 && <SensorIdColumn size={3}>Zip code</SensorIdColumn>}
         {selections?.ward?.length > 0 && <SensorIdColumn size={3}>Ward</SensorIdColumn>}
+        */}
       </GridHeader>}
 
       {!clickedSensor && selectedSensors?.map((s, index) => {
@@ -121,24 +121,26 @@ export const SelectedAreaPanel = () => {
 
         return (
           <GridBody container spacing={0} key={`selected-sensor-${s}-${index}`} onClick={() => dispatch(setClickedSensor(s))}>
-            <TimestampColumn size={3}>
-              <small>{date} {time}</small>
-            </TimestampColumn>
-            <AqiValueColumn size={1}>
-              <small>{Number(latestValue)?.toFixed(selectedParameter === 'nowcast_aqi' ? 0 : 1)}</small>
-            </AqiValueColumn>
             <ColorColumn size={1}>
-              <Color $color={range?.color} $border={range?.border}></Color>
+              <Color $color={primary(range)} $border={secondary(range)}></Color>
             </ColorColumn>
+            <AqiValueColumn size={2}>
+              <strong style={{ color: primary(range) }}>{Number(latestValue)?.toFixed(selectedParameter === 'nowcast_aqi' ? 0 : 1)}</strong>
+            </AqiValueColumn>
             <LocationNameColumn size={4}>
               <small>{feature?.properties?.name}</small>
             </LocationNameColumn>
+            <TimestampColumn size={3}>
+              <small>{date} {time}</small>
+            </TimestampColumn>
+            {/*
             <SensorIdColumn size={3}>
               {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <small>{feature?.properties?.datasourceId}</small>}
               {selections?.community?.length > 0 && <small>{locations?.find(l => l.datasourceId === feature?.properties?.datasourceId)?.community}</small>}
               {selections?.zip?.length > 0 && <small>{locations?.find(l => l.datasourceId === feature?.properties?.datasourceId)?.zip}</small>}
               {selections?.ward?.length > 0 && <small>{locations?.find(l => l.datasourceId === feature?.properties?.datasourceId)?.ward}</small>}
             </SensorIdColumn>
+            */}
           </GridBody>
         );
       })}
