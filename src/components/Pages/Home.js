@@ -40,7 +40,7 @@ const HeroArtwork = styled.div`
 const HeroLight = styled.img`
     position: absolute;
     left: 0;
-    bottom: ${({ $largeScreen }) => $largeScreen ? '1rem' : '0.2rem'};
+    bottom: 1.2rem;
     height: ${({ $largeScreen }) => $largeScreen ? '35.5rem' : '23rem'};
     width: auto;
     z-index: 0;
@@ -72,7 +72,7 @@ const HeroBench = styled.img`
 const HeroSquirrel = styled.img`
     position: absolute;
     left: ${({ $largeScreen }) => $largeScreen ? '3.55rem' : '1.7rem'};
-    bottom: ${({ $largeScreen }) => $largeScreen ? '0.9rem' : '0.1rem'};
+    bottom: 1.2rem;
     width: ${({ $largeScreen }) => $largeScreen ? '2.3rem' : '1.5rem'};
     height: auto;
     z-index: 0;
@@ -142,13 +142,35 @@ const SearchBand = styled.section`
     position: relative;
     z-index: 1;
     width: 100%;
-    background: linear-gradient(180deg, #B7DDF1 0%, #DFF1FB 100%);
+    background: url('/img/header/home-page-header-background.svg') center top / cover no-repeat;
     padding: ${({ $largeScreen }) => $largeScreen ? '4.31rem 0 3.03rem' : '3rem 0 2.5rem'};
+    overflow: hidden;
 `;
 const SearchBandInner = styled.div`
+    position: relative;
     width: 100%;
     max-width: 54rem;
     margin: 0 auto;
+    z-index: 2;
+`;
+const SearchBandDecor = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    opacity: ${({ $largeScreen }) => $largeScreen ? 1 : 0};
+    display: ${({ $largeScreen }) => $largeScreen ? 'block' : 'none'};
+`;
+const SearchBandDecorItem = styled.img`
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    left: ${({ $x }) => $x};
+    top: ${({ $y }) => $y};
+    bottom: ${({ $bottom }) => $bottom};
+    transform: ${({ $mirror }) => $mirror ? 'scaleX(-1)' : 'none'};
 `;
 const SearchBandChevron = styled(FaChevronDown)`
     margin-top: 4.65rem;
@@ -198,6 +220,18 @@ const resources = [
   { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes: Exploring Chicago', description: 'A Chicago data collaborative & community mapping platform with environment, climate, & neighborhood indicators.' },
   { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Explore more learning materials & lesson plans, access reports, and explore additional maps.' },
 ];
+
+const headerDecorItems = [
+  { src: '/img/header/header1.svg', offsetFromHeader6: 19.44, y: '6.5rem' },
+  { src: '/img/header/header2.svg', offsetFromHeader6: 19.44, bottom: '10.19rem' },
+  { src: '/img/header/header3.svg', offsetFromHeader6: 12.87, y: '9.25rem' },
+  { src: '/img/header/header4.svg', offsetFromHeader6: 6.5, y: '6.5rem' },
+  { src: '/img/header/header5.svg', offsetFromHeader6: 6.5, bottom: '10.19rem' },
+  { src: '/img/header/header6.svg', offsetFromHeader6: 0, y: '9.12rem' },
+];
+
+const searchBandHeader6LeftAnchor = 25.75;
+const searchBandHeader6RightAnchor = 25.75;
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -268,6 +302,31 @@ export default function Home() {
       </WhiteBackground>
 
       <SearchBand $largeScreen={largeScreen}>
+        <SearchBandDecor $side={'left'} $largeScreen={largeScreen}>
+          {headerDecorItems.map((item, index) => (
+              <SearchBandDecorItem
+                key={`left-${index}`}
+                src={item.src}
+                alt={''}
+                $x={`calc(50% - ${searchBandHeader6LeftAnchor + item.offsetFromHeader6}rem)`}
+                $y={item.y}
+                $bottom={item.bottom}
+              />
+            ))}
+          </SearchBandDecor>
+        <SearchBandDecor $side={'right'} $largeScreen={largeScreen}>
+          {headerDecorItems.map((item, index) => (
+              <SearchBandDecorItem
+                key={`right-${index}`}
+                src={item.src}
+                alt={''}
+                $x={`calc(50% + ${searchBandHeader6RightAnchor + item.offsetFromHeader6}rem)`}
+                $y={item.y}
+                $bottom={item.bottom}
+                $mirror
+              />
+            ))}
+        </SearchBandDecor>
         <ContentContainer>
           <SearchBandInner>
             <Geocoder
