@@ -1,5 +1,6 @@
 import Grid from "@mui/material/Grid";
-import {FaCaretDown, FaTimes} from "react-icons/fa";
+import {FaCaretDown, FaSearch, FaTimes} from "react-icons/fa";
+import styled from "styled-components";
 import {
   selectSelectedAreas,
   selectSensorLocations,
@@ -12,8 +13,100 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import {useCallback, useMemo, useState} from "react";
 import {selectMapParams, setMapParams} from "../../../store/slices/legacyStoreSlice";
+import parse from "autosuggest-highlight/parse";
+import match from "autosuggest-highlight/match";
+import Box from "@mui/material/Box";
+import InputBase from "@mui/material/InputBase";
 
-export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size }) => {
+const HomeDropdownCard = styled.div`
+  width: 100%;
+  max-width: 45rem;
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  border: 1px solid #005899;
+  background: #FFF;
+  box-shadow: 2px 2px 4px 0 rgba(30, 30, 30, 0.05);
+  overflow: hidden;
+`;
+
+const HomeDropdownSearchRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.25rem 1.25rem 0.75rem;
+  color: #444444;
+`;
+
+const HomeDropdownDivider = styled.div`
+  margin: 0 1.25rem;
+  border-top: 2px solid #41B6E6;
+`;
+
+const HomeDropdownSearchInput = styled(InputBase)`
+  flex: 1;
+  color: #444444;
+  font-family: Space Grotesk,serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+
+  input::placeholder {
+    color: #A8A8A8;
+    opacity: 1;
+  }
+`;
+
+const HomeDropdownOptions = styled(Box)`
+  max-height: 23rem;
+  overflow-y: auto;
+  padding: 1rem 1.25rem 1.25rem;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #8DBBDD;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+`;
+
+const HomeDropdownOption = styled.button`
+  display: block;
+  width: 100%;
+  padding: 0.625rem 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: #444444;
+  font-family: Space Grotesk,serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+`;
+
+const HomeDropdownHighlight = styled.span`
+  color: #005899;
+`;
+
+const HomeDropdownEmpty = styled.div`
+  padding: 0.75rem 0 0.25rem;
+  color: #444444;
+  font-family: Space Grotesk,serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+`;
+
+export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size, variant = 'default' }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const mapParams = useSelector(selectMapParams);
@@ -22,6 +115,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
   const [type, setType] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [selections, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
@@ -31,10 +125,12 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const handleOpen = (e, key) => {
     setAnchorEl(e?.currentTarget);
     setType(key);
+    setSearchTerm('');
   }
   const handleClose = () => {
     setAnchorEl(null);
     setType(null);
+    setSearchTerm('');
   }
 
   // Runs user's onChange, then our magic handling to fly to the center
@@ -60,6 +156,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   }
   const noSelection = selections?.zip?.length === 0 && selections?.community?.length === 0 && selections?.ward?.length === 0;
   const hasSelection = selections?.zip?.length > 0 || selections?.community?.length > 0 || selections?.ward?.length > 0;
+  const isHomeVariant = variant === 'home';
 
   const prettyTypeName = useCallback((t) => t === 'zip' ? 'Zip code' : t === 'community' ? 'Community' : 'Ward', []);
 
@@ -67,38 +164,101 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
 
+  const filteredOptions = useMemo(() => {
+    if (!searchTerm) {
+      return type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b));
+    }
+
+    const normalizedSearch = searchTerm.toLowerCase();
+    return (type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b)))
+      .filter((option) => option?.toLowerCase().includes(normalizedSearch));
+  }, [options, searchTerm, type]);
+
   return(
     <>
-      {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={'space-around'} alignItems={'center'}>
+      {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
         {!type && [ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
-
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={(e) => handleOpen(e, key)}
+            style={isHomeVariant ? {
+              color: '#005899',
+              fontFamily: 'Lexend,sans-serif',
+              fontSize: '1.5rem',
+              fontWeight: 500,
+              lineHeight: 'normal',
+              textTransform: 'none',
+              padding: '0.25rem 0.5rem'
+            } : undefined}
           >
             {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px' }} />
           </LButton>
         </Grid>)}
 
-        {type && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
+        {type && isHomeVariant && <Grid size={12} margin={'0 auto'} padding={0} alignItems={'center'}>
+          <HomeDropdownCard>
+            <HomeDropdownSearchRow>
+              <FaSearch style={{ color: '#005899', fontSize: '1.5rem' }} />
+              <HomeDropdownSearchInput
+                autoFocus
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder={`Type ${prettyTypeName(type).toLowerCase()} here...`}
+              />
+              <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }}>
+                <FaTimes style={{ color: '#005899', fontSize: '1.5rem' }} />
+              </LButton>
+            </HomeDropdownSearchRow>
+            <HomeDropdownDivider />
+            <HomeDropdownOptions>
+              {filteredOptions.length > 0 ? filteredOptions.map((option) => {
+                const matches = match(option, searchTerm, { insideWords: true });
+                const parts = parse(option, matches);
+
+                return (
+                  <HomeDropdownOption key={option} type="button" onClick={() => handleChange(option, type)}>
+                    {parts.map((part, index) => part.highlight ? (
+                      <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
+                    ) : (
+                      <span key={index}>{part.text}</span>
+                    ))}
+                  </HomeDropdownOption>
+                );
+              }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
+            </HomeDropdownOptions>
+          </HomeDropdownCard>
+        </Grid>}
+
+        {type && !isHomeVariant && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
           <Autocomplete
             options={type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b))}
             openOnFocus
             onBlur={handleClose}
             autoComplete
             onChange={(e, s) => handleChange(s, type)}
-            slotProps={{ listbox: { sx: { fontFamily: 'Lexend' } } }}
+            clearOnEscape
+            clearIcon={undefined}
+            popupIcon={null}
+            noOptionsText={'No options'}
+            slotProps={{
+              listbox: {
+                sx: { fontFamily: 'Lexend' }
+              }
+            }}
             renderInput={params => (
               <TextField
                 {...params}
                 margin={'none'}
-                variant="filled"
+                variant={'filled'}
                 autoFocus={true}
-                InputProps={{ ...params.InputProps, startAdornment: (<></>) }}
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (<></>)
+                }}
                 placeholder={`Search ${prettyTypeName(type)} here...`}
                 fullWidth
               />

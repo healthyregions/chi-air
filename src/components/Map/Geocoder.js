@@ -20,25 +20,35 @@ import {selectSensorParameter, setSensorParameter} from "../../store/slices/sens
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const GeocoderContainer = styled(Grid)`
+    width: 100%;
     .MuiAutocomplete-inputRoot {
         background:white;
-        height:${({height}) => height||36}px;
+        height:${({height, $variant}) => $variant === 'home' ? 48 : height||36}px;
         padding:0;
         border-radius: 100px;
+        font-family: Space Grotesk,serif;
+    }
+    .MuiOutlinedInput-root {
+        border-radius: 100px;
+    }
+    .MuiOutlinedInput-root fieldset {
+        border-color: rgba(0, 88, 153, 1);
     }
 `;
 const GeocoderHeader = styled.span`
-    margin-left: .85rem;
-    font-size: ${({ size }) => size === 'small' ? '14px' : '18px'};
-    font-weight: 200;
+    margin-left: ${({ $variant }) => $variant === 'home' ? 0 : '.85rem'};
+    font-size: ${({ size, $variant }) => $variant === 'home' ? '2rem' : (size === 'small' ? '14px' : '18px')};
+    font-weight: ${({ $variant }) => $variant === 'home' ? 400 : 200};
     flex-direction: column;
     align-content: center;
-    font-family: Space Grotesk;
+    font-family: Space Grotesk,serif;
+    color: ${({ $variant }) => $variant === 'home' ? '#444444' : 'inherit'};
+    text-align: ${({ $variant }) => $variant === 'home' ? 'center' : 'left'};
 
-    strong { font-weight: 600; }
+    strong { font-weight: ${({ $variant }) => $variant === 'home' ? 700 : 600}; }
 `;
 
-export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', extraButton = <></> }) => {
+export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', extraButton = <></>, variant = 'default' }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -59,6 +69,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
   }, [navigate]);
 
   const [searchState, setSearchState] = useState({ results: [], value: '' })
+  const isHomeVariant = variant === 'home';
 
   const loadResults = (results) => {
     setSearchState(prev => ({ ...prev, results }));
@@ -88,15 +99,17 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
   }
 
   return(
-    <GeocoderContainer style={style}>
-      <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
-        <Grid size={8}>
-          <GeocoderHeader size={size}><strong>Search</strong> any Chicago Address</GeocoderHeader>
+    <GeocoderContainer style={style} $variant={variant}>
+      <Grid container spacing={0} alignItems={'center'} justifyContent={isHomeVariant ? 'center' : 'space-between'}>
+        <Grid size={isHomeVariant ? 12 : 8} style={isHomeVariant ? { textAlign: 'center' } : undefined}>
+          <GeocoderHeader size={size} $variant={variant}>
+            <><strong>Search</strong> any Chicago Address</>
+          </GeocoderHeader>
         </Grid>
-        {extraButton}
+        {!isHomeVariant && extraButton}
       </Grid>
-      <Grid container spacing={0} alignItems="center" marginTop={0}>
-        <Grid size={{ xs: 3 }}>
+      <Grid container spacing={0} alignItems="center" marginTop={isHomeVariant ? '1.5rem' : 0} justifyContent={isHomeVariant ? 'center' : 'flex-start'}>
+        {!isHomeVariant && <Grid size={{ xs: 3 }}>
           <FormControl id="paramSelect" variant="outlined" fullWidth>
             <InputLabel htmlFor="paramSelect">Indicator</InputLabel>
             <Select
@@ -107,12 +120,10 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
             >
               <MenuItem value="nowcast_aqi">AQI</MenuItem>
               <MenuItem value="mean_pm25">PM 2.5</MenuItem>
-              {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
-              {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid size={{ xs: 9 }}>
+        </Grid>}
+        <Grid size={isHomeVariant ? { xs: 12, md: 8 } : { xs: 9 }}>
           <Autocomplete
             id="geocoder-search"
             style={{ width: '100%', borderRadius: '100px'}}
@@ -160,7 +171,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
             renderInput={(params) => (
               <TextField
                 {...params}
-                margin="dense"
+                margin={isHomeVariant ? "none" : "dense"}
                 style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
                 placeholder={placeholder}
                 slotProps={{
@@ -180,8 +191,8 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
           />
         </Grid>
       </Grid>
-      <Grid container justifyContent={'space-between'}>
-        <AreaSelectionDropdowns showSelectedAreas={showSelectedAreas} onChange={onDropdownChange} size={size} pop={pop} />
+      <Grid container justifyContent={isHomeVariant ? 'center' : 'space-between'} marginTop={isHomeVariant ? '0.75rem' : 0}>
+        <AreaSelectionDropdowns showSelectedAreas={showSelectedAreas} onChange={onDropdownChange} size={size} pop={pop} variant={variant} />
       </Grid>
     </GeocoderContainer>
   );

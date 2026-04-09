@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaArrowRight} from "react-icons/fa";
 import {FaExternalLinkAlt} from "react-icons/fa";
+import {FaChevronDown} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, useSelectorAsState, WhiteBackground} from "../VariablePanel/common";
 import {
@@ -18,76 +19,144 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
 
-const TitleBanner = styled(Grid)`
-    display: flex;
-    align-items: end;
-    flex-direction: ${({ $largeScreen }) => $largeScreen ? 'column' : 'row-reverse'};
-    justify-content: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
-    font-family: Lexend;
-`;
-
 const brandColors = {
   chiDarkBlue: '#005899',
   chiRed: '#E4002B',
   chiLightBlue: '#2D9ECD'
 }
-const ChiHeader = styled.h1`
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '64px' : '48px'};
-    text-align: right;
+const HeroSectionInner = styled.div`
+    position: relative;
+    padding-bottom: 6.5rem;
 `;
-const ChiBlackText = styled.span`
+const HeroArtwork = styled.div`
+    position: relative;
+    width: 100%;
+    min-height: ${({ $largeScreen }) => $largeScreen ? '38rem' : '27rem'};
+    margin-bottom: -6.5rem;
+    transform: ${({ $largeScreen }) => $largeScreen ? 'translateY(1.25rem)' : 'translateY(0.75rem)'};
+    overflow: visible;
+    z-index: 0;
+`;
+const HeroLight = styled.img`
+    position: absolute;
+    left: 0;
+    bottom: ${({ $largeScreen }) => $largeScreen ? '1rem' : '0.2rem'};
+    height: ${({ $largeScreen }) => $largeScreen ? '35.5rem' : '23rem'};
+    width: auto;
+    z-index: 0;
+`;
+const HeroGroup = styled.img`
+    position: absolute;
+    left: -0.75rem;
+    top: ${({ $largeScreen }) => $largeScreen ? '12.65rem' : '8.95rem'};
+    width: ${({ $largeScreen }) => $largeScreen ? '1.85rem' : '1.2rem'};
+    height: auto;
+    z-index: 2;
+`;
+const HeroWifi = styled.img`
+    position: absolute;
+    left: ${({ $largeScreen }) => $largeScreen ? '3.2rem' : '1.65rem'};
+    top: ${({ $largeScreen }) => $largeScreen ? '12rem' : '8.45rem'};
+    width: ${({ $largeScreen }) => $largeScreen ? '1.95rem' : '1.25rem'};
+    height: auto;
+    z-index: 2;
+`;
+const HeroBench = styled.img`
+    position: absolute;
+    left: ${({ $largeScreen }) => $largeScreen ? '3.65rem' : '1.9rem'};
+    bottom: ${({ $largeScreen }) => $largeScreen ? '-6.75rem' : '-3.25rem'};
+    width: ${({ $largeScreen }) => $largeScreen ? '35rem' : '22rem'};
+    height: auto;
+    z-index: 2;
+`;
+const HeroSquirrel = styled.img`
+    position: absolute;
+    left: ${({ $largeScreen }) => $largeScreen ? '3.55rem' : '1.7rem'};
+    bottom: ${({ $largeScreen }) => $largeScreen ? '0.9rem' : '0.1rem'};
+    width: ${({ $largeScreen }) => $largeScreen ? '2.3rem' : '1.5rem'};
+    height: auto;
+    z-index: 0;
+`;
+const HeroContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: ${({ $largeScreen }) => $largeScreen ? 'flex-end' : 'center'};
+    justify-content: center;
+    text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
+    width: 100%;
+    max-width: ${({ $largeScreen }) => $largeScreen ? '34rem' : '100%'};
+    margin-left: auto;
+`;
+const HeroTitle = styled.h1`
     font-family: Lexend,sans-serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '4rem' : '3rem'};
     font-weight: 400;
-    font-style: normal;
+    line-height: 1;
+    margin: 0;
 `;
-const ChiDarkBlueText = styled.span`
+const HeroTitleAccent = styled.span`
     margin-left: 0.5rem;
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiDarkBlue};
-    text-align: right;
-    font-style: normal;
     font-weight: 700;
 `;
-const ChiLightBlueText = styled.span`
+const HeroKicker = styled.div`
+    margin-top: 0.75rem;
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiLightBlue};
-    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '24px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '2rem' : '1.5rem'};
     font-weight: 400;
     text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
 `;
-const ChiRedText = styled.span`
+const HeroKickerAccent = styled.div`
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiRed};
-    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '24px'};
+    font-size: ${({ $largeScreen }) => $largeScreen ? '2rem' : '1.5rem'};
     font-weight: 700;
-    text-align: right;
-`;
-
-const ChiSubtitle = styled(Grid)`
-    margin-top: 3rem;
-    display: flex;
-    align-self: end;
     text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
-    font-family: Space Grotesk;
+`;
+const HeroBody = styled.p`
+    margin: 3.13rem 0 0;
+    max-width: 30rem;
+    text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
+    font-family: Space Grotesk,serif;
     font-size: 18px;
     font-weight: 400;
-    font-style: normal;
+    line-height: 1.45;
+    color: #444444;
 `;
-
-
-const ViewMapButton = styled(Button)`
+const HeroButton = styled(Button)`
     font-family: Space Grotesk,serif;
     margin-top: 2rem;
     background: rgba(0, 88, 153, 1);
     font-weight: 500;
-    font-size: 24px;
-    line-height: 16px;
-    letter-spacing: 1px;
+    font-size: 1.5rem;
+    line-height: normal;
+    letter-spacing: 0;
     text-transform: capitalize;
-    width:200px;
-    height:46px;
-
+    min-width: 10rem;
+    height: 3.5rem;
+    padding: 0 1.5rem;
+`;
+const SearchBand = styled.section`
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    background: linear-gradient(180deg, #B7DDF1 0%, #DFF1FB 100%);
+    padding: ${({ $largeScreen }) => $largeScreen ? '4.31rem 0 3.03rem' : '3rem 0 2.5rem'};
+`;
+const SearchBandInner = styled.div`
+    width: 100%;
+    max-width: 54rem;
+    margin: 0 auto;
+`;
+const SearchBandChevron = styled(FaChevronDown)`
+    margin-top: 4.65rem;
+    font-size: 1.123rem;
+    width: 1.123rem;
+    height: 1.123rem;
+    color: #005899;
+    cursor: pointer;
 `;
 const ResourceLabel = styled.div`
     text-align: center;
@@ -148,56 +217,73 @@ export default function Home() {
     newSelectedSensors?.length ? navigate(`/map?location=${newSelectedSensors?.[0]}`) : navigate('/map');
   }
 
+  const scrollToResources = () => {
+    const target = document.getElementById('home-resources');
+    if (!target) {
+      return;
+    }
+
+    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+    const offset = largeScreen ? 93 : 64;
+    window.scrollTo({ top: targetTop - offset, behavior: 'smooth' });
+  };
+
   return (
     <>
       <NavBar />
 
-      <WhiteBackground $largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <ContentContainer>
-          <TitleBanner container spacing={0} $largeScreen={largeScreen}>
-            <ChiHeader $largeScreen={largeScreen}>
-              <ChiBlackText $largeScreen={largeScreen}>Our</ChiBlackText>
-              <ChiDarkBlueText $largeScreen={largeScreen}>Air</ChiDarkBlueText>
-            </ChiHeader>
-
-            <ChiLightBlueText $largeScreen={largeScreen}>Mapping the Open Air Network.
-              {largeScreen && <br/>}
-              <ChiRedText $largeScreen={largeScreen}> Built for Chicago, with Chicago.</ChiRedText>
-            </ChiLightBlueText>
-
-            <ChiSubtitle $largeScreen={largeScreen} size={{ xs:12, md: 6 }}>
-              Air pollution is often invisible, but its impact is real.
-              Now, real-time air quality data is available for every
-              neighborhood, for every Chicagoan, ensuring you and your
-              loved ones have the information you need to breathe easier.
-            </ChiSubtitle>
-
-            <ViewMapButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
-              View Map &rarr;
-            </ViewMapButton>
-          </TitleBanner>
+          <HeroSectionInner>
+            <Grid container spacing={largeScreen ? 4 : 0} alignItems={'center'}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <HeroArtwork $largeScreen={largeScreen}>
+                  <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
+                  <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
+                  <HeroWifi src={'/img/header/wifi.svg'} alt={''} $largeScreen={largeScreen} />
+                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} />
+                  <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
+                </HeroArtwork>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <HeroContent $largeScreen={largeScreen}>
+                  <HeroTitle $largeScreen={largeScreen}>
+                    Our<HeroTitleAccent>Air</HeroTitleAccent>
+                  </HeroTitle>
+                  <HeroKicker $largeScreen={largeScreen}>Mapping the Open Air Network</HeroKicker>
+                  <HeroKickerAccent $largeScreen={largeScreen}>Built for Chicago, with Chicago.</HeroKickerAccent>
+                  <HeroBody $largeScreen={largeScreen}>
+                    Air pollution is often invisible, but its impact is real. Now, real-time air quality
+                    data is available for every neighborhood, for every Chicagoan, ensuring you and your
+                    loved ones have the information you need to breathe easier.
+                  </HeroBody>
+                  <HeroButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
+                    Explore Map &rarr;
+                  </HeroButton>
+                </HeroContent>
+              </Grid>
+            </Grid>
+          </HeroSectionInner>
         </ContentContainer>
       </WhiteBackground>
 
-
-      <GradientBackground $largeScreen={largeScreen}>
+      <SearchBand $largeScreen={largeScreen}>
         <ContentContainer>
-          <Grid container spacing={0} alignItems={"center"} justifyContent={largeScreen ? 'space-between' : 'center'}>
-            <Grid item sm={6} xs={12}>
-              <Geocoder size={'large'} style={{ margin: '0.5rem 0', minWidth: '45vw' }}
-                        showSelectedAreas={false}
-                        onDropdownChange={handleDropdownChanged}
-              />
+          <SearchBandInner>
+            <Geocoder
+              size={'large'}
+              variant={'home'}
+              showSelectedAreas={false}
+              onDropdownChange={handleDropdownChanged}
+            />
+            <Grid container justifyContent={'center'}>
+              <SearchBandChevron onClick={scrollToResources} />
             </Grid>
-
-            <Grid item sm={6} xs={12} style={{ marginTop: '3rem', display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }} >
-              <img style={{ maxHeight: '300px'}} src={'/icons/homepage-map-mask.svg'} alt={''} />
-            </Grid>
-          </Grid>
+          </SearchBandInner>
         </ContentContainer>
-      </GradientBackground>
+      </SearchBand>
 
-      <WhiteBackground $largeScreen={largeScreen}>
+      <WhiteBackground $largeScreen={largeScreen} style={{ marginTop: '5.81rem', scrollMarginTop: '5.81rem' }} id={'home-resources'}>
         <ContentContainer style={{marginBottom: 80}}>
           <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                         topRowText={'Access useful'}
@@ -265,4 +351,3 @@ export default function Home() {
     </>
   );
 }
-
