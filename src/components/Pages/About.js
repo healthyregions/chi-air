@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
@@ -11,82 +10,291 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
-import {FaCaretDown, FaCaretUp} from "react-icons/fa";
+import {FaCaretDown, FaCaretRight} from "react-icons/fa";
 // import {NavLink, useNavigate} from "react-router-dom";
 
 const AboutPage = styled.div`
     background:white;
 `;
 
+const AboutBodyText = styled(Grid)`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: right;
+`;
+
+const ContentContainer = styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+`;
+
+const FAQTopDivider = styled.hr`
+    margin: 2.75rem 0 5.375rem;
+    border: 0;
+    border-top: 1px solid #41B6E6;
+`;
+
+const FAQHeader = styled.div`
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-direction: ${({ $largeScreen }) => $largeScreen ? 'row' : 'column-reverse'};
+`;
+
+const FAQExpandButton = styled.button`
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #005899;
+    cursor: pointer;
+    font-family: Lexend,sans-serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '16px'};
+    line-height: 1.2;
+`;
+
+const FAQHeaderContent = styled.div`
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-left: auto;
+`;
+
+const FAQHeaderText = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    text-align: right;
+`;
+
+const FAQHeaderTopRow = styled.div`
+    color: #444444;
+    font-family: Lexend,sans-serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '18px'};
+    font-weight: 400;
+    line-height: 1.1;
+`;
+
+const FAQHeaderBottomRow = styled.div`
+    color: #444444;
+    font-family: Lexend,sans-serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '18px'};
+    font-weight: 700;
+    line-height: 1.1;
+`;
+
+const FAQHeaderBottomAccent = styled.span`
+    color: #E4002B;
+`;
+
+const FAQHeaderIcon = styled.img`
+    width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
+    height: auto;
+`;
+
+const FAQFilterRow = styled(Stack)`
+    margin: 3rem 0 2.5rem;
+`;
+
+const FAQFilterChip = styled(Chip)`
+    && {
+        height: 36px;
+        border-radius: 999px;
+        border: 1px solid #9BC4DF;
+        background: ${({ $active }) => $active ? '#DCEEF8' : 'transparent'};
+        color: #005899;
+        cursor: pointer;
+        font-family: Space Grotesk,serif;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    && .MuiChip-label {
+        padding: 0 16px;
+    }
+`;
+
+const FAQCategorySection = styled.section`
+    margin-bottom: 1rem;
+`;
+
+const FAQCategoryTitle = styled.h3`
+    margin: 0 0 1rem;
+    color: #444444;
+    font-family: Lexend,sans-serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '20px'};
+    font-weight: 400;
+    line-height: 1.2;
+`;
+
+const FAQAccordion = styled(Accordion)`
+    && {
+        background: transparent;
+        box-shadow: none;
+        border: 0;
+        margin: 0;
+    }
+
+    &&:before {
+        display: none;
+    }
+
+    &&.Mui-expanded {
+        margin: 0;
+    }
+`;
+
+const FAQAccordionSummary = styled(AccordionSummary)`
+    && {
+        padding: 0;
+        min-height: 0;
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    && .MuiAccordionSummary-content {
+        margin: 0;
+    }
+
+    && .MuiAccordionSummary-content.Mui-expanded {
+        margin: 0;
+    }
+
+    && .MuiAccordionSummary-expandIconWrapper {
+        color: #005899;
+        font-size: 18px;
+        margin-top: 0.375rem;
+    }
+`;
+
+const FAQAccordionDetails = styled(AccordionDetails)`
+    && {
+        padding: 1rem 0 1rem 1.5rem;
+    }
+`;
+
+const FAQQuestion = styled.span`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '20px'};
+    font-weight: 400;
+    line-height: 1.2;
+`;
+
+const FAQAnswer = styled.div`
+    max-width: 860px;
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '18px' : '16px'};
+    font-weight: 400;
+    line-height: 1.45;
+`;
+
+const faqCategories = [
+  { id: 'map', label: 'Map' },
+  { id: 'protocol', label: 'Protocol' },
+  { id: 'parameters', label: 'Parameters' }
+];
+
+const faqs = [
+  {
+    id: 'map-data-access',
+    category: 'map',
+    question: "How can I access the data?",
+    answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map) and direct download on the City Data Portal."
+  },
+  {
+    id: 'map-colors',
+    category: 'map',
+    question: "What do the colors on the map mean?",
+    answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide."
+  },
+  {
+    id: 'protocol-data-source',
+    category: 'protocol',
+    question: "Where does this data come from and where is it stored?",
+    answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface."
+  },
+  {
+    id: 'protocol-sensor-owner',
+    category: 'protocol',
+    question: "Who owns the air quality sensors?",
+    answer: "Sensors of the Open Air Network and are co-owned between the University of Illinois (as led by Principal Investigator, Professor Erdal) and the Chicago Department of Public Health."
+  },
+  {
+    id: 'protocol-sensor-maintenance',
+    category: 'protocol',
+    question: "Who maintains the sensors?",
+    answer: "Sensors are maintained by the Chicago Department of Transportation, as contracted through sensor owners."
+  },
+  {
+    id: 'protocol-update-frequency',
+    category: 'protocol',
+    question: "How often is the data updated?",
+    answer: "We update the dashboard hourly. However, some sensors may have a slight delay depending on their connectivity. Always check the 'Last Updated' timestamp at the top of the map."
+  },
+  {
+    id: 'protocol-upload-frequency',
+    category: 'protocol',
+    question: "Are there plans to increase the frequency of how often the data is uploaded?",
+    answer: "Data updates are limited in part by sensor connectivity, programming interface restrictions, and quality assurance. To ensure the highest quality of data, we do not plan to update the frequency of data until the beginning of 2027, at the earliest. At that time, we may have sufficient data for sensor calibration and sensitivity analyses."
+  },
+  {
+    id: 'protocol-raw-data',
+    category: 'protocol',
+    question: "Can I get access to raw, uncalibrated data? If not, how can I trust the data provided?",
+    answer: "Raw measures are available on the City of Chicago Data Portal. However, we recommend using calibrated measurements that take into account the limits of Clarity sensor technology and related processes, as raw measurements may not measure actual air quality estimates (versus noise from sensors that changes in different environmental conditions). We follow best practices and recommendations as communicated by Clarity, the manufactuers of the air quality sensors, as well as evidence-based, published research on air quality sensor handling. We recommend using data available for download, as it is the highest quality measurements we are able to provide. NowCast AQI measures by Clarity have already undergone data cleaning and calibration, with Clarity processes published and available on their website. Particulate matter data cleaning processes we implement on calibrated Clarity measures include checking for faulty or offline sensors. Any additional calibration will occur after one year of data measurements, in line with standard practices in environmental sensor research. Our final protocol is undergoing manuscript review, and will be made available on this website upon publication."
+  },
+  {
+    id: 'parameters-air-quality-metrics',
+    category: 'parameters',
+    question: "What air quality metrics are shown in this tool?",
+    answer: "This tool currently shares measurements of particulate matter smaller than 2.5 microns (PM 2.5) and NowCast AQI, a real-time air quality metric generated by Clarity, the manufacturers of the air quality sensors being used. Later this year, the tool will also display nitrogen dioxide (NO2) measurements for all sensors across the city, as well as a few black carbon modules."
+  },
+  {
+    id: 'parameters-ozone',
+    category: 'parameters',
+    question: "Why is ozone not measured?",
+    answer: "The Open Air Network does not include ozone modules at this time. Therefore, we are not able to provide sensor readings of ozone."
+  }
+];
+
+const allFaqIds = faqs.map(({ id }) => id);
+
 export default function About() {
-    const [expandAll, setExpandAll] = useState(true);
-    const categories = ['Data', 'Protocol', 'Parameters','Map'];
-    const [selectedCategories, setSelectedCategories] = useState([]);
-
+    const [activeCategory, setActiveCategory] = useState('all');
+    const [expandedFaqIds, setExpandedFaqIds] = useState([]);
     const largeScreen = useMediaQuery('(min-width: 600px)');
+    const visibleCategories = activeCategory === 'all'
+      ? faqCategories
+      : faqCategories.filter(({ id }) => id === activeCategory);
+    const areAllFaqsExpanded = allFaqIds.every((id) => expandedFaqIds.includes(id));
 
-    const toggleCategory = (category) => {
-      console.log('Clicked: ', category);
-      if (selectedCategories?.includes(category?.toLowerCase())) {
-        setSelectedCategories(selectedCategories?.filter(c => c !== category?.toLowerCase()))
-      } else {
-        setSelectedCategories([...selectedCategories, category?.toLowerCase()])
-      }
+    const toggleAllFaqs = () => {
+      setExpandedFaqIds(areAllFaqsExpanded ? [] : allFaqIds);
     };
 
-    const faqs = [
-      {
-        category: "data",
-        question: "How can I access the data?",
-        answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map) and direct download on the City Data Portal."
-      },
-      {
-        category: "parameters",
-        question: "What air quality metrics are shown in this tool?",
-        answer: "This tool currently shares measurements of particulate matter smaller than 2.5 microns (PM 2.5) and NowCast AQI, a real-time air quality metric generated by Clarity, the manufacturers of the air quality sensors being used. Later this year, the tool will also display nitrogen dioxide (NO2) measurements for all sensors across the city, as well as a few black carbon modules."
-      },
-      {
-        category: "parameters",
-        question: "Why is ozone not measured?",
-        answer: "The Open Air Network does not include ozone modules at this time. Therefore, we are not able to provide sensor readings of ozone."
-      },
-      {
-        category: "protocol",
-        question: "Where does this data come from and where is it stored?",
-        answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface."
-      },
-      {
-        category: "protocol",
-        question: "Who owns the air quality sensors?",
-        answer: "Sensors of the Open Air Network and are co-owned between the University of Illinois (as led by Principal Investigator, Professor Erdal) and the Chicago Department of Public Health."
-      },
-      {
-        category: "protocol",
-        question: "Who maintains the sensors?",
-        answer: "Sensors are maintained by the Chicago Department of Transportation, as contracted through sensor owners."
-      },
-      {
-        category: "protocol",
-        question: "How often is the data updated?",
-        answer: "We update the dashboard hourly. However, some sensors may have a slight delay depending on their connectivity. Always check the 'Last Updated' timestamp at the top of the map."
-      },
-      {
-        category: "protocol",
-        question: "Are there plans to increase the frequency of how often the data is uploaded?",
-        answer: "Data updates are limited in part by sensor connectivity, programming interface restrictions, and quality assurance. To ensure the highest quality of data, we do not plan to update the frequency of data until the beginning of 2027, at the earliest. At that time, we may have sufficient data for sensor calibration and sensitivity analyses."
-      },
-      {
-        category: "protocol",
-        question: "Can I get access to raw, uncalibrated data? If not, how can I trust the data provided?",
-        answer: "Raw measures are available on the City of Chicago Data Portal. However, we recommend using calibrated measurements that take into account the limits of Clarity sensor technology and related processes, as raw measurements may not measure actual air quality estimates (versus noise from sensors that changes in different environmental conditions). We follow best practices and recommendations as communicated by Clarity, the manufactuers of the air quality sensors, as well as evidence-based, published research on air quality sensor handling. We recommend using data available for download, as it is the highest quality measurements we are able to provide. NowCast AQI measures by Clarity have already undergone data cleaning and calibration, with Clarity processes published and available on their website. Particulate matter data cleaning processes we implement on calibrated Clarity measures include checking for faulty or offline sensors. Any additional calibration will occur after one year of data measurements, in line with standard practices in environmental sensor research. Our final protocol is undergoing manuscript review, and will be made available on this website upon publication."
-      },
-      {
-        category: "map",
-        question: "What do the colors on the map mean?",
-        answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide."
-      },
+    const toggleFaq = (faqId, shouldExpand) => {
+      setExpandedFaqIds((currentIds) => {
+        const nextIds = new Set(currentIds);
 
-      ];
+        if (shouldExpand) {
+          nextIds.add(faqId);
+        } else {
+          nextIds.delete(faqId);
+        }
+
+        return [...nextIds];
+      });
+    };
 
 
     
@@ -95,29 +303,31 @@ export default function About() {
          <NavBar />
 
          <WhiteBackground $largeScreen={largeScreen}>
-           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
-             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
-               About
+           <ContentContainer>
+             <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
+               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
+                 About
+               </Grid>
              </Grid>
-           </Grid>
 {/*            <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'2rem'}>
              <Grid size={largeScreen ? 6 : 12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
                Air pollution is often invisible, but its impact is real. Now, real-time air quality data is available for every neighborhood, for every Chicagoan.
              </Grid>
            </Grid> */}
-           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
-             <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-              <b>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
-               making city-wide metrics legible for all. We build on the largest sensor network in the country with community and
-               cross-sector collaborations to ensure the data is easily accessible, in context, and ready
-               for action. We will continue to refine and add to the dashboard with improvements and more resources over time.
-               </Grid>
+             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
+               <AboutBodyText size={12}>
+                <b>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
+                 making city-wide metrics legible for all. We build on the largest sensor network in the country with community and
+                 cross-sector collaborations to ensure the data is easily accessible, in context, and ready
+                 for action. We will continue to refine and add to the dashboard with improvements and more resources over time.
+               </AboutBodyText>
 {/*               <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
                To achieve our goals, the design utilizes minimalism that balances technical density with cognitive ease. We chose a bright primary palette,
                 anchored by a Chicago blue and accented with a purposeful Chicago red, to establish a common ground for all Chicagoans.
                 By prioritizing clear visual hierarchy and transparent metadata, the dashboard reflects our mission of providing easy access to Chicago's air quality information.
              </Grid> */}
-           </Grid>
+             </Grid>
+           </ContentContainer>
          </WhiteBackground>
 
          <WhiteBackground $largeScreen={largeScreen}>
@@ -128,19 +338,20 @@ export default function About() {
 
 
          <WhiteBackground $largeScreen={largeScreen}>
-           <Grid container spacing={3} justifyContent={'left'} textAlign={'left'}>
-             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
-               Building on Open Air
+           <ContentContainer>
+             <Grid container spacing={3} justifyContent={'left'} textAlign={'left'}>
+               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
+                 Building on Open Air
+               </Grid>
              </Grid>
-           </Grid>
-           <Grid container spacing={3} justifyContent={'left'} textAlign={'left'} marginTop={'2rem'}>
-             <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-              The <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Open Air Network </a>
-               is a citywide project consisting of 277 non-regulatory air sensors installed in Summer 2025.
-                The sensor network has a five-year lifespan, with continuous monitoring, calibration, and refinement anticipated.
-                It was founded by the University of Illinois at Chicago and Chicago Department of Public Health, in collaboration with
-                dozens of advisory board and other partners. Learn more about University of Illinois & Community teams <NavLink to={"/teams"} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>here.</NavLink>
-                </Grid>
+             <Grid container spacing={3} justifyContent={'left'} textAlign={'left'} marginTop={'2rem'}>
+               <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+                The <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Open Air Network </a>
+                 is a citywide project consisting of 277 non-regulatory air sensors installed in Summer 2025.
+                  The sensor network has a five-year lifespan, with continuous monitoring, calibration, and refinement anticipated.
+                  It was founded by the University of Illinois at Chicago and Chicago Department of Public Health, in collaboration with
+                  dozens of advisory board and other partners. Learn more about University of Illinois & Community teams <NavLink to={"/teams"} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>here.</NavLink>
+                  </Grid>
 {/*
               It was founded by the Chicago Department of Public Health (CDPH) and the University of Illinois at Chicago School of Public Health (UIC SPH).
               The development of the network was supported by an advisory board and other partners, including the following:
@@ -161,68 +372,90 @@ export default function About() {
              from UIC SPH led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional
              Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon,
              LLC from 2025 through 2026.  */}
-              </Grid>
-              <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-               The grid-based design of the air monitoring network was based on the EPA’s <a href="https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-               > Network Design Criteria for Ambient Air Quality Monitoring</a> under the Clean Air Act. We  added additional sensors in areas that have experienced environmental injustices more than others, known as
-               <i> Environmental Justice (EJ)</i> communities. Neighborhoods in or near EJ zones have sensors every 1.4 kilometers (0.87 miles), and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles). By placing sensors
-               across the city using a grid design, we can follow the path of air pollution as it moves above, between, and through Chicago.
+                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+                 The grid-based design of the air monitoring network was based on the EPA’s <a href="https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 > Network Design Criteria for Ambient Air Quality Monitoring</a> under the Clean Air Act. We  added additional sensors in areas that have experienced environmental injustices more than others, known as
+                 <i> Environmental Justice (EJ)</i> communities. Neighborhoods in or near EJ zones have sensors every 1.4 kilometers (0.87 miles), and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles). By placing sensors
+                 across the city using a grid design, we can follow the path of air pollution as it moves above, between, and through Chicago.
+               </Grid>
+               <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+              <a href="https://publichealth.uic.edu/profiles/serap-erdal/" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Dr. Serap Erdal </a>
+               from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional
+               Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon,
+               LLC from 2025 through 2026.
+                </Grid>
              </Grid>
-             <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-            <a href="https://publichealth.uic.edu/profiles/serap-erdal/" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Dr. Serap Erdal </a>
-             from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional
-             Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon,
-             LLC from 2025 through 2026.
-              </Grid>
+           </ContentContainer>
          </WhiteBackground>
 
-         <hr style={{ margin: '3rem 0', borderColor: '#41B6E6' }} />
-
-         <GradientBackground $largeScreen={largeScreen}>
-           <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
-                          topRowText={'Some'}
-                          bottomRowTextBlack={'Frequently Asked'}
-                          bottomRowTextRed={'Questions'}
-                          buttonText={'Expand all'}
-                          buttonOnClick={() => {setSelectedCategories([]);setExpandAll(!expandAll)}}
-
-           />
-         </GradientBackground>
-
-
-         <WhiteBackground $largeScreen={largeScreen}>
-           <Stack direction="row" spacing={1} justifyContent={'flex-end'}>
-             <Chip clickable label="All"
-                   onClick={() => setSelectedCategories([])}
-                   variant={!selectedCategories?.length ? '' : 'outlined'}
-             />
-             { categories?.map((category) =>
-               <Chip clickable label={category}
-                     onClick={() => toggleCategory(category)}
-                     variant={selectedCategories?.includes(category?.toLowerCase()) ? '' : 'outlined'}
+         <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+           <ContentContainer>
+             <FAQTopDivider />
+             <FAQHeader $largeScreen={largeScreen}>
+               <FAQExpandButton $largeScreen={largeScreen} onClick={toggleAllFaqs}>
+                 {areAllFaqsExpanded ? 'Collapse all' : 'Expand all'}
+               </FAQExpandButton>
+               <FAQHeaderContent>
+                 <FAQHeaderText>
+                   <FAQHeaderTopRow $largeScreen={largeScreen}>Some</FAQHeaderTopRow>
+                   <FAQHeaderBottomRow $largeScreen={largeScreen}>
+                     Frequently Asked <FAQHeaderBottomAccent>Questions</FAQHeaderBottomAccent>
+                   </FAQHeaderBottomRow>
+                 </FAQHeaderText>
+                 <FAQHeaderIcon
+                   $largeScreen={largeScreen}
+                   src={'/icons/chiair/aq-resources-icon.svg'}
+                   alt={''}
+                 />
+               </FAQHeaderContent>
+             </FAQHeader>
+             <FAQFilterRow direction="row" spacing={1} justifyContent={'flex-end'} useFlexGap flexWrap={'wrap'}>
+               <FAQFilterChip
+                 clickable
+                 label="All"
+                 $active={activeCategory === 'all'}
+                 onClick={() => setActiveCategory('all')}
                />
-             )}
-           </Stack>
+               {faqCategories.map(({ id, label }) => (
+                 <FAQFilterChip
+                   key={id}
+                   clickable
+                   label={label}
+                   $active={activeCategory === id}
+                   onClick={() => setActiveCategory(id)}
+                 />
+               ))}
+             </FAQFilterRow>
 
-           {categories
-             ?.filter(c => !selectedCategories?.length || selectedCategories?.includes(c?.toLowerCase()))
-             ?.map(category => <>
-                 <h3>{category}</h3>
-                 {faqs?.filter(f => f.category?.toLowerCase() === category?.toLowerCase())?.map((faq) =>
-                   <Accordion expanded={expandAll}>
-                     <AccordionSummary
-                       expandIcon={selectedCategories?.includes(category?.toLowerCase()) ? <FaCaretUp /> : <FaCaretDown />}
-                     >
-                       {faq.question}
-                     </AccordionSummary>
-                     <AccordionDetails>
-                       {faq.answer}
-                     </AccordionDetails>
-                   </Accordion>)
-                 }
-               </>
-             )}
-         </WhiteBackground>
+             {visibleCategories.map(({ id, label }) => (
+               <FAQCategorySection key={id}>
+                 <FAQCategoryTitle $largeScreen={largeScreen}>{label}</FAQCategoryTitle>
+                 {faqs
+                   .filter((faq) => faq.category === id)
+                   .map((faq) => {
+                     const isExpanded = expandedFaqIds.includes(faq.id);
+
+                     return (
+                       <FAQAccordion
+                         key={faq.id}
+                         expanded={isExpanded}
+                         onChange={(_, shouldExpand) => toggleFaq(faq.id, shouldExpand)}
+                       >
+                         <FAQAccordionSummary
+                           expandIcon={isExpanded ? <FaCaretDown /> : <FaCaretRight />}
+                         >
+                           <FAQQuestion $largeScreen={largeScreen}>{faq.question}</FAQQuestion>
+                         </FAQAccordionSummary>
+                         <FAQAccordionDetails>
+                           <FAQAnswer $largeScreen={largeScreen}>{faq.answer}</FAQAnswer>
+                         </FAQAccordionDetails>
+                       </FAQAccordion>
+                     );
+                   })}
+               </FAQCategorySection>
+             ))}
+           </ContentContainer>
+         </GradientBackground>
 
 
 
