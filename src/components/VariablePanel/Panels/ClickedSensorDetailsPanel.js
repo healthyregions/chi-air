@@ -38,13 +38,13 @@ const downloadFile = (fileContents, filename) => {
   URL.revokeObjectURL(url);
 }
 
-const convertGeoJsonToCsv = (geojsonData, separator= ',') => {
+const convertGeoJsonToCsv = (geojsonData, selectedParameter, separator= ',') => {
   // Build up our CSV rows as text, starting with the headers
   const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', 'mean_pm25'];
   let csvString = csvHeaders.join(separator) + '\n';
   geojsonData?.features?.forEach(f => {
-    const { datasourceId, mean_pm25, locationLongitude, locationLatitude } = f.properties;
-    mean_pm25.forEach((reading) => {
+    const { datasourceId, metrics, locationLongitude, locationLatitude } = f.properties;
+    metrics[selectedParameter]?.data?.forEach((reading) => {
       const { type, date, value, mean_pm25 } = reading;
       csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
     });
@@ -76,12 +76,12 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
     geojsonData
   });
 
-  const downloadGeoJson = (geojsonData = sensorGeojson, filename = 'chicago_mean_pm25.geojson') => {
+  const downloadGeoJson = (geojsonData = sensorGeojson, filename = `chicago_${selectedParameter}.geojson`) => {
     downloadFile(JSON.stringify(geojsonData, null, 2), filename);
   };
 
-  const downloadCsv = (geojsonData = sensorGeojson, separator= ',', filename = 'chicago_mean_pm25.csv') => {
-    downloadFile(convertGeoJsonToCsv(geojsonData), filename);
+  const downloadCsv = (geojsonData = sensorGeojson, separator= ',', filename = `chicago_${selectedParameter}.csv`) => {
+    downloadFile(convertGeoJsonToCsv(geojsonData, selectedParameter), filename);
   };
 
   // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"

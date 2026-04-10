@@ -241,6 +241,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
             autoComplete
             onChange={(e, s) => handleChange(s, type)}
             clearOnEscape
+            fullWidth
             clearIcon={undefined}
             popupIcon={null}
             noOptionsText={'No options'}
@@ -253,7 +254,8 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
               <TextField
                 {...params}
                 margin={'none'}
-                variant={'filled'}
+                variant={'outlined'}
+                style={{ height: '1.9rem' }}
                 autoFocus={true}
                 InputProps={{
                   ...params.InputProps,
@@ -267,7 +269,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
         </Grid>}
       </Grid>}
 
-      {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} marginTop={'0.5rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
+      {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} margin={'0.3rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
         <Grid size>
           {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {selections?.community?.[0]}</span>}
           {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}

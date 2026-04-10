@@ -65,10 +65,10 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
         <LHeader><LinkText onClick={() => pop('Map Layers')}>Map Layers</LinkText> / Overlays / Boundaries</LHeader>
         <SGBody>
           <OverlaysDropdown></OverlaysDropdown>
-          <OverlaysColorLegend></OverlaysColorLegend>
           <div style={{ marginTop: '1.5rem' }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            A set of composable map overlays that allow users to stack, toggle, and analyze different geographical, administrative, and infrastructural data points. These overlays generally include administrative boundaries, residential areas, and transportation networks, which can be visualized independently or together to analyze relationships between them.
           </div>
+          <OverlaysColorLegend></OverlaysColorLegend>
         </SGBody>
       </Grid>}
     </Grid>
