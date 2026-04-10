@@ -223,17 +223,17 @@ const DataPanel = ({ mapRef }) => {
 
       {(breadcrumbs?.includes('Details') || breadcrumbs?.includes('Explain')) && currentPage !== 'Color Coding Air Quality' && <>
         <Grid container spacing={0} marginTop={'1rem'}>
-          <LButton as={Grid} size={1} variant={'text'} onClick={() => popPage('root')}
+          {currentPage !== 'Map Layers' && <LButton as={Grid} size={1} variant={'text'} onClick={() => popPage('root')}
                    style={{ cursor: 'pointer', marginTop: '0.4rem' }}>
             <FaArrowCircleLeft style={{ width: '19px', height: '19px' }} />
-          </LButton>
+          </LButton>}
 
           {currentPage === 'Details' && <ClickedSensorDetailsPanel pop={popPage} push={pushPage} />}
           {currentPage === 'Explain' && <ClickedSensorExplain pop={popPage} />}
         </Grid>
       </>}
 
-      {breadcrumbs?.[1] === 'Map Layers' && <>
+      {currentPage === 'Map Layers' && <>
         <MapLayersPanel pop={popPage} push={pushPage} breadcrumbs={breadcrumbs} />
       </>}
 
