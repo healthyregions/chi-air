@@ -23,6 +23,7 @@ import Table from './Layout/Table';
 import { Geocoder } from './Map/Geocoder';
 
 // pages
+import Team from './Pages/Team';
 import About from './Pages/About';
 import ErrorPage from './Pages/Error';
 import Home from './Pages/Home';
@@ -53,6 +54,7 @@ export {
     Showcase,
     StaticNavbar,
     Table,
+    Team,
     About,
     ErrorPage,
     Home,

@@ -16,7 +16,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const NavItems = styled.ul`
   margin-top:.25em;
-  margin-bottom:1em;
+  margin-bottom:2em;
   background:none;
   list-style:none;
   line-height:2;
@@ -127,13 +127,14 @@ export default function Nav({
       <NavContainer style={style}>
         <ContentContainer>
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
-            <Grid size={4}>
+            <Grid size={5}>
               {(largeScreen /*|| mobileNavOpen*/) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
                 {/* <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} /> */}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
                 {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
                 <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
+                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/team')}>Team</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
               </Grid>}
             </Grid>
@@ -171,6 +172,7 @@ export default function Nav({
               <NavItems>
                 <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
                 <li><NavLink to="/map">Map</NavLink></li>
+                <li><NavLink to="/team">Team</NavLink></li>
                 <li><NavLink to="/about">About</NavLink></li>
               </NavItems>
             </NavInner>
