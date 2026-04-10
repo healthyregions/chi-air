@@ -49,7 +49,7 @@ const GoogleTranslate = () => {
     }
 
     return () => ref.current = null;
-  }, [locale]);
+  }, [locale, previous?.locale]);
 
   return (
     <GoogleTranslateContainer

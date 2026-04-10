@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
-// import {DropdownButton} from "../VariablePanel/DropdownButton";
+import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "react-icons/fa";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
@@ -114,13 +114,13 @@ export default function Nav({
   const loc = useLocation();
   const navigate = useNavigate();
 
-  //const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const largeScreen = useMediaQuery('(min-width: 600px)');
-  // const logoClicked = () => {
-  //   if (largeScreen) { return; }
-  //   setMobileNavOpen(!mobileNavOpen)
-  // };
+  const logoClicked = () => {
+    if (largeScreen) { return; }
+    setMobileNavOpen(!mobileNavOpen)
+  };
 
   return (
     <>
@@ -128,19 +128,18 @@ export default function Nav({
         <ContentContainer>
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size={5}>
-              {(largeScreen /*|| mobileNavOpen*/) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-                {/* <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} /> */}
+              {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
+                {largeScreen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={['English', 'Español']} />}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
-                {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
-                <DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'About'} />*/}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/team')}>Team</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
+                {mobileNavOpen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={['English', 'Español']} />}
               </Grid>}
             </Grid>
-            {/* <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}> */}
+            <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}>
               <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-            {/* </Grid> */}
+            </Grid>
           </Grid>
 
           {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
