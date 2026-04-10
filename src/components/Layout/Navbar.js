@@ -139,7 +139,7 @@ export default function Nav({
               </Grid>}
             </Grid>
             {/* <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}> */}
-              <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+              <img width={largeScreen ? 477 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
             {/* </Grid> */}
           </Grid>
 
