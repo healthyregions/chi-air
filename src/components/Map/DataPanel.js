@@ -233,7 +233,7 @@ const DataPanel = ({ mapRef }) => {
         </Grid>
       </>}
 
-      {currentPage === 'Map Layers' && <>
+      {breadcrumbs?.includes('Map Layers') && <>
         <MapLayersPanel pop={popPage} push={pushPage} breadcrumbs={breadcrumbs} />
       </>}
 
