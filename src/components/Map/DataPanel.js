@@ -177,7 +177,7 @@ const DataPanel = ({ mapRef }) => {
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
       <Grid container spacing={4} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={(l) => dispatch(setLocale(l?.toLowerCase()?.slice(0,2)))} options={['English','Español']} /></Grid>
+        {/*<Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={(l) => dispatch(setLocale(l?.toLowerCase()?.slice(0,2)))} options={['English','Español']} /></Grid>*/}
       </Grid>
 
       <Grid container spacing={5} alignItems={'center'}>
@@ -191,18 +191,12 @@ const DataPanel = ({ mapRef }) => {
         </LButton>
         <LButton variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
       </Grid>
+
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
           <Grid container spacing={2} alignItems={'center'}>
             <Grid size={{ xs: 3 }}>
               <DropdownHeader htmlFor="paramSelect" size={'small'}>Indicator</DropdownHeader>
-            </Grid>
-            <Grid size={{ xs: 9 }}>
-              <GeocoderHeader size={'small'}><strong>Search</strong> any Chicago Address</GeocoderHeader>
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} alignItems={'center'}>
-            <Grid size={{ xs: 3 }}>
               <FormControl id="paramSelect" variant="outlined" fullWidth margin={'dense'} style={{
                 border: '1px solid rgba(0, 88, 153, 0.5)',
                 borderRadius: '5px'
@@ -210,6 +204,8 @@ const DataPanel = ({ mapRef }) => {
                 <Select
                   variant={"outlined"}
                   size={'small'}
+                  margin={'none'}
+                  style={{ height: '36px' }}
                   value={selectedParameter}
                   onChange={(e) => setSelectedParameter(e.target.value)}
                 >
@@ -219,19 +215,12 @@ const DataPanel = ({ mapRef }) => {
                   {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid size={{ xs: 9 }}>
-              <Geocoder size={'small'} pop={popPage} onDropdownChange={handleDropdownChanged} />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} alignItems={'center'}>
-            <Grid size={{ xs: 3 }}>
-              <LButton as={Grid} size={'small'} justifyContent={'start'}>
-                <FaInfoCircle style={{ marginLeft: '.2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
+              <LButton as={Grid} justifyContent={'start'} onClick={() => pushPage(['Explain'])}>
+                <FaInfoCircle style={{ margin: '.5rem .2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
               </LButton>
             </Grid>
             <Grid size={{ xs: 9 }}>
-              <AreaSelectionDropdowns size={'small'} onChange={handleDropdownChanged} pop={popPage} />
+              <Geocoder size={'small'} pop={popPage} onDropdownChange={handleDropdownChanged} />
             </Grid>
           </Grid>
         </>}
@@ -244,7 +233,7 @@ const DataPanel = ({ mapRef }) => {
 
       {currentPage === 'Color Coding Air Quality' && <ColorCodingAQPanel pop={popPage} />}
 
-      {breadcrumbs?.includes('Details') && currentPage !== 'Color Coding Air Quality' && <>
+      {(breadcrumbs?.includes('Details') || breadcrumbs?.includes('Explain')) && currentPage !== 'Color Coding Air Quality' && <>
         <Grid container spacing={0} marginTop={'1rem'}>
           <LButton as={Grid} size={1} variant={'text'} onClick={() => popPage('root')}
                    style={{ cursor: 'pointer', marginTop: '0.4rem' }}>

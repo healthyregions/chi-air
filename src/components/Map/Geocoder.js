@@ -25,11 +25,11 @@ const GeocoderContainer = styled(Grid)`
         background:white;
         height:${({height, $variant}) => $variant === 'home' ? 48 : height||36}px;
         padding:0;
-        border-radius: 100px;
+        border-radius: ${({$variant}) => $variant === 'home' ? '100px' : '5px'};
         font-family: Space Grotesk,serif;
     }
     .MuiOutlinedInput-root {
-        border-radius: 100px;
+        border-radius: ${({$variant}) => $variant === 'home' ? '100px' : '5px'};
     }
     .MuiOutlinedInput-root fieldset {
         border-color: rgba(0, 88, 153, 1);
@@ -48,7 +48,7 @@ const GeocoderHeader = styled.span`
     strong { font-weight: ${({ $variant }) => $variant === 'home' ? 700 : 600}; }
 `;
 
-export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', extraButton = <></>, variant = 'default' }) => {
+export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', variant = 'default' }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -101,32 +101,17 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
   return(
     <GeocoderContainer style={style} $variant={variant}>
       <Grid container spacing={0} alignItems={'center'} justifyContent={isHomeVariant ? 'center' : 'space-between'}>
-        <Grid size={isHomeVariant ? 12 : 8} style={isHomeVariant ? { textAlign: 'center' } : undefined}>
+        <Grid size={12} style={isHomeVariant ? { textAlign: 'center' } : undefined}>
           <GeocoderHeader size={size} $variant={variant}>
             <><strong>Search</strong> any Chicago Address</>
           </GeocoderHeader>
         </Grid>
-        {!isHomeVariant && extraButton}
       </Grid>
       <Grid container spacing={0} alignItems="center" marginTop={isHomeVariant ? '1.5rem' : 0} justifyContent={isHomeVariant ? 'center' : 'flex-start'}>
-        {!isHomeVariant && <Grid size={{ xs: 3 }}>
-          <FormControl id="paramSelect" variant="outlined" fullWidth>
-            <InputLabel htmlFor="paramSelect">Indicator</InputLabel>
-            <Select
-              variant={"outlined"}
-              size={'small'}
-              value={selectedParameter}
-              onChange={(e) => setSelectedParameter(e.target.value)}
-            >
-              <MenuItem value="nowcast_aqi">AQI</MenuItem>
-              <MenuItem value="mean_pm25">PM 2.5</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>}
-        <Grid size={isHomeVariant ? { xs: 12, md: 8 } : { xs: 9 }}>
+        <Grid size={isHomeVariant ? { xs: 12, md: 8 } : { xs: 12 }}>
           <Autocomplete
             id="geocoder-search"
-            style={{ width: '100%', borderRadius: '100px'}}
+            style={{ width: '100%', borderRadius: isHomeVariant ? '100px' : '5px' }}
             freeSolo
             disableClearable
             filterOptions={(x) => x}
@@ -172,7 +157,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
               <TextField
                 {...params}
                 margin={isHomeVariant ? "none" : "dense"}
-                style={{ borderRadius: '100px', border: '1px solid rgba(0, 88, 153, 1)' }}
+                style={{ borderRadius: isHomeVariant ? '100px' : '5px', border: '1px solid rgba(0, 88, 153, 1)' }}
                 placeholder={placeholder}
                 slotProps={{
                   input: { ...params.InputProps, type: 'search', startAdornment:

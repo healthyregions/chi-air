@@ -128,7 +128,7 @@ export const SelectedAreaPanel = () => {
               <strong style={{ color: primary(range) }}>{Number(latestValue)?.toFixed(selectedParameter === 'nowcast_aqi' ? 0 : 1)}</strong>
             </AqiValueColumn>
             <LocationNameColumn size={4}>
-              <small>{feature?.properties?.name}</small>
+              <strong style={{ color: 'rgba(0, 88, 153, 1)' }}>{feature?.properties?.name}</strong>
             </LocationNameColumn>
             <TimestampColumn size={3}>
               <small>{date} {time}</small>
