@@ -17,9 +17,9 @@ const initialState = {
     type: 'FeatureCollection',
     features: []
   },
-  breadcrumbs: ['root'],
 
   // User selections
+  breadcrumbs: ['root'],
   selectedAreas: {
     community: [],
     zip: [],

@@ -1,0 +1,6 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="21" cy="7" r="7" transform="rotate(90 21 7)" fill="#41B6E6" fill-opacity="0.5"/>
+<circle cx="21" cy="21" r="7" transform="rotate(90 21 21)" fill="#005899" fill-opacity="0.5"/>
+<circle cx="7" cy="21" r="7" transform="rotate(90 7 21)" fill="#41B6E6" fill-opacity="0.5"/>
+<circle cx="7" cy="7" r="7" transform="rotate(90 7 7)" fill="#005899" fill-opacity="0.5"/>
+</svg>

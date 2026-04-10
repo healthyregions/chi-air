@@ -20,6 +20,7 @@ import {getLocation, getMetadata, LButton, LHeader, SensorValueLabelTooltip} fro
 import {useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CopyLinkToClipboard = () => {
   const [linkCopied, setLinkCopied] = useState(false);
@@ -66,6 +67,8 @@ const CopyLinkToClipboard = () => {
 export const ClickedSensorPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
   const [, setSearchParams] = useSearchParams();
+
+  const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const locations = useSelector(selectSensorLocations);
   const selectedSensors = useSelector(selectSelectedSensors);
@@ -125,13 +128,13 @@ export const ClickedSensorPanel = ({ push, pop }) => {
 
       {selectedSensors?.includes(clickedSensor) && <Grid container spacing={0} justifyContent={"space-between"}>
         <Grid size={6}>
-          <LButton style={{ position: 'absolute', left: '-2rem', marginTop: '2rem', fontSize: '28px',  width: '36px', height: '36px' }}
+          <LButton style={{ position: 'absolute', zIndex:1000, left: largeScreen ? '-2rem' : '.5rem', marginTop: largeScreen ? '2rem' : '4rem', fontSize: '28px',  width: '36px', height: '36px' }}
                    onClick={() => prevSensor()}>
             <FaChevronCircleLeft style={{ border: '2px solid white', borderRadius: '100px', backgroundColor: 'white',color: 'rgba(0, 88, 153, 1)' }} />
           </LButton>
         </Grid>
         <Grid size={6}>
-          <LButton style={{ position: 'absolute', right: '-2rem', marginTop: '2rem', fontSize: '28px',  width: '36px', height: '36px' }}
+          <LButton style={{ position: 'absolute', zIndex:1000, right: largeScreen ? '-2rem' : '.5rem', marginTop: largeScreen ? '2rem' : '4rem', fontSize: '28px',  width: '36px', height: '36px' }}
                    onClick={() => nextSensor()}>
             <FaChevronCircleRight style={{ border: '2px solid white', borderRadius: '100px', backgroundColor: 'white',color: 'rgba(0, 88, 153, 1)' }} />
           </LButton>

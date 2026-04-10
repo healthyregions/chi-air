@@ -28,6 +28,7 @@
     "@mui/material": "^7.0.0",
     "@mui/styled-engine-sc": "^7.0.0",
     "@mui/x-charts": "^7.0.0",
+    "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^2.11.2",
     "@turf/bbox": "^6.5.0",
     "@turf/boolean-within": "^6.5.0",

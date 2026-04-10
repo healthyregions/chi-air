@@ -80,38 +80,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
     });
-
-    // Grab only this row to quickly color the map
-    // fetchPq({
-    //   url: meanPm25Url,
-    //   columns,
-    //   rowStart: startIndex,
-    //   rowEnd: endIndex,
-    // }).then(d => {
-    //   dispatch(setSensorValuesMeanPm25(d));
-    //   const endTime = new Date().getTime();
-    //   console.log(`Finished fetching latest sensor mean_pm25: ${endTime - startTime}ms`);
-    //
-    //   fetchPq({
-    //     url: meanPm25Url,
-    //     columns,
-    //     rowStart: firstRowIndices.hour,
-    //     rowEnd: firstRowIndices.hour+24,
-    //   }).then(d => {
-    //     dispatch(setSensorValuesMeanPm25(d));
-    //     const endTime = new Date().getTime();
-    //     console.log(`Finished fetching last 24-hours mean_pm25: ${endTime - startTime}ms`);
-    //
-    //     fetchPq({
-    //       url: meanPm25Url,
-    //       columns
-    //     }).then(d => {
-    //       dispatch(setSensorValuesMeanPm25(d));
-    //       const endTime = new Date().getTime();
-    //       console.log(`Finished fetching historical mean_pm25: ${endTime - startTime}ms`);
-    //     });
-    //   });
-    // });
   }, [dispatch, locations, selectedParameter]);
 
   useEffect(() => {
@@ -166,6 +134,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       // No sensor clicked? No-op
       return;
     }
+    // FIXME: this is volatile - data can change in between fetches, hard to keep track of by index
+    // FIXME: May need to update index file whenever new data is fetched
     /*if (metricData?.filter(r => r.type === 'hour')?.length < 20) {
       console.log(`Already have ~24hrs of data for ${clickedSensor}. Using cached data.`);
       return;

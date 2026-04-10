@@ -17,15 +17,16 @@ export const ColorCodingAQPanel = ({ pop }) => {
           <LHeader>Color Coding Air Quality</LHeader>
 
           <SGBody style={{ margin: '1rem 0' }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis Ut enim ad minim veniam, quis Ut enim ad minim veniam, quis.
+            The Air Quality Index (AQI) color scale is a standardized, six-color, 0-500 system used to communicate health risks from air pollution. Colors range from Green (good) to Maroon (hazardous), with higher numbers and warmer colors indicating higher pollution levels and greater health risks. These same colors can be used to describe PM2.5 as well, using different values.
           </SGBody>
 
-          {pm2_5Ranges?.map(({ range, label, color, border}, index) => <Grid key={`color-coding-${index}`} container spacing={2}>
+          {pm2_5Ranges?.map(({ aqi_min, aqi_max, pm25_min, pm25_max, label, color, border}, index) => <Grid key={`color-coding-${index}`} container spacing={2}>
             <Grid size={12} key={`overlay-key-${index}-${label}`} alignItems={'center'} display={'flex'}>
               <span style={{ display: 'inline-block', backgroundColor: color, width: '19px', height: '64px', margin: '0.3rem 0' }}></span>
               <div style={{ marginLeft: '1rem' }}>
                 <LHeader style={{ fontSize: '18px', fontWeight: 700, color: ['Good', 'Moderate'].includes(label) ? border : color }}>{label}</LHeader>
-                <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>AQI {range}</SGBody>
+                <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>AQI {Number(aqi_min)}{Number(aqi_max) > 999 ? '+' : <> - {Number(aqi_max)}</>}</SGBody>
+                {/*<SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>PM 2.5 {pm25_min.toFixed(1)}{pm25_max.toFixed(1) > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>}</SGBody>*/}
               </div>
             </Grid>
           </Grid>)}
