@@ -43,7 +43,7 @@ const DataPanelContainer = styled.div`
     display: ${({ $large, $otherPanels, $dataLength }) => $large && ($otherPanels || $dataLength === 0) ? 'none' : 'initial'};
 
     transition:250ms all;
-    transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(100% + 2rem))' : 'translateY(calc(100%))')};
+    transform: ${({ $large, $open }) => $open ? 'none' : ($large ? 'translateX(calc(100% + 4.5rem))' : 'translateY(calc(100%))')};
     
     padding: ${({ $large }) => $large ? '36px 29px' : '2em 1rem'};
     background: linear-gradient(180deg, #e3f4fb 0%, #ffffff 80%);
@@ -54,7 +54,7 @@ const DataPanelContainer = styled.div`
   button#showHideRight {
     position:absolute;
 
-    right: ${({ $large, $open }) => $open ? ($large ? 'calc(100% - 20px)' : '') : 'calc(100% + 20px)'};
+    right: ${({ $large, $open }) => $open ? ($large ? 'calc(100% - 20px)' : '') : 'calc(100% + 60px)'};
     top: ${({ $large, $open }) => $large ? '20px' : $open ? '-20px' : '-50px' };
     left: ${({ $large }) => $large ? '' : '45vw'};
     width: ${({ $large }) => $large ? '40px' : '3em'};
