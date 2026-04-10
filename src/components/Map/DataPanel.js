@@ -13,11 +13,10 @@ import {
   selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
   selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors, selectSensorLocations, selectSensorParameter,
-  setClickedSensor, setLocale, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData, setSensorParameter,
+  setClickedSensor, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData, setSensorParameter,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaArrowCircleLeft, FaInfoCircle} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 import {FaGripLines} from "react-icons/fa";
@@ -32,7 +31,6 @@ import {Geocoder} from "./Geocoder";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
 
 const DataPanelContainer = styled.div`
     position: fixed;
@@ -94,16 +92,6 @@ const DataPanelContainer = styled.div`
   }
 `;
 
-const GeocoderHeader = styled.span`
-    margin-left: .85rem;
-    font-size: ${({ size }) => size === 'small' ? '14px' : '18px'};
-    font-weight: 200;
-    flex-direction: column;
-    align-content: center;
-    font-family: Space Grotesk;
-
-    strong { font-weight: 600; }
-`;
 const DropdownHeader = styled.span`
     font-size: ${({ size }) => size === 'small' ? '14px' : '18px'};
     font-weight: 200;

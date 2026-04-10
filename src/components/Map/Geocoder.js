@@ -10,12 +10,6 @@ import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropd
 
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import {useDispatch, useSelector} from "react-redux";
-import {selectSensorParameter, setSensorParameter} from "../../store/slices/sensorDataSlice";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -50,10 +44,6 @@ const GeocoderHeader = styled.span`
 
 export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', variant = 'default' }) => {
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-  const selectedParameter = useSelector(selectSensorParameter);
-  const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
   const onChange = useCallback((location) => {
     if (location?.center !== undefined) {
