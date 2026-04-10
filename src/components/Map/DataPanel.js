@@ -54,7 +54,7 @@ const DataPanelContainer = styled.div`
   button#showHideRight {
     position:absolute;
 
-    right: ${({ $large }) => $large ? 'calc(100% - 20px)' : ''};
+    right: ${({ $large, $open }) => $open ? ($large ? 'calc(100% - 20px)' : '') : 'calc(100% + 20px)'};
     top: ${({ $large, $open }) => $large ? '20px' : $open ? '-20px' : '-50px' };
     left: ${({ $large }) => $large ? '' : '45vw'};
     width: ${({ $large }) => $large ? '40px' : '3em'};
