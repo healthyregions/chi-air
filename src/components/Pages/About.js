@@ -12,7 +12,6 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import {FaCaretDown, FaCaretRight} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
-// import {NavLink, useNavigate} from "react-router-dom";
 
 const AboutPage = styled.div`
     background:white;
@@ -38,66 +37,6 @@ const FAQTopDivider = styled.hr`
     margin: 2.75rem 0 5.375rem;
     border: 0;
     border-top: 1px solid #41B6E6;
-`;
-
-const FAQHeader = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-direction: ${({ $largeScreen }) => $largeScreen ? 'row' : 'column-reverse'};
-`;
-
-const FAQExpandButton = styled.button`
-    border: 0;
-    padding: 0;
-    background: transparent;
-    color: #005899;
-    cursor: pointer;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '16px'};
-    line-height: 1.2;
-`;
-
-const FAQHeaderContent = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-left: auto;
-`;
-
-const FAQHeaderText = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.25rem;
-    text-align: right;
-`;
-
-const FAQHeaderTopRow = styled.div`
-    color: #444444;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '18px'};
-    font-weight: 400;
-    line-height: 1.1;
-`;
-
-const FAQHeaderBottomRow = styled.div`
-    color: #444444;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '18px'};
-    font-weight: 700;
-    line-height: 1.1;
-`;
-
-const FAQHeaderBottomAccent = styled.span`
-    color: #E4002B;
-`;
-
-const FAQHeaderIcon = styled.img`
-    width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
-    height: auto;
 `;
 
 const FAQFilterRow = styled(Stack)`
