@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import {FaArrowRight, FaExternalLinkAlt} from "react-icons/fa";
 import { GradientBackground, WhiteBackground } from "../VariablePanel/common";
+import {SectionHeader} from "../VariablePanel/SectionHeader";
 
 const TeamPage = styled.div`
     background:white;
@@ -319,24 +320,14 @@ export default function Team() {
       <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
           <TopDivider />
-          <Header $largeScreen={largeScreen}>
-            <ExpandButton $largeScreen={largeScreen} onClick={''}>
-              {/* Add "Contact Us ->" button here later */}
-            </ExpandButton>
-            <HeaderContent>
-              <HeaderText>
-                <HeaderTopRow $largeScreen={largeScreen}>Passionately built</HeaderTopRow>
-                <HeaderBottomRow $largeScreen={largeScreen}>
-                  With <HeaderBottomAccent>Collaboration</HeaderBottomAccent>
-                </HeaderBottomRow>
-              </HeaderText>
-              <HeaderIcon
-                $largeScreen={largeScreen}
-                src={'/icons/chiair/aq-team-collab.svg'}
-                alt={''}
-              />
-            </HeaderContent>
-          </Header>
+          <SectionHeader imgSrc={'/icons/chiair/aq-team-collab.svg'}
+                         topRowText={'Passionately built'}
+                         bottomRowTextBlack={'With'}
+                         bottomRowTextRed={'Collaboration'}
+          />
+          {/*buttonOnClick={() => navigate('/contact')}*/}
+          {/*buttonText={'Contact Us'}*/}
+          {/*buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}*/}
 
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Leadership</CategoryTitle>
@@ -390,21 +381,12 @@ export default function Team() {
       </WhiteBackground>
 
       <ContentContainer>
-        <Header $largeScreen={largeScreen}>
-          <HeaderContent>
-            <HeaderText style={{ marginBottom: '6rem' }}>
-              <HeaderTopRow $largeScreen={largeScreen}>Co-created with</HeaderTopRow>
-              <HeaderBottomRow $largeScreen={largeScreen}>
-                The <HeaderBottomAccent>Community</HeaderBottomAccent>
-              </HeaderBottomRow>
-            </HeaderText>
-            <HeaderIcon
-              $largeScreen={largeScreen}
-              src={'/icons/chiair/aq-team-community.svg'}
-              alt={''}
-            />
-          </HeaderContent>
-        </Header>
+        <SectionHeader imgSrc={'/icons/chiair/aq-team-community.svg'}
+                       topRowText={'Co-created with'}
+                       bottomRowTextBlack={'The'}
+                       bottomRowTextRed={'Community'}
+                       style={{ marginBottom: '6rem' }}
+        />
       </ContentContainer>
       <ContentContainer>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>

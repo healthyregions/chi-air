@@ -11,6 +11,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import {FaCaretDown, FaCaretRight} from "react-icons/fa";
+import {SectionHeader} from "../VariablePanel/SectionHeader";
 // import {NavLink, useNavigate} from "react-router-dom";
 
 const AboutPage = styled.div`
@@ -297,7 +298,7 @@ export default function About() {
     };
 
 
-    
+
     return (
        <AboutPage>
          <NavBar />
@@ -391,24 +392,15 @@ export default function About() {
          <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
            <ContentContainer>
              <FAQTopDivider />
-             <FAQHeader $largeScreen={largeScreen}>
-               <FAQExpandButton $largeScreen={largeScreen} onClick={toggleAllFaqs}>
-                 {areAllFaqsExpanded ? 'Collapse all' : 'Expand all'}
-               </FAQExpandButton>
-               <FAQHeaderContent>
-                 <FAQHeaderText>
-                   <FAQHeaderTopRow $largeScreen={largeScreen}>Some</FAQHeaderTopRow>
-                   <FAQHeaderBottomRow $largeScreen={largeScreen}>
-                     Frequently Asked <FAQHeaderBottomAccent>Questions</FAQHeaderBottomAccent>
-                   </FAQHeaderBottomRow>
-                 </FAQHeaderText>
-                 <FAQHeaderIcon
-                   $largeScreen={largeScreen}
-                   src={'/icons/chiair/aq-resources-icon.svg'}
-                   alt={''}
-                 />
-               </FAQHeaderContent>
-             </FAQHeader>
+             <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
+                            topRowText={'Some'}
+                            bottomRowTextBlack={'Frequently Asked'}
+                            bottomRowTextRed={'Questions'}
+                            style={{ marginBottom: '6rem' }}
+                            buttonOnClick={toggleAllFaqs}
+                            buttonText={areAllFaqsExpanded ? 'Collapse all' : 'Expand all'}
+             />
+
              <FAQFilterRow direction="row" spacing={1} justifyContent={'flex-end'} useFlexGap flexWrap={'wrap'}>
                <FAQFilterChip
                  clickable
