@@ -364,7 +364,7 @@ export default function Home() {
         <Grid container spacing={8} marginBottom={16} alignItems={'start'} rowSpacing={4}>
           {resources?.map((resource, index) =>
             <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
-                  onClick={() => navigate(resource?.url)}
+                  onClick={() => window.open(resource?.url, '_blank')}
                   justifyItems={'center'}>
               <Grid container spacing={0} marginY={'1rem'}>
                 <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
