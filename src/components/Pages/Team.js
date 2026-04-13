@@ -251,40 +251,40 @@ const communityorgs = [
 
 const communityindividual = [
   {
-    name: 'Ben Barrett',
-    description: 'PhD Candidate, Northwestern University',
+    name: '',
+    description: 'Ben Barrett, Northwestern University',
   },
   {
-    name: 'Benjamin Campbell',
-    description: 'PhD Candidate, University of Illinois Urbana Champaign',
+    name: '',
+    description: 'Benjamin Campbell, University of Illinois Urbana Champaign',
   },
   {
-    name: 'Bill Miller',
-    description: 'Professor Emeritus, Northwestern University',
+    name: '',
+    description: 'Bill Miller, Northwestern University',
   },
   {
-    name: 'Beth Beyer',
-    description: 'Executive Director, The Technology Alliance',
+    name: '',
+    description: 'Beth Beyer, The Technology Alliance',
   },
   {
-    name: 'Christine Dannhausen-Brun, MPH',
-    description: 'Chief Operations Officer, Nordson Green Earth Foundation',
+    name: '',
+    description: 'Christine Dannhausen-Brun, Nordson Green Earth Foundation',
   },
   {
-    name: 'Daisy Magana',
-    description: 'Sr. Research Specialist, UIC SPH',
+    name: '',
+    description: 'Daisy Magana, Univeristy of Illinios Chicago School of Public Health',
   },
   {
-    name: 'Dr. Alex Peimer',
-    description: 'Contributor, Northeastern Illinois University',
+    name: '',
+    description: 'Alex Peimer, Northeastern Illinois University',
   },
   {
-    name: 'Jocelyn Vazquez-Gomez',
-    description: 'Community Science Organizer, Little Village Environmental Justice Organization',
+    name: '',
+    description: 'Jocelyn Vazquez-Gomez, Little Village Environmental Justice Organization',
   },
   {
-    name: 'Julia McKenna',
-    description: 'Data Steward, STRONG Manoomin Collective',
+    name: '',
+    description: 'Julia McKenna, STRONG Manoomin Collective',
   }
 ];
 
