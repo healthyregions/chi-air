@@ -63,7 +63,7 @@ const NavItems = styled.ul`
   }
 `;
 const NavContainer = styled.div`
-  padding: 4rem 6rem 0 6rem;
+  padding: ${({ $largeScreen }) => $largeScreen ? '4rem 6rem 0 6rem' : '6rem 0 0 0'};
   top:.5em;
   left:.5em;
   z-index:500;
@@ -89,7 +89,7 @@ const LButton = styled(Button)`
 const ContentContainer = styled.div`
     max-width: 1200px; /* Standard container width */
     margin: 0 auto;    /* Centering the container */
-    padding: 0 2rem;   /* Prevents text from touching edges */
+    padding: ${({ $largeScreen }) => $largeScreen ? '0 2rem' : '0'}; /* Prevents text from touching edges on larger screens */
     width: 100%;
     box-sizing: border-box;
 `;
@@ -114,21 +114,21 @@ export default function Nav({
   const loc = useLocation();
   const navigate = useNavigate();
 
-  //const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const largeScreen = useMediaQuery('(min-width: 600px)');
-  // const logoClicked = () => {
-  //   if (largeScreen) { return; }
-  //   setMobileNavOpen(!mobileNavOpen)
-  // };
+  const logoClicked = () => {
+    if (largeScreen) { return; }
+    setMobileNavOpen(!mobileNavOpen)
+  };
 
   return (
     <>
-      <NavContainer style={style}>
-        <ContentContainer>
+      <NavContainer style={style} $largeScreen={largeScreen}>
+        <ContentContainer $largeScreen={largeScreen}>
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size={5}>
-              {(largeScreen /*|| mobileNavOpen*/) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
+              {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
                 {/* <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'Eng'} options={['English', 'Español']} /> */}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
                 {/*<DropdownButton buttonProps={{size:'large'}} ButtonComponent={LButton}  label={'Maps'} />
@@ -139,9 +139,9 @@ export default function Nav({
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
               </Grid>}
             </Grid>
-            {/* <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}> */}
-              <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-            {/* </Grid> */}
+            <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
+              <img width={largeScreen ? 477 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+            </Grid>
           </Grid>
 
           {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
