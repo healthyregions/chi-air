@@ -17,7 +17,7 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import {FaArrowCircleLeft, FaInfoCircle} from "react-icons/fa";
+import {FaArrowCircleLeft, FaInfoCircle, FaHome} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
@@ -170,12 +170,13 @@ const DataPanel = ({ mapRef }) => {
 
       <Grid container spacing={5} alignItems={'center'}>
         <LButton
-          component={NavLink} // Use the NavLink component for routing
-          to="/"         // Specify the destination path
-          variant="text" // Optional: apply Material UI button styles
-          style={{ paddingLeft: '0'}}
+          component={NavLink}
+          to="/"
+          variant="text"
+          style={{ paddingLeft: '0', gap: '0.4rem' }}
+          title="Go to Home page"
         >
-          &larr; Home
+          <FaHome style={{ width: '15px', height: '15px' }} /> Home
         </LButton>
         <LButton variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
       </Grid>
