@@ -9,6 +9,7 @@ const ResourcesPage = styled.div`
     background:white;
 `;
 
+// Borrowed from Home page
 const ResourceLabel = styled.div`
     text-align: center;
     font-family: Lexend,sans-serif;
@@ -37,6 +38,30 @@ const ContentContainer = styled.div`
     width: 100%;
     box-sizing: border-box;
 `;
+
+// Borrowed from Team page
+const CategorySection = styled.section`
+    margin-bottom: 4rem;
+`;
+
+const CategoryTitle = styled.h3`
+    margin: 0 0 4rem;
+    color: #444444;
+    font-family: Lexend,sans-serif;
+    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '20px'};
+    font-weight: 400;
+    line-height: 1.2;
+`;
+
+const TeamBodyText = styled(Grid)`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: right;
+`;
+
 
 // No CMS system, define static data structure here instead
 const resources = [
@@ -72,11 +97,13 @@ const resources3 = [
   { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Explore more learning materials & lesson plans, access reports, and explore additional maps.' },
 ];
 
+
+export default function Resources() {
+  const largeScreen = useMediaQuery('(min-width: 600px)');
+
   return (
     <ResourcesPage>
       <NavBar />
-
-      
 
       <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
@@ -87,7 +114,7 @@ const resources3 = [
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              Add text here. 
+              Add text here.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
@@ -102,20 +129,20 @@ const resources3 = [
         <Grid container spacing={8} marginBottom={16} alignItems={'start'} rowSpacing={4}>
           {resources2?.map((resource, index) =>
             <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
-                  onClick={() => navigate(resources2?.url)}
+                  onClick={() => window.open(resource.url)}
                   justifyItems={'center'}>
               <Grid container spacing={0} marginY={'1rem'}>
                 <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <ResourceLabel $largeScreen={largeScreen}>{resources2?.name} <ResourceLinkIcon /></ResourceLabel>
-                <ResourceDescription>{resources2?.description}</ResourceDescription>
+                <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
+                <ResourceDescription>{resource?.description}</ResourceDescription>
               </Grid>
             </Grid>
           )}
         </Grid>
-      </ContentContainer>      
+      </ContentContainer>
 
 
           <CategorySection>
