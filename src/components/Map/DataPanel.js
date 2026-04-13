@@ -168,7 +168,7 @@ const DataPanel = ({ mapRef }) => {
         {/*<Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={(l) => dispatch(setLocale(l?.toLowerCase()?.slice(0,2)))} options={['English','Español']} /></Grid>*/}
       </Grid>
 
-      <Grid container spacing={5} alignItems={'center'}>
+      <Grid container spacing={8} alignItems={'center'}>
         <LButton
           component={NavLink}
           to="/"
@@ -184,7 +184,7 @@ const DataPanel = ({ mapRef }) => {
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
           <Grid container spacing={2} alignItems={'center'}>
-            <Grid size={{ xs: 3 }}>
+            <Grid size={{ xs: 4 }}>
               <DropdownHeader htmlFor="paramSelect" size={'small'}>Indicator</DropdownHeader>
               <FormControl id="paramSelect" variant="outlined" fullWidth margin={'dense'} style={{
                 border: '1px solid rgba(0, 88, 153, 0.5)',
@@ -208,7 +208,7 @@ const DataPanel = ({ mapRef }) => {
                 <FaInfoCircle style={{ margin: '.5rem .2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
               </LButton>
             </Grid>
-            <Grid size={{ xs: 9 }}>
+            <Grid size={{ xs: 8 }}>
               <Geocoder size={'small'} pop={popPage} onDropdownChange={handleDropdownChanged} />
             </Grid>
           </Grid>
