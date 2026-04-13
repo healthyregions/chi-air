@@ -91,36 +91,57 @@ const FilterChip = styled(Chip)`
 `;
 
 const resourceCategories = [
-  { id: 'cat1', label: 'Category 1' },
-  { id: 'cat2', label: 'Category 2' },
-  { id: 'cat3', label: 'Category 3' }
+  { id: 'foundations', label: 'Foundations' },
+  { id: 'learning', label: 'Learning Resources' },
+  { id: 'governance', label: 'City Governance & Reporting' },
+  { id: 'supporting', label: 'Supporting Maps & Resources' },
 ];
 
 // No CMS system, define static data structure here instead
 
 // Define some resources, assign them to a Category
-const resources1 = [
-  { url: 'https://scied.ucar.edu/learning-zone/air-quality/what-is-air-quality', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'What is Air Quality?', description: 'An introduction to air quality from the National Center for Atmospheric Research.' },
-  { url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'AirNow', description: 'AirNow highlights air quality in your local area alongside state and national views.' },
-  { url: 'https://311.chicago.gov/', icon: '/icons/chiair/resources-report.svg', backdrop: true, name: 'Report Air Pollution', description: 'Report suspected air quality violations in the City of Chicago.' },
-].map(r => ({ ...r, category: 'cat1'}));
+const foundationalResources = [
+  { url: 'https://scied.ucar.edu/learning-zone/air-quality/what-is-air-quality', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Intro to Air Quality', description: 'An introduction to air quality from the National Center for Atmospheric Research.' },
+  { url: '', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Quality 101 ', description: 'Lectures by Prof Erdal at UIC on air quality' },
+  { url: 'https://www.epa.gov/indoor-air-quality-iaq/learn-about-indoor-air-quality', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Indoor Air Quality', description: 'People spend 90% of their time indoors. Information about indoor air quality basics.' },
+  { url: 'https://www.epa.gov/criteria-air-pollutants/naaqs-table', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'National Ambient Air Quality Standards', description: 'National Ambient Air Quality Standards for the U.S.' },
+  { url: 'https://www.who.int/publications/i/item/9789240034228', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'WHO Global Air Quality Guidelines', description: 'World Health Organization global air quality guidelines.' },
+  { url: 'https://www.clarity.io/air-quality-monitoring-resources', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Clarity AQ Monitoring Resources', description: 'Resources on Clarity air quality monitoring. ' },
+].map(r => ({ ...r, category: 'foundations'}));
 
-const resources2 = [
-  { url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-square.svg', backdrop: true, name: 'Chicago Air Quality Ordinance', description: 'The Air Quality Ordinance regulates the construction and expansion of certain facilities that create air pollution.' },
-  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html', icon: '/icons/chiair/resources-triangle.svg', backdrop: true, name: 'Open Air Chicago Project', description: 'Check out the City of Chicago website on the Open Air Network, including maps and data.' },
-].map(r => ({ ...r, category: 'cat2'}));
+const learningResources = [
+  { url: 'https://airknowledge.gov/BASC-SI.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Knowledge Course', description: 'Get a deeper dive into air quality with this free course on the basics of air quality.' },
+  { url: 'https://scied.ucar.edu/activity?field_learning_zone_category_target_id=26', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'AQ Classroom Activities', description: 'Teaching resources for air quality learning in the classroom. ' },
+  { url: 'https://corsirosenthalfoundation.org/instructions/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Build Your Own Filter', description: 'Do-it-yourself air purifiers, with lesson plans.' },
+  { url: '', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Carb - Prof Erdal to Share', description: 'TBD' },
+].map(r => ({ ...r, category: 'learning'}));
 
-const resources3 = [
+const governanceResources = [
+  { url: 'https://311.chicago.gov/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chi 311', description: 'Report suspected air quality violations in the City of Chicago.' },
+  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/cumulative-impact-assessment.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Cumulative Impact Assessment 2023', description: 'TBD' },
+  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/statistics_and_reports/Air_Quality_Health_doc_FINALv4.pdf', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Quality & Health Report 2020', description: 'Chicago\'s report on air quality and health from 2020.' },
+  { url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Air Quality Ordinance⠀', description: 'An overview of Chicago air quality ordinance.' },
+  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/community_information/2024/EJ-Action-Plan-2024-Report-FULL.pdf', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Environmental Justice Action Plan Report', description: 'Chicago\'s latest EJ action plan with updates. ' },
+  { url: 'https://www.chicago.gov/city/en/progs/env.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Department of Environment & Sustainability', description: 'City department focused on environmental initiatives that center equity and sustainability.' },
+  { url: 'https://www.chicago.gov/city/en/depts/cdph.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Department of Public Health', description: 'CDPH focuses on guidance, services, and strategies that make Chicago a healthier and safer city.' },
+].map(r => ({ ...r, category: 'governance'}));
+
+const supportingResources = [
+  { url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'EPA AirNow', description: 'AirNow highlights air quality in your local area while also providing air quality information at state and national views.' },
+  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html#modalpop', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Open Air Network City Map', description: 'City of Chicago map of the Open Air Network sensors.' },
+  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/CumulativeImpact/Chicago-EJ-Index_CAs-1500x2318.jpg', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago EJ Index Map', description: 'TBD' },
   { url: 'https://chicagohealthatlas.org/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Health Atlas', description: 'A resource to review, explore and compare health-related data over time and across communities.' },
-  { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes: Exploring Chicago', description: 'A Chicago data collaborative & community mapping platform with environment, climate, & neighborhood indicators.' },
-  { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Explore more learning materials & lesson plans, access reports, and explore additional maps.' },
-].map(r => ({ ...r, category: 'cat3'}));
+  { url: 'https://chichives.com/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'ChiVes: Exploring Chicago\'s Environment', description: 'A data collaborative and community mapping platform to explore climate, environment, and key neighborhood indicators.' },
+  { url: 'https://public-environmental-data-partners.github.io/j40-cejst-2/en/#9.29/41.8341/-87.7321T', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Climate & Economic Justice Screening Tool', description: 'This copy of the original U.S. tool highlights key measures of climate and environmental justices for all census tracts.' },
+  { url: 'https://ceche.uic.edu/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'UIC Center for Extreme Conditions and Health Excellence', description: 'TBD' },
+].map(r => ({ ...r, category: 'supporting'}));
 
 // Combine into a single shared list of resources (now includes category)
 const resources = [
-  ...resources1,
-  ...resources2,
-  ...resources3
+  ...foundationalResources,
+  ...learningResources,
+  ...governanceResources,
+  ...supportingResources
 ];
 
 export default function Resources() {

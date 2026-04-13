@@ -220,7 +220,6 @@ const resources = [
   { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html', icon: '/icons/chiair/resources-triangle.svg', backdrop: true, name: 'Open Air Chicago Project', description: 'Check out the City of Chicago website on the Open Air Network, including maps and data.' },
   { url: 'https://chicagohealthatlas.org/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Health Atlas', description: 'A resource to review, explore and compare health-related data over time and across communities.' },
   { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes: Exploring Chicago', description: 'A Chicago data collaborative & community mapping platform with environment, climate, & neighborhood indicators.' },
-  { url: '', icon: '/icons/chiair/resources-view-all.svg', backdrop: false, name: 'View all Resources', description: 'Explore more learning materials & lesson plans, access reports, and explore additional maps.' },
 ];
 
 const headerDecorItems = [
@@ -376,6 +375,18 @@ export default function Home() {
               </Grid>
             </Grid>
           )}
+          <Grid key={'resources-view-all'} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
+                onClick={() => navigate('/resources')}
+                justifyItems={'center'}>
+            <Grid container spacing={0} marginY={'1rem'}>
+              <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
+              <img style={{ position: 'absolute', marginLeft: '2rem' }} src={'/icons/chiair/resources-view-all.svg'} alt={''} />
+            </Grid>
+            <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+              <ResourceLabel $largeScreen={largeScreen}>View All Resources <ResourceLinkIcon /></ResourceLabel>
+              <ResourceDescription>Explore more learning materials & lesson plans, access reports, and explore additional maps.</ResourceDescription>
+            </Grid>
+          </Grid>
         </Grid>
       </ContentContainer>
 
