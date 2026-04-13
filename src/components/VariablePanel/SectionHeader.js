@@ -25,6 +25,10 @@ const ChiRedText = styled.span`
     font-weight: 700;
     text-align: right;
 `;
+const SectionIcon = styled.img`
+    width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
+    height: auto;
+`
 
 export const SectionHeader = ({ style = {}, buttonIcon = <></>, buttonText = '', buttonOnClick, topRowText = '', bottomRowTextBlack = '', bottomRowTextRed = '', imgSrc, imgAlt = '' }) => {
   const largeScreen = useMediaQuery('(min-width: 600px)');
@@ -37,11 +41,13 @@ export const SectionHeader = ({ style = {}, buttonIcon = <></>, buttonText = '',
 
       <Grid container alignItems={'center'} spacing={8}>
         <ChiBlackText spacing={0} style={{ fontSize: largeScreen ? '32px': '18px', fontWeight: 400, textAlign: 'right' }}>
-          <Grid container spacing={4} alignItems={'center'} justifyContent={'right'}>
-            <Grid alignItems={'right'}>
+          <Grid container spacing={2} alignItems={'center'} justifyContent={'right'}>
+            <Grid alignItems={'right'} size={{ xs: 10 }}>
               {topRowText} <div style={{ fontWeight:700 }}>{bottomRowTextBlack} <ChiRedText>{bottomRowTextRed}</ChiRedText></div>
             </Grid>
-            <img width={largeScreen ? 100 : 42} src={imgSrc} alt={imgAlt} />
+            <Grid size={{ xs: 2 }}>
+              <SectionIcon width={largeScreen ? 100 : 42} src={imgSrc} alt={imgAlt} />
+            </Grid>
           </Grid>
         </ChiBlackText>
       </Grid>

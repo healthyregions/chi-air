@@ -158,7 +158,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const hasSelection = selections?.zip?.length > 0 || selections?.community?.length > 0 || selections?.ward?.length > 0;
   const isHomeVariant = variant === 'home';
 
-  const prettyTypeName = useCallback((t) => t === 'zip' ? 'Zip code' : t === 'community' ? 'Community' : 'Ward', []);
+  const prettyTypeName = useCallback((t) => t === 'zip' ? isHomeVariant ? 'Zip code' : 'Zip' : t === 'community' ? 'Community' : 'Ward', [isHomeVariant]);
 
   const options = useMemo(() => {
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];

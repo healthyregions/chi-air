@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import {FaExternalLinkAlt} from "react-icons/fa";
 import { GradientBackground, WhiteBackground } from "../VariablePanel/common";
+import {SectionHeader} from "../VariablePanel/SectionHeader";
 
 const TeamPage = styled.div`
     background:white;
@@ -29,66 +30,6 @@ const TopDivider = styled.hr`
     margin: 2.75rem 0 5.375rem;
     border: 0;
     border-top: 1px solid #41B6E6;
-`;
-
-const Header = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-direction: ${({ $largeScreen }) => $largeScreen ? 'row' : 'column-reverse'};
-`;
-
-const ExpandButton = styled.button`
-    border: 0;
-    padding: 0;
-    background: transparent;
-    color: #005899;
-    cursor: pointer;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '16px'};
-    line-height: 1.2;
-`;
-
-const HeaderContent = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-left: auto;
-`;
-
-const HeaderText = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.25rem;
-    text-align: right;
-`;
-
-const HeaderTopRow = styled.div`
-    color: #444444;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '18px'};
-    font-weight: 400;
-    line-height: 1.1;
-`;
-
-const HeaderBottomRow = styled.div`
-    color: #444444;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '32px' : '18px'};
-    font-weight: 700;
-    line-height: 1.1;
-`;
-
-const HeaderBottomAccent = styled.span`
-    color: #E4002B;
-`;
-
-const HeaderIcon = styled.img`
-    width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
-    height: auto;
 `;
 
 const CategorySection = styled.section`
@@ -251,40 +192,40 @@ const communityorgs = [
 
 const communityindividual = [
   {
-    name: 'Ben Barrett',
-    description: 'PhD Candidate, Northwestern University',
+    name: '',
+    description: 'Ben Barrett, Northwestern University',
   },
   {
-    name: 'Benjamin Campbell',
-    description: 'PhD Candidate, University of Illinois Urbana Champaign',
+    name: '',
+    description: 'Benjamin Campbell, University of Illinois Urbana Champaign',
   },
   {
-    name: 'Bill Miller',
-    description: 'Professor Emeritus, Northwestern University',
+    name: '',
+    description: 'Bill Miller, Northwestern University',
   },
   {
-    name: 'Beth Beyer',
-    description: 'Executive Director, The Technology Alliance',
+    name: '',
+    description: 'Beth Beyer, The Technology Alliance',
   },
   {
-    name: 'Christine Dannhausen-Brun, MPH',
-    description: 'Chief Operations Officer, Nordson Green Earth Foundation',
+    name: '',
+    description: 'Christine Dannhausen-Brun, Nordson Green Earth Foundation',
   },
   {
-    name: 'Daisy Magana',
-    description: 'Sr. Research Specialist, UIC SPH',
+    name: '',
+    description: 'Daisy Magana, Univeristy of Illinios Chicago School of Public Health',
   },
   {
-    name: 'Dr. Alex Peimer',
-    description: 'Contributor, Northeastern Illinois University',
+    name: '',
+    description: 'Alex Peimer, Northeastern Illinois University',
   },
   {
-    name: 'Jocelyn Vazquez-Gomez',
-    description: 'Community Science Organizer, Little Village Environmental Justice Organization',
+    name: '',
+    description: 'Jocelyn Vazquez-Gomez, Little Village Environmental Justice Organization',
   },
   {
-    name: 'Julia McKenna',
-    description: 'Data Steward, STRONG Manoomin Collective',
+    name: '',
+    description: 'Julia McKenna, STRONG Manoomin Collective',
   }
 ];
 
@@ -319,24 +260,14 @@ export default function Team() {
       <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
           <TopDivider />
-          <Header $largeScreen={largeScreen}>
-            <ExpandButton $largeScreen={largeScreen} onClick={''}>
-              {/* Add "Contact Us ->" button here later */}
-            </ExpandButton>
-            <HeaderContent>
-              <HeaderText>
-                <HeaderTopRow $largeScreen={largeScreen}>Passionately built</HeaderTopRow>
-                <HeaderBottomRow $largeScreen={largeScreen}>
-                  With <HeaderBottomAccent>Collaboration</HeaderBottomAccent>
-                </HeaderBottomRow>
-              </HeaderText>
-              <HeaderIcon
-                $largeScreen={largeScreen}
-                src={'/icons/chiair/aq-team-collab.svg'}
-                alt={''}
-              />
-            </HeaderContent>
-          </Header>
+          <SectionHeader imgSrc={'/icons/chiair/aq-team-collab.svg'}
+                         topRowText={'Passionately built'}
+                         bottomRowTextBlack={'With'}
+                         bottomRowTextRed={'Collaboration'}
+          />
+          {/*buttonOnClick={() => navigate('/contact')}*/}
+          {/*buttonText={'Contact Us'}*/}
+          {/*buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}*/}
 
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Leadership</CategoryTitle>
@@ -390,21 +321,12 @@ export default function Team() {
       </WhiteBackground>
 
       <ContentContainer>
-        <Header $largeScreen={largeScreen}>
-          <HeaderContent>
-            <HeaderText style={{ marginBottom: '6rem' }}>
-              <HeaderTopRow $largeScreen={largeScreen}>Co-created with</HeaderTopRow>
-              <HeaderBottomRow $largeScreen={largeScreen}>
-                The <HeaderBottomAccent>Community</HeaderBottomAccent>
-              </HeaderBottomRow>
-            </HeaderText>
-            <HeaderIcon
-              $largeScreen={largeScreen}
-              src={'/icons/chiair/aq-team-community.svg'}
-              alt={''}
-            />
-          </HeaderContent>
-        </Header>
+        <SectionHeader imgSrc={'/icons/chiair/aq-team-community.svg'}
+                       topRowText={'Co-created with'}
+                       bottomRowTextBlack={'The'}
+                       bottomRowTextRed={'Community'}
+                       style={{ marginBottom: '6rem' }}
+        />
       </ContentContainer>
       <ContentContainer>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>

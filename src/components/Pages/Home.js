@@ -29,13 +29,15 @@ const HeroSectionInner = styled.div`
     padding-bottom: 6.5rem;
 `;
 const HeroArtwork = styled.div`
-    position: relative;
+    position: absolute;
+    bottom: ${({ $largeScreen }) => $largeScreen ? '6.5rem' : '4rem'};
+    opacity: ${({ $xlScreen }) => $xlScreen ? '' : '0.2'};
     width: 100%;
     min-height: ${({ $largeScreen }) => $largeScreen ? '38rem' : '27rem'};
-    margin-bottom: -6.5rem;
+    margin-bottom: ${({ $largeScreen }) => $largeScreen ? '-6.5rem' : '-4.5rem' };
     transform: ${({ $largeScreen }) => $largeScreen ? 'translateY(1.25rem)' : 'translateY(0.75rem)'};
     overflow: visible;
-    z-index: 0;
+    z-index: -1;
 `;
 const HeroLight = styled.img`
     position: absolute;
@@ -49,7 +51,7 @@ const HeroGroup = styled.img`
     position: absolute;
     left: -0.75rem;
     top: ${({ $largeScreen }) => $largeScreen ? '12.65rem' : '8.95rem'};
-    width: ${({ $largeScreen }) => $largeScreen ? '1.85rem' : '1.2rem'};
+    max-width: ${({ $largeScreen }) => $largeScreen ? '1.85rem' : '1.2rem'};
     height: auto;
     z-index: 2;
 `;
@@ -65,7 +67,7 @@ const HeroBench = styled.img`
     position: absolute;
     left: ${({ $largeScreen }) => $largeScreen ? '3.65rem' : '1.9rem'};
     bottom: ${({ $largeScreen }) => $largeScreen ? '-6.75rem' : '-3.25rem'};
-    width: ${({ $largeScreen }) => $largeScreen ? '35rem' : '22rem'};
+    width: ${({ $largeScreen, $tinyScreen }) => $largeScreen ? '35rem' : $tinyScreen ? '20rem' : '100%'};
     height: auto;
     z-index: 2;
 `;
@@ -236,7 +238,9 @@ const searchBandHeader6RightAnchor = 25.75;
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const tinyScreen = useMediaQuery('(min-width: 300px)');
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const xlScreen = useMediaQuery('(min-width: 900px)');
 
   const sensorCount = 'over 275';
 
@@ -271,11 +275,11 @@ export default function Home() {
           <HeroSectionInner>
             <Grid container spacing={largeScreen ? 4 : 0} alignItems={'center'}>
               <Grid size={{ xs: 12, md: 6 }}>
-                <HeroArtwork $largeScreen={largeScreen}>
+                <HeroArtwork $largeScreen={largeScreen} $xlScreen={xlScreen}>
                   <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroWifi src={'/img/header/wifi.svg'} alt={''} $largeScreen={largeScreen} />
-                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} />
+                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} $tinyScreen={tinyScreen} />
                   <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
                 </HeroArtwork>
               </Grid>
@@ -389,7 +393,7 @@ export default function Home() {
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <ContentContainer>
           <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'flex-start'}>
-            <img style={{ maxWidth: '300px', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+            <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               <Grid container spacing={0}>
                 <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks. To close this gap, we deployed a fleet of {sensorCount} high-precision sensors to blanket the city.</div>
@@ -397,8 +401,8 @@ export default function Home() {
                 <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations across Chicago to ensure the data is easily accessible, in context, and ready for action. <NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink>.</div>{!largeScreen && <br/> }
               </Grid>
               <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
-                <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} />
-                <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} />
+                <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} style={{ maxWidth: '100%' }} />
+                <img src={'/icons/chiair/uiuc-logo.svg'} alt={'UIUC'} style={{ maxWidth: '100%' }} />
               </Grid>
             </Grid>
           </Grid>

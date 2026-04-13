@@ -63,7 +63,7 @@ const NavItems = styled.ul`
   }
 `;
 const NavContainer = styled.div`
-  padding: 4rem 6rem 0 6rem;
+  padding: ${({ $largeScreen }) => $largeScreen ? '4rem 6rem 0 6rem' : '6rem 0 0 0'};
   top:.5em;
   left:.5em;
   z-index:500;
@@ -89,7 +89,7 @@ const LButton = styled(Button)`
 const ContentContainer = styled.div`
     max-width: 1200px; /* Standard container width */
     margin: 0 auto;    /* Centering the container */
-    padding: 0 2rem;   /* Prevents text from touching edges */
+    padding: ${({ $largeScreen }) => $largeScreen ? '0 2rem' : '0'}; /* Prevents text from touching edges on larger screens */
     width: 100%;
     box-sizing: border-box;
 `;
@@ -124,8 +124,8 @@ export default function Nav({
 
   return (
     <>
-      <NavContainer style={style}>
-        <ContentContainer>
+      <NavContainer style={style} $largeScreen={largeScreen}>
+        <ContentContainer $largeScreen={largeScreen}>
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size={5}>
               {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
@@ -137,8 +137,8 @@ export default function Nav({
                 {mobileNavOpen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={['English', 'Español']} />}
               </Grid>}
             </Grid>
-            <Grid as={LButton} alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer' }}>
-              <img width={largeScreen ? 477 : '100%'} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+            <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
+              <img width={largeScreen ? 477 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
             </Grid>
           </Grid>
 
