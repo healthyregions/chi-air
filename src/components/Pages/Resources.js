@@ -161,7 +161,7 @@ export default function Resources() {
         <ContentContainer>
           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
-              Resources
+              Access useful Air Quality Resources
             </Grid>
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
