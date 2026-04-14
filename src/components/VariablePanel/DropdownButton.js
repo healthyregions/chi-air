@@ -40,7 +40,6 @@ export const DropdownButton = ({ className = '', onOpen = () => {}, buttonProps 
     <>
       <Btn
         id="basic-button"
-        className={'notranslate'}
         size={'small'}
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
@@ -55,7 +54,6 @@ export const DropdownButton = ({ className = '', onOpen = () => {}, buttonProps 
       <Menu
           id="basic-menu"
           anchorEl={anchorEl}
-          className={'notranslate'}
           open={open}
           onClose={handleClose}
           style={menuStyle}

@@ -14,6 +14,7 @@ import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "react-icons/fa";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {setLocale} from "../../store/slices/sensorDataSlice";
+import {useCookies} from "react-cookie";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -103,6 +104,8 @@ export default function Nav({
 }) {
 
   const dispatch = useDispatch();
+  const [cookies] = useCookies(['googtrans']);
+
   const panelState = useSelector(selectPanelState);
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
@@ -134,12 +137,12 @@ export default function Nav({
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size={5}>
               {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-                {largeScreen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
+                {largeScreen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/team')}>Team</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
-                {mobileNavOpen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
+                {mobileNavOpen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
               </Grid>}
             </Grid>
             <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>

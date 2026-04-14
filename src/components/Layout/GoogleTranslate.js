@@ -25,7 +25,9 @@ const usePrevious = (value) => {
 export const GoogleTranslate = () => {
   const locale = useSelector(selectLocale);
 
-  const [/*cookies*/, setCookie, removeCookie] = useCookies([])
+  const [/*cookies*/, setCookie, removeCookie] = useCookies(['googtrans'], {
+    doNotParse: true,
+  });
 
   const previous = usePrevious(locale);
   const [loaded, setLoaded] = useState(false);
@@ -56,7 +58,7 @@ export const GoogleTranslate = () => {
     setTimeout(() => {
       window.location.reload();
     }, 300)
-  }, [locale]);
+  }, [locale, loaded, previous, removeCookie, setCookie]);
 
   // Prevent auto-translation before text contents are fully loaded
   useEffect(() => {
@@ -74,7 +76,7 @@ export const GoogleTranslate = () => {
     );
     document.body.appendChild(addScript);
     window.googleTranslateElementInit = googleTranslateElementInit;
-  }, [loaded]);
+  }, [loaded, googleTranslateElementInit]);
 
   return (
     <GoogleTranslateContainer

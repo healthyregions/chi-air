@@ -32,6 +32,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
+import {useCookies} from "react-cookie";
 
 const DataPanelContainer = styled.div`
     position: fixed;
@@ -107,6 +108,7 @@ const DropdownHeader = styled.span`
 const DataPanel = ({ mapRef }) => {
   const dispatch = useDispatch();
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const [cookies] = useCookies(['googtrans']);
 
   // Legacy map controls
   const panelState = useSelector(selectPanelState);
@@ -168,9 +170,9 @@ const DataPanel = ({ mapRef }) => {
 
   return (
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
-      <Grid container spacing={4} alignItems={'center'}>
+      <Grid container spacing={2} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><DropdownButton ButtonComponent={LButton} label={'Eng'} onChange={onLocaleChange}  options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} /></Grid>
+        <Grid><DropdownButton ButtonComponent={LButton} truncate={3} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} onChange={onLocaleChange}  options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} /></Grid>
       </Grid>
 
       <Grid container spacing={8} alignItems={'center'}>
