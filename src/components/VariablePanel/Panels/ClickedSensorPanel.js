@@ -56,7 +56,7 @@ const CopyLinkToClipboard = () => {
           slots={{ transition: Zoom }}
         >
           <LButton onClick={handleTooltipOpen}>
-            <FaLink style={{ width: '15px', height: '15px' }} />
+            <FaLink style={{ width: '18px', height: '18px' }} />
           </LButton>
         </Tooltip>
       </div>

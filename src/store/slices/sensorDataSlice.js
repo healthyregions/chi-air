@@ -29,7 +29,7 @@ const initialState = {
   selectedParameter: 'nowcast_aqi',
   clickedSensor: undefined,
   averageType: 'hour',
-  locale: 'en',
+  locale: undefined,
 };
 
 export const sensorDataSlice = createSlice({

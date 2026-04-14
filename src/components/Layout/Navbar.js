@@ -10,9 +10,13 @@ import Box from '@mui/material/Box';
 import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
 import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
-// import {DropdownButton} from "../VariablePanel/DropdownButton";
+import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "react-icons/fa";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {setLocale} from "../../store/slices/sensorDataSlice";
+import {useCookies} from "react-cookie";
+import {NavDropdown} from "./NavDropdown";
+import MenuItem from "@mui/material/MenuItem";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -102,6 +106,8 @@ export default function Nav({
 }) {
 
   const dispatch = useDispatch();
+  const [cookies] = useCookies(['googtrans']);
+
   const panelState = useSelector(selectPanelState);
   const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
 
@@ -122,18 +128,31 @@ export default function Nav({
     setMobileNavOpen(!mobileNavOpen)
   };
 
+  const onLocaleChange = (locale) => {
+    dispatch(setLocale(locale));
+  }
+
+  const lgScreenFontSize = '20px';
+  const xsScreenFontSize = '16px'
+  const fontSize = largeScreen ? lgScreenFontSize : xsScreenFontSize;
+
   return (
     <>
       <NavContainer style={style} $largeScreen={largeScreen}>
         <ContentContainer $largeScreen={largeScreen}>
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
-            <Grid size={5}>
-              {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
-                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
-                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/team')}>Team</LButton>
-                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/resources')}>Resources</LButton>
-                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
+            <Grid size='grow'>
+              {(largeScreen || mobileNavOpen) && <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
+                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />
+                <LButton style={{ fontSize }} onClick={() => navigate('/')}><FaHome /></LButton>
+                <NavDropdown key={'about'} label={'Maps & more'} style={{ fontSize }}>
+                  <MenuItem as={LButton} onClick={() => navigate('/map')}>Our Air Map</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
+                </NavDropdown>
+                <NavDropdown key={'about'} label={'About'} style={{ fontSize }}>
+                  <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/about')}>Network</MenuItem>
+                </NavDropdown>
               </Grid>}
             </Grid>
             <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
