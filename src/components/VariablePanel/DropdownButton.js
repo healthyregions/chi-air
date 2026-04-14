@@ -3,6 +3,7 @@ import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
 import {useEffect, useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
+import {LButton} from "./common";
 
 const ITEM_HEIGHT = 48;
 
@@ -70,7 +71,7 @@ export const DropdownButton = ({ className = '', onOpen = () => {}, buttonProps 
           }}
         >
           {displayOps?.map((op, index) =>
-            <MenuItem key={`dropdown-button-${op}-${index}`}
+            <MenuItem as={LButton} key={`dropdown-button-${op}-${index}`}
                       onClick={handleChange}
                       className={'notranslate'}
                       value={op?.value}>

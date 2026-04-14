@@ -6,7 +6,7 @@ import {FaExternalLinkAlt} from "react-icons/fa";
 import { GradientBackground, WhiteBackground } from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 
-const TeamPage = styled.div`
+const ResourcesPage = styled.div`
     background:white;
 `;
 
@@ -239,7 +239,7 @@ export default function Team() {
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
   return (
-    <TeamPage>
+    <ResourcesPage>
       <NavBar />
 
       <WhiteBackground $largeScreen={largeScreen}>
@@ -367,6 +367,6 @@ export default function Team() {
       </GradientBackground>
 
       <NavBar />
-    </TeamPage>
+    </ResourcesPage>
   );
 }
