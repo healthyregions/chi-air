@@ -132,7 +132,7 @@ export default function Nav({
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/team')}>Team</LButton>
-                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/resources')}>Info</LButton>
+                <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/resources')}>Resources</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
               </Grid>}
             </Grid>
