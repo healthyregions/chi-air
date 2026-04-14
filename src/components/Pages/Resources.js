@@ -179,7 +179,7 @@ export default function Resources() {
                        bottomRowTextBlack={'Air Quality'}
                        bottomRowTextRed={'Resources'}
                        buttonOnClick={() => navigate('/map')}
-                       buttonText={'View Chi Air Quality Network Map'}
+                       buttonText={'View Our Air Map'}
                        buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
         />
 
