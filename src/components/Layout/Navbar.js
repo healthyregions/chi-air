@@ -151,7 +151,7 @@ export default function Nav({
                 </NavDropdown>
                 <NavDropdown key={'about'} label={'About'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
-                  <MenuItem as={LButton} onClick={() => navigate('/about')}>Network</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
                 </NavDropdown>
               </Grid>}
             </Grid>
