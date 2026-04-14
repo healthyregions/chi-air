@@ -143,7 +143,7 @@ export default function Nav({
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size='grow'>
               {(largeScreen || mobileNavOpen) && <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
-                {largeScreen && <DropdownButton style={{ fontSize }} ButtonComponent={LButton} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
+                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />
                 <LButton style={{ fontSize }} onClick={() => navigate('/')}><FaHome /></LButton>
                 <NavDropdown key={'about'} label={'Maps & more'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/map')}>Our Air Map</MenuItem>
@@ -153,7 +153,6 @@ export default function Nav({
                   <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/about')}>Network</MenuItem>
                 </NavDropdown>
-                {mobileNavOpen && <DropdownButton style={{ fontSize }} ButtonComponent={LButton} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
               </Grid>}
             </Grid>
             <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
