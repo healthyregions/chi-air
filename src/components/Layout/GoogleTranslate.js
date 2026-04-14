@@ -20,7 +20,7 @@ export const GoogleTranslate = () => {
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
-        includedLanguages: "en,es",
+        //includedLanguages: "en,es",
         autoDisplay: false
       },
       "google_translate_element"
