@@ -54,6 +54,7 @@
     "object-resolve-path": "^1.1.1",
     "pbf": "^3.2.1",
     "react": "^19.0.0",
+    "react-cookie": "^8.1.0",
     "react-countup": "^4.3.3",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",

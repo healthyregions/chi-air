@@ -6,7 +6,7 @@ import {FaCaretDown} from "react-icons/fa";
 
 const ITEM_HEIGHT = 48;
 
-export const DropdownButton = ({ onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ className = '', onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -17,7 +17,8 @@ export const DropdownButton = ({ onOpen = () => {}, buttonProps = {}, width, men
 
   // Handle user selecting an option from the list: close the menu and call the handler
   const handleChange = (e) => {
-    onChange && onChange(e?.target?.textContent);
+    const found = displayOps?.find(o => o.label === e?.target?.textContent || o === e?.target?.textContent)
+    onChange && onChange(found?.value || found);
     handleClose();
   };
 
@@ -71,8 +72,9 @@ export const DropdownButton = ({ onOpen = () => {}, buttonProps = {}, width, men
           {displayOps?.map((op, index) =>
             <MenuItem key={`dropdown-button-${op}-${index}`}
                       onClick={handleChange}
-                      value={op}>
-              {op}
+                      className={'notranslate'}
+                      value={op?.value}>
+              {op?.label || op}
             </MenuItem>
           )}
         </Menu>
