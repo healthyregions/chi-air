@@ -1,7 +1,7 @@
-import {useEffect, useRef} from "react";
+import {useEffect} from "react";
 import styled from "styled-components";
-import {useSelector} from "react-redux";
-import {selectLocale} from "../../store/slices/sensorDataSlice";
+// import {useSelector} from "react-redux";
+// import {selectLocale} from "../../store/slices/sensorDataSlice";
 
 const GoogleTranslateContainer = styled.div`
   position: fixed;
@@ -12,49 +12,31 @@ const GoogleTranslateContainer = styled.div`
   padding: 15px; //same padding as the Nav Menu
 `;
 
-const usePrevious = (value) => {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
+// Based on https://codesandbox.io/p/sandbox/google-translate-in-react-js-qzdjj
+export const GoogleTranslate = () => {
+  //const locale = useSelector(selectLocale);
 
-const GoogleTranslate = () => {
-  const locale = useSelector(selectLocale);
-
-  const previous = usePrevious({ locale });
-  const ref = useRef(null);
-
-  useEffect(() => {
-    console.log(`Component whole mounted`);
-    if (previous?.locale !== locale) {
-      ref.current = null;
-    }
-
-    if (!ref?.current) {
-      console.log(`Component ref mounted`);
-      ref.current = document.createElement("script");
-      ref.current.setAttribute(
-        "src",
-        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-      );
-      ref.current.async = true;
-      document.body.appendChild(ref.current);
-      window.googleTranslateElementInit = () => new window.google.translate.TranslateElement({
-        pageLanguage: locale,
+  const googleTranslateElementInit = () => {
+    new window.google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
         includedLanguages: "en,es",
-        autoDisplay: false,
-      }, "google_translate_element");
-    }
-
-    return () => ref.current = null;
-  }, [locale, previous?.locale]);
-
+        autoDisplay: false
+      },
+      "google_translate_element"
+    );
+  };
+  useEffect(() => {
+    const addScript = document.createElement("script");
+    addScript.setAttribute(
+      "src",
+      "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    );
+    document.body.appendChild(addScript);
+    window.googleTranslateElementInit = googleTranslateElementInit;
+  }, []);
   return (
     <GoogleTranslateContainer
-      key={locale}
-      ref={ref}
       id="google_translate_element"
       style={{
         bottom: window.location.pathname.indexOf("map") > -1
@@ -64,5 +46,3 @@ const GoogleTranslate = () => {
     ></GoogleTranslateContainer>
   );
 }
-
-export default GoogleTranslate;

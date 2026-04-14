@@ -2,7 +2,7 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Home, LoadingMessage, ErrorPage } from "./components/";
 import ParquetReaderComponent from "./components/Map/ParquetReaderComponent";
-import GoogleTranslate from "./components/Layout/GoogleTranslate";
+import { GoogleTranslate } from "./components/Layout/GoogleTranslate";
 
 const Map = lazy(() => import('./components/Pages/Map'));
 const Team = lazy(() => import('./components/Pages/Team'));
