@@ -149,31 +149,31 @@ const faqs = [
     id: 'map-data-access',
     category: 'map',
     question: "How can I access the data?",
-    answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map) and direct download on the City Data Portal."
+    answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map), direct download on the City Data Portal, and direct download on the Open Air Clarity Dashboard."
   },
   {
     id: 'map-colors',
     category: 'map',
     question: "What do the colors on the map mean?",
-    answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend on the bottom right part of the mapping application as a guide."
+    answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application."
   },
   {
     id: 'protocol-data-source',
     category: 'protocol',
     question: "Where does this data come from and where is it stored?",
-    answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface."
+    answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface. The University of Illinois is engaged in independent quality assurance and quality control of the data."
   },
   {
     id: 'protocol-sensor-owner',
     category: 'protocol',
     question: "Who owns the air quality sensors?",
-    answer: "Sensors of the Open Air Network and are co-owned between the University of Illinois (as led by Principal Investigator, Professor Erdal) and the Chicago Department of Public Health."
+    answer: "Sensors of the Open Air Network and are co-owned between the University of Illinois (as led by Principal Investigator, Professor Erdal) and the City of Chicago, Chicago Department of Public Health."
   },
   {
     id: 'protocol-sensor-maintenance',
     category: 'protocol',
     question: "Who maintains the sensors?",
-    answer: "Sensors are maintained by the Chicago Department of Transportation, as contracted through sensor owners."
+    answer: "The University of Illinois and the City of Chicago, Chicago Department of Public Health are in communications to develop sensor maintenance protocol."
   },
   {
     id: 'protocol-update-frequency',
@@ -185,13 +185,13 @@ const faqs = [
     id: 'protocol-upload-frequency',
     category: 'protocol',
     question: "Are there plans to increase the frequency of how often the data is uploaded?",
-    answer: "Data updates are limited in part by sensor connectivity, programming interface restrictions, and quality assurance. To ensure the highest quality of data, we do not plan to update the frequency of data until the beginning of 2027, at the earliest. At that time, we may have sufficient data for sensor calibration and sensitivity analyses."
+    answer: "Data updates are limited in part by sensor connectivity, programming interface restrictions, and quality assurance. At this time, frequency less than one hour is not supported due to technical challenges of sensor hardware and infrastructure limitations."
   },
   {
     id: 'protocol-raw-data',
     category: 'protocol',
     question: "Can I get access to raw, uncalibrated data? If not, how can I trust the data provided?",
-    answer: "Raw measures are available on the City of Chicago Data Portal. However, we recommend using calibrated measurements that take into account the limits of Clarity sensor technology and related processes, as raw measurements may not measure actual air quality estimates (versus noise from sensors that changes in different environmental conditions). We follow best practices and recommendations as communicated by Clarity, the manufactuers of the air quality sensors, as well as evidence-based, published research on air quality sensor handling. We recommend using data available for download, as it is the highest quality measurements we are able to provide. NowCast AQI measures by Clarity have already undergone data cleaning and calibration, with Clarity processes published and available on their website. Particulate matter data cleaning processes we implement on calibrated Clarity measures include checking for faulty or offline sensors. Any additional calibration will occur after one year of data measurements, in line with standard practices in environmental sensor research. Our final protocol is undergoing manuscript review, and will be made available on this website upon publication."
+    answer: "Raw measures are available on the City of Chicago Data Portal. Please review Clarity Monitoring documentation in the Resources section for further discussion on sensor limtiations, and why calibrated data is recommended over raw measurements. Deep expertise in air quality data, monitoring, and analyses domains remains necessary to be able to utilize data reliably for community assessment. We are challenged by this task, and our teams are happy to assist organizations with data interpretation needs."
   },
   {
     id: 'parameters-air-quality-metrics',
@@ -203,7 +203,7 @@ const faqs = [
     id: 'parameters-ozone',
     category: 'parameters',
     question: "Why is ozone not measured?",
-    answer: "The Open Air Network does not include ozone modules at this time. Therefore, we are not able to provide sensor readings of ozone."
+    answer: "The Open Air Network does not include ozone sensor modules at this time. of ozone. In the future, ozone modules may be added."
   }
 ];
 
@@ -320,9 +320,8 @@ export default function About() {
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
               <a href="https://publichealth.uic.edu/profiles/serap-erdal/" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Dr. Serap Erdal </a>
-               from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional
-               Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon,
-               LLC from 2025 through 2026.
+               from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from the ComEd Hyperlocal Air 
+               Quality Assessment by RHP Risk Management/ComEd/Exelon LLC, and Congressional Earmark Grant/National Institute of Standards and Technology (#60NANB23D206).
                 </Grid>
              </Grid>
            </ContentContainer>
