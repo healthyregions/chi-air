@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {FaHome} from "react-icons/fa";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {setLocale} from "../../store/slices/sensorDataSlice";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -122,6 +123,10 @@ export default function Nav({
     setMobileNavOpen(!mobileNavOpen)
   };
 
+  const onLocaleChange = (locale) => {
+    dispatch(setLocale(locale));
+  }
+
   return (
     <>
       <NavContainer style={style} $largeScreen={largeScreen}>
@@ -129,12 +134,12 @@ export default function Nav({
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size={5}>
               {(largeScreen || mobileNavOpen) && <Grid container justifyContent={'space-between'} alignItems={'center'} marginBottom={'2rem'}>
-                {largeScreen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={['English', 'Español']} />}
+                {largeScreen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/')}><FaHome /></LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/map')}>Maps</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/team')}>Team</LButton>
                 <LButton style={{ fontSize: largeScreen ? '24px' : '16px' }} onClick={() => navigate('/about')}>About</LButton>
-                {mobileNavOpen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={['English', 'Español']} />}
+                {mobileNavOpen && <DropdownButton style={{ fontSize: largeScreen ? '24px' : '16px' }} ButtonComponent={LButton} label={'English'} options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} onChange={onLocaleChange} />}
               </Grid>}
             </Grid>
             <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
