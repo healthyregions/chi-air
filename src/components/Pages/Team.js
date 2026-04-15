@@ -144,7 +144,7 @@ const communityorgs = [
     url: 'https://www.chicagoejn.org/',
     photo: '/img/team/cejn.png',
     name: 'Chicago Environmental Justice Network',
-    description: 'Mariah M. Mata',
+    description: 'Mariah M. Mata, Myrna Salgado',
   },
   {
     url: 'https://www.growgreater.org/',
