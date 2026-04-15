@@ -302,11 +302,18 @@ export default function Team() {
             )}
           </Grid>
 
+          <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
+            <TeamBodyText>
+              We are additionally grateful to support by <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support. 
+            </TeamBodyText>
+          </Grid>
+
+
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Student Team</CategoryTitle>
           </CategorySection>
 
-          <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
+          <Grid container spacing={8} marginTop={9} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {students?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
