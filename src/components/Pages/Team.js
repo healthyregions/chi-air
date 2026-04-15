@@ -167,7 +167,7 @@ const communityorgs = [
   {
     url: 'https://pilsenperro.org/',
     photo: '/img/team/perro.png',
-    name: 'P.E.R.R.O.',
+    name: 'Pilsen Environmental Rights & Reform Organization',
     description: 'Ajay Chatha, Apriori Diaz, Citlalli Trujillo, Estephany Baumgarder Leandro-Torres, Jaime Valero-Torres, Rose Gomez, Zitlalli Paez',
   },
   {
@@ -366,7 +366,7 @@ export default function Team() {
             )}
           </Grid>
           <TeamBodyText>
-            <h3>Gratitude to all survey and focus group participants.</h3>
+            <h3>Gratitude to all contributors, survey and focus group participants, and conversations.</h3>
           </TeamBodyText>
           <TeamBodyText>
             While only consenting members are featured, this platform was shaped by the collective input of everyone involved.
