@@ -156,7 +156,7 @@ const communityorgs = [
     url: 'https://n4ej.org/',
     photo: '/img/team/n4ej.jpg',
     name: 'Neighbors for Environmental Justice',
-    description: 'Sonia Monet Saxon, Alfredo Romo, Madalynn Benavides',
+    description: 'Sonia Monet Saxon, Alfredo Romo, Madalynn Benavides, Anthony Moser',
   },
   {
     url: 'https://www.peopleforcommunityrecovery.org/',
@@ -167,7 +167,7 @@ const communityorgs = [
   {
     url: 'https://pilsenperro.org/',
     photo: '/img/team/perro.png',
-    name: 'Pilsen Environmental Rights and Reform Organization',
+    name: 'P.E.R.R.O.',
     description: 'Ajay Chatha, Apriori Diaz, Citlalli Trujillo, Estephany Baumgarder Leandro-Torres, Jaime Valero-Torres, Rose Gomez, Zitlalli Paez',
   },
   {
@@ -325,10 +325,14 @@ export default function Team() {
                        topRowText={'Co-created with'}
                        bottomRowTextBlack={'The'}
                        bottomRowTextRed={'Community'}
-                       style={{ marginBottom: '6rem' }}
+                       style={{ marginBottom: '2rem' }}
         />
       </ContentContainer>
+
       <ContentContainer>
+      <CategorySection>
+            <CategoryTitle $largeScreen={largeScreen}>Group Contributors</CategoryTitle>
+      </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
             <Grid key={'community-' + index} size={{ xs: 12, md: 3 }}
@@ -346,7 +350,11 @@ export default function Team() {
       </ContentContainer>
 
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+
         <ContentContainer>
+        <CategorySection>
+            <CategoryTitle $largeScreen={largeScreen}>Individual Contributors</CategoryTitle>
+        </CategorySection>
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {communityindividual?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
@@ -358,7 +366,7 @@ export default function Team() {
             )}
           </Grid>
           <TeamBodyText>
-            Gratitude to all survey and focus group participants.
+            <h3>Gratitude to all survey and focus group participants.</h3>
           </TeamBodyText>
           <TeamBodyText>
             While only consenting members are featured, this platform was shaped by the collective input of everyone involved.
