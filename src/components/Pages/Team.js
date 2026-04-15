@@ -87,30 +87,37 @@ const leadership = [
 
 const coreteam = [
   {
+    photo: '/img/team/lambert.jpg',
     name: 'Sara Lambert',
     description: 'Sr. Engineer, UIUC',
   },
   {
+    photo: '/img/team/shubham.jpg',
     name: 'Shubham Kumar',
     description: 'Sr. Product Designer, UIUC',
   },
   {
-    name: 'Frank Pangone',
+    photo: '/img/team/frank.jpg',
+    name: 'Frank Pagone',
     description: 'Sr. Manager, RHP',
   },
   {
+    photo: '/img/team/marc.jpg',
     name: 'Marc Astacio-Palmer',
     description: 'Research Manager, UIUC',
   },
   {
+    photo: '/img/team/melissa.png',
     name: 'Melissa Fiffer',
     description: 'Scientific Consultant, UIC',
   },
   {
+    photo: '/img/team/joshua.png',
     name: 'Joshua Tootoo',
     description: 'Scientific Consultant, UIC',
   },
   {
+    photo: '/img/team/adam.jpg',
     name: 'Adam Cox',
     description: 'Sr. Engineer, UIUC',
   }
@@ -122,10 +129,12 @@ const students = [
     description: 'Research Assistant, UIC',
   },
   {
+    photo: '/img/team/cat.jpg',
     name: 'Catherine Discenza',
     description: 'Research Assistant, UIUC',
   },
   {
+    photo: '/img/team/adrita.jpg',
     name: 'Mahjabin Kabir Adrita',
     description: 'Research Assistant, UIUC',
   },
@@ -295,6 +304,7 @@ export default function Team() {
             {coreteam?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                  <img src={contributor?.photo} alt={''} />
                   <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
@@ -304,7 +314,7 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to support by <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support. 
+              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support. 
             </TeamBodyText>
           </Grid>
 
@@ -317,6 +327,7 @@ export default function Team() {
             {students?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                  <img src={contributor?.photo} alt={''} />
                   <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
