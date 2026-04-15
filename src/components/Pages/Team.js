@@ -104,11 +104,11 @@ const coreteam = [
   },
   {
     name: 'Melissa Fiffer',
-    description: 'Collaborator, UIC',
+    description: 'Scientific Consultant, UIC',
   },
   {
     name: 'Joshua Tootoo',
-    description: 'Collaborator, UIC',
+    description: 'Scientific Consultant, UIC',
   },
   {
     name: 'Adam Cox',
