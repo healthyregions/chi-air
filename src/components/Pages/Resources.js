@@ -118,7 +118,7 @@ const learningResources = [
 
 const governanceResources = [
   { url: 'https://311.chicago.gov/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chi 311', description: 'Report suspected air quality violations in the City of Chicago.' },
-  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/cumulative-impact-assessment.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Cumulative Impact Assessment 2023', description: 'TBD' },
+  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/cumulative-impact-assessment.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago\'s Cumulative Impact Assessment', description: 'An EJ Index Composite score of cumulative impacts reflecting communities in Chicago most burdened by pollution and most vulnerable to its effects.' },
   { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/statistics_and_reports/Air_Quality_Health_doc_FINALv4.pdf', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Quality & Health Report 2020', description: 'Chicago\'s report on air quality and health from 2020.' },
   { url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Air Quality Ordinance⠀', description: 'An overview of Chicago air quality ordinance.' },
   { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/community_information/2024/EJ-Action-Plan-2024-Report-FULL.pdf', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Environmental Justice Action Plan Report', description: 'Chicago\'s latest EJ action plan with updates. ' },
@@ -129,11 +129,11 @@ const governanceResources = [
 const supportingResources = [
   { url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'EPA AirNow', description: 'AirNow highlights air quality in your local area while also providing air quality information at state and national views.' },
   { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html#modalpop', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Open Air Network City Map', description: 'City of Chicago map of the Open Air Network sensors.' },
-  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/CumulativeImpact/Chicago-EJ-Index_CAs-1500x2318.jpg', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago EJ Index Map', description: 'TBD' },
+  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/CumulativeImpact/Chicago-EJ-Index_CAs-1500x2318.jpg', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago EJ Index Map', description: 'Downloadable Map of the City\'s EJ Index Composite Score.' },
   { url: 'https://chicagohealthatlas.org/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Health Atlas', description: 'A resource to review, explore and compare health-related data over time and across communities.' },
   { url: 'https://chichives.com/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'ChiVes: Exploring Chicago\'s Environment', description: 'A data collaborative and community mapping platform to explore climate, environment, and key neighborhood indicators.' },
   { url: 'https://public-environmental-data-partners.github.io/j40-cejst-2/en/#9.29/41.8341/-87.7321T', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Climate & Economic Justice Screening Tool', description: 'This copy of the original U.S. tool highlights key measures of climate and environmental justices for all census tracts.' },
-  { url: 'https://ceche.uic.edu/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'UIC Center for Extreme Conditions and Health Excellence', description: 'TBD' },
+  { url: 'https://ceche.uic.edu/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'UIC Center for Extreme Conditions and Health Excellence', description: 'Brings together multidisciplinary researchers to advance innovative research on extreme weather and health and reduce the health impacts of extreme conditions in urban environments.' },
 ].map(r => ({ ...r, category: 'supporting'}));
 
 // Combine into a single shared list of resources (now includes category)

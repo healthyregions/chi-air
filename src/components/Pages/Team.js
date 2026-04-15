@@ -87,30 +87,37 @@ const leadership = [
 
 const coreteam = [
   {
+    photo: '/img/team/lambert.jpg',
     name: 'Sara Lambert',
     description: 'Sr. Engineer, UIUC',
   },
   {
+    photo: '/img/team/shubham.jpg',
     name: 'Shubham Kumar',
     description: 'Sr. Product Designer, UIUC',
   },
   {
-    name: 'Frank Pangone',
+    photo: '/img/team/frank.jpg',
+    name: 'Frank Pagone',
     description: 'Sr. Manager, RHP',
   },
   {
+    photo: '/img/team/marc.jpg',
     name: 'Marc Astacio-Palmer',
     description: 'Research Manager, UIUC',
   },
   {
+    photo: '/img/team/melissa.png',
     name: 'Melissa Fiffer',
-    description: 'Collaborator, UIC',
+    description: 'Scientific Consultant, UIC',
   },
   {
+    photo: '/img/team/joshua.png',
     name: 'Joshua Tootoo',
-    description: 'Collaborator, UIC',
+    description: 'Scientific Consultant, UIC',
   },
   {
+    photo: '/img/team/adam.jpg',
     name: 'Adam Cox',
     description: 'Sr. Engineer, UIUC',
   }
@@ -122,10 +129,12 @@ const students = [
     description: 'Research Assistant, UIC',
   },
   {
+    photo: '/img/team/cat.jpg',
     name: 'Catherine Discenza',
     description: 'Research Assistant, UIUC',
   },
   {
+    photo: '/img/team/adrita.jpg',
     name: 'Mahjabin Kabir Adrita',
     description: 'Research Assistant, UIUC',
   },
@@ -156,7 +165,7 @@ const communityorgs = [
     url: 'https://n4ej.org/',
     photo: '/img/team/n4ej.jpg',
     name: 'Neighbors for Environmental Justice',
-    description: 'Sonia Monet Saxon, Alfredo Romo, Madalynn Benavides',
+    description: 'Sonia Monet Saxon, Alfredo Romo, Madalynn Benavides, Anthony Moser',
   },
   {
     url: 'https://www.peopleforcommunityrecovery.org/',
@@ -167,7 +176,7 @@ const communityorgs = [
   {
     url: 'https://pilsenperro.org/',
     photo: '/img/team/perro.png',
-    name: 'Pilsen Environmental Rights and Reform Organization',
+    name: 'Pilsen Environmental Rights & Reform Organization',
     description: 'Ajay Chatha, Apriori Diaz, Citlalli Trujillo, Estephany Baumgarder Leandro-Torres, Jaime Valero-Torres, Rose Gomez, Zitlalli Paez',
   },
   {
@@ -295,6 +304,7 @@ export default function Team() {
             {coreteam?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                  <img src={contributor?.photo} alt={''} />
                   <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
@@ -302,14 +312,22 @@ export default function Team() {
             )}
           </Grid>
 
+          <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
+            <TeamBodyText>
+              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support. 
+            </TeamBodyText>
+          </Grid>
+
+
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Student Team</CategoryTitle>
           </CategorySection>
 
-          <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
+          <Grid container spacing={8} marginTop={9} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {students?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                  <img src={contributor?.photo} alt={''} />
                   <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
@@ -325,10 +343,14 @@ export default function Team() {
                        topRowText={'Co-created with'}
                        bottomRowTextBlack={'The'}
                        bottomRowTextRed={'Community'}
-                       style={{ marginBottom: '6rem' }}
+                       style={{ marginBottom: '2rem' }}
         />
       </ContentContainer>
+
       <ContentContainer>
+      <CategorySection>
+            <CategoryTitle $largeScreen={largeScreen}>Group Contributors</CategoryTitle>
+      </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
             <Grid key={'community-' + index} size={{ xs: 12, md: 3 }}
@@ -346,7 +368,11 @@ export default function Team() {
       </ContentContainer>
 
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+
         <ContentContainer>
+        <CategorySection>
+            <CategoryTitle $largeScreen={largeScreen}>Individual Contributors</CategoryTitle>
+        </CategorySection>
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {communityindividual?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
@@ -358,7 +384,7 @@ export default function Team() {
             )}
           </Grid>
           <TeamBodyText>
-            Gratitude to all survey and focus group participants.
+            <h3>Gratitude to all contributors, survey and focus group participants, and conversations.</h3>
           </TeamBodyText>
           <TeamBodyText>
             While only consenting members are featured, this platform was shaped by the collective input of everyone involved.
