@@ -104,6 +104,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
   const displayedAqi = latestAqi || prevAqi;
   const displayedPm25 = latestPm25 || prevPm25;
+  const displayedNo2 = latestNo2 || prevNo2;
 
   return(
     <Grid size={11}>
@@ -117,14 +118,14 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM 2.5 : ${displayedPm25 ? Number(displayedPm25).toFixed(1) + ' μg/m³' : '??'}`} disabled />
         </Grid>
       </Grid>
-      {/*<Grid container spacing={2} marginTop={'1rem'}>
+      <Grid container spacing={2} marginTop={'1rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'NO₂ : ??'} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`NO₂ : ${displayedNo2}`} disabled />`
         </Grid>
         <Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled />
         </Grid>
-      </Grid>*/}
+      </Grid>
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'center'}>
         <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
         <LButton onClick={() => push(['Explain'])}>Explain &rarr;</LButton>
