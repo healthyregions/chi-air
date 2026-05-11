@@ -89,7 +89,7 @@ export const SelectedAreaPanel = () => {
 
       {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
         <ColorColumn size={1}></ColorColumn>
-        <AqiValueColumn size={2}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : 'PM 2.5'}</AqiValueColumn>
+        <AqiValueColumn size={2}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'NO₂' : 'PM 2.5'}</AqiValueColumn>
         <LocationNameColumn size={4}>Name</LocationNameColumn>
         <TimestampColumn size={3}></TimestampColumn>
         {/*
@@ -107,7 +107,9 @@ export const SelectedAreaPanel = () => {
         const range = pm2_5Ranges.find(r => {
           if (selectedParameter === 'nowcast_aqi') {
             return r.aqi_min <= fixed && fixed <= r.aqi_max;
-          } else if (selectedParameter === 'mean_pm25') {
+          } else if (selectedParameter === 'clarity_pm25') {
+            return r.pm25_min <= fixed && fixed <= r.pm25_max;
+          } else if (selectedParameter === 'clarity_no2') {
             return r.pm25_min <= fixed && fixed <= r.pm25_max;
           } else {
             console.warn('WARNING: selectedParameter not supported:', selectedParameter);

@@ -97,8 +97,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
   const latestAqi = metrics?.['nowcast_aqi']?.data?.[0]?.[clickedSensor];
   const prevAqi = metrics?.['nowcast_aqi']?.data?.[1]?.[clickedSensor];
-  const latestPm25 = metrics?.['mean_pm25']?.data?.[0]?.[clickedSensor];
-  const prevPm25 = metrics?.['mean_pm25']?.data?.[1]?.[clickedSensor];
+  const latestPm25 = metrics?.['clarity_pm25']?.data?.[0]?.[clickedSensor];
+  const prevPm25 = metrics?.['clarity_pm25']?.data?.[1]?.[clickedSensor];
+  const latestNo2 = metrics?.['clarity_no2']?.data?.[0]?.[clickedSensor];
+  const prevNo2 = metrics?.['clarity_no2']?.data?.[1]?.[clickedSensor];
 
   const displayedAqi = latestAqi || prevAqi;
   const displayedPm25 = latestPm25 || prevPm25;
@@ -163,8 +165,8 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
               onChange={(e) => setSelectedParameter(e.target.value)}
             >
               <MenuItem value="nowcast_aqi">AQI</MenuItem>
-              <MenuItem value="mean_pm25">PM 2.5</MenuItem>
-              {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
+              <MenuItem value="clarity_pm25">PM 2.5</MenuItem>
+              <MenuItem value="clarity_no2">NO₂</MenuItem>
               {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
             </Select>
           </FormControl>

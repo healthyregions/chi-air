@@ -17,7 +17,7 @@ const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
 const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
 const s3prefix = `${s3endpoint}/${bucketName}/current`;
 
-const allMetrics = ['nowcast_aqi', 'mean_pm25'];
+const allMetrics = ['nowcast_aqi', 'clarity_pm25', 'clarity_no2'];
 
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
