@@ -87,37 +87,37 @@ const leadership = [
 
 const coreteam = [
   {
-    photo: '/img/team/lambert.jpg',
+    photo: '/img/team/lambert.png',
     name: 'Sara Lambert',
     description: 'Sr. Engineer, UIUC',
   },
   {
-    photo: '/img/team/shubham.jpg',
+    photo: '/img/team/kumar.png',
     name: 'Shubham Kumar',
     description: 'Sr. Product Designer, UIUC',
   },
   {
-    photo: '/img/team/frank.jpg',
+    photo: '/img/team/pagone.png',
     name: 'Frank Pagone',
     description: 'Sr. Manager, RHP',
   },
   {
-    photo: '/img/team/marc.jpg',
+    photo: '/img/team/astacio-palmer.png',
     name: 'Marc Astacio-Palmer',
     description: 'Research Manager, UIUC',
   },
   {
-    photo: '/img/team/melissa.png',
+    photo: '/img/team/fiffer.png',
     name: 'Melissa Fiffer',
     description: 'Scientific Consultant, UIC',
   },
   {
-    photo: '/img/team/joshua.png',
+    photo: '/img/team/tootoo.png',
     name: 'Joshua Tootoo',
     description: 'Scientific Consultant, UIC',
   },
   {
-    photo: '/img/team/adam.jpg',
+    photo: '/img/team/cox.png',
     name: 'Adam Cox',
     description: 'Sr. Engineer, UIUC',
   }
@@ -125,24 +125,27 @@ const coreteam = [
 
 const students = [
   {
+    photo: '/img/team/person.png',
     name: 'Onongoo (Oni) Amar',
     description: 'Research Assistant, UIC',
   },
   {
-    photo: '/img/team/cat.jpg',
+    photo: '/img/team/discenza.png',
     name: 'Catherine Discenza',
     description: 'Research Assistant, UIUC',
   },
   {
-    photo: '/img/team/adrita.jpg',
+    photo: '/img/team/mahjabin.png',
     name: 'Mahjabin Kabir Adrita',
     description: 'Research Assistant, UIUC',
   },
   {
+    photo: '/img/team/person.png',
     name: 'Zhengrui Huang',
     description: 'Research Assistant, UIC',
   },
   {
+    photo: '/img/team/person.png',
     name: 'Qingwen Zeng',
     description: 'Research Assistant, UIC',
   }
@@ -153,7 +156,7 @@ const communityorgs = [
     url: 'https://www.chicagoejn.org/',
     photo: '/img/team/cejn.png',
     name: 'Chicago Environmental Justice Network',
-    description: 'Mariah M. Mata',
+    description: 'Mariah M. Mata, Myrna Salgado',
   },
   {
     url: 'https://www.growgreater.org/',
