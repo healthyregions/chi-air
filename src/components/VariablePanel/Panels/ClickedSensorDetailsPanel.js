@@ -40,13 +40,13 @@ const downloadFile = (fileContents, filename) => {
 
 const convertGeoJsonToCsv = (geojsonData, selectedParameter, separator= ',') => {
   // Build up our CSV rows as text, starting with the headers
-  const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', 'mean_pm25'];
+  const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', selectedParameter];
   let csvString = csvHeaders.join(separator) + '\n';
   geojsonData?.features?.forEach(f => {
     const { datasourceId, metrics, locationLongitude, locationLatitude } = f.properties;
     metrics[selectedParameter]?.data?.forEach((reading) => {
-      const { type, date, value, mean_pm25 } = reading;
-      csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
+      const { type, date, value } = reading;
+      csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || reading[datasourceId]].join(separator) + '\n';
     });
   });
   return csvString;
