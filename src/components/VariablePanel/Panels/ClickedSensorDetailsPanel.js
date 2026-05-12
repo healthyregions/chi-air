@@ -120,7 +120,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
       </Grid>
       <Grid container spacing={2} marginTop={'1rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`NO₂ : ${displayedNo2}`} disabled />`
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`NO₂ : ${displayedNo2 ? Number(displayedNo2).toFixed(1) : '??'} ppb`} disabled />
         </Grid>
         <Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled />

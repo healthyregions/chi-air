@@ -47,7 +47,9 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
         valueFormatter: (v) => {
           if (selectedParameter === 'nowcast_aqi') {
             return `${Math.round(Number(v))} AQI`;
-          } else if (selectedParameter === 'mean_pm25') {
+          } else if (selectedParameter === 'clarity_no2') {
+            return `${Number(v)?.toFixed(1)} ppb`;
+          } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
             return `${Number(v)?.toFixed(1)} μg/m³`;
           } else {
             return `ERR`;
