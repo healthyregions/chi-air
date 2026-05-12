@@ -21,7 +21,7 @@ export const ColorCodingAQPanel = ({ pop }) => {
           <LHeader>
             {selectedParameter === 'nowcast_aqi' && <>Color Coding Air Quality</>}
             {selectedParameter === 'clarity_pm25' && <>Color Coding PM 2.5</>}
-            {selectedParameter === 'clarity_no2' && <>Color coding NO₂</>}
+            {selectedParameter === 'clarity_no2' && <>Color Coding NO₂</>}
           </LHeader>
 
           <SGBody style={{ margin: '1rem 0' }}>
