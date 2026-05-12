@@ -55,7 +55,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
     } else if (selectedParameter === 'clarity_pm25') {
       return r.pm25_min <= rounded && rounded <= r.pm25_max;
     } else if (selectedParameter === 'clarity_no2') {
-      return r.pm25_min <= rounded && rounded <= r.pm25_max;
+      return r.no2_min <= rounded && rounded <= r.no2_max;
     } else {
       console.warn('Unrecognized parameter in SensorValueDisplay:', selectedParameter);
       return undefined;
