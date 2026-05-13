@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {
   selectAverageType,
-  selectClickedSensor, selectMetricData,
+  selectClickedSensor, selectMetricData, selectMetricIndex,
   selectMetrics, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
   setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
@@ -64,6 +64,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
   const metrics = useSelector(selectMetrics);
+  const metricIndex = useSelector(selectMetricIndex);
 
   const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
@@ -181,11 +182,11 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
               onChange={(e) => dispatch(setAverageType(e.target.value))}
             >
               <MenuItem value="hour">Hour</MenuItem>
-              <MenuItem value="day">Day</MenuItem>
-              <MenuItem value="week">Week</MenuItem>
-              <MenuItem value="month">Month</MenuItem>
-              <MenuItem value="season">Season</MenuItem>
-              <MenuItem value="year">Year</MenuItem>
+              <MenuItem value="day" disabled={metricIndex.day <= 0}>Day</MenuItem>
+              <MenuItem value="week" disabled={metricIndex.week <= 0}>Week</MenuItem>
+              <MenuItem value="month" disabled={metricIndex.month <= 0} title={'hello world'}>Month</MenuItem>
+              <MenuItem value="season" disabled={metricIndex.season <= 0}>Season</MenuItem>
+              <MenuItem value="year" disabled={metricIndex.year <= 0}>Year</MenuItem>
             </Select>
           </FormControl>
         </Grid>
