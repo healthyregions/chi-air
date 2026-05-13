@@ -37,8 +37,8 @@ export const ColorCodingAQPanel = ({ pop }) => {
                 <div style={{ marginLeft: '1rem' }}>
                   <LHeader style={{ fontSize: '18px', fontWeight: 700, color: ['Good', 'Moderate'].includes(label) ? border : color }}>{label}</LHeader>
                   {selectedParameter === 'nowcast_aqi' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>AQI {Number(aqi_min)}{Number(aqi_max) > 999 ? '+' : <> - {Number(aqi_max)}</>}</SGBody>}
-                  {selectedParameter === 'clarity_pm25' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>PM 2.5 {pm25_min.toFixed(1)}{pm25_max > 9999 ? '+' : <> - {pm25_max.toFixed(1)} μg/m³</>}</SGBody>}
-                  {selectedParameter === 'clarity_no2' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>NO₂ {no2_min.toFixed(1)}{no2_max > 9999 ? '+' : <> - {no2_max.toFixed(1)} ppb</>}</SGBody>}
+                  {selectedParameter === 'clarity_pm25' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>PM 2.5 {pm25_min.toFixed(1)}{pm25_max > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>} μg/m³</SGBody>}
+                  {selectedParameter === 'clarity_no2' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>NO₂ {no2_min.toFixed(1)}{no2_max > 9999 ? '+' : <> - {no2_max.toFixed(1)}</>} ppb</SGBody>}
                 </div>
               </Grid>
             </Grid>
