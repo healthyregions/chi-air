@@ -110,7 +110,7 @@ export const SelectedAreaPanel = () => {
           } else if (selectedParameter === 'clarity_pm25') {
             return r.pm25_min <= fixed && fixed <= r.pm25_max;
           } else if (selectedParameter === 'clarity_no2') {
-            return r.pm25_min <= fixed && fixed <= r.pm25_max;
+            return r.no2_min <= fixed && fixed <= r.no2_max;
           } else {
             console.warn('WARNING: selectedParameter not supported:', selectedParameter);
             return undefined;
