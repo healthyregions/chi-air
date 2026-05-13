@@ -32,15 +32,15 @@ export const ColorCodingAQPanel = ({ pop }) => {
 
           {pm2_5Ranges?.map(({ aqi_min, aqi_max, pm25_min, pm25_max, no2_min, no2_max, label, color, border}, index) =>
             <Grid key={`color-coding-${index}`} container spacing={2}>
-              {(selectedParameter !== 'clarity_no2' || index < 4) && <Grid size={12} key={`overlay-key-${index}-${label}`} alignItems={'center'} display={'flex'}>
+              <Grid size={12} key={`overlay-key-${index}-${label}`} alignItems={'center'} display={'flex'}>
                 <span style={{ display: 'inline-block', backgroundColor: color, width: '19px', height: '64px', margin: '0.3rem 0' }}></span>
                 <div style={{ marginLeft: '1rem' }}>
                   <LHeader style={{ fontSize: '18px', fontWeight: 700, color: ['Good', 'Moderate'].includes(label) ? border : color }}>{label}</LHeader>
                   {selectedParameter === 'nowcast_aqi' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>AQI {Number(aqi_min)}{Number(aqi_max) > 999 ? '+' : <> - {Number(aqi_max)}</>}</SGBody>}
-                  {selectedParameter === 'clarity_pm25' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>PM 2.5 {pm25_min.toFixed(1)}{pm25_max > 9999 ? '+' : <> - {pm25_max.toFixed(1)} μg/m³</>}</SGBody>}
-                  {selectedParameter === 'clarity_no2' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>NO₂ {no2_min.toFixed(1)}{no2_max > 9999 ? '+' : <> - {no2_max.toFixed(1)} ppb</>}</SGBody>}
+                  {selectedParameter === 'clarity_pm25' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>PM 2.5 {pm25_min.toFixed(1)}{pm25_max > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>} μg/m³</SGBody>}
+                  {selectedParameter === 'clarity_no2' && <SGBody style={{ fontSize: '14px', marginTop: '0.5rem' }}>NO₂ {no2_min.toFixed(1)}{no2_max > 9999 ? '+' : <> - {no2_max.toFixed(1)}</>} ppb</SGBody>}
                 </div>
-              </Grid>}
+              </Grid>
             </Grid>
           )}
         </Grid>
