@@ -40,13 +40,13 @@ const downloadFile = (fileContents, filename) => {
 
 const convertGeoJsonToCsv = (geojsonData, selectedParameter, separator= ',') => {
   // Build up our CSV rows as text, starting with the headers
-  const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', 'mean_pm25'];
+  const csvHeaders = ['datasourceId', 'locationLongitude', 'locationLatitude', 'period', 'date', selectedParameter];
   let csvString = csvHeaders.join(separator) + '\n';
   geojsonData?.features?.forEach(f => {
     const { datasourceId, metrics, locationLongitude, locationLatitude } = f.properties;
     metrics[selectedParameter]?.data?.forEach((reading) => {
-      const { type, date, value, mean_pm25 } = reading;
-      csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || mean_pm25 || reading[datasourceId]].join(separator) + '\n';
+      const { type, date, value } = reading;
+      csvString += [datasourceId, locationLongitude, locationLatitude, type, date, value || reading[datasourceId]].join(separator) + '\n';
     });
   });
   return csvString;
@@ -97,11 +97,14 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
   const latestAqi = metrics?.['nowcast_aqi']?.data?.[0]?.[clickedSensor];
   const prevAqi = metrics?.['nowcast_aqi']?.data?.[1]?.[clickedSensor];
-  const latestPm25 = metrics?.['mean_pm25']?.data?.[0]?.[clickedSensor];
-  const prevPm25 = metrics?.['mean_pm25']?.data?.[1]?.[clickedSensor];
+  const latestPm25 = metrics?.['clarity_pm25']?.data?.[0]?.[clickedSensor];
+  const prevPm25 = metrics?.['clarity_pm25']?.data?.[1]?.[clickedSensor];
+  const latestNo2 = metrics?.['clarity_no2']?.data?.[0]?.[clickedSensor];
+  const prevNo2 = metrics?.['clarity_no2']?.data?.[1]?.[clickedSensor];
 
   const displayedAqi = latestAqi || prevAqi;
   const displayedPm25 = latestPm25 || prevPm25;
+  const displayedNo2 = latestNo2 || prevNo2;
 
   return(
     <Grid size={11}>
@@ -115,14 +118,14 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM 2.5 : ${displayedPm25 ? Number(displayedPm25).toFixed(1) + ' μg/m³' : '??'}`} disabled />
         </Grid>
       </Grid>
-      {/*<Grid container spacing={2} marginTop={'1rem'}>
+      <Grid container spacing={2} marginTop={'1rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'NO₂ : ??'} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`NO₂ : ${displayedNo2 ? Number(displayedNo2).toFixed(1) : '??'} ppb`} disabled />
         </Grid>
         <Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled />
         </Grid>
-      </Grid>*/}
+      </Grid>
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'center'}>
         <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
         <LButton onClick={() => push(['Explain'])}>Explain &rarr;</LButton>
@@ -163,8 +166,8 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
               onChange={(e) => setSelectedParameter(e.target.value)}
             >
               <MenuItem value="nowcast_aqi">AQI</MenuItem>
-              <MenuItem value="mean_pm25">PM 2.5</MenuItem>
-              {/*<MenuItem value="mean_no2">NO₂</MenuItem>*/}
+              <MenuItem value="clarity_pm25">PM 2.5</MenuItem>
+              <MenuItem value="clarity_no2">NO₂</MenuItem>
               {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
             </Select>
           </FormControl>

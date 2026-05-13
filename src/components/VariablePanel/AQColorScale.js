@@ -127,17 +127,22 @@ export const AQColorScale = () => {
         {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Air Quality Index'}>AQI</Tooltip>
         </Grid>}
-        {selectedParameter === 'mean_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
+        {selectedParameter === 'clarity_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM 2.5</Tooltip>
+        </Grid>}
+        {selectedParameter === 'clarity_no2' && <Grid size={3} style={{ textAlign: 'right' }}>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Nitrogen Dioxide'}>NO₂</Tooltip>
         </Grid>}
         <Grid size={1}></Grid>
         <Grid size={8}>Health Category</Grid>
       </Grid>
-      { pm2_5Ranges?.map(({ pm25_min, pm25_max, aqi_min, aqi_max, label, color, border}, index) => (
+
+      { pm2_5Ranges?.map(({ pm25_min, pm25_max, aqi_min, aqi_max, no2_min, no2_max, label, color, border}, index) =>
         <Grid key={`color-range-${index}`} container spacing={0} style={{ display: 'flex', fontFamily: 'Space Grotesk', margin: '0.5rem 0' }}>
           {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right', }}><small>{Number(aqi_min)}{Number(aqi_max) > 999 ? '+' : <> - {Number(aqi_max)}</>}</small></Grid>}
-          {selectedParameter === 'mean_pm25' && <Grid size={3} style={{ textAlign: 'right', }}><small>{pm25_min.toFixed(1)}{pm25_max.toFixed(1) > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>}</small></Grid>}
-          <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {selectedParameter === 'clarity_pm25' && <Grid size={3} style={{ textAlign: 'right', }}><small>{pm25_min.toFixed(1)}{pm25_max.toFixed(1) > 9999 ? '+' : <> - {pm25_max.toFixed(1)}</>}</small></Grid>}
+          {(selectedParameter === 'clarity_no2' && index < 4) && <Grid size={3} style={{ textAlign: 'right', }}><small>{no2_min.toFixed(1)}{no2_max.toFixed(1) > 9999 ? '+' : <> - {no2_max.toFixed(1)}</>}</small></Grid>}
+          {(selectedParameter !== 'clarity_no2' || index < 4) && <Grid size={1} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span
               key={`overlay-key-${index}-${label}`}
               style={{
@@ -149,12 +154,12 @@ export const AQColorScale = () => {
                 height: '16px',
               }}
             ></span>
-          </Grid>
-          <Grid size={8}>
+          </Grid>}
+          {(selectedParameter !== 'clarity_no2' || index < 4) && <Grid size={8}>
             <span style={{padding:0, margin:'0 0 0 .25em', fontWeight: 800, color: (label === 'Good' || label === 'Moderate') ? border : color}}>{label}</span>
-          </Grid>
+          </Grid>}
         </Grid>
-      ))}
+      )}
 
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.key ? 'active' : 'hidden'}><FaKey /></button>
     </ColorScaleContainer>

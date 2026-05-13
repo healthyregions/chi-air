@@ -204,7 +204,18 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const filterValues = useSelector(selectFilterValues);
   const use3d = useSelector(selectUse3d);
 
-  const bins = pm2_5Ranges.map(r => selectedParameter === 'nowcast_aqi' ? r.aqi_max : r.pm25_max);
+  const bins = pm2_5Ranges.map(r => {
+    if (selectedParameter === 'nowcast_aqi') {
+      return r.aqi_max;
+    } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25') {
+      return r.pm25_max;
+    } else if (selectedParameter === 'clarity_no2') {
+      return r.no2_max;
+    } else {
+      console.error('Unsupported metric name: ' + selectedParameter)
+      return undefined
+    }
+  });
 
   // component state elements
   // hover and highlight geographies

@@ -47,7 +47,9 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
         valueFormatter: (v) => {
           if (selectedParameter === 'nowcast_aqi') {
             return `${Math.round(Number(v))} AQI`;
-          } else if (selectedParameter === 'mean_pm25') {
+          } else if (selectedParameter === 'clarity_no2') {
+            return `${Number(v)?.toFixed(1)} ppb`;
+          } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
             return `${Number(v)?.toFixed(1)} μg/m³`;
           } else {
             return `ERR`;
@@ -63,7 +65,18 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
       width: 60,
       colorMap: {
         type: 'piecewise',
-        thresholds: pm2_5Ranges?.map(r => selectedParameter === 'nowcast_aqi' ? r.aqi_max : r.pm25_max),
+        thresholds: pm2_5Ranges?.map(r => {
+          if (selectedParameter === 'nowcast_aqi') {
+            return r.aqi_max;
+          } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25') {
+            return r.pm25_max;
+          } else if (selectedParameter === 'clarity_no2') {
+            return r.no2_max;
+          } else {
+            console.error('Unsupported metric name: ' + selectedParameter)
+            return undefined
+          }
+        }),
         colors: pm2_5Ranges?.map(r => r.color),
       },
     }],

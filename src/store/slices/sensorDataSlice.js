@@ -4,7 +4,11 @@ const initialState = {
   // Fetch / cached server data
   locations: [],
   metrics: {
-    mean_pm25: {
+    clarity_no2: {
+      index: { hour: -1, day: -1, week: -1, month: -1, season: -1, year: -1 },
+      data: []
+    },
+    clarity_pm25: {
       index: { hour: -1, day: -1, week: -1, month: -1, season: -1, year: -1 },
       data: []
     },

@@ -46,14 +46,16 @@ const SensorValueLabel = styled.span`
 export const SensorValueDisplay = ({ showColor = true, style, value }) => {
   const selectedParameter = useSelector(selectSensorParameter);
 
-  const scale = selectedParameter === 'nowcast_aqi' ? 'AQI' : 'μg/m³';
+  const scale = selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'ppb' : 'μg/m³';
 
   const rounded = selectedParameter === 'nowcast_aqi' ? value : Math.round(value * 10) / 10;
   const range = pm2_5Ranges?.find(r => {
     if (selectedParameter === 'nowcast_aqi') {
       return r.aqi_min <= rounded && rounded <= r.aqi_max;
-    } else if (selectedParameter === 'mean_pm25') {
+    } else if (selectedParameter === 'clarity_pm25') {
       return r.pm25_min <= rounded && rounded <= r.pm25_max;
+    } else if (selectedParameter === 'clarity_no2') {
+      return r.no2_min <= rounded && rounded <= r.no2_max;
     } else {
       console.warn('Unrecognized parameter in SensorValueDisplay:', selectedParameter);
       return undefined;
@@ -100,7 +102,9 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           <Grid>
             <SensorNumericalValue $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
               {selectedParameter === 'nowcast_aqi' && Number(rounded)}
-              {selectedParameter === 'mean_pm25' && Number(rounded).toFixed(1)}
+              {/*{selectedParameter === 'mean_pm25' && Number(rounded).toFixed(1)}*/}
+              {selectedParameter === 'clarity_pm25' && Number(rounded).toFixed(1)}
+              {selectedParameter === 'clarity_no2' && Number(rounded).toFixed(1)}
             </SensorNumericalValue>
             <SensorValueScale $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>{scale}</SensorValueScale>
           </Grid>
