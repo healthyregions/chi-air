@@ -27,10 +27,10 @@ export const ClickedSensorExplain = ({ pop }) => {
           <SGHeader>PM 2.5 - Particulate Matter 2.5</SGHeader>
           <SGBody>PM2.5 refers to fine particulate matter—tiny solid particles and liquid droplets in the air that have a diameter of 2.5 micrometers or smaller. To put their size in perspective, a single human hair is about 70 micrometers wide, making the largest PM2.5 particle 30 times smaller than the width of a hair.</SGBody>
         </Grid>
-        {/*<Grid size={12}>
-          <SGHeader>NO2 - Nitrogen Dioxide</SGHeader>
-          <SGBody>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</SGBody>
-        </Grid>*/}
+        <Grid size={12}>
+          <SGHeader>NO₂ - Nitrogen Dioxide</SGHeader>
+          <SGBody>Nitrogen dioxide (NO₂) is a highly reactive, reddish-brown, pungent gas that acts as a primary indicator of traffic-related air pollution and a key component of smog, largely emitted from burning fuels in vehicles, power plants, and industrial facilities. As a "criteria" air pollutant, it is tightly regulated due to its role in causing respiratory illness, particularly asthma, and contributing to the formation of particulate matter PM 2.5 and ground-level ozone.</SGBody>
+        </Grid>
         {/*<Grid size={12}>
           <SGHeader>BC - Black Carbon</SGHeader>
           <SGBody>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</SGBody>
