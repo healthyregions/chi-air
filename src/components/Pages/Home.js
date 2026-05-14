@@ -138,7 +138,7 @@ const HeroButton = styled(Button)`
     letter-spacing: 0;
     text-transform: capitalize;
     min-width: 10rem;
-    height: 3.5rem;
+    height: 3rem;
     padding: 0 1.5rem;
 `;
 const SearchBand = styled.section`
