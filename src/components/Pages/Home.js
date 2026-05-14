@@ -37,7 +37,7 @@ const HeroArtwork = styled.div`
     margin-bottom: ${({ $largeScreen }) => $largeScreen ? '-6.5rem' : '-4.5rem' };
     transform: ${({ $largeScreen }) => $largeScreen ? 'translateY(1.25rem)' : 'translateY(0.75rem)'};
     overflow: visible;
-    z-index: -1;
+    z-index: 100;
 `;
 const HeroLight = styled.img`
     position: absolute;
@@ -49,7 +49,7 @@ const HeroLight = styled.img`
 `;
 const HeroGroup = styled.img`
     position: absolute;
-    left: -0.75rem;
+    left: -0.3rem;
     top: ${({ $largeScreen }) => $largeScreen ? '12.65rem' : '8.95rem'};
     max-width: ${({ $largeScreen }) => $largeScreen ? '1.85rem' : '1.2rem'};
     height: auto;
@@ -57,8 +57,8 @@ const HeroGroup = styled.img`
 `;
 const HeroWifi = styled.img`
     position: absolute;
-    left: ${({ $largeScreen }) => $largeScreen ? '3.2rem' : '1.65rem'};
-    top: ${({ $largeScreen }) => $largeScreen ? '12rem' : '8.45rem'};
+    left: ${({ $largeScreen }) => $largeScreen ? '2.5rem' : '1.65rem'};
+    top: ${({ $largeScreen }) => $largeScreen ? '11.75rem' : '8.45rem'};
     width: ${({ $largeScreen }) => $largeScreen ? '1.95rem' : '1.25rem'};
     height: auto;
     z-index: 2;
@@ -69,7 +69,7 @@ const HeroBench = styled.img`
     bottom: ${({ $largeScreen }) => $largeScreen ? '-6.75rem' : '-3.25rem'};
     width: ${({ $largeScreen, $tinyScreen }) => $largeScreen ? '35rem' : $tinyScreen ? '20rem' : '100%'};
     height: auto;
-    z-index: 2;
+    z-index: 4;
 `;
 const HeroSquirrel = styled.img`
     position: absolute;
