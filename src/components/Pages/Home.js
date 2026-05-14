@@ -269,7 +269,7 @@ export default function Home() {
     <>
       <NavBar />
 
-      <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
+      <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0, marginTop: '4rem' }}>
         <ContentContainer>
           <HeroSectionInner>
             <Grid container spacing={largeScreen ? 4 : 0} alignItems={'center'}>
