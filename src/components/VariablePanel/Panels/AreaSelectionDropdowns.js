@@ -85,6 +85,7 @@ const HomeDropdownOption = styled.button`
   text-align: left;
   cursor: pointer;
   color: #444444;
+  text-transform: capitalize;
   font-family: Space Grotesk,serif;
   font-size: 1rem;
   font-style: normal;
@@ -177,7 +178,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   return(
     <>
       {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
-        {!type && [ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
+        {(isHomeVariant || !type) && [ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
@@ -222,9 +223,9 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                 return (
                   <HomeDropdownOption key={option} type="button" onClick={() => handleChange(option, type)}>
                     {parts.map((part, index) => part.highlight ? (
-                      <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
+                      <HomeDropdownHighlight key={index}>{part.text?.toLowerCase()}</HomeDropdownHighlight>
                     ) : (
-                      <span key={index}>{part.text}</span>
+                      <span key={index}>{part.text?.toLowerCase()}</span>
                     ))}
                   </HomeDropdownOption>
                 );
