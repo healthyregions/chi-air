@@ -93,6 +93,7 @@ const HeroTitle = styled.h1`
     font-family: Lexend,sans-serif;
     font-size: ${({ $largeScreen }) => $largeScreen ? '4rem' : '3rem'};
     font-weight: 400;
+    color: #444444;
     line-height: 1;
     margin: 0;
 `;
