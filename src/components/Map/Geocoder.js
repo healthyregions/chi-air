@@ -15,6 +15,11 @@ const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const GeocoderContainer = styled(Grid)`
     width: 100%;
+    // TODO: add margin to AutoComplete endAdornment (X button)
+    //.MuiAutocomplete-root {
+    //    margin-left: 0.675rem;
+    //    margin-right: 0.875rem;
+    //}
     .MuiAutocomplete-inputRoot {
         background:white;
         height:${({height, $variant}) => $variant === 'home' ? 48 : height||36}px;
@@ -147,11 +152,12 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
               <TextField
                 {...params}
                 margin={isHomeVariant ? "none" : "dense"}
-                style={{ borderRadius: isHomeVariant ? '100px' : '5px', border: '1px solid rgba(0, 88, 153, 1)' }}
+                style={{ borderRadius: isHomeVariant ? '100px' : '5px', border: '1px solid rgba(0, 88, 153, 1)',
+                  marginLeft: '0.675rem', marginRight:'1rem' }}
                 placeholder={placeholder}
                 slotProps={{
                   input: { ...params.InputProps, type: 'search', startAdornment:
-                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem'}}></FaSearch>
+                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem' }}></FaSearch>
                   }
                 }}
                 onChange={(e) => {
