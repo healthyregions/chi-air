@@ -289,7 +289,7 @@ export default function Home() {
                     Our<HeroTitleAccent>Air</HeroTitleAccent>
                   </HeroTitle>
                   <HeroKicker $largeScreen={largeScreen}>Mapping the Open Air Network</HeroKicker>
-                  <HeroKickerAccent $largeScreen={largeScreen}>Built for Chicago, with Chicago.</HeroKickerAccent>
+                  <HeroKickerAccent $largeScreen={largeScreen}>Built with Chicago, for Chicago.</HeroKickerAccent>
                   <HeroBody $largeScreen={largeScreen}>
                     Air pollution is often invisible, but its impact is real. Now, real-time air quality
                     data is available for every neighborhood, for every Chicagoan, ensuring you and your
