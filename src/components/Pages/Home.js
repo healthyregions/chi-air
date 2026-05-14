@@ -37,7 +37,7 @@ const HeroArtwork = styled.div`
     margin-bottom: ${({ $largeScreen }) => $largeScreen ? '-6.5rem' : '-4.5rem' };
     transform: ${({ $largeScreen }) => $largeScreen ? 'translateY(1.25rem)' : 'translateY(0.75rem)'};
     overflow: visible;
-    z-index: 100;
+    z-index: 3;
 `;
 const HeroLight = styled.img`
     position: absolute;
@@ -140,6 +140,7 @@ const HeroButton = styled(Button)`
     min-width: 10rem;
     height: 3rem;
     padding: 0 1.5rem;
+    z-index: 55;
 `;
 const SearchBand = styled.section`
     position: relative;
