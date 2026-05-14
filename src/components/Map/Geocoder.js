@@ -151,7 +151,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
                 placeholder={placeholder}
                 slotProps={{
                   input: { ...params.InputProps, type: 'search', startAdornment:
-                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'10px'}}></FaSearch>
+                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem'}}></FaSearch>
                   }
                 }}
                 onChange={(e) => {
