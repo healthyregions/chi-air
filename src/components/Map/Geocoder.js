@@ -3,23 +3,19 @@ import {useCallback, useMemo, useState} from "react";
 import {createSearchParams, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
-import {FaSearch} from "react-icons/fa";
+import {FaSearch, FaTimes} from "react-icons/fa";
 import Autocomplete from "@mui/material/Autocomplete";
 import {debounce} from "@mui/material/utils";
 import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
 
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import IconButton from "@mui/material/IconButton";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const GeocoderContainer = styled(Grid)`
     width: 100%;
-    // TODO: add margin to AutoComplete endAdornment (X button)
-    //.MuiAutocomplete-root {
-    //    margin-left: 0.675rem;
-    //    margin-right: 0.875rem;
-    //}
     .MuiAutocomplete-inputRoot {
         background:white;
         height:${({height, $variant}) => $variant === 'home' ? 48 : height||36}px;
@@ -112,6 +108,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
             filterOptions={(x) => x}
             autoComplete
             clearOnEscape
+            clearIcon={<div style={{ display:'none', cursor: 'initial' }}></div>}
             inputValue={searchState.value}
             options={searchState.results || []}
             getOptionLabel={option => option.place_name}
@@ -152,13 +149,18 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
               <TextField
                 {...params}
                 margin={isHomeVariant ? "none" : "dense"}
-                style={{ borderRadius: isHomeVariant ? '100px' : '5px', border: '1px solid rgba(0, 88, 153, 1)',
-                  marginLeft: '0.675rem', marginRight:'1rem' }}
+                style={{ borderRadius: isHomeVariant ? '100px' : '5px', border: '1px solid rgba(0, 88, 153, 1)' }}
                 placeholder={placeholder}
                 slotProps={{
-                  input: { ...params.InputProps, type: 'search', startAdornment:
-                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem' }}></FaSearch>
-                  }
+                  input: {
+                    ...params.InputProps,
+                    startAdornment:
+                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem', marginRight: '0.5rem' }}></FaSearch>,
+                    endAdornment:
+                      searchState?.value && <FaTimes style={{ color: 'rgba(0, 88, 153, 1)', cursor: 'pointer', marginLeft: '0.675rem', marginRight: '0.875rem' }}
+                                                     onClick={() => setSearchState({ value: '' })} />
+
+                  },
                 }}
                 onChange={(e) => {
                   setSearchState(prev => ({
