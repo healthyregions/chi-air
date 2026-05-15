@@ -85,7 +85,6 @@ const HomeDropdownOption = styled.button`
   text-align: left;
   cursor: pointer;
   color: #444444;
-  text-transform: capitalize;
   font-family: Space Grotesk,serif;
   font-size: 1rem;
   font-style: normal;
@@ -166,12 +165,19 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   }, [type, locations]);
 
   const filteredOptions = useMemo(() => {
+    const ops = options.map(o => {
+      const parts = o.split(' ').map(o => o[0]?.toUpperCase() + o.substring(1)?.toLowerCase())
+      console.log(parts);
+      return parts.join(' ');
+    });
+
+
     if (!searchTerm) {
-      return type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b));
+      return type !== 'ward' ? ops.sort() : ops.sort((a, b) => Number(a) - Number(b));
     }
 
     const normalizedSearch = searchTerm.toLowerCase();
-    return (type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b)))
+    return (type !== 'ward' ? ops.sort() : ops.sort((a, b) => Number(a) - Number(b)))
       .filter((option) => option?.toLowerCase().includes(normalizedSearch));
   }, [options, searchTerm, type]);
 
@@ -222,11 +228,12 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
                 return (
                   <HomeDropdownOption key={option} type="button" onClick={() => handleChange(option, type)}>
-                    {parts.map((part, index) => part.highlight ? (
-                      <HomeDropdownHighlight key={index}>{part.text?.toLowerCase()}</HomeDropdownHighlight>
+                    {type==='ward' ? 'Ward ' : ''}
+                    {parts.map((part, index) => (part.highlight ? (
+                      <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
                     ) : (
-                      <span key={index}>{part.text?.toLowerCase()}</span>
-                    ))}
+                      <span>{part.text}</span>
+                    )))}
                   </HomeDropdownOption>
                 );
               }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
@@ -236,7 +243,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
         {type && !isHomeVariant && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
           <Autocomplete
-            options={type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b))}
+            options={filteredOptions}
             openOnFocus
             onBlur={handleClose}
             autoComplete
