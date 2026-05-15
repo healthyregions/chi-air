@@ -19,7 +19,7 @@ import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 
 const HomeDropdownCard = styled.div`
-  width: 100%;
+  width: 16rem;
   max-width: 45rem;
   margin: 0 auto;
   border-radius: 0.75rem;
@@ -164,21 +164,28 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
 
-  const filteredOptions = useMemo(() => {
-    const ops = options.map(o => {
-      const parts = o.split(' ').map(o => o[0]?.toUpperCase() + o.substring(1)?.toLowerCase())
-      console.log(parts);
-      return parts.join(' ');
-    });
+  const format = (value, type) => {
+    if (type === 'ward') {
+      return `Ward ${value}`;
+    } else if (type === 'community') {
+      return value[0]?.toUpperCase() + value.substring(1)?.toLowerCase()
+    }
+    return value;
+  }
 
+  const filteredOptions = useMemo(() => {
+    const ops = options.map(o => o.split(' ').map(o => format(o, type)).join(' '));
 
     if (!searchTerm) {
-      return type !== 'ward' ? ops.sort() : ops.sort((a, b) => Number(a) - Number(b));
+      return type !== 'ward' ? ops.sort() : ops.sort((a, b) => {
+        return Number(a?.split(' ')[1]) - Number(b?.split(' ')[1])
+      });
     }
 
     const normalizedSearch = searchTerm.toLowerCase();
-    return (type !== 'ward' ? ops.sort() : ops.sort((a, b) => Number(a) - Number(b)))
-      .filter((option) => option?.toLowerCase().includes(normalizedSearch));
+    return (type !== 'ward' ? ops.sort() : ops.sort((a, b) => {
+      return Number(a?.split(' ')[1]) - Number(b?.split(' ')[1])
+    })).filter((option) => option?.toLowerCase().includes(normalizedSearch));
   }, [options, searchTerm, type]);
 
   return(
@@ -228,7 +235,6 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
                 return (
                   <HomeDropdownOption key={option} type="button" onClick={() => handleChange(option, type)}>
-                    {type==='ward' ? 'Ward ' : ''}
                     {parts.map((part, index) => (part.highlight ? (
                       <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
                     ) : (
