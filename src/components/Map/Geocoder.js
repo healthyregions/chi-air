@@ -10,7 +10,6 @@ import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropd
 
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import IconButton from "@mui/material/IconButton";
 
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
