@@ -190,8 +190,8 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   return(
     <>
-      {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
-        {(isHomeVariant || !type) && [ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
+      {(noSelection || !showSelectedAreas) && <Grid style={{ position: 'relative' }} container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
+        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
@@ -247,7 +247,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
           </HomeDropdownCard>
         </Grid>}
 
-        {type && !isHomeVariant && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
+        {type && !isHomeVariant && <Grid style={{ position: 'absolute', top: '32px' }} size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
           <Autocomplete
             options={filteredOptions}
             openOnFocus
