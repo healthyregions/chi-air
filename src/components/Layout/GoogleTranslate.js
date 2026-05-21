@@ -50,13 +50,14 @@ export const GoogleTranslate = () => {
     if (locale === previous) { console.log('locale unchanged.');return; }
 
     console.log('Setting locale to: ', locale);
-
+    /*
+    // FIXME: removeCookie does not appear to work in Safari
     if (!locale || locale === 'auto') {
-      // FIXME: removeCookie does not appear to work in Safari
       removeCookie('googtrans', { path: '/' });
-    } else {
+    } else { 
+    */
       setCookie('googtrans', `/auto/${locale}`, { path: '/' })
-    }
+    //}
 
     setTimeout(() => {
       window.location.reload();
