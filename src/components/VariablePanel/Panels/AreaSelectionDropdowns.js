@@ -296,7 +296,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
       {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} margin={'0.3rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
         <Grid size>
-          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {selections?.community?.[0]}</span>}
+          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {format(selections?.community?.[0], 'community')}</span>}
           {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}
           {selections?.ward?.length > 0 && <span><LLabel>Ward:</LLabel> {selections?.ward?.[0]}</span>}
         </Grid>
