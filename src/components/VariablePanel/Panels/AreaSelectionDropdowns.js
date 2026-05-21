@@ -19,7 +19,7 @@ import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 
 const HomeDropdownCard = styled.div`
-  width: 100%;
+  width: 16rem;
   max-width: 45rem;
   margin: 0 auto;
   border-radius: 0.75rem;
@@ -164,20 +164,45 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
 
+  // When displaying, we need to transform / pretty print our possible values
+  const format = (value, type) => {
+    if (type === 'ward') {
+      return `Ward ${value}`;
+    } else if (type === 'community') {
+      return value[0]?.toUpperCase() + value.substring(1)?.toLowerCase()
+    }
+    return value;
+  }
+
+  // When user selects an option, we need to undo the transformation above to select their choice
+  const unformat = (value, type) => {
+    if (type === 'ward') {
+      return value.split(' ')?.[1];
+    } else if (type === 'community') {
+      return value?.toUpperCase()
+    }
+    return value;
+  }
+
   const filteredOptions = useMemo(() => {
+    const ops = options.map(o => o.split(' ').map(o => format(o, type)).join(' '));
+
     if (!searchTerm) {
-      return type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b));
+      return type !== 'ward' ? ops.sort() : ops.sort((a, b) => {
+        return Number(a?.split(' ')[1]) - Number(b?.split(' ')[1])
+      });
     }
 
     const normalizedSearch = searchTerm.toLowerCase();
-    return (type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b)))
-      .filter((option) => option?.toLowerCase().includes(normalizedSearch));
+    return (type !== 'ward' ? ops.sort() : ops.sort((a, b) => {
+      return Number(a?.split(' ')[1]) - Number(b?.split(' ')[1])
+    })).filter((option) => option?.toLowerCase().includes(normalizedSearch));
   }, [options, searchTerm, type]);
 
   return(
     <>
-      {(noSelection || !showSelectedAreas) && <Grid container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
-        {!type && [ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
+      {(noSelection || !showSelectedAreas) && <Grid style={{ position: 'relative' }} container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
+        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
@@ -220,12 +245,12 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                 const parts = parse(option, matches);
 
                 return (
-                  <HomeDropdownOption key={option} type="button" onClick={() => handleChange(option, type)}>
-                    {parts.map((part, index) => part.highlight ? (
+                  <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
+                    {parts.map((part, index) => (part.highlight ? (
                       <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
                     ) : (
-                      <span key={index}>{part.text}</span>
-                    ))}
+                      <span>{part.text}</span>
+                    )))}
                   </HomeDropdownOption>
                 );
               }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
@@ -233,13 +258,13 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
           </HomeDropdownCard>
         </Grid>}
 
-        {type && !isHomeVariant && <Grid size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
+        {type && !isHomeVariant && <Grid style={{ position: 'absolute', top: '32px' }} size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
           <Autocomplete
-            options={type !== 'ward' ? options.sort() : options.sort((a, b) => Number(a) - Number(b))}
+            options={filteredOptions}
             openOnFocus
             onBlur={handleClose}
             autoComplete
-            onChange={(e, s) => handleChange(s, type)}
+            onChange={(e, s) => handleChange(unformat(s, type), type)}
             clearOnEscape
             fullWidth
             clearIcon={undefined}
@@ -271,7 +296,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
       {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} margin={'0.3rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
         <Grid size>
-          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {selections?.community?.[0]}</span>}
+          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {format(selections?.community?.[0], 'community')}</span>}
           {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}
           {selections?.ward?.length > 0 && <span><LLabel>Ward:</LLabel> {selections?.ward?.[0]}</span>}
         </Grid>

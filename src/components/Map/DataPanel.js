@@ -190,7 +190,7 @@ const DataPanel = ({ mapRef }) => {
 
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
-          <Grid container spacing={2} alignItems={'center'}>
+          <Grid container spacing={2} alignItems={'start'}>
             <Grid size={{ xs: 4 }}>
               <DropdownHeader htmlFor="paramSelect" size={'small'}>Indicator</DropdownHeader>
               <FormControl id="paramSelect" variant="outlined" fullWidth margin={'dense'} style={{
@@ -211,7 +211,7 @@ const DataPanel = ({ mapRef }) => {
                   {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
                 </Select>
               </FormControl>
-              <LButton as={Grid} justifyContent={'start'} onClick={() => pushPage(['Explain'])}>
+              <LButton as={Grid} justifyContent={'start'} style={{ width: '2rem' }} onClick={() => pushPage(['Explain'])}>
                 <FaInfoCircle style={{ margin: '.5rem .2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
               </LButton>
             </Grid>

@@ -3,7 +3,7 @@ import {useCallback, useMemo, useState} from "react";
 import {createSearchParams, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
-import {FaSearch} from "react-icons/fa";
+import {FaSearch, FaTimes} from "react-icons/fa";
 import Autocomplete from "@mui/material/Autocomplete";
 import {debounce} from "@mui/material/utils";
 import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
@@ -107,6 +107,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
             filterOptions={(x) => x}
             autoComplete
             clearOnEscape
+            clearIcon={<div style={{ display:'none', cursor: 'initial' }}></div>}
             inputValue={searchState.value}
             options={searchState.results || []}
             getOptionLabel={option => option.place_name}
@@ -150,9 +151,15 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
                 style={{ borderRadius: isHomeVariant ? '100px' : '5px', border: '1px solid rgba(0, 88, 153, 1)' }}
                 placeholder={placeholder}
                 slotProps={{
-                  input: { ...params.InputProps, type: 'search', startAdornment:
-                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'10px'}}></FaSearch>
-                  }
+                  input: {
+                    ...params.InputProps,
+                    startAdornment:
+                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem', marginRight: '0.5rem' }}></FaSearch>,
+                    endAdornment:
+                      searchState?.value && <FaTimes style={{ color: 'rgba(0, 88, 153, 1)', cursor: 'pointer', marginLeft: '0.675rem', marginRight: '0.875rem' }}
+                                                     onClick={() => setSearchState({ value: '' })} />
+
+                  },
                 }}
                 onChange={(e) => {
                   setSearchState(prev => ({

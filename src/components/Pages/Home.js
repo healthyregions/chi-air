@@ -37,7 +37,7 @@ const HeroArtwork = styled.div`
     margin-bottom: ${({ $largeScreen }) => $largeScreen ? '-6.5rem' : '-4.5rem' };
     transform: ${({ $largeScreen }) => $largeScreen ? 'translateY(1.25rem)' : 'translateY(0.75rem)'};
     overflow: visible;
-    z-index: -1;
+    z-index: 3;
 `;
 const HeroLight = styled.img`
     position: absolute;
@@ -49,7 +49,7 @@ const HeroLight = styled.img`
 `;
 const HeroGroup = styled.img`
     position: absolute;
-    left: -0.75rem;
+    left: -0.3rem;
     top: ${({ $largeScreen }) => $largeScreen ? '12.65rem' : '8.95rem'};
     max-width: ${({ $largeScreen }) => $largeScreen ? '1.85rem' : '1.2rem'};
     height: auto;
@@ -57,8 +57,8 @@ const HeroGroup = styled.img`
 `;
 const HeroWifi = styled.img`
     position: absolute;
-    left: ${({ $largeScreen }) => $largeScreen ? '3.2rem' : '1.65rem'};
-    top: ${({ $largeScreen }) => $largeScreen ? '12rem' : '8.45rem'};
+    left: ${({ $largeScreen }) => $largeScreen ? '2.5rem' : '1.65rem'};
+    top: ${({ $largeScreen }) => $largeScreen ? '11.75rem' : '8.45rem'};
     width: ${({ $largeScreen }) => $largeScreen ? '1.95rem' : '1.25rem'};
     height: auto;
     z-index: 2;
@@ -69,7 +69,7 @@ const HeroBench = styled.img`
     bottom: ${({ $largeScreen }) => $largeScreen ? '-6.75rem' : '-3.25rem'};
     width: ${({ $largeScreen, $tinyScreen }) => $largeScreen ? '35rem' : $tinyScreen ? '20rem' : '100%'};
     height: auto;
-    z-index: 2;
+    z-index: 4;
 `;
 const HeroSquirrel = styled.img`
     position: absolute;
@@ -93,6 +93,7 @@ const HeroTitle = styled.h1`
     font-family: Lexend,sans-serif;
     font-size: ${({ $largeScreen }) => $largeScreen ? '4rem' : '3rem'};
     font-weight: 400;
+    color: #444444;
     line-height: 1;
     margin: 0;
 `;
@@ -137,8 +138,9 @@ const HeroButton = styled(Button)`
     letter-spacing: 0;
     text-transform: capitalize;
     min-width: 10rem;
-    height: 3.5rem;
+    height: 3rem;
     padding: 0 1.5rem;
+    z-index: 55;
 `;
 const SearchBand = styled.section`
     position: relative;
@@ -269,7 +271,7 @@ export default function Home() {
     <>
       <NavBar />
 
-      <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
+      <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0, marginTop: '4rem' }}>
         <ContentContainer>
           <HeroSectionInner>
             <Grid container spacing={largeScreen ? 4 : 0} alignItems={'center'}>
@@ -288,7 +290,7 @@ export default function Home() {
                     Our<HeroTitleAccent>Air</HeroTitleAccent>
                   </HeroTitle>
                   <HeroKicker $largeScreen={largeScreen}>Mapping the Open Air Network</HeroKicker>
-                  <HeroKickerAccent $largeScreen={largeScreen}>Built for Chicago, with Chicago.</HeroKickerAccent>
+                  <HeroKickerAccent $largeScreen={largeScreen}>Built with Chicago, for Chicago.</HeroKickerAccent>
                   <HeroBody $largeScreen={largeScreen}>
                     Air pollution is often invisible, but its impact is real. Now, real-time air quality
                     data is available for every neighborhood, for every Chicagoan, ensuring you and your

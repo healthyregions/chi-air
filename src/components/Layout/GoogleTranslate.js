@@ -49,11 +49,14 @@ export const GoogleTranslate = () => {
     if (locale === previous) { console.log('locale unchanged.');return; }
 
     console.log('Setting locale to: ', locale);
-    if (!locale || locale === 'en') {
-      removeCookie('googtrans');
-    } else {
+
+    // FIXME: removeCookie does not work in Safari
+
+    // if (!locale || locale === 'en') {
+    //   removeCookie('googtrans', { path: '/', domain: 'localhost' });
+    // } else {
       setCookie('googtrans', `/auto/${locale}`, { path: '/' })
-    }
+    // }
 
     setTimeout(() => {
       window.location.reload();
