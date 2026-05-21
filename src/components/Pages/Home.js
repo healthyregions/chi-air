@@ -286,7 +286,7 @@ export default function Home() {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <HeroContent $largeScreen={largeScreen}>
-                  <HeroTitle $largeScreen={largeScreen}>
+                  <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
                     Our<HeroTitleAccent>Air</HeroTitleAccent>
                   </HeroTitle>
                   <HeroKicker $largeScreen={largeScreen}>Mapping the Open Air Network</HeroKicker>

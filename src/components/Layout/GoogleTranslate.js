@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {selectLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
+import {locales} from "../VariablePanel/common";
 
 const GoogleTranslateContainer = styled.div`
   position: fixed;
@@ -36,7 +37,7 @@ export const GoogleTranslate = () => {
     new window.google.translate.TranslateElement(
       {
         //pageLanguage: "en",
-        includedLanguages: "en,es",
+        includedLanguages: locales?.map(l => l.value)?.join(','),   // e.g.  "en,es,pl,zh-CN",
         autoDisplay: true
       },
       "google_translate_element"
@@ -50,13 +51,12 @@ export const GoogleTranslate = () => {
 
     console.log('Setting locale to: ', locale);
 
-    // FIXME: removeCookie does not work in Safari
-
-    // if (!locale || locale === 'en') {
-    //   removeCookie('googtrans', { path: '/', domain: 'localhost' });
-    // } else {
+    if (!locale || locale === 'auto') {
+      // FIXME: removeCookie does not appear to work in Safari
+      removeCookie('googtrans', { path: '/' });
+    } else {
       setCookie('googtrans', `/auto/${locale}`, { path: '/' })
-    // }
+    }
 
     setTimeout(() => {
       window.location.reload();
