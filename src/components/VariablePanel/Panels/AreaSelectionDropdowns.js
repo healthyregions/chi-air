@@ -164,11 +164,22 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
 
+  // When displaying, we need to transform / pretty print our possible values
   const format = (value, type) => {
     if (type === 'ward') {
       return `Ward ${value}`;
     } else if (type === 'community') {
       return value[0]?.toUpperCase() + value.substring(1)?.toLowerCase()
+    }
+    return value;
+  }
+
+  // When user selects an option, we need to undo the transformation above to select their choice
+  const unformat = (value, type) => {
+    if (type === 'ward') {
+      return value.split(' ')?.[1];
+    } else if (type === 'community') {
+      return value?.toUpperCase()
     }
     return value;
   }
@@ -234,7 +245,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                 const parts = parse(option, matches);
 
                 return (
-                  <HomeDropdownOption key={option} type="button" onClick={() => handleChange(option, type)}>
+                  <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
                     {parts.map((part, index) => (part.highlight ? (
                       <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
                     ) : (
@@ -253,7 +264,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
             openOnFocus
             onBlur={handleClose}
             autoComplete
-            onChange={(e, s) => handleChange(s, type)}
+            onChange={(e, s) => handleChange(unformat(s, type), type)}
             clearOnEscape
             fullWidth
             clearIcon={undefined}
