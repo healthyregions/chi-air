@@ -54,7 +54,7 @@ export const GoogleTranslate = () => {
     // FIXME: removeCookie does not appear to work in Safari
     if (!locale || locale === 'auto') {
       removeCookie('googtrans', { path: '/' });
-    } else { 
+    } else {
     */
       setCookie('googtrans', `/auto/${locale}`, { path: '/' })
     //}
