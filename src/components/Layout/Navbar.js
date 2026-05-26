@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {MdHomeFilled} from "react-icons/md";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {selectLocale, setLocale} from "../../store/slices/sensorDataSlice";
+import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
 import {NavDropdown} from "./NavDropdown";
 import MenuItem from "@mui/material/MenuItem";
