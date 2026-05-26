@@ -216,6 +216,6 @@ export const locales = [
 ];
 
 export const getLocaleLabel = (value) => {
-  const stripped = value.replaceAll('/auto/', '');
-  return locales.find(l => stripped === l.value)?.label;
+  const stripped = value?.replaceAll('/auto/', '');
+  return locales?.find(l => stripped === l?.value)?.label;
 };
