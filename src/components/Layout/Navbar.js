@@ -11,7 +11,7 @@ import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSli
 import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {MdHomeFilled} from "react-icons/md";
+import {MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
@@ -144,7 +144,7 @@ export default function Nav({
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size='grow'>
               {(largeScreen || mobileNavOpen) && <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
-                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} />
+                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} />
                 <LButton style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
                 <NavDropdown key={'about'} label={'Maps & more'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/map')}>Our Air Map</MenuItem>
