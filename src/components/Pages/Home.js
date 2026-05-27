@@ -27,6 +27,7 @@ const brandColors = {
 const HeroSectionInner = styled.div`
     position: relative;
     padding-bottom: 6.5rem;
+    margin-top: 6rem;
 `;
 const HeroArtwork = styled.div`
     position: absolute;
