@@ -370,7 +370,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [79, 143, 197];
       }
       const latest = data?.find(() => true)?.value;
-      if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
+      if (!latest || latest === "None" || latest === "NaN") {
         //return [79, 143, 197];
         return [100, 100, 100];
       }
