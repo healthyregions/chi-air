@@ -124,6 +124,9 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
             case 10: return context.location === 'tick' ? 'Oct' : `${year} October`;
             case 11: return context.location === 'tick' ? 'Nov' : `${year} November`;
             case 12: return context.location === 'tick' ? 'Dec' : `${year} December`;
+            default:
+              console.error(`Encountered unsupported month=${month}: ` + v)
+              return 'Unknown'
           }
         } else if (averageType === 'season') {
           const segments = v?.split('-');
