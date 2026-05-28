@@ -204,6 +204,10 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
   const filterValues = useSelector(selectFilterValues);
   const use3d = useSelector(selectUse3d);
 
+  const isSensorOffline = (latest) => {
+    return !latest || latest === "None" || latest === "NaN" || Number.isNaN(latest);
+  }
+
   const bins = pm2_5Ranges.map(r => {
     if (selectedParameter === 'nowcast_aqi') {
       return r.aqi_max;
@@ -305,7 +309,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [229, 238, 245];
       }
       const latest = data?.find(() => true)?.value;
-      if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
+      if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [200, 200, 200];
       }
@@ -325,7 +329,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [79, 143, 197];
       }
       const latest = data?.find(() => true)?.value;
-      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+      if (isSensorOffline(latest)) {
         return [229, 238, 245];
         //return [68, 68, 68];
       }
@@ -370,7 +374,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [79, 143, 197];
       }
       const latest = data?.find(() => true)?.value;
-      if (!latest || latest === "None" || latest === "NaN") {
+      if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [100, 100, 100];
       }
@@ -390,7 +394,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [229, 238, 245];
       }
       const latest = data?.find(() => true)?.value;
-      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+      if (isSensorOffline(latest)) {
         //return [229, 238, 245];
         //return [68, 68, 68];
         return [200, 200, 200];
@@ -438,7 +442,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [79, 143, 197];
       }
       const latest = data?.find(() => true)?.value;
-      if (latest === null || latest === undefined || latest === "None" || latest === "NaN") {
+      if (isSensorOffline(latest)) {
       //return [79, 143, 197];
         return [100, 100, 100];
       }
