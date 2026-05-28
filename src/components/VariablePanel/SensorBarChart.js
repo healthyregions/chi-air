@@ -89,17 +89,53 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
       dataKey: 'date',
       barGapRatio: 3,
       tickPlacement: 'middle',
-      valueFormatter: (v) => {
+      valueFormatter: (v, context) => {
         // no-op for weekly / seasonal averages (e.g. 2026-W01, 2026-S1, etc)
-        if (averageType === 'week' || averageType === 'season') {
+        if (averageType === 'hour' || averageType === 'day') {
+          const {date, time} = formatDate({
+            timestamp: v,
+            format: 'long',
+            year: context.location !== 'tick'
+          });
+          if (averageType === 'hour') {
+            return context.location === 'tick' ? time : `${date} ${time}`;
+          } else {
+            return context.location === 'tick' ? date : date;
+          }
+        } else if (averageType === 'week') {
+          const segments = v?.split('-W');
+          const year = segments[0];
+          const weekNum = segments[1];
+          return context.location === 'tick' ? `W${weekNum}` : `${year} Week ${weekNum.toString()}`;
+        } else if (averageType === 'month') {
+          const segments = v?.split('-');
+          const year = segments[0];
+          const month = segments[1];
+          switch (Number(month)) {
+            case 1: return context.location === 'tick' ? 'Jan' : `${year} January`;
+            case 2: return context.location === 'tick' ? 'Feb' : `${year} February`;
+            case 3: return context.location === 'tick' ? 'Mar' : `${year} March`;
+            case 4: return context.location === 'tick' ? 'Apr' : `${year} April`;
+            case 5: return context.location === 'tick' ? 'May' : `${year} May`;
+            case 6: return context.location === 'tick' ? 'June' : `${year} June`;
+            case 7: return context.location === 'tick' ? 'July' : `${year} July`;
+            case 8: return context.location === 'tick' ? 'Aug' : `${year} August`;
+            case 9: return context.location === 'tick' ? 'Sep' : `${year} September`;
+            case 10: return context.location === 'tick' ? 'Oct' : `${year} October`;
+            case 11: return context.location === 'tick' ? 'Nov' : `${year} November`;
+            case 12: return context.location === 'tick' ? 'Dec' : `${year} December`;
+          }
+        } else if (averageType === 'season') {
+          const segments = v?.split('-');
+          const year = segments[0];
+          const season = segments[1];
+          const seasonName = season.substring(0,1).toUpperCase() + season.substring(1);
+          return context.location === 'tick' ? seasonName : `${year} ${seasonName}`
+        } else if (averageType === 'year') {
           return v;
+        } else {
+          console.error(`ERROR: Encountered an unsupported averageType=${averageType}`)
         }
-        const {date, time} = formatDate({
-          timestamp: v,
-          format: 'short',
-          year: false
-        });
-        return averageType === 'hour' ? `${date} ${time}` : date;
       }
     }],
   };
