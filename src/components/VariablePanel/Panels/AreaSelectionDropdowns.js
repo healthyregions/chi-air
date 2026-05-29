@@ -60,26 +60,33 @@ const HomeDropdownSearchInput = styled(InputBase)`
 const HomeDropdownOptions = styled(Box)`
   max-height: 23rem;
   overflow-y: auto;
-  padding: 1rem 1.25rem 1.25rem;
+  padding: 0.75rem 1.25rem 1.25rem;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 25px;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #8DBBDD;
-    border-radius: 999px;
+    border-radius: 2px;
+      
+    /* Use a transparent border to create the offset */
+    border-left: 2px solid transparent;
+    border-right: 20px solid transparent;
+    background-clip: content-box;
   }
 
   &::-webkit-scrollbar-track {
     background: transparent;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 `;
 
 const HomeDropdownOption = styled.button`
   display: block;
   width: 100%;
-  padding: 0.625rem 0;
+  padding: 0.325rem 0;
   border: 0;
   background: transparent;
   text-align: left;
