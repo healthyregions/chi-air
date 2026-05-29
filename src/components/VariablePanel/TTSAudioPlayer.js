@@ -9,7 +9,7 @@ export default function TTSAudioPlayer({ text }) {
     rate: 0.9,
     volume: 1,
     lang: "en-US",
-    voiceURI: "Nicky",
+    voiceURI: "Google US English",
     autoPlay: false,
     highlightText: true,
     showOnlyHighlightedText: true,
