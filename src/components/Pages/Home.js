@@ -83,11 +83,11 @@ const HeroContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: ${({ $largeScreen }) => $largeScreen ? 'flex-end' : 'center'};
-    justify-content: center;
+    justify-content: end;
     text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
     width: 100%;
-    max-width: ${({ $largeScreen }) => $largeScreen ? '34rem' : '100%'};
-    margin-left: auto;
+    //max-width: ${({ $largeScreen }) => $largeScreen ? '34rem' : '100%'};
+    //margin-left: auto;
 `;
 const HeroTitle = styled.h1`
     font-family: Lexend,sans-serif;
@@ -105,6 +105,7 @@ const HeroTitleAccent = styled.span`
 `;
 const HeroKicker = styled.div`
     margin-top: 0.75rem;
+    //text-wrap: nowrap;
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiLightBlue};
     font-size: ${({ $largeScreen }) => $largeScreen ? '2rem' : '1.5rem'};
@@ -113,6 +114,7 @@ const HeroKicker = styled.div`
 `;
 const HeroKickerAccent = styled.div`
     font-family: Lexend,sans-serif;
+    //text-wrap: nowrap;
     color: ${brandColors.chiRed};
     font-size: ${({ $largeScreen }) => $largeScreen ? '2rem' : '1.5rem'};
     font-weight: 700;
@@ -274,8 +276,8 @@ export default function Home() {
       <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0, marginTop: '4rem' }}>
         <ContentContainer>
           <HeroSectionInner>
-            <Grid container spacing={largeScreen ? 4 : 0} alignItems={'center'}>
-              <Grid size={{ xs: 12, md: 6 }}>
+            <Grid container spacing={largeScreen ? 4 : 0} justifyContent={'end'}>
+              <Grid size={{ xs: 12, md: 1 }}>
                 <HeroArtwork $largeScreen={largeScreen} $xlScreen={xlScreen}>
                   <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
@@ -284,7 +286,7 @@ export default function Home() {
                   <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
                 </HeroArtwork>
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 11 }}>
                 <HeroContent $largeScreen={largeScreen}>
                   <HeroTitle $largeScreen={largeScreen}>
                     Our<HeroTitleAccent>Air</HeroTitleAccent>
