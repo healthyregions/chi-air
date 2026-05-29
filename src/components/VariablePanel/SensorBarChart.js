@@ -1,4 +1,4 @@
-import {BarChart} from "@mui/x-charts/BarChart";
+import {BarChart, BarChartProps} from "@mui/x-charts/BarChart";
 import {pm2_5Ranges} from "../../config";
 import Grid from "@mui/material/Grid";
 import {useEffect, useMemo, useRef, useState} from "react";
@@ -6,7 +6,7 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
-export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
+export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
   // Listen for changes to averageType or selectedParameter
@@ -34,34 +34,41 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
 
+  // Format values consistently
+  const valueFormatter = (v) => {
+    if (selectedParameter === 'nowcast_aqi') {
+    return `${Math.round(Number(v))} AQI`;
+  } else if (selectedParameter === 'clarity_no2') {
+    return `${Number(v)?.toFixed(1)} ppb`;
+  } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
+    return `${Number(v)?.toFixed(1)} μg/m³`;
+  } else {
+    return `ERR`;
+  }
+}
+
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
-  const chartSettings = {
+  const chartSettings: BarChartProps = {
     dataset: filteredData,
     height: 175,
+    borderRadius: 4,
 
     // Data to graph: Mean PM2.5 Values
     series: [
       {
         dataKey: selectedParameter,
-        valueFormatter: (v) => {
-          if (selectedParameter === 'nowcast_aqi') {
-            return `${Math.round(Number(v))} AQI`;
-          } else if (selectedParameter === 'clarity_no2') {
-            return `${Number(v)?.toFixed(1)} ppb`;
-          } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
-            return `${Number(v)?.toFixed(1)} μg/m³`;
-          } else {
-            return `ERR`;
-          }
-        }
+        barLabel: 'value',
+        barLabelPlacement: 'outside',
+        valueFormatter
       }
-   ],
+    ],
 
     // Y-Axis: Mean PM2.5 values
     yAxis: [{
       disableLine: true, // Hides the main vertical line
       disableTicks: true,
+      position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
       colorMap: {
         type: 'piecewise',
@@ -74,7 +81,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
             return r.no2_max;
           } else {
             console.error('Unsupported metric name: ' + selectedParameter)
-            return undefined
+            return undefined;
           }
         }),
         colors: pm2_5Ranges?.map(r => r.color),
@@ -98,7 +105,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
             year: context.location !== 'tick'
           });
           if (averageType === 'hour') {
-            return context.location === 'tick' ? time : `${date} ${time}`;
+            return context.location === 'tick' ? time?.split(' ')?.join( '\n') : `${date} ${time}`;
           } else {
             return context.location === 'tick' ? date : date;
           }
