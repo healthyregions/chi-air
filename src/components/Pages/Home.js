@@ -148,9 +148,9 @@ const SearchBand = styled.section`
     position: relative;
     z-index: 1;
     width: 100%;
-    background: url('/img/header/home-page-header-background.svg') center top / cover no-repeat;
+    //background: url('/img/header/home-page-header-background.svg') center top / cover no-repeat;
     padding: ${({ $largeScreen }) => $largeScreen ? '4.31rem 0 3.03rem' : '3rem 0 2.5rem'};
-    overflow: hidden;
+    //overflow: hidden;
 `;
 const SearchBandInner = styled.div`
     position: relative;
@@ -163,16 +163,21 @@ const SearchBandDecor = styled.div`
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
+    left: -23px;
     right: 0;
     pointer-events: none;
-    opacity: ${({ $largeScreen }) => $largeScreen ? 1 : 0};
     display: ${({ $largeScreen }) => $largeScreen ? 'block' : 'none'};
+    background: linear-gradient(
+      ${({ $direction }) => $direction || 'to bottom'},
+      ${({ $startColor }) => $startColor || 'rgba(209, 237, 251, 1)'},
+      ${({ $endColor }) => $endColor || 'rgba(255, 255, 255, 1)'}
+    );
 `;
 const SearchBandDecorItem = styled.img`
     position: absolute;
     width: 1.5rem;
     height: 1.5rem;
+    z-index: 10;
     left: ${({ $x }) => $x};
     top: ${({ $y }) => $y};
     bottom: ${({ $bottom }) => $bottom};

@@ -17,6 +17,7 @@ import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const HomeDropdownCard = styled.div`
   width: 16rem;
@@ -26,7 +27,10 @@ const HomeDropdownCard = styled.div`
   border: 1px solid #005899;
   background: #FFF;
   box-shadow: 2px 2px 4px 0 rgba(30, 30, 30, 0.05);
-  overflow: hidden;
+  //overflow: hidden;
+  position: absolute;
+
+  left: ${({ $largeScreen }) => $largeScreen ? '38%' : '14%'}
 `;
 
 const HomeDropdownSearchRow = styled.div`
@@ -116,6 +120,7 @@ const HomeDropdownEmpty = styled.div`
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size, variant = 'default' }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const largeScreen = useMediaQuery('(min-width: 600px)');
   const mapParams = useSelector(selectMapParams);
 
   // Keep track of our anchor element
@@ -232,17 +237,17 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
         </Grid>)}
 
         {type && isHomeVariant && <Grid size={12} margin={'0 auto'} padding={0} alignItems={'center'}>
-          <HomeDropdownCard>
+          <HomeDropdownCard $largeScreen={largeScreen}>
             <HomeDropdownSearchRow>
-              <FaSearch style={{ color: '#005899', fontSize: '1.5rem' }} />
+              <FaSearch style={{ color: '#005899', fontSize: '0.75rem' }} />
               <HomeDropdownSearchInput
                 autoFocus
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder={`Type ${prettyTypeName(type).toLowerCase()} here...`}
+                placeholder={`Search`}
               />
               <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }}>
-                <FaTimes style={{ color: '#005899', fontSize: '1.5rem' }} />
+                <FaTimes style={{ color: '#005899', fontSize: '0.75rem' }} />
               </LButton>
             </HomeDropdownSearchRow>
             <HomeDropdownDivider />
@@ -293,7 +298,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                   ...params.InputProps,
                   startAdornment: (<></>)
                 }}
-                placeholder={`Search ${prettyTypeName(type)} here...`}
+                placeholder={`Search`}
                 fullWidth
               />
             )}
