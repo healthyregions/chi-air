@@ -156,8 +156,9 @@ export const ClickedSensorPanel = ({ push, pop }) => {
 
       <Grid container alignItems={'center'}>
         <Grid offset={1} size={11}>
-          <SensorBarChart pageSize={40}
+          <SensorBarChart pageSize={30}
                           averageType={'hour'}
+                          context={'recent'}
                           selectedParameter={selectedParameter}
                           metricData={metricData?.filter(d => d.type === 'hour')?.map(r =>
                             ({ type: r.type, date: r.date, [selectedParameter]: r[clickedSensor] })

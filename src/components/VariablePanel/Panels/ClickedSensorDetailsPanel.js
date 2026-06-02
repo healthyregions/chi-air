@@ -198,8 +198,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
         </Grid>
       </Grid>
 
-      <SensorBarChart margin={{ left: 60 }}
+      <SensorBarChart margin={{ top: 40, left: 40, right: 40 }}
+                      pageSize={10}
                       showScroll={true}
+                      context={'historical'}
                       averageType={averageType}
                       selectedParameter={selectedParameter}
                       metricData={metricData?.filter(d => d.type === averageType)?.map(r =>

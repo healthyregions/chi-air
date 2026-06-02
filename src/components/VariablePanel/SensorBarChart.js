@@ -6,7 +6,7 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
-export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
+export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
   // Listen for changes to averageType or selectedParameter
@@ -27,25 +27,36 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, s
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
 
+  const formatValue = (v) => {
+    if (selectedParameter === 'nowcast_aqi') {
+      return `${Math.round(Number(v))} AQI`;
+    } else if (selectedParameter === 'clarity_no2') {
+      return `${Number(v)?.toFixed(1)} ppb`;
+    } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
+      return `${Number(v)?.toFixed(1)} μg/m³`;
+    } else {
+      return `ERR`;
+    }
+  }
+
+  const getMaxValue = () => {
+    if (selectedParameter === 'nowcast_aqi') {
+      return 500;
+    } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25')  {
+      return 500;
+    } else if (selectedParameter === 'clarity_no2') {
+      return 1500;
+    } else {
+      return `ERR`;
+    }
+  };
+
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
   const itemsCount = metricData?.length;
   const numPages = Math.ceil(itemsCount / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
-
-  // Format values consistently
-  const valueFormatter = (v) => {
-    if (selectedParameter === 'nowcast_aqi') {
-    return `${Math.round(Number(v))} AQI`;
-  } else if (selectedParameter === 'clarity_no2') {
-    return `${Number(v)?.toFixed(1)} ppb`;
-  } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
-    return `${Number(v)?.toFixed(1)} μg/m³`;
-  } else {
-    return `ERR`;
-  }
-}
 
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
@@ -58,9 +69,12 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, s
     series: [
       {
         dataKey: selectedParameter,
-        barLabel: 'value',
-        barLabelPlacement: 'outside',
-        valueFormatter
+        minBarSize: 8,
+        barLabel: context === 'historical' ? 'value' : '',
+        barLabelPlacement: context === 'historical' ? 'outside' : '',
+        valueGetter: (v) =>
+          selectedParameter === 'nowcast_aqi' ? Math.round(Number(v?.[selectedParameter])) : Number(v?.[selectedParameter])?.toFixed(1),
+        valueFormatter: (v) => formatValue(v)
       }
     ],
 
@@ -70,6 +84,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, s
       disableTicks: true,
       position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
+      max: getMaxValue(),
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
@@ -90,6 +105,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, s
 
     // X-Axis: Date
     xAxis: [{
+      height: 25,
       disableLine: true, // Hides the main vertical line
       disableTicks: true,
       scaleType: 'band',
@@ -150,6 +166,18 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, s
     }],
   };
 
+  // Additional styling for Historical Trends
+  if (context === 'historical') {
+    chartSettings.sx = {
+      // Shrinks the legend/series labels
+      '& .MuiBarChart-seriesLabels > text': {
+        fontSize: '0.6rem',
+        fontFamily: 'Lexend',
+        fontWeight: 500,
+      },
+    };
+  }
+
   return (
     <>
       <Grid container spacing={0} alignItems={'center'}>
@@ -160,7 +188,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30,top:30}, s
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} margin={margin} />
+          <BarChart {...chartSettings} margin={{...margin, top:20, }} />
         </Grid>}
 
         {showScroll && <Grid size={1}>
