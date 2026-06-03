@@ -292,7 +292,7 @@ export default function Team() {
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -308,7 +308,7 @@ export default function Team() {
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -317,7 +317,7 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support. 
+              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support.
             </TeamBodyText>
           </Grid>
 
@@ -331,7 +331,7 @@ export default function Team() {
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -361,7 +361,7 @@ export default function Team() {
               style={{ cursor: 'pointer' }} justifyItems={'center'}>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                 <img src={contributor?.photo} style={{ minHeight: '100px', maxHeight: '100px' }} alt={''} />
-                <ContributorLabel $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
+                <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
                 <ContributorDescription>{contributor?.description}</ContributorDescription>
               </Grid>
             </Grid>
@@ -380,7 +380,7 @@ export default function Team() {
             {communityindividual?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
