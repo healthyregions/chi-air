@@ -1,4 +1,4 @@
-import {BarChart} from "@mui/x-charts/BarChart";
+import {BarChart, BarChartProps} from "@mui/x-charts/BarChart";
 import {pm2_5Ranges} from "../../config";
 import Grid from "@mui/material/Grid";
 import {useEffect, useMemo, useRef, useState} from "react";
@@ -6,7 +6,7 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
-export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
+export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
   // Listen for changes to averageType or selectedParameter
@@ -27,6 +27,30 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
 
+  const formatValue = (v) => {
+    if (selectedParameter === 'nowcast_aqi') {
+      return `${Math.round(Number(v))} AQI`;
+    } else if (selectedParameter === 'clarity_no2') {
+      return `${Number(v)?.toFixed(1)} ppb`;
+    } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
+      return `${Number(v)?.toFixed(1)} μg/m³`;
+    } else {
+      return `ERR`;
+    }
+  }
+
+  const getMaxValue = () => {
+    if (selectedParameter === 'nowcast_aqi') {
+      return 500;
+    } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25')  {
+      return 500;
+    } else if (selectedParameter === 'clarity_no2') {
+      return 1500;
+    } else {
+      return `ERR`;
+    }
+  };
+
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
   const itemsCount = metricData?.length;
@@ -36,33 +60,31 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
 
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
-  const chartSettings = {
+  const chartSettings: BarChartProps = {
     dataset: filteredData,
     height: 175,
+    borderRadius: 4,
 
     // Data to graph: Mean PM2.5 Values
     series: [
       {
         dataKey: selectedParameter,
-        valueFormatter: (v) => {
-          if (selectedParameter === 'nowcast_aqi') {
-            return `${Math.round(Number(v))} AQI`;
-          } else if (selectedParameter === 'clarity_no2') {
-            return `${Number(v)?.toFixed(1)} ppb`;
-          } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
-            return `${Number(v)?.toFixed(1)} μg/m³`;
-          } else {
-            return `ERR`;
-          }
-        }
+        minBarSize: 8,
+        barLabel: context === 'historical' ? 'value' : '',
+        barLabelPlacement: context === 'historical' ? 'outside' : '',
+        valueGetter: (v) =>
+          selectedParameter === 'nowcast_aqi' ? Math.round(Number(v?.[selectedParameter])) : Number(v?.[selectedParameter])?.toFixed(1),
+        valueFormatter: (v) => formatValue(v)
       }
-   ],
+    ],
 
     // Y-Axis: Mean PM2.5 values
     yAxis: [{
       disableLine: true, // Hides the main vertical line
       disableTicks: true,
+      position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
+      max: getMaxValue(),
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
@@ -74,7 +96,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
             return r.no2_max;
           } else {
             console.error('Unsupported metric name: ' + selectedParameter)
-            return undefined
+            return undefined;
           }
         }),
         colors: pm2_5Ranges?.map(r => r.color),
@@ -83,26 +105,78 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
 
     // X-Axis: Date
     xAxis: [{
+      height: 25,
       disableLine: true, // Hides the main vertical line
       disableTicks: true,
       scaleType: 'band',
       dataKey: 'date',
       barGapRatio: 3,
       tickPlacement: 'middle',
-      valueFormatter: (v) => {
+      valueFormatter: (v, context) => {
         // no-op for weekly / seasonal averages (e.g. 2026-W01, 2026-S1, etc)
-        if (averageType === 'week' || averageType === 'season') {
+        if (averageType === 'hour' || averageType === 'day') {
+          const {date, time} = formatDate({
+            timestamp: v,
+            format: 'long',
+            year: context.location !== 'tick'
+          });
+          if (averageType === 'hour') {
+            return context.location === 'tick' ? time?.split(' ')?.join( '\n') : `${date} ${time}`;
+          } else {
+            return context.location === 'tick' ? date : date;
+          }
+        } else if (averageType === 'week') {
+          const segments = v?.split('-W');
+          const year = segments[0];
+          const weekNum = segments[1];
+          return context.location === 'tick' ? `W${weekNum}` : `${year} Week ${weekNum.toString()}`;
+        } else if (averageType === 'month') {
+          const segments = v?.split('-');
+          const year = segments[0];
+          const month = segments[1];
+          switch (Number(month)) {
+            case 1: return context.location === 'tick' ? 'Jan' : `${year} January`;
+            case 2: return context.location === 'tick' ? 'Feb' : `${year} February`;
+            case 3: return context.location === 'tick' ? 'Mar' : `${year} March`;
+            case 4: return context.location === 'tick' ? 'Apr' : `${year} April`;
+            case 5: return context.location === 'tick' ? 'May' : `${year} May`;
+            case 6: return context.location === 'tick' ? 'June' : `${year} June`;
+            case 7: return context.location === 'tick' ? 'July' : `${year} July`;
+            case 8: return context.location === 'tick' ? 'Aug' : `${year} August`;
+            case 9: return context.location === 'tick' ? 'Sep' : `${year} September`;
+            case 10: return context.location === 'tick' ? 'Oct' : `${year} October`;
+            case 11: return context.location === 'tick' ? 'Nov' : `${year} November`;
+            case 12: return context.location === 'tick' ? 'Dec' : `${year} December`;
+            default:
+              console.error(`Encountered unsupported month=${month}: ` + v)
+              return 'Unknown'
+          }
+        } else if (averageType === 'season') {
+          const segments = v?.split('-');
+          const year = segments[0];
+          const season = segments[1];
+          const seasonName = season.substring(0,1).toUpperCase() + season.substring(1);
+          return context.location === 'tick' ? seasonName : `${year} ${seasonName}`
+        } else if (averageType === 'year') {
           return v;
+        } else {
+          console.error(`ERROR: Encountered an unsupported averageType=${averageType}`)
         }
-        const {date, time} = formatDate({
-          timestamp: v,
-          format: 'short',
-          year: false
-        });
-        return averageType === 'hour' ? `${date} ${time}` : date;
       }
     }],
   };
+
+  // Additional styling for Historical Trends
+  if (context === 'historical') {
+    chartSettings.sx = {
+      // Shrinks the legend/series labels
+      '& .MuiBarChart-seriesLabels > text': {
+        fontSize: '0.6rem',
+        fontFamily: 'Lexend',
+        fontWeight: 500,
+      },
+    };
+  }
 
   return (
     <>
@@ -114,7 +188,7 @@ export const SensorBarChart = ({ selectedParameter, margin = {left:30}, style = 
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} margin={margin} />
+          <BarChart {...chartSettings} margin={{...margin, top:20, }} />
         </Grid>}
 
         {showScroll && <Grid size={1}>
