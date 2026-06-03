@@ -23,7 +23,7 @@ import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
 import {ClickedSensorPanel} from "../VariablePanel/Panels/ClickedSensorPanel";
 import {SelectedAreaPanel} from "../VariablePanel/Panels/SelectedAreaPanel";
-import {LButton, Divider, useSelectorAsState} from "../VariablePanel/common";
+import {LButton, Divider, useSelectorAsState, getLocaleLabel, locales} from "../VariablePanel/common";
 import {ClickedSensorDetailsPanel} from "../VariablePanel/Panels/ClickedSensorDetailsPanel";
 import {ClickedSensorExplain} from "../VariablePanel/Panels/ClickedSensorExplainPanel";
 import {ColorCodingAQPanel} from "../VariablePanel/Panels/ColorCodingAQPanel";
@@ -172,7 +172,7 @@ const DataPanel = ({ mapRef }) => {
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
       <Grid container spacing={2} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><DropdownButton ButtonComponent={LButton} truncate={3} label={cookies['googtrans'] === '/auto/es' ? 'Español' : 'English'} onChange={onLocaleChange}  options={[{label:'English', value:'en'}, {label:'Español',value:'es'}]} /></Grid>
+        <Grid><DropdownButton ButtonComponent={LButton} truncate={3} label={getLocaleLabel(cookies['googtrans'])} onChange={onLocaleChange}  options={locales} /></Grid>
       </Grid>
 
       <Grid container spacing={8} alignItems={'center'}>

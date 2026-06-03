@@ -7,7 +7,7 @@ import {LButton} from "./common";
 
 const ITEM_HEIGHT = 48;
 
-export const DropdownButton = ({ className = '', onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ className = '', icon = undefined, onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -50,7 +50,7 @@ export const DropdownButton = ({ className = '', onOpen = () => {}, buttonProps 
         style={style}
         {...buttonProps}
       >
-        {label} <FaCaretDown style={{ marginLeft: '2px' }} />
+        {icon ? <span style={{ marginRight: '1rem' }}>{icon}</span> : <></>} {label} <FaCaretDown style={{ marginLeft: '2px' }} />
       </Btn>
       <Menu
           id="basic-menu"

@@ -207,3 +207,15 @@ export const flyToCenter = (boundaries, name, key, navigate) => {
     }).toString()
   });
 }
+
+export const locales = [
+  {label:'English', value:'en'},
+  {label:'Español', value:'es'},
+  {label:'普通话', value:'zh-CN'},
+  {label:'Polski', value:'pl'}
+];
+
+export const getLocaleLabel = (value) => {
+  const stripped = value?.replaceAll('/auto/', '');
+  return locales?.find(l => stripped === l?.value)?.label;
+};

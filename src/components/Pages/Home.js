@@ -27,6 +27,7 @@ const brandColors = {
 const HeroSectionInner = styled.div`
     position: relative;
     padding-bottom: 6.5rem;
+    margin-top: 6rem;
 `;
 const HeroArtwork = styled.div`
     position: absolute;
@@ -286,7 +287,7 @@ export default function Home() {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <HeroContent $largeScreen={largeScreen}>
-                  <HeroTitle $largeScreen={largeScreen}>
+                  <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
                     Our<HeroTitleAccent>Air</HeroTitleAccent>
                   </HeroTitle>
                   <HeroKicker $largeScreen={largeScreen}>Mapping the Open Air Network</HeroKicker>
