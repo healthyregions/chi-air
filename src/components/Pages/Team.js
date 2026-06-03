@@ -305,7 +305,7 @@ export default function Team() {
 
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {coreteam?.map((contributor, index) =>
-              <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
+              <Grid key={'coreteam-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
@@ -328,7 +328,7 @@ export default function Team() {
 
           <Grid container spacing={8} marginTop={9} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {students?.map((contributor, index) =>
-              <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
+              <Grid key={'students-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
@@ -356,7 +356,7 @@ export default function Team() {
       </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
-            <Grid key={'community-' + index} size={{ xs: 12, md: 3 }}
+            <Grid key={'communityorgs-' + index} size={{ xs: 12, md: 3 }}
               onClick={() => contributor?.url && window.open(contributor.url, '_blank', 'noopener,noreferrer')}
               style={{ cursor: 'pointer' }} justifyItems={'center'}>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
@@ -378,7 +378,7 @@ export default function Team() {
         </CategorySection>
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {communityindividual?.map((contributor, index) =>
-              <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
+              <Grid key={'communityindividual-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
