@@ -263,7 +263,7 @@ export default function Team() {
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              <b>Our Air</b> is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
+              <b className={'notranslate'}>Our Air</b> is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
@@ -292,7 +292,7 @@ export default function Team() {
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -305,10 +305,10 @@ export default function Team() {
 
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {coreteam?.map((contributor, index) =>
-              <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
+              <Grid key={'coreteam-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -317,7 +317,7 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support. 
+              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support.
             </TeamBodyText>
           </Grid>
 
@@ -328,10 +328,10 @@ export default function Team() {
 
           <Grid container spacing={8} marginTop={9} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {students?.map((contributor, index) =>
-              <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
+              <Grid key={'students-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} />
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -356,12 +356,12 @@ export default function Team() {
       </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
-            <Grid key={'community-' + index} size={{ xs: 12, md: 3 }}
+            <Grid key={'communityorgs-' + index} size={{ xs: 12, md: 3 }}
               onClick={() => contributor?.url && window.open(contributor.url, '_blank', 'noopener,noreferrer')}
               style={{ cursor: 'pointer' }} justifyItems={'center'}>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                 <img src={contributor?.photo} style={{ minHeight: '100px', maxHeight: '100px' }} alt={''} />
-                <ContributorLabel $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
+                <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
                 <ContributorDescription>{contributor?.description}</ContributorDescription>
               </Grid>
             </Grid>
@@ -378,9 +378,9 @@ export default function Team() {
         </CategorySection>
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {communityindividual?.map((contributor, index) =>
-              <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
+              <Grid key={'communityindividual-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>

@@ -84,11 +84,11 @@ const HeroContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: ${({ $largeScreen }) => $largeScreen ? 'flex-end' : 'center'};
-    justify-content: center;
+    justify-content: end;
     text-align: ${({ $largeScreen }) => $largeScreen ? 'right' : 'center'};
     width: 100%;
-    max-width: ${({ $largeScreen }) => $largeScreen ? '34rem' : '100%'};
-    margin-left: auto;
+    //max-width: ${({ $largeScreen }) => $largeScreen ? '34rem' : '100%'};
+    //margin-left: auto;
 `;
 const HeroTitle = styled.h1`
     font-family: Lexend,sans-serif;
@@ -106,6 +106,7 @@ const HeroTitleAccent = styled.span`
 `;
 const HeroKicker = styled.div`
     margin-top: 0.75rem;
+    //text-wrap: nowrap;
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiLightBlue};
     font-size: ${({ $largeScreen }) => $largeScreen ? '2rem' : '1.5rem'};
@@ -114,6 +115,7 @@ const HeroKicker = styled.div`
 `;
 const HeroKickerAccent = styled.div`
     font-family: Lexend,sans-serif;
+    //text-wrap: nowrap;
     color: ${brandColors.chiRed};
     font-size: ${({ $largeScreen }) => $largeScreen ? '2rem' : '1.5rem'};
     font-weight: 700;
@@ -143,13 +145,13 @@ const HeroButton = styled(Button)`
     padding: 0 1.5rem;
     z-index: 55;
 `;
-const SearchBand = styled.section`
+const SearchBand = styled.div`
     position: relative;
     z-index: 1;
     width: 100%;
-    background: url('/img/header/home-page-header-background.svg') center top / cover no-repeat;
+    //background: url('/img/header/home-page-header-background.svg') center top / cover no-repeat;
     padding: ${({ $largeScreen }) => $largeScreen ? '4.31rem 0 3.03rem' : '3rem 0 2.5rem'};
-    overflow: hidden;
+    //overflow: hidden;
 `;
 const SearchBandInner = styled.div`
     position: relative;
@@ -162,19 +164,23 @@ const SearchBandDecor = styled.div`
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
+    left: -23px;
     right: 0;
     pointer-events: none;
-    opacity: ${({ $largeScreen }) => $largeScreen ? 1 : 0};
     display: ${({ $largeScreen }) => $largeScreen ? 'block' : 'none'};
+    background: linear-gradient(
+      ${({ $direction }) => $direction || 'to bottom'},
+      ${({ $startColor }) => $startColor || 'rgba(209, 237, 251, 1)'},
+      ${({ $endColor }) => $endColor || 'rgba(255, 255, 255, 1)'}
+    );
 `;
 const SearchBandDecorItem = styled.img`
     position: absolute;
     width: 1.5rem;
     height: 1.5rem;
+    z-index: 10;
     left: ${({ $x }) => $x};
     top: ${({ $y }) => $y};
-    bottom: ${({ $bottom }) => $bottom};
     transform: ${({ $mirror }) => $mirror ? 'scaleX(-1)' : 'none'};
 `;
 const SearchBandChevron = styled(FaChevronDown)`
@@ -227,10 +233,10 @@ const resources = [
 
 const headerDecorItems = [
   { src: '/img/header/header1.svg', offsetFromHeader6: 19.44, y: '6.5rem' },
-  { src: '/img/header/header2.svg', offsetFromHeader6: 19.44, bottom: '10.19rem' },
+  { src: '/img/header/header2.svg', offsetFromHeader6: 19.44, y: '12rem' },
   { src: '/img/header/header3.svg', offsetFromHeader6: 12.87, y: '9.25rem' },
   { src: '/img/header/header4.svg', offsetFromHeader6: 6.5, y: '6.5rem' },
-  { src: '/img/header/header5.svg', offsetFromHeader6: 6.5, bottom: '10.19rem' },
+  { src: '/img/header/header5.svg', offsetFromHeader6: 6.5, y: '12rem' },
   { src: '/img/header/header6.svg', offsetFromHeader6: 0, y: '9.12rem' },
 ];
 
@@ -275,8 +281,8 @@ export default function Home() {
       <WhiteBackground $largeScreen={largeScreen} style={{ marginBottom: 0, marginTop: '4rem' }}>
         <ContentContainer>
           <HeroSectionInner>
-            <Grid container spacing={largeScreen ? 4 : 0} alignItems={'center'}>
-              <Grid size={{ xs: 12, md: 6 }}>
+            <Grid container spacing={largeScreen ? 4 : 0} justifyContent={'end'}>
+              <Grid size={{ xs: 12, md: 1 }}>
                 <HeroArtwork $largeScreen={largeScreen} $xlScreen={xlScreen}>
                   <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
@@ -285,7 +291,7 @@ export default function Home() {
                   <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
                 </HeroArtwork>
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 11 }}>
                 <HeroContent $largeScreen={largeScreen}>
                   <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
                     Our<HeroTitleAccent>Air</HeroTitleAccent>
@@ -316,7 +322,6 @@ export default function Home() {
                 alt={''}
                 $x={`calc(50% - ${searchBandHeader6LeftAnchor + item.offsetFromHeader6}rem)`}
                 $y={item.y}
-                $bottom={item.bottom}
               />
             ))}
           </SearchBandDecor>
@@ -328,7 +333,6 @@ export default function Home() {
                 alt={''}
                 $x={`calc(50% + ${searchBandHeader6RightAnchor + item.offsetFromHeader6}rem)`}
                 $y={item.y}
-                $bottom={item.bottom}
                 $mirror
               />
             ))}

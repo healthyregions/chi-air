@@ -9,24 +9,29 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {flyToCenter, getBoundaries, LButton, LLabel, useSelectorAsState} from "../common";
 import {useNavigate} from "react-router-dom";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import {useCallback, useMemo, useState} from "react";
 import {selectMapParams, setMapParams} from "../../../store/slices/legacyStoreSlice";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 const HomeDropdownCard = styled.div`
   width: 16rem;
   max-width: 45rem;
   margin: 0 auto;
+  z-index: 10;
   border-radius: 0.75rem;
   border: 1px solid #005899;
   background: #FFF;
   box-shadow: 2px 2px 4px 0 rgba(30, 30, 30, 0.05);
-  overflow: hidden;
+  //overflow: hidden;
+
+  position: ${({ $largeScreen }) => $largeScreen ? 'absolute' : 'relative'};
+  left: 0;
+  right: 0;
 `;
 
 const HomeDropdownSearchRow = styled.div`
@@ -60,26 +65,33 @@ const HomeDropdownSearchInput = styled(InputBase)`
 const HomeDropdownOptions = styled(Box)`
   max-height: 23rem;
   overflow-y: auto;
-  padding: 1rem 1.25rem 1.25rem;
+  padding: 0.75rem 1.25rem 1.25rem;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 25px;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #8DBBDD;
-    border-radius: 999px;
+    border-radius: 2px;
+      
+    /* Use a transparent border to create the offset */
+    border-left: 2px solid transparent;
+    border-right: 20px solid transparent;
+    background-clip: content-box;
   }
 
   &::-webkit-scrollbar-track {
     background: transparent;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 `;
 
 const HomeDropdownOption = styled.button`
   display: block;
   width: 100%;
-  padding: 0.625rem 0;
+  padding: 0.325rem 0;
   border: 0;
   background: transparent;
   text-align: left;
@@ -109,6 +121,7 @@ const HomeDropdownEmpty = styled.div`
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size, variant = 'default' }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const largeScreen = useMediaQuery('(min-width: 600px)');
   const mapParams = useSelector(selectMapParams);
 
   // Keep track of our anchor element
@@ -169,7 +182,11 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     if (type === 'ward') {
       return `Ward ${value}`;
     } else if (type === 'community') {
-      return value[0]?.toUpperCase() + value.substring(1)?.toLowerCase()
+      // capitalize each word
+      const words = value?.split(' ');
+      return words?.map(word => {
+        return word[0]?.toUpperCase() + word.substring(1)?.toLowerCase();
+      })?.join(' ');
     }
     return value;
   }
@@ -201,8 +218,8 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   return(
     <>
-      {(noSelection || !showSelectedAreas) && <Grid style={{ position: 'relative' }} container width={'100%'} justifyContent={isHomeVariant ? 'center' : 'space-around'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0}>
-        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key}>
+      {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? 'column' : 'row'}>
+        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size={12} key={key} textAlign={'center'}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
@@ -222,76 +239,43 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
           >
             {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px' }} />
           </LButton>
+
+          {type === key && <>
+            <ClickAwayListener onClickAway={handleClose}>
+              <HomeDropdownCard $largeScreen={largeScreen}>
+                <HomeDropdownSearchRow>
+                  <FaSearch style={{ color: '#005899', fontSize: '0.75rem' }} />
+                  <HomeDropdownSearchInput
+                    autoFocus
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder={`Search`}
+                  />
+                  <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }}>
+                    <FaTimes style={{ color: '#005899', fontSize: '0.75rem' }} />
+                  </LButton>
+                </HomeDropdownSearchRow>
+                <HomeDropdownDivider />
+                <HomeDropdownOptions>
+                  {filteredOptions.length > 0 ? filteredOptions.map((option) => {
+                    const matches = match(option, searchTerm, { insideWords: true });
+                    const parts = parse(option, matches);
+
+                    return (
+                      <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
+                        {parts.map((part, index) => (part.highlight ? (
+                          <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
+                        ) : (
+                          <span>{part.text}</span>
+                        )))}
+                      </HomeDropdownOption>
+                    );
+                  }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
+                </HomeDropdownOptions>
+              </HomeDropdownCard>
+            </ClickAwayListener>
+          </>}
         </Grid>)}
-
-        {type && isHomeVariant && <Grid size={12} margin={'0 auto'} padding={0} alignItems={'center'}>
-          <HomeDropdownCard>
-            <HomeDropdownSearchRow>
-              <FaSearch style={{ color: '#005899', fontSize: '1.5rem' }} />
-              <HomeDropdownSearchInput
-                autoFocus
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder={`Type ${prettyTypeName(type).toLowerCase()} here...`}
-              />
-              <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }}>
-                <FaTimes style={{ color: '#005899', fontSize: '1.5rem' }} />
-              </LButton>
-            </HomeDropdownSearchRow>
-            <HomeDropdownDivider />
-            <HomeDropdownOptions>
-              {filteredOptions.length > 0 ? filteredOptions.map((option) => {
-                const matches = match(option, searchTerm, { insideWords: true });
-                const parts = parse(option, matches);
-
-                return (
-                  <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
-                    {parts.map((part, index) => (part.highlight ? (
-                      <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
-                    ) : (
-                      <span>{part.text}</span>
-                    )))}
-                  </HomeDropdownOption>
-                );
-              }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
-            </HomeDropdownOptions>
-          </HomeDropdownCard>
-        </Grid>}
-
-        {type && !isHomeVariant && <Grid style={{ position: 'absolute', top: '32px' }} size={12} margin={'0 1rem'} padding={0} alignItems={'center'}>
-          <Autocomplete
-            options={filteredOptions}
-            openOnFocus
-            onBlur={handleClose}
-            autoComplete
-            onChange={(e, s) => handleChange(unformat(s, type), type)}
-            clearOnEscape
-            fullWidth
-            clearIcon={undefined}
-            popupIcon={null}
-            noOptionsText={'No options'}
-            slotProps={{
-              listbox: {
-                sx: { fontFamily: 'Lexend' }
-              }
-            }}
-            renderInput={params => (
-              <TextField
-                {...params}
-                margin={'none'}
-                variant={'outlined'}
-                style={{ height: '1.9rem' }}
-                autoFocus={true}
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (<></>)
-                }}
-                placeholder={`Search ${prettyTypeName(type)} here...`}
-                fullWidth
-              />
-            )}
-          />
-        </Grid>}
       </Grid>}
 
       {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} margin={'0.3rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>

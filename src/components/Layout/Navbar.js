@@ -146,11 +146,11 @@ export default function Nav({
               {(largeScreen || mobileNavOpen) && <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
                 <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} />
                 <LButton style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
-                <NavDropdown key={'about'} label={'Maps & more'} style={{ fontSize }}>
+                <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/map')}>Our Air Map</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
                 </NavDropdown>
-                <NavDropdown key={'about'} label={'About'} style={{ fontSize }}>
+                <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
                 </NavDropdown>

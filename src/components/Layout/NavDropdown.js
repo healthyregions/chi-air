@@ -3,7 +3,7 @@ import {LButton} from "../VariablePanel/common";
 import {useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
 
-export const NavDropdown = ({ key = 'basic', label, style, children = <></> }) => {
+export const NavDropdown = ({ keyName = 'basic', label, style, children = <></> }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -16,8 +16,8 @@ export const NavDropdown = ({ key = 'basic', label, style, children = <></> }) =
   return (
     <>
       <LButton
-        id={`${key}-button`}
-        aria-controls={open ? `${key}-menu` : undefined}
+        id={`${keyName}-button`}
+        aria-controls={open ? `${keyName}-menu` : undefined}
         aria-haspopup="true"
         style={style}
         aria-expanded={open ? 'true' : undefined}
@@ -26,14 +26,14 @@ export const NavDropdown = ({ key = 'basic', label, style, children = <></> }) =
         {label} <FaCaretDown style={{ marginLeft: '2px' }} />
       </LButton>
       <Menu
-        id={`${key}-menu`}
+        id={`${keyName}-menu`}
         anchorEl={anchorEl}
         open={open}
         style={style}
         onClose={handleClose}
         slotProps={{
           list: {
-            'aria-labelledby': `${key}-button`,
+            'aria-labelledby': `${keyName}-button`,
           },
         }}
       >

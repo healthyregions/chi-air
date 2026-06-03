@@ -43,7 +43,7 @@ export const SectionHeader = ({ style = {}, buttonIcon = <></>, buttonText = '',
         <ChiBlackText spacing={0} style={{ fontSize: largeScreen ? '32px': '18px', fontWeight: 400, textAlign: 'right' }}>
           <Grid container spacing={2} alignItems={'center'} justifyContent={'right'}>
             <Grid alignItems={'right'} size={{ xs: 10 }}>
-              {topRowText} <div style={{ fontWeight:700 }}>{bottomRowTextBlack} <ChiRedText>{bottomRowTextRed}</ChiRedText></div>
+              {topRowText} <div style={{ fontWeight:700 }}>{bottomRowTextBlack+' '} <ChiRedText>{bottomRowTextRed}</ChiRedText></div>
             </Grid>
             <Grid size={{ xs: 2 }}>
               <SectionIcon width={largeScreen ? 100 : 42} src={imgSrc} alt={imgAlt} />

@@ -256,7 +256,7 @@ export default function About() {
            </Grid> */}
              <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
                <AboutBodyText size={12}>
-                <b>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
+                <b className={'notranslate'}>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
                  making city-wide metrics legible for all. We build on the largest sensor network in the country with community and
                  cross-sector collaborations to ensure the data is easily accessible, in context, and ready
                  for action. We will continue to refine and add to the dashboard with improvements and more resources over time.
@@ -320,7 +320,7 @@ export default function About() {
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
               <a href="https://publichealth.uic.edu/profiles/serap-erdal/" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Dr. Serap Erdal </a>
-               from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from the ComEd Hyperlocal Air 
+               from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from the ComEd Hyperlocal Air
                Quality Assessment by RHP Risk Management/ComEd/Exelon LLC, and Congressional Earmark Grant/National Institute of Standards and Technology (#60NANB23D206).
                 </Grid>
              </Grid>

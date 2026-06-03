@@ -137,8 +137,8 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
                           fontWeight: part.highlight ? 700 : 400,
                         }}
                       >
-                {part.text}
-              </span>
+                        {part.text}
+                      </span>
                     ))}
                   </div>
                 </li>
@@ -156,7 +156,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
                     startAdornment:
                       <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem', marginRight: '0.5rem' }}></FaSearch>,
                     endAdornment:
-                      searchState?.value && <FaTimes style={{ color: 'rgba(0, 88, 153, 1)', cursor: 'pointer', marginLeft: '0.675rem', marginRight: '0.875rem' }}
+                      searchState?.value && <FaTimes style={{ color: 'rgba(0, 88, 153, 1)', cursor: 'pointer', marginLeft: '8px', marginRight: '20px' }}
                                                      onClick={() => setSearchState({ value: '' })} />
 
                   },
