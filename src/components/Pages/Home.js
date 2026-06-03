@@ -144,7 +144,7 @@ const HeroButton = styled(Button)`
     padding: 0 1.5rem;
     z-index: 55;
 `;
-const SearchBand = styled.section`
+const SearchBand = styled.div`
     position: relative;
     z-index: 1;
     width: 100%;
@@ -180,7 +180,6 @@ const SearchBandDecorItem = styled.img`
     z-index: 10;
     left: ${({ $x }) => $x};
     top: ${({ $y }) => $y};
-    bottom: ${({ $bottom }) => $bottom};
     transform: ${({ $mirror }) => $mirror ? 'scaleX(-1)' : 'none'};
 `;
 const SearchBandChevron = styled(FaChevronDown)`
@@ -233,10 +232,10 @@ const resources = [
 
 const headerDecorItems = [
   { src: '/img/header/header1.svg', offsetFromHeader6: 19.44, y: '6.5rem' },
-  { src: '/img/header/header2.svg', offsetFromHeader6: 19.44, bottom: '10.19rem' },
+  { src: '/img/header/header2.svg', offsetFromHeader6: 19.44, y: '12rem' },
   { src: '/img/header/header3.svg', offsetFromHeader6: 12.87, y: '9.25rem' },
   { src: '/img/header/header4.svg', offsetFromHeader6: 6.5, y: '6.5rem' },
-  { src: '/img/header/header5.svg', offsetFromHeader6: 6.5, bottom: '10.19rem' },
+  { src: '/img/header/header5.svg', offsetFromHeader6: 6.5, y: '12rem' },
   { src: '/img/header/header6.svg', offsetFromHeader6: 0, y: '9.12rem' },
 ];
 
@@ -322,7 +321,6 @@ export default function Home() {
                 alt={''}
                 $x={`calc(50% - ${searchBandHeader6LeftAnchor + item.offsetFromHeader6}rem)`}
                 $y={item.y}
-                $bottom={item.bottom}
               />
             ))}
           </SearchBandDecor>
@@ -334,7 +332,6 @@ export default function Home() {
                 alt={''}
                 $x={`calc(50% + ${searchBandHeader6RightAnchor + item.offsetFromHeader6}rem)`}
                 $y={item.y}
-                $bottom={item.bottom}
                 $mirror
               />
             ))}

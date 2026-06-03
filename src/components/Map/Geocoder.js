@@ -137,8 +137,8 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
                           fontWeight: part.highlight ? 700 : 400,
                         }}
                       >
-                {part.text}
-              </span>
+                        {part.text}
+                      </span>
                     ))}
                   </div>
                 </li>
