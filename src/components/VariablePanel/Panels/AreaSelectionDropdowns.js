@@ -219,7 +219,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   return(
     <>
       {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? 'column' : 'row'}>
-        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size={12} key={key} textAlign={'center'}>
+        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
