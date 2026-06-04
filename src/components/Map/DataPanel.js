@@ -17,7 +17,7 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import {FaArrowCircleLeft, FaInfoCircle, FaHome} from "react-icons/fa";
+import {FaArrowCircleLeft, FaInfoCircle} from "react-icons/fa";
 import {LastUpdatedDisplay} from "../VariablePanel/LastUpdatedDisplay";
 import {FaGripLines} from "react-icons/fa";
 import {MapLayersPanel} from "../VariablePanel/Panels/MapLayersPanel";
@@ -33,6 +33,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {useCookies} from "react-cookie";
+import {MdHomeFilled} from "react-icons/md";
 
 const DataPanelContainer = styled.div`
     position: fixed;
@@ -183,7 +184,7 @@ const DataPanel = ({ mapRef }) => {
           style={{ paddingLeft: '0', gap: '0.4rem' }}
           title="Go to Home page"
         >
-          <FaHome style={{ width: '15px', height: '15px' }} /> Home
+          <MdHomeFilled style={{ width: '15px', height: '15px' }} /> Home
         </LButton>
         <LButton variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
       </Grid>
