@@ -19,9 +19,8 @@ import {FaHammer} from "@react-icons/all-files/fa/FaHammer";
 import {FaStickyNote} from "@react-icons/all-files/fa/FaStickyNote";
 import {FaQuestion} from "@react-icons/all-files/fa/FaQuestion";
 import {
-  FaCircleCheck, FaCircleDown,
+  FaCircleCheck,
   FaEnvelopeCircleCheck,
-  FaMagnifyingGlass,
   FaPersonThroughWindow,
   FaScaleBalanced
 } from "react-icons/fa6";
