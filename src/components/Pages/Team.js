@@ -125,7 +125,7 @@ const coreteam = [
 
 const students = [
   {
-    photo: '/img/team/person.png',
+    photo: '/img/team/oni.png',
     name: 'Onongoo (Oni) Amar',
     description: 'Research Assistant, UIC',
   },
