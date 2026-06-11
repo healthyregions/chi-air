@@ -307,7 +307,7 @@ export default function Team() {
             {coreteam?.map((contributor, index) =>
               <Grid key={'coreteam-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                  <img src={contributor?.photo} alt={''} />
+                  <img src={contributor?.photo} alt={''} width={113} height={113} />
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
@@ -330,7 +330,7 @@ export default function Team() {
             {students?.map((contributor, index) =>
               <Grid key={'students-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                  <img src={contributor?.photo} alt={''} />
+                  <img src={contributor?.photo} alt={''} width={113} height={113} />
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
