@@ -12248,6 +12248,11 @@ react-table@^7.7.0:
   resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.8.0.tgz#07858c01c1718c09f7f1aed7034fcfd7bda907d2"
   integrity sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==
 
+react-text-to-speech@^5.1.10:
+  version "5.1.10"
+  resolved "https://registry.yarnpkg.com/react-text-to-speech/-/react-text-to-speech-5.1.10.tgz#ef3bd5c311985d1777439d50f45ba568e62123cb"
+  integrity sha512-6uLQi6NWjjDPO0YW6fImracMrrCqbzBN0U9dpek8w3lrBdRJVez/PRN87KDqnPaFMBwxN3Char2z22P8NDr5ig==
+
 react-transition-group@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
