@@ -5,6 +5,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaExternalLinkAlt} from "react-icons/fa";
 import { GradientBackground, WhiteBackground } from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
+import {selectLocale} from "../../store/slices/sensorDataSlice";
+import {useSelector} from "react-redux";
 
 const ResourcesPage = styled.div`
     background:white;
@@ -140,12 +142,12 @@ const students = [
     description: 'Research Assistant, UIUC',
   },
   {
-    photo: '/img/team/person.png',
+    photo: '/img/team/zhengrui.png',
     name: 'Zhengrui Huang',
     description: 'Research Assistant, UIC',
   },
   {
-    photo: '/img/team/person.png',
+    photo: '/img/team/qingwen.png',
     name: 'Qingwen Zeng',
     description: 'Research Assistant, UIC',
   }
@@ -249,6 +251,9 @@ const ResourceLinkIcon = styled(FaExternalLinkAlt)`
 
 export default function Team() {
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const locale = useSelector(selectLocale);
+
+  console.log('Current locale is: ', locale);
 
   return (
     <ResourcesPage>
@@ -263,7 +268,7 @@ export default function Team() {
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              <b className={'notranslate'}>Our Air</b> is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
+              <b className={'notranslate'}>Our Air</b>&nbsp;is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
@@ -292,7 +297,7 @@ export default function Team() {
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} height={113} />
-                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -308,7 +313,7 @@ export default function Team() {
               <Grid key={'coreteam-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} height={113} />
-                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorLabel className={contributor?.name === 'Sara Lambert' && locale !== 'zh-CN' ? '' : 'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
@@ -317,7 +322,7 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b>Mallikarjun Bhusnoor</b> and <b>Pengyin Shan</b> at UIUC for their technical support.
+              We are additionally grateful to <b className={'notranslate'}>Mallikarjun Bhusnoor</b> and <b className={'notranslate'}>Pengyin Shan</b> at UIUC for their technical support.
             </TeamBodyText>
           </Grid>
 
@@ -362,7 +367,7 @@ export default function Team() {
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                 <img src={contributor?.photo} style={{ minHeight: '100px', maxHeight: '100px' }} alt={''} height={113} />
                 <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
-                <ContributorDescription>{contributor?.description}</ContributorDescription>
+                <ContributorDescription className={'notranslate'}>{contributor?.description}</ContributorDescription>
               </Grid>
             </Grid>
           )}
@@ -381,7 +386,7 @@ export default function Team() {
               <Grid key={'communityindividual-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
-                  <ContributorDescription>{contributor?.description}</ContributorDescription>
+                  <ContributorDescription className={'notranslate'}>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
             )}
