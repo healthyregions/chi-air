@@ -98,7 +98,7 @@ const Footer = (props) => {
   return (
     <FooterContainer>
       <FooterContent>
-        <h6 translate="no">Chi Air</h6>
+        <h6 translate="no">Our Air</h6>
         <ul>
           <li>
             <Link to="/">Home</Link>
