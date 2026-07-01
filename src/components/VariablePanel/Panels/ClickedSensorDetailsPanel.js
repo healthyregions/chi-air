@@ -160,7 +160,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
       <Grid container spacing={2}>
         <Grid size={6}>
           <FormControl id="paramSelect" variant="outlined" fullWidth>
-            <InputLabel htmlFor="paramSelect">Parameter</InputLabel>
+            <InputLabel htmlFor="paramSelect">Indicator</InputLabel>
             <Select
               variant={"filled"}
               value={selectedParameter}
