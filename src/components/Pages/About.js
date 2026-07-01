@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
+import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
 import Accordion from "@mui/material/Accordion";
@@ -256,7 +256,7 @@ export default function About() {
            </Grid> */}
              <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
                <AboutBodyText size={12}>
-                <b className={'notranslate'}>Our Air</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
+                <b className={'notranslate'}>{productName}</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
                  making city-wide metrics legible for all. We build on the largest sensor network in the country with community and
                  cross-sector collaborations to ensure the data is easily accessible, in context, and ready
                  for action. We will continue to refine and add to the dashboard with improvements and more resources over time.

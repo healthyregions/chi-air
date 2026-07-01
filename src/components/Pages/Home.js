@@ -10,7 +10,12 @@ import {FaArrowRight} from "react-icons/fa";
 import {FaExternalLinkAlt} from "react-icons/fa";
 import {FaChevronDown} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
-import {GradientBackground, useSelectorAsState, WhiteBackground} from "../VariablePanel/common";
+import {
+  GradientBackground,
+  productName,
+  useSelectorAsState,
+  WhiteBackground
+} from "../VariablePanel/common";
 import {
   selectSelectedAreas,
   selectSensorLocations,
@@ -294,7 +299,10 @@ export default function Home() {
               <Grid size={{ xs: 12, md: 11 }}>
                 <HeroContent $largeScreen={largeScreen}>
                   <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
-                    Our<HeroTitleAccent>Air</HeroTitleAccent>
+                    { productName?.split(' ')?.map((s, i) =>
+                        i > 0 ? <HeroTitleAccent>{ s }</HeroTitleAccent> : <>{ s }</>
+                      )
+                    }
                   </HeroTitle>
                   <HeroKicker $largeScreen={largeScreen}>Mapping the Open Air Network</HeroKicker>
                   <HeroKickerAccent $largeScreen={largeScreen}>Built with Chicago, for Chicago.</HeroKickerAccent>
@@ -359,7 +367,7 @@ export default function Home() {
                         bottomRowTextBlack={'Air Quality'}
                         bottomRowTextRed={'Resources'}
                         buttonOnClick={() => navigate('/map')}
-                        buttonText={'View Our Air Map'}
+                        buttonText={`View ${productName} Map`}
                         buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
           />
         </ContentContainer>

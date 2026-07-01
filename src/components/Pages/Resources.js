@@ -3,7 +3,7 @@ import { NavBar } from '..';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaArrowRight, FaChartLine, FaExternalLinkAlt, FaHeadSideCough, FaLink} from "react-icons/fa";
-import { GradientBackground, WhiteBackground } from "../VariablePanel/common";
+import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {useNavigate} from "react-router-dom";
 import Stack from "@mui/material/Stack";
@@ -200,7 +200,7 @@ export default function Resources() {
                        bottomRowTextBlack={'Air Quality'}
                        bottomRowTextRed={'Resources'}
                        buttonOnClick={() => navigate('/map')}
-                       buttonText={'View Our Air Map'}
+                       buttonText={`View ${productName} Map`}
                        buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
         />
 
