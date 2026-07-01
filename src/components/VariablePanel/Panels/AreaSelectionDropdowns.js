@@ -21,7 +21,7 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 const HomeDropdownCard = styled.div`
   width: 16rem;
   max-width: 45rem;
-  margin: 0 auto;
+  //margin: 0 auto;
   z-index: 10;
   border-radius: 0.75rem;
   border: 1px solid #005899;
@@ -138,11 +138,14 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const handleOpen = (e, key) => {
     setAnchorEl(e?.currentTarget);
     setType(key);
-    setSearchTerm('');
+    handleClear();
   }
   const handleClose = () => {
     setAnchorEl(null);
     setType(null);
+    handleClear();
+  }
+  const handleClear = () => {
     setSearchTerm('');
   }
 
@@ -218,8 +221,8 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   return(
     <>
-      {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? 'column' : 'row'}>
-        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'}>
+      {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? (largeScreen ? 'row': 'column') : 'row'}>
+        {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'} position={isHomeVariant ? 'relative' : 'inherit'}>
           <LButton
             id={`basic-button-${key}`}
             size={'small'}
@@ -251,9 +254,9 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder={`Search`}
                   />
-                  <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }}>
+                  {searchTerm?.length > 0 && <LButton variant={'text'} size={'small'} onClick={handleClear} style={{ minWidth: 0, padding: 0 }}>
                     <FaTimes style={{ color: '#005899', fontSize: '0.75rem' }} />
-                  </LButton>
+                  </LButton>}
                 </HomeDropdownSearchRow>
                 <HomeDropdownDivider />
                 <HomeDropdownOptions>

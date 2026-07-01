@@ -214,6 +214,17 @@ iframe.skiptranslate { visibility: hidden !important; }
   border-radius: 2px;
 }
 
+div:has(#geocoder-search-listbox) {
+    width: 100%;
+    height: 204px;
+    opacity: 1;
+    border-radius: 28px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0, 88, 153, 1);
+    /* TODO: scroll bar */
+}
+
 /* FIXME: an honest attempt at adding the green border to the map popup, as detailed in the designs
 
 .mapboxgl-popup-tip {

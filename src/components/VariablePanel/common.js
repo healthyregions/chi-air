@@ -212,7 +212,8 @@ export const locales = [
   {label:'English', value:'en'},
   {label:'Español', value:'es'},
   {label:'普通话', value:'zh-CN'},
-  {label:'Polski', value:'pl'}
+  {label:'Polski', value:'pl'},
+  {label:'हिन्दी', value:'hi'},
 ];
 
 export const getLocaleLabel = (value) => {
