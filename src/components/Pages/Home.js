@@ -367,8 +367,8 @@ export default function Home() {
                         topRowText={'Access useful'}
                         bottomRowTextBlack={'Air Quality'}
                         bottomRowTextRed={'Resources'}
-                        buttonOnClick={() => navigate('/map')}
-                        buttonText={`View ${productName} Map`}
+                        buttonOnClick={() => navigate('/resources')}
+                        buttonText={`View All Resources`}
                         buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
           />
         </ContentContainer>
