@@ -133,7 +133,7 @@ export default function Nav({
     dispatch(setLocale(locale));
   };
 
-  const lgScreenFontSize = '20px';
+  const lgScreenFontSize = '24px';
   const xsScreenFontSize = '16px'
   const fontSize = largeScreen ? lgScreenFontSize : xsScreenFontSize;
 
