@@ -26,7 +26,7 @@ const ChiRedText = styled.span`
     text-align: right;
 `;
 const SectionIcon = styled.img`
-    width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
+    width: 100px;
     height: auto;
 `
 
@@ -46,7 +46,7 @@ export const SectionHeader = ({ style = {}, buttonIcon = <></>, buttonText = '',
               {topRowText} <div style={{ fontWeight:700 }}>{bottomRowTextBlack+' '} <ChiRedText>{bottomRowTextRed}</ChiRedText></div>
             </Grid>
             <Grid size={{ xs: 2 }}>
-              <SectionIcon width={largeScreen ? 100 : 42} src={imgSrc} alt={imgAlt} />
+              <SectionIcon src={imgSrc} alt={imgAlt} />
             </Grid>
           </Grid>
         </ChiBlackText>

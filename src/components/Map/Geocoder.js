@@ -154,7 +154,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
                   input: {
                     ...params.InputProps,
                     startAdornment:
-                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft:'1.25rem', marginRight: '0.5rem' }}></FaSearch>,
+                      <FaSearch style={{color: 'rgba(0, 88, 153, 1)', marginLeft: isHomeVariant ? '1.25rem' : '1rem', marginRight: '0.5rem', fontSize: isHomeVariant ? '17.5px' : '15px' }}></FaSearch>,
                     endAdornment:
                       searchState?.value && <FaTimes style={{ color: 'rgba(0, 88, 153, 1)', cursor: 'pointer', marginLeft: '8px', marginRight: '20px' }}
                                                      onClick={() => setSearchState({ value: '' })} />
