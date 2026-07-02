@@ -89,7 +89,7 @@ export const SelectedAreaPanel = () => {
 
       {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
         <ColorColumn size={1}></ColorColumn>
-        <AqiValueColumn size={2}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'NO₂' : 'PM 2.5'}</AqiValueColumn>
+        <AqiValueColumn size={2}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'NO₂' : 'PM2.5'}</AqiValueColumn>
         <LocationNameColumn size={4}>Name</LocationNameColumn>
         <TimestampColumn size={3}></TimestampColumn>
         {/*

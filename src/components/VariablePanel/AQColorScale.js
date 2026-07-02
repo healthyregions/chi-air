@@ -128,7 +128,7 @@ export const AQColorScale = () => {
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Air Quality Index'}>AQI</Tooltip>
         </Grid>}
         {selectedParameter === 'clarity_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
-          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM 2.5</Tooltip>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM2.5</Tooltip>
         </Grid>}
         {selectedParameter === 'clarity_no2' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Nitrogen Dioxide'}>NO₂</Tooltip>
