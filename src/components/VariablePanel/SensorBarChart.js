@@ -6,6 +6,42 @@ import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
 
+
+const getIsoWeekRange = (year, weekNumber) => {
+  // ISO 8601 rule: Week 1 always contains January 4th
+  const jan4 = new Date(year, 0, 4);
+
+  // Get Day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const dayOfWeek = jan4.getDay();
+
+  // Adjust so Monday is 1 and Sunday is 7
+  const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+  // Find the Monday of Week 1
+  const startOfWeek1 = new Date(jan4);
+  startOfWeek1.setDate(jan4.getDate() - isoDayOfWeek + 1);
+
+  // Calculate the target week's Monday (Start Date)
+  const startDate = new Date(startOfWeek1);
+  startDate.setDate(startOfWeek1.getDate() + (weekNumber - 1) * 7);
+
+  // Calculate the target week's Sunday (End Date)
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+
+  // Optional: Reset time to midnight/end of day if needed
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  return { startDate, endDate };
+}
+
+const shortDateFormat = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+  timeZone: "UCT",
+});
+
+
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
 
@@ -114,22 +150,41 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       tickPlacement: 'middle',
       valueFormatter: (v, context) => {
         // no-op for weekly / seasonal averages (e.g. 2026-W01, 2026-S1, etc)
-        if (averageType === 'hour' || averageType === 'day') {
+        if (averageType === 'hour') {
           const {date, time} = formatDate({
             timestamp: v,
             format: 'long',
             year: context.location !== 'tick'
           });
-          if (averageType === 'hour') {
-            return context.location === 'tick' ? time?.split(' ')?.join( '\n') : `${date} ${time}`;
-          } else {
-            return context.location === 'tick' ? date : date;
-          }
+          return context.location === 'tick' ? time?.split(' ')?.join( '\n') : `${date} ${time}`;
+        } else if (averageType === 'day') {
+          const {date} = formatDate({
+            timestamp: v,
+            format: 'long',
+            year: context.location !== 'tick'
+          });
+          const shortStartDate = shortDateFormat.format(new Date(date));
+
+          // Format xAxisLabel - strip off the year but show this in tooltip
+          const xAxisLabel = shortStartDate.split(',')[0].replaceAll(' ', "\n");
+          return context.location === 'tick' ? xAxisLabel : shortStartDate;
         } else if (averageType === 'week') {
           const segments = v?.split('-W');
           const year = segments[0];
           const weekNum = segments[1];
-          return context.location === 'tick' ? `W${weekNum}` : `${year} Week ${weekNum.toString()}`;
+
+          const {startDate, endDate} = getIsoWeekRange(year, weekNum);
+
+          // Format ISO dates to be more human-readable
+          const startOfWeek = startDate.toISOString().split('T')[0];
+          const endOfWeek = endDate.toISOString().split('T')[0];
+          const shortStartDate = shortDateFormat.format(new Date(startOfWeek));
+          const shortEndDate = shortDateFormat.format(new Date(endOfWeek));
+
+          // Format xAxisLabel strip off the year but show this in tooltip
+          const xAxisLabel = shortStartDate.split(',')[0].replaceAll(' ', "\n");
+
+          return context.location === 'tick' ? xAxisLabel : `${shortStartDate.toString()} - ${shortEndDate.toString()}`;
         } else if (averageType === 'month') {
           const segments = v?.split('-');
           const year = segments[0];
@@ -196,6 +251,12 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
             <FaChevronCircleRight style={{ ...style, border: '2px solid white', borderRadius: '100px', backgroundColor: 'white', color: 'rgba(0, 88, 153, 1)' }} />
           </LButton>}
         </Grid>}
+      </Grid>
+
+      <Grid container>
+        <Grid size={{ xs: 12 }} textAlign={'center'}>
+          { averageType === 'week' && <strong>Start of Week</strong> }
+        </Grid>
       </Grid>
     </>
   );
