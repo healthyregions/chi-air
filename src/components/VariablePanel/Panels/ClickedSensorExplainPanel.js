@@ -20,7 +20,7 @@ export const ClickedSensorExplain = ({ pop }) => {
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={12}>
-          <SGHeader>AQI - Air Quality Index</SGHeader>
+          <SGHeader>EPA’s Air Quality Index (AQI)</SGHeader>
           <SGBody>The Air Quality Index (AQI) is a color-coded, 0–500 scale used to communicate how polluted the air is and the associated health risks. Higher AQI values indicate higher pollution levels and greater health concerns. An AQI under 100 is generally safe, while values over 100 indicate risks, particularly for sensitive groups.</SGBody>
         </Grid>
         <Grid size={12}>

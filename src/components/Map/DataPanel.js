@@ -206,7 +206,7 @@ const DataPanel = ({ mapRef }) => {
                   value={selectedParameter}
                   onChange={(e) => setSelectedParameter(e.target.value)}
                 >
-                  <MenuItem value="nowcast_aqi">AQI</MenuItem>
+                  <MenuItem value="nowcast_aqi">AQI-PM2.5</MenuItem>
                   <MenuItem value="clarity_pm25">PM2.5 (μg/m³)</MenuItem>
                   <MenuItem value="clarity_no2">NO₂ (ppb)</MenuItem>
                   {/*<MenuItem value="mean_bc">BC (ng/m³)</MenuItem>*/}

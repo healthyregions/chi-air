@@ -113,19 +113,19 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`AQI : ${displayedAqi ? Number(displayedAqi).toFixed(0) + ' AQI' : '??'}`} disabled />
+          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`AQI-PM2.5 : ${displayedAqi ? Number(displayedAqi).toFixed(0) + ' AQI' : '??'}`} disabled />
         </Grid>
         <Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`PM2.5 : ${displayedPm25 ? Number(displayedPm25).toFixed(1) + ' μg/m³' : '??'}`} disabled />
         </Grid>
       </Grid>
       <Grid container spacing={2} marginTop={'1rem'}>
-        <Grid size={6}>
-          <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`NO₂ : ${displayedNo2 ? Number(displayedNo2).toFixed(1) : '??'} ppb`} disabled />
+        <Grid size={12}>
+          <TextField fullWidth slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={`NO₂ : ${displayedNo2 ? Number(displayedNo2).toFixed(1) : '??'} ppb`} disabled />
         </Grid>
-        <Grid size={6}>
+        {/*<Grid size={6}>
           <TextField slotProps={{ input: { style: { textAlign: 'center' } } }} variant="outlined" value={'BC : ??'} disabled />
-        </Grid>
+        </Grid>*/}
       </Grid>
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'center'}>
         <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
@@ -166,7 +166,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
               value={selectedParameter}
               onChange={(e) => setSelectedParameter(e.target.value)}
             >
-              <MenuItem value="nowcast_aqi">AQI</MenuItem>
+              <MenuItem value="nowcast_aqi">AQI-PM2.5</MenuItem>
               <MenuItem value="clarity_pm25">PM2.5</MenuItem>
               <MenuItem value="clarity_no2">NO₂</MenuItem>
               {/*<MenuItem value="mean_bc">BC</MenuItem>*/}
