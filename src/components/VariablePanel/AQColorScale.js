@@ -134,7 +134,7 @@ export const AQColorScale = () => {
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Nitrogen Dioxide'}>NO₂</Tooltip>
         </Grid>}
         <Grid size={1}></Grid>
-        <Grid size={8}>Health Category</Grid>
+        <Grid size={8}>Level of Health Concern</Grid>
       </Grid>
 
       { pm2_5Ranges?.map(({ pm25_min, pm25_max, aqi_min, aqi_max, no2_min, no2_max, label, color, border}, index) =>
