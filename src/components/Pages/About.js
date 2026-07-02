@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
-import {NavLink} from "react-router-dom";
+import {GradientBackground, platformName, productName, WhiteBackground} from "../VariablePanel/common";
 import {useState} from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -256,16 +255,17 @@ export default function About() {
            </Grid> */}
              <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
                <AboutBodyText size={12}>
-                <b className={'notranslate'}>{productName}</b> is a Chicago mapping application that serves as a vital bridge between air quality data, research exploration, and community advocacy,
-                 making city-wide metrics legible for all. We build on the largest sensor network in the country with community and
-                 cross-sector collaborations to ensure the data is easily accessible, in context, and ready
-                 for action. We will continue to refine and add to the dashboard with improvements and more resources over time.
+                <b className={'notranslate'}>{productName}</b> is a Chicago
+                 mapping application that serves as a vital bridge between air quality data,
+                 scientific exploration, community empowerment, and advocacy, making city-wide
+                 air quality metrics legible for all Chicago residents. We present and build
+                 on the largest sensor-based air monitoring network in the U.S. (and the second
+                 largest in the world) with community and cross-sector collaborations to ensure
+                 the data is easily accessible, transparent, in context, and ready for action for
+                 policy-making and community empowerment, and advocacy. We will continue to refine
+                 and add to the dashboard with improvements and more resources over time. We welcome
+                 scientific, regulatory, and community input.
                </AboutBodyText>
-{/*               <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
-               To achieve our goals, the design utilizes minimalism that balances technical density with cognitive ease. We chose a bright primary palette,
-                anchored by a Chicago blue and accented with a purposeful Chicago red, to establish a common ground for all Chicagoans.
-                By prioritizing clear visual hierarchy and transparent metadata, the dashboard reflects our mission of providing easy access to Chicago's air quality information.
-             </Grid> */}
              </Grid>
            </ContentContainer>
          </WhiteBackground>
@@ -281,17 +281,68 @@ export default function About() {
            <ContentContainer>
              <Grid container spacing={3} justifyContent={'left'} textAlign={'left'}>
                <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
-                 Building on Open Air
+                 Background on "{platformName}" Network
                </Grid>
              </Grid>
              <Grid container spacing={3} justifyContent={'left'} textAlign={'left'} marginTop={'2rem'}>
-               <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+               <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+                 The Open Air Network is a citywide project consisting of 277 Clarity Node-S Fine
+                 Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) non-regulatory air sensors
+                 installed across Summer 2025. The sensor network has a five-year subscription with
+                 Clarity, with continuous monitoring, calibration, and refinement anticipated. It was
+                 founded by the University of Illinois at Chicago and Chicago Department of Public
+                 Health (CDPH), in collaboration with 13 community organizations serving on the city’s
+                 advisory board, seven of which were UIC’s official community partners under the UIC
+                 grants (CEJN, ASE, SETF, PCR, PERRO, LVEJO, and N4EJ). Please refer to CDPH website to{" "}
+                 <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
+                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                    target={'_blank'} rel="noreferrer noopener">
+                   learn about the “Open Air Chicago” Partner Organizations
+                 </a>.
+               </Grid>
+               <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+                 The UIC and UIUC teams are the technical architects of the design of the “Open Air Chicago” air monitoring network. We adopted the technical principles behind EPA’s Network Design Criteria for Ambient Air Quality Monitoring under the
+                 Clean Air Act to create a neighborhood scale grid-based design, overlaying the grid-based design
+                 on the Environmental Justice (EJ) Index Score map generated by CDPH through a comprehensive
+                 stakeholder participatory process in 2023 under the{" "}
+                 <a href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
+                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                    target={'_blank'} rel="noreferrer noopener">
+                   Cumulative Impact Assessment project
+                 </a>. Neighborhoods in or near EJ zones have a grid size of 1.4 km x 1.4 km (i.e., 0.87 miles x 0.87 miles),
+                 and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles x 0.93 miles). This means that there
+                 are sensors across Chicago less than 1 mile from each other in every direction. This design,
+                 generating concentrations upwind and downwind of a given location, is particularly advantageous
+                 in supporting various forms of air quality analysis and modeling.
+               </Grid>
+               <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+                 Upon development of technical design of the grid-based air monitoring network, we sought
+                 community input into sensor placements on light poles in close proximity to theoretical
+                 grid sampling points in a series of community meetings with 13 community organizations
+                 serving on the city’s Advisory Board, in collaboration with CDPH. Prior to community
+                 meetings for sensor site selections, UIC provided community education sessions on air
+                 quality to community organization staff.
+               </Grid>
+               <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+                 <a href="https://publichealth.uic.edu/profiles/serap-erdal/"
+                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal</a>
+                 {" "}from UIC led the scientific and community engagement process of network
+                 development and is the principal Investigator of two grants, the National Institute of
+                 Standard and Technology (NIST) (i.e., a Congressional Earmark from Senator Tammy Duckworth
+                 Office); and Exelon-ComEd/RHP, that supported the work of UIC and UIUC teams. Please see the
+                 specifics of these grants on the “Funders and Acknowledgements” section. Dr. Marynia Kolak at
+                 UIUC, and Drs. Victoria Persky, Meida Wang, and Dr. at UIC serve as the co-investigators in
+                 these grants.
+               </Grid>
+
+             {/*               <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
                 The <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Open Air Network </a>
                  is a citywide project consisting of 277 non-regulatory air sensors installed in Summer 2025.
                   The sensor network has a five-year lifespan, with continuous monitoring, calibration, and refinement anticipated.
                   It was founded by the University of Illinois at Chicago and Chicago Department of Public Health, in collaboration with
                   dozens of advisory board and other partners. Learn more about University of Illinois & Community teams <NavLink to={"/teams"} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>here.</NavLink>
-                  </Grid>
+                  </Grid> */}
 {/*
               It was founded by the Chicago Department of Public Health (CDPH) and the University of Illinois at Chicago School of Public Health (UIC SPH).
               The development of the network was supported by an advisory board and other partners, including the following:
@@ -312,7 +363,7 @@ export default function About() {
              from UIC SPH led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from a Congressional
              Earmark Grant/National Institute of Standards and Technology (#60NANB23D206), and ComEd Hyperlocal Air Quality Assessment. RHP Risk Management/ComEd/Exelon,
              LLC from 2025 through 2026.  */}
-                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
+{/*}                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '##444444' }}>
                  The grid-based design of the air monitoring network was based on the EPA’s <a href="https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
                  > Network Design Criteria for Ambient Air Quality Monitoring</a> under the Clean Air Act. We  added additional sensors in areas that have experienced environmental injustices more than others, known as
                  <i> Environmental Justice (EJ)</i> communities. Neighborhoods in or near EJ zones have sensors every 1.4 kilometers (0.87 miles), and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles). By placing sensors
@@ -322,7 +373,7 @@ export default function About() {
               <a href="https://publichealth.uic.edu/profiles/serap-erdal/" style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Dr. Serap Erdal </a>
                from UIC led the scientific process of grid development, sensor placement, and quality assurance protocol development, with support from the ComEd Hyperlocal Air
                Quality Assessment by RHP Risk Management/ComEd/Exelon LLC, and Congressional Earmark Grant/National Institute of Standards and Technology (#60NANB23D206).
-                </Grid>
+                </Grid>  */}
              </Grid>
            </ContentContainer>
          </WhiteBackground>
