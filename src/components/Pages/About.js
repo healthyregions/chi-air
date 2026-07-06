@@ -430,10 +430,6 @@ export default function About() {
                  regulatory agencies, survey and focus group participants, and
                  participating Chicago residents!
                 </Grid>
-
-               <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
-                 --- NIST / ComEd / Exelon Logos go here ---
-               </Grid>
              </Grid>
 
            </ContentContainer>
