@@ -3,7 +3,7 @@ import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaExternalLinkAlt} from "react-icons/fa";
-import { GradientBackground, WhiteBackground } from "../VariablePanel/common";
+import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {selectLocale} from "../../store/slices/sensorDataSlice";
 import {useSelector} from "react-redux";
@@ -268,7 +268,7 @@ export default function Team() {
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              <b className={'notranslate'}>Our Air</b>&nbsp;is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
+              <b className={'notranslate'}>{productName}</b>&nbsp;is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
             </TeamBodyText>
           </Grid>
         </ContentContainer>

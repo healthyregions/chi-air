@@ -75,7 +75,7 @@ export const colors = {
   paleyellow: "#F0C016",
 }
 
-// Based on 2026 EPA breakpoints for AQI + PM 2.5
+// Based on 2026 EPA breakpoints for AQI + PM2.5 + NO2
 // See https://aqs.epa.gov/aqsweb/documents/codetables/aqi_breakpoints.html
 export const pm2_5Ranges = [
   { label: 'Good',                            aqi_min: 0, aqi_max: 50,        pm25_min: 0, pm25_max: 9.0,         no2_min: 0, no2_max: 53.0,        color: "rgb(162, 217, 156)", border: "rgb(12, 115, 0)",     colorComponents: [162, 217, 156], borderComponents: [12, 115, 0] },

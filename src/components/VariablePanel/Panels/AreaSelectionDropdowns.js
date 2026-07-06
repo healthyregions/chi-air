@@ -7,7 +7,7 @@ import {
   setSelectedAreas
 } from "../../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {flyToCenter, getBoundaries, LButton, LLabel, useSelectorAsState} from "../common";
+import {flyToCenter, getBoundaries, LButton, LLabel, SGBody, useSelectorAsState} from "../common";
 import {useNavigate} from "react-router-dom";
 import {useCallback, useMemo, useState} from "react";
 import {selectMapParams, setMapParams} from "../../../store/slices/legacyStoreSlice";
@@ -118,6 +118,17 @@ const HomeDropdownEmpty = styled.div`
   line-height: 1.5rem;
 `;
 
+const ASDHeader = styled(SGBody)`
+    padding: .4rem 0 0 .4rem;
+    font-size: 12px;
+    font-weight: ${({ $variant }) => $variant === 'home' ? 400 : 200};
+    font-family: Space Grotesk,serif;
+    color: ${({ $variant }) => $variant === 'home' ? '#444444' : 'inherit'};
+    text-align: ${({ $variant }) => $variant === 'home' ? 'center' : 'left'};
+
+    strong { font-weight: ${({ $variant }) => $variant === 'home' ? 700 : 600}; }
+`;
+
 export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, size, variant = 'default' }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -218,6 +229,14 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   return(
     <>
+      {
+        !isHomeVariant && <Grid container fullWidth>
+          <Grid size>
+            <ASDHeader $variant={variant}><strong>Find</strong> your community, zip code, or ward</ASDHeader>
+          </Grid>
+        </Grid>
+      }
+
       {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? 'column' : 'row'}>
         {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'}>
           <LButton

@@ -8,6 +8,9 @@ import {compressors} from "hyparquet-compressors";
 import {createSearchParams} from "react-router-dom";
 import centroid from "@turf/centroid";
 
+export const platformName = 'Open Air Chicago';
+export const productName = 'Our Air';
+
 // Button with Lexend font
 export const LButton = styled(Button)`
     font-family: Lexend,sans-serif;
@@ -217,5 +220,5 @@ export const locales = [
 
 export const getLocaleLabel = (value) => {
   const stripped = value?.replaceAll('/auto/', '');
-  return locales?.find(l => stripped === l?.value)?.label;
+  return locales?.find(l => stripped === l?.value)?.label || '';
 };

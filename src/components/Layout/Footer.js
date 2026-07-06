@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { colors } from "../../config";
+import {productName} from "../VariablePanel/common";
 
 const FooterContainer = styled.footer`
   display:flex;
@@ -98,7 +99,7 @@ const Footer = (props) => {
   return (
     <FooterContainer>
       <FooterContent>
-        <h6 translate="no">Our Air Chicago</h6>
+        <h6 translate="no" className={'no-translate'}>{productName}</h6>
         <ul>
           <li>
             <Link to="/">Home</Link>

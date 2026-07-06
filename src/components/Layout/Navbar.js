@@ -17,7 +17,7 @@ import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
 import {NavDropdown} from "./NavDropdown";
 import MenuItem from "@mui/material/MenuItem";
-import {getLocaleLabel, locales} from "../VariablePanel/common";
+import {getLocaleLabel, locales, productName} from "../VariablePanel/common";
 
 const NavItems = styled.ul`
   margin-top:.25em;
@@ -133,7 +133,7 @@ export default function Nav({
     dispatch(setLocale(locale));
   };
 
-  const lgScreenFontSize = '20px';
+  const lgScreenFontSize = '24px';
   const xsScreenFontSize = '16px'
   const fontSize = largeScreen ? lgScreenFontSize : xsScreenFontSize;
 
@@ -147,7 +147,7 @@ export default function Nav({
                 <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} />
                 <LButton style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
                 <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }}>
-                  <MenuItem as={LButton} onClick={() => navigate('/map')}>Our Air Map</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/map')}><span className={'notranslate'}>{productName}</span>&nbsp;Map</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
                 </NavDropdown>
                 <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }}>

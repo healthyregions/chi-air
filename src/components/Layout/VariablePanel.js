@@ -222,7 +222,7 @@ const VariablePanel = (props) => {
       <ControlsContainer>
         <h2>Air Quality</h2>
         <span className="data-description">
-          Points on the map show PM 2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
+          Points on the map show PM2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
         </span>
         {/*<AQColorScale></AQColorScale>*/}
         <span className="data-description">
