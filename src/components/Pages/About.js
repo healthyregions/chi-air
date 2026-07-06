@@ -143,24 +143,81 @@ const faqCategories = [
   { id: 'parameters', label: 'Parameters' }
 ];
 
+const ExternalLink = styled.a`
+    text-decoration: none;
+    color: #005899;
+    font-weight: 700;
+`;
+
 const faqs = [
   {
     id: 'map-data-access',
     category: 'map',
     question: "How can I access the data?",
-    answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map), direct download on the City Data Portal, and direct download on the Open Air Clarity Dashboard."
+    answer: <>
+      Explore the Map to explore sensor-specific, community/neighborhood-specific, or city-
+      wide data trends. Data can also be downloaded in a number of ways, including direct download on
+      this website (see 'Download' links on Map), direct download on the{" "}
+      <ExternalLink href="https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data"
+                    target={'_blank'} rel="noreferrer noopener">
+        City Data Portal
+      </ExternalLink>, and direct download on the{" "}
+      <ExternalLink href="https://map.clarity.io/open-air-chicago"
+                    target={'_blank'} rel="noreferrer noopener">
+        {platformName} Clarity Dashboard
+      </ExternalLink>.
+    </>
   },
   {
     id: 'map-colors',
     category: 'map',
     question: "What do the colors on the map mean?",
-    answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application."
+    answer: <>
+      Colors of individual sensor locations correspond to different value bins or groupings
+      of EPA’s Air Quality Index (AQI). The U.S. Air Quality Index (AQI) is EPA's tool for
+      communicating about outdoor air quality and health. The AQI includes six color-coded
+      categories, each corresponding to a range of index values representing a different
+      level of health concern. For example, while AQI value of 50 or below represents good
+      air quality, an AQI value over 300 represents hazardous air quality. To identify the
+      value range and corresponding advisory for each color, use the legend 'key' on the
+      top left part.
+    </>
+  },
+  {
+    id: 'map-data-howtouse',
+    category: 'map',
+    question: "How can I use the data to protect myself from harmful exposures to air pollutants?",
+    answer: <>
+      We highly recommend checking the map regularly and understanding the trends in
+      air quality in your neighborhood. On days when the Air Quality Index (AQI) is
+      unhealthy (i.e., greater than 100), we recommend using our Map as a “Public
+      Health Messaging Tool” and adjust your daily activities to reduce your exposures
+      to air pollutants and associated health risks.
+      <br />
+      <br />
+      Specifically, we recommend adopting one or more of the{" "}
+      <ExternalLink href="https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors"
+                    target={'_blank'} rel="noreferrer noopener">
+        Strategies to Reduce Exposure Outdoors
+      </ExternalLink>
+      {" "}(e.g., staying indoors, adjusting outdoor activities (e.g., running) at time frames when the air quality is healthy, using an N95 mask, etc.)
+    </>
   },
   {
     id: 'protocol-data-source',
     category: 'protocol',
-    question: "Where does this data come from and where is it stored?",
-    answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface. The University of Illinois is engaged in independent quality assurance and quality control of the data."
+    question: "Where does the data come from and where it is stored?",
+    answer: <>
+      The data represent the Clarity Node-S sensor measurements for Fine Particulate Matter (PM2.5)
+      and Nitrogen Dioxide (NO2) of the “Open Air Chicago” network, a co-owned sensor-based air
+      monitoring and air quality assessment project between the University of Illinois at
+      Chicago and the Chicago Department of Public Health. Sensor readings are pulled directly
+      from the Clarity programming interface, cleaned, summarized, and updated in this web mapping
+      application. The data cleaning and data quality assurance and quality control protocols are
+      employed by Clarity (see below for more details). A copy of the data is stored on a U.S.-based
+      web server. Data can be directly downloaded by time period of interest (e.g., hourly, monthly,
+      seasonally) in the 'Details' section of the mapping interface.
+    </>
   },
   {
     id: 'protocol-sensor-owner',
@@ -294,22 +351,20 @@ export default function About() {
                  Health (CDPH), in collaboration with 13 community organizations serving on the city’s
                  advisory board, seven of which were UIC’s official community partners under the UIC
                  grants (CEJN, ASE, SETF, PCR, PERRO, LVEJO, and N4EJ). Please refer to CDPH website to{" "}
-                 <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 <ExternalLink href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
                     target={'_blank'} rel="noreferrer noopener">
                    learn about the “Open Air Chicago” Partner Organizations
-                 </a>.
+                 </ExternalLink>.
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
                  The UIC and UIUC teams are the technical architects of the design of the “Open Air Chicago” air monitoring network. We adopted the technical principles behind EPA’s Network Design Criteria for Ambient Air Quality Monitoring under the
                  Clean Air Act to create a neighborhood scale grid-based design, overlaying the grid-based design
                  on the Environmental Justice (EJ) Index Score map generated by CDPH through a comprehensive
                  stakeholder participatory process in 2023 under the{" "}
-                 <a href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 <ExternalLink href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
                     target={'_blank'} rel="noreferrer noopener">
                    Cumulative Impact Assessment project
-                 </a>. Neighborhoods in or near EJ zones have a grid size of 1.4 km x 1.4 km (i.e., 0.87 miles x 0.87 miles),
+                 </ExternalLink>. Neighborhoods in or near EJ zones have a grid size of 1.4 km x 1.4 km (i.e., 0.87 miles x 0.87 miles),
                  and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles x 0.93 miles). This means that there
                  are sensors across Chicago less than 1 mile from each other in every direction. This design,
                  generating concentrations upwind and downwind of a given location, is particularly advantageous
@@ -324,9 +379,8 @@ export default function About() {
                  quality to community organization staff.
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
-                 <a href="https://publichealth.uic.edu/profiles/serap-erdal/"
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal</a>
+                 <ExternalLink href="https://publichealth.uic.edu/profiles/serap-erdal/"
+                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal</ExternalLink>
                  {" "}from UIC led the scientific and community engagement process of network
                  development and is the principal Investigator of two grants, the National Institute of
                  Standard and Technology (NIST) (i.e., a Congressional Earmark from Senator Tammy Duckworth

@@ -5,6 +5,8 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
+import {useDispatch} from "react-redux";
+import {setSelectedTimeIndex} from "../../store/slices/sensorDataSlice";
 
 
 const getIsoWeekRange = (year, weekNumber) => {
@@ -44,6 +46,7 @@ const shortDateFormat = new Intl.DateTimeFormat("en-US", {
 
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
+  const dispatch = useDispatch();
 
   // Listen for changes to averageType or selectedParameter
   // Reset page number when averageType or selectedParameter changes
@@ -89,10 +92,22 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
 
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
-  const itemsCount = metricData?.length;
-  const numPages = Math.ceil(itemsCount / pageSize);
+  const numItems = metricData?.length;
+  const numPages = Math.ceil(numItems / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
+  const isLastPage = useMemo(() => pageEnd === numItems, [numItems, pageEnd]);
+  const numItemsOnLastPage = useMemo(() => numItems % pageSize, [numItems, pageSize]);
+
+  const onBarClick = (d) => {
+    const size = context === 'historical' ? pageSize : 24;
+    const negativeOffset = d?.dataIndex;
+    const lastPageOffset = (numItemsOnLastPage || (size-1)) - negativeOffset;
+    const offset = isLastPage ? lastPageOffset : (size-1) - negativeOffset;
+    const index = pageStart + offset;
+    console.log('Selected:', index);
+    dispatch(setSelectedTimeIndex({ index }));
+  };
 
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
@@ -243,7 +258,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} margin={{...margin, top:20, }} />
+          <BarChart {...chartSettings} onItemClick={(event, d) => onBarClick(d)} margin={{...margin, top:20, }} />
         </Grid>}
 
         {showScroll && <Grid size={1}>

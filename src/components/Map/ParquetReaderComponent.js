@@ -8,6 +8,7 @@ import {
   setMetricData,
   selectMetricData,
   setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
+  selectSelectedTimeIndex,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
@@ -29,6 +30,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const breadcrumbs = useSelector(selectBreadcrumbs);
   const metricIndex = useSelector(selectMetricIndex);
   const averageType = useSelector(selectAverageType);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   // Awareness of current dataset
   // TODO: Only fetch new data if we don't already have it?
@@ -105,7 +107,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     });
   }, [dispatch, clickedSensor, selectedParameter]);
 
-  // Fetch latest row(s) of PM2.5 when Details panel opens
+  // Fetch latest row(s) for selected parameter when Details panel opens
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
     if (!clickedSensor || currentPage !== 'Details') {
@@ -127,6 +129,21 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       });
     });
   }, [dispatch, clickedSensor, breadcrumbs]);
+
+  useEffect(() => {
+    // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      rowStart: selectedTimeIndex,
+      rowEnd: selectedTimeIndex+1,
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching ${selectedParameter} map data for index=${selectedTimeIndex}: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, locations, selectedParameter, selectedTimeIndex]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
