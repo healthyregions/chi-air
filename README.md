@@ -1,4 +1,4 @@
-# Our Air: Built for & with Chicago 
+# Our Air: A Chicago Mapping Application
 ### Building on the Open Air Chicago Sensor Network
 
 [Our Air](#) is a Chicago mapping application that serves as a vital bridge between air quality data, scientific exploration, community empowerment, and advocacy, making city-wide air quality metrics legible for all Chicago residents. 
