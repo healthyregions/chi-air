@@ -1,6 +1,9 @@
 # Our Air: A Chicago Mapping Application
 ### Building on the Open Air Chicago Sensor Network
 
+![Our Air Homepage](public/img/homepage.png)
+
+## About
 [Our Air](#) is a Chicago mapping application that serves as a vital bridge between air quality data, scientific exploration, community empowerment, and advocacy, making city-wide air quality metrics legible for all Chicago residents. 
 
 We present and build on the largest [sensor-based air monitoring network](https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html) in the U.S. (and the second largest in the world) with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. 
@@ -11,8 +14,6 @@ Read more about the projects and people involved at our [About](#) Page.
 
 ## Citation
 Upon its first official release, the formal citation of the **Open Air** project will be managed by *Zenodo*. Check back for updates, with the final launch planned by the end of July 2026.
-
-![Our Air Homepage](public/img/homepage.png)
 
 ## Technical Development
 
