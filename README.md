@@ -16,6 +16,8 @@ Upon its first official release, the formal citation of the **Open Air** project
 
 **Open Air**  is an open source project, with its website developed by the [Healthy Regions & Policies Lab (HEROP)](https://healthyregions.org/) at the Department of Geography & GIScience at the University of Illinois at Urbana-Champaign in collaboration with the Professor Erdal, Perksy, and Wang at the Department of Public Health at the University of Illinois at Chicago.
 
-Sara Lambert (UIUC, NCSA) was the lead software engineer in this development, with Adam Cox (former UIUC) and team members and HEROP, overseen by Marynia Kolak. The Chi Air Application is a fork of [ChiVes](chichives.com), another open source project managed by the HEROP team. 
+Sara Lambert (UIUC, NCSA) was the lead software engineer in this development, with Adam Cox (former UIUC) and team members and HEROP, overseen by Marynia Kolak. 
+
+The Chi Air Application is a fork of [ChiVes](chichives.com), another open source project managed by the HEROP team. 
 
 See the development [docs](./docs) for how to build and run this application locally.
