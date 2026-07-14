@@ -14,9 +14,9 @@ Upon its first official release, the formal citation of the **Open Air** project
 
 ## Technical Development
 
-**Open Air**  is an open source project, with its website developed by the [Healthy Regions & Policies Lab (HEROP)](https://healthyregions.org/) at the Department of Geography & GIScience at the University of Illinois at Urbana-Champaign in collaboration with the Professor Erdal, Perksy, and Wang at the Department of Public Health at the University of Illinois at Chicago.
+**Open Air**  is an open source project, with its website development led by the [Healthy Regions & Policies Lab (HEROP)](https://healthyregions.org/) at the Department of Geography & GIScience at the University of Illinois at Urbana-Champaign.
 
-Sara Lambert (UIUC, NCSA) was the lead software engineer in this development, with infrastructure development by Adam Cox (former UIUC) and support by multiple team members at HEROP, overseen by M. Kolak (UIUC). Design was led by Shubham Kumar (UIUC). We are grateful to the UIC and multiple community teams and residents who co-designed and co-developed at all stages of implementation, helping make this vision a reality.
+Sara Lambert (UIUC, NCSA) was the lead software engineer in this development, with infrastructure development by Adam Cox (former UIUC) and support by multiple team members at HEROP, overseen by M. Kolak (UIUC). Design was led by Shubham Kumar (UIUC). We are grateful to  UIC and multiple community teams and residents who co-designed and co-developed at all stages of implementation, helping make this vision a reality. We are thankful for the Project PI, Prof Serap Erdal (UIC), for their constant support and integration of our team into the wider Chicago "sensing" space, as wel las Drs Persky, Wang, and all the UIC team collaborators.
 
 The Chi Air Application is a fork of [ChiVes](chichives.com), another open source project managed by the HEROP team. 
 
