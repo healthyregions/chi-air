@@ -9,7 +9,7 @@ We will continue to refine and add to the dashboard with improvements and more r
 
 Read more about the projects and people involved at our [About](#) Page.
 
-![Our Air Homepage](img/homepage.png)
+![Our Air Homepage](public/img/homepage.png)
 
 ## Citation
 Upon its first official release, the formal citation of the **Open Air** project will be managed by *Zenodo*. Check back for updates, with the final launch planned by the end of July 2026.
