@@ -78,9 +78,22 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       rowEnd: 2,
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
-
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, locations, selectedParameter]);
+
+  useEffect(() => {
+    // Fetch initial timestamp for the historical slider
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date']
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching historical timestamps: ${endTime - startTime}ms`);
     });
   }, [dispatch, locations, selectedParameter]);
 

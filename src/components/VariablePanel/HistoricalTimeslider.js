@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
   selectMetricData,
-  selectMetricIndex,
+  selectMetricIndex, selectSelectedTimeIndex, setSelectedTimeIndex,
 } from "../../store/slices/sensorDataSlice";
 import MenuItem from "@mui/material/MenuItem";
 import {Slider} from "@mui/material";
@@ -152,51 +152,104 @@ export const HistoricalTimeslider = () => {
   const handleOpenClose = () => dispatch(setPanelState({ history: !panelState.history }));
   const [value, setValue] = useState(30);
 
-  const handleChange = (event, newValue) => { setValue(newValue); };
-
+  const fromIso = (d) => new Date(d.split(' ').join('T') + 'Z')
   const getStartDate = (endDate: Date, scale: string): Date => {
     const startDate = new Date(endDate);
     if (scale === 'day') {
       // show "Last Day" => start = 1 day ago ~ end - 1 day
       startDate.setDate(endDate.getDate() - 1);
+      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
+      return fromIso(firstDataPoint?.date);
     } else if (scale === 'week') {
       // show "Last Week" => start = 7 days ago ~ end - 7 days
       startDate.setDate(endDate.getDate() - 7);
+      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
+      return fromIso(firstDataPoint?.date);
     } else if (scale === 'month') {
-      // show "Last Month" => start = 30 days ago ~ end - 30 days
-      startDate.setDate(endDate.getDate() - 30);
+      // show "Last Month" => start = 1 month ago ~ end - 1 month
+      startDate.setMonth(endDate.getMonth() - 1);
+      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
+      return fromIso(firstDataPoint?.date);
     } else if (scale === 'season') {
-      // show "Last Season" => start = 3 months ago ~ end - 90 days
-      startDate.setDate(endDate.getDate() - 90);
+      // show "Last Season" => start = 3 months ago ~ end - 3 months
+      startDate.setMonth(endDate.getMonth() - 3);
+      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
+      return fromIso(firstDataPoint?.date);
     } else if (scale === 'year') {
-      // show "Last Year" => start = 1 year ago ~ end - 365 days
-      startDate.setDate(endDate.getDate() - 365);
+      // show "Last Year" => start = 1 year ago ~ end - 1 year
+      startDate.setFullYear(endDate.getFullYear() - 1);
+      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
+      return fromIso(firstDataPoint?.date);
+    } else if (scale === 'all') {
+      return new Date(metricData?.filter(m => m?.type === 'hour')?.reverse()?.find(() => true)?.date.split(' ').join('T') + 'Z');
     }
     return startDate;
   }
 
   const historicalSlice = useMemo(() => {
-    const endDate = new Date(metricData?.[0]?.date);
+    const hourlyData = metricData?.filter(m => m?.type === 'hour')
+    const endDateIso = hourlyData?.find(() => true)?.date;
+    const endDate = new Date(endDateIso);
     const startDate = getStartDate(endDate, granularity);
+    return hourlyData?.filter(m =>
+      new Date(m?.date?.split(' ').join('T') + 'Z')?.getTime() > startDate?.getTime() && endDate?.getTime() < new Date(m?.date?.split(' ').join('T') + 'Z')?.getTime());
+  }, [metricData, granularity, getStartDate]);
 
-    const filtered = metricData?.filter((m) => m?.date > startDate?.toISOString());
-    console.log(filtered);
-    return filtered;
-  }, [metricData, granularity]);
+
+  function valuetext(value, length) {
+    const offset = length - value;
+    const isoDate = metricData?.filter(m => m?.type === 'hour')?.[offset]?.date?.split(' ').join('T') + 'Z';
+    return new Date(isoDate)?.toLocaleTimeString('en-US', { month: 'short', day: 'numeric', hour: 'numeric' });
+  }
 
   const [sliderStart: Date, sliderEnd: Date] = useMemo(() => {
     // Select dataset based on granularity
     // Filter by time, unless user chooses "all"
-    const data = granularity === 'all' ? metricData : historicalSlice;
+    //const data = granularity === 'all' ? metricData : historicalSlice;
 
     // Determine start + end dates based on our historical slice
-    const endDate = new Date(data?.[0]?.date);
+    //const endDate = new Date(data?.[0]?.date.split(' ').join('T') + 'Z');
+    const endDateIso = metricData?.filter(m => m?.type === 'hour')?.find(() => true)?.date.split(' ').join('T') + 'Z';
+    const endDate = new Date(endDateIso);
+
     const end = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const startDate = new Date(data?.[data?.length - 1]?.date);
+    //const startDate = new Date(data?.[data?.length - 1]?.date.split(' ').join('T') + 'Z');
+    const startDate = getStartDate(endDate, granularity);
     const start = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     return [start, end];
-  }, [granularity, metricData, historicalSlice]);
+  }, [granularity, getStartDate]);
+
+  const numTicks = () => {
+    const now = new Date();
+    if (granularity === 'day') {
+      const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > dayAgo)?.length;
+    } else if (granularity === 'week') {
+      const weekAgo = new Date()?.setTime(now?.getTime() - 7*24*60*60*1000);  // 7 days
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > weekAgo)?.length;
+    } else if (granularity === 'month') {
+      const monthAgo = new Date()?.setTime(now?.getTime() - 30*24*60*60*1000);  // 30 days
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > monthAgo)?.length;
+    } else if (granularity === 'season') {
+      const threeMonthsAgo = new Date()?.setTime(now?.getTime() - 3*30*24*60*60*1000);  // 90 days
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > threeMonthsAgo)?.length;
+    } else if (granularity === 'year') {
+      const oneYearAgo = new Date()?.setTime(now?.getTime() - 365*24*60*60*1000);  // 24 hours
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > oneYearAgo)?.length;
+    } else {
+      return metricData?.filter(m => m?.type === 'hour')?.length;
+    }
+  }
+
+  const handleChange = (event, newValue) => { setValue(newValue); };
+  const handleCommit = (event, finalValue) => {
+    const index = numTicks() - finalValue;
+    console.log("Triggered only when mouse is released:", index);
+    // Call your API or heavy logic here
+
+    dispatch(setSelectedTimeIndex({ index }));
+  };
 
   return (
     <TimesliderContainer $large={largeScreen} $open={panelState.history}>
@@ -204,18 +257,18 @@ export const HistoricalTimeslider = () => {
         <Grid size={{ xs: 6 }} style={{ fontFamily: 'Lexend', fontWeight: 400, fontSize: '18px', color: 'rgba(68, 68, 68, 1)' }}>
           <HistoryIcon /> Historical Trends
         </Grid>
-        <Grid size={{ xs:4 }}>
+        <Grid size={{ xs: 5 }}>
           <FormControl id="avgTypeSelectHistorical" variant="outlined" fullWidth>
             <Select
               variant={"outlined"}
               value={granularity}
               onChange={(e) => setGranularity(e.target.value)}
             >
-              <MenuItem value="day" disabled={metricIndex.day <= 0}>Last Day</MenuItem>
-              <MenuItem value="week" disabled={metricIndex.week <= 0}>Last Week</MenuItem>
-              <MenuItem value="month" disabled={metricIndex.month <= 0}>Last Month</MenuItem>
-              <MenuItem value="season" disabled={metricIndex.season <= 0}>Last Season</MenuItem>
-              <MenuItem value="year" disabled={metricIndex.year <= 0}>Last Year</MenuItem>
+              <MenuItem value="day" disabled={metricIndex.day <= 0}>Past Day</MenuItem>
+              <MenuItem value="week" disabled={metricIndex.week <= 0}>Past Week</MenuItem>
+              <MenuItem value="month" disabled={metricIndex.month <= 0}>Past Month</MenuItem>
+              <MenuItem value="season" disabled={metricIndex.season <= 0}>Past 3 Months</MenuItem>
+              <MenuItem value="year" disabled={metricIndex.year <= 0}>Past Year</MenuItem>
               <MenuItem value="all">All Time</MenuItem>
             </Select>
           </FormControl>
@@ -225,13 +278,53 @@ export const HistoricalTimeslider = () => {
       <Grid marginTop={'1.5rem'}>
         <Grid container alignItems={'center'}>
           <Grid size={{ xs: 2 }}>
-            <SliderLabel>{sliderStart}</SliderLabel>
+            { granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderStart}</SliderLabel> }
+            { granularity === 'year' && <SliderLabel>{sliderStart}</SliderLabel> }
+            { granularity === 'all' && <SliderLabel>{sliderStart}</SliderLabel> }
           </Grid>
           <Grid size={{ xs: 8 }}>
-            <Slider aria-label="History" value={value} onChange={handleChange} />
+            <Slider aria-label="History"
+                    // Value format & display
+                    getAriaValueText={valuetext}
+                    valueLabelFormat={(value) => valuetext(value, numTicks())}
+                    valueLabelDisplay="on"
+                    value={value}
+
+                    // Numerical behavior
+                    shiftStep={8}
+                    min={0}
+                    max={numTicks()}
+                    onChange={handleChange}
+                    onChangeCommitted={handleCommit}
+
+                    // Custom styling for valueLabel / tooltip
+                    track={false}
+                    sx={{
+                      '& .MuiSlider-rail': {
+                        color: '#41B6E6'
+                      },
+                      '& .MuiSlider-thumb': {
+                        color: '#005899'
+                      },
+                      // Target the value label container
+                      '& .MuiSlider-valueLabel': {
+                        fontSize: 12,
+                        fontWeight: 'normal',
+                        fontFamily: 'Space Grotesk',
+                        top: 50, // Adjust distance from thumb
+                        backgroundColor: '#00000000', // transparent background
+                        color: '#41B6E6', // Change text color
+                        '&::before': {
+                          display: 'none', // Hides the default little arrow bubble point
+                        },
+                      },
+                    }}
+            />
           </Grid>
           <Grid size={{ xs: 2 }} textAlign={'end'}>
-            <SliderLabel>{sliderEnd}</SliderLabel>
+            { granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }
+            { granularity === 'year' && <SliderLabel>{sliderEnd}</SliderLabel> }
+            { granularity === 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }
           </Grid>
         </Grid>
       </Grid>
