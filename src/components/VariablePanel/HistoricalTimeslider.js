@@ -10,11 +10,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
   selectMetricData,
-  selectMetricIndex, selectSelectedTimeIndex, setSelectedTimeIndex,
+  selectMetricIndex,
+  setSelectedTimeIndex,
 } from "../../store/slices/sensorDataSlice";
 import MenuItem from "@mui/material/MenuItem";
 import {Slider} from "@mui/material";
-import {useMemo, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -153,48 +154,38 @@ export const HistoricalTimeslider = () => {
   const [value, setValue] = useState(30);
 
   const fromIso = (d) => new Date(d.split(' ').join('T') + 'Z')
-  const getStartDate = (endDate: Date, scale: string): Date => {
+  const getStartDate = useCallback((endDate: Date): Date => {
     const startDate = new Date(endDate);
-    if (scale === 'day') {
+    if (granularity === 'day') {
       // show "Last Day" => start = 1 day ago ~ end - 1 day
       startDate.setDate(endDate.getDate() - 1);
       const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
       return fromIso(firstDataPoint?.date);
-    } else if (scale === 'week') {
+    } else if (granularity === 'week') {
       // show "Last Week" => start = 7 days ago ~ end - 7 days
       startDate.setDate(endDate.getDate() - 7);
       const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
       return fromIso(firstDataPoint?.date);
-    } else if (scale === 'month') {
+    } else if (granularity === 'month') {
       // show "Last Month" => start = 1 month ago ~ end - 1 month
       startDate.setMonth(endDate.getMonth() - 1);
       const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
       return fromIso(firstDataPoint?.date);
-    } else if (scale === 'season') {
+    } else if (granularity === 'season') {
       // show "Last Season" => start = 3 months ago ~ end - 3 months
       startDate.setMonth(endDate.getMonth() - 3);
       const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
       return fromIso(firstDataPoint?.date);
-    } else if (scale === 'year') {
+    } else if (granularity === 'year') {
       // show "Last Year" => start = 1 year ago ~ end - 1 year
       startDate.setFullYear(endDate.getFullYear() - 1);
       const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
       return fromIso(firstDataPoint?.date);
-    } else if (scale === 'all') {
+    } else if (granularity === 'all') {
       return new Date(metricData?.filter(m => m?.type === 'hour')?.reverse()?.find(() => true)?.date.split(' ').join('T') + 'Z');
     }
     return startDate;
-  }
-
-  const historicalSlice = useMemo(() => {
-    const hourlyData = metricData?.filter(m => m?.type === 'hour')
-    const endDateIso = hourlyData?.find(() => true)?.date;
-    const endDate = fromIso(endDateIso);
-    const startDate = getStartDate(endDate, granularity);
-    return hourlyData?.filter(m =>
-      new Date(m?.date?.split(' ').join('T') + 'Z')?.getTime() > startDate?.getTime() && endDate?.getTime() < new Date(m?.date?.split(' ').join('T') + 'Z')?.getTime());
-  }, [metricData, granularity, getStartDate]);
-
+  }, [metricData, granularity]);
 
   function valuetext(value, length) {
     const offset = length - value;
@@ -214,11 +205,11 @@ export const HistoricalTimeslider = () => {
 
     const end = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     //const startDate = new Date(data?.[data?.length - 1]?.date.split(' ').join('T') + 'Z');
-    const startDate = getStartDate(endDate, granularity);
+    const startDate = getStartDate(endDate);
     const start = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     return [start, end];
-  }, [granularity, getStartDate]);
+  }, [getStartDate, metricData]);
 
   const numTicks = () => {
     const now = new Date();
