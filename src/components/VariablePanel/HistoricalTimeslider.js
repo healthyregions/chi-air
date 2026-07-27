@@ -9,14 +9,12 @@ import {FaHistory} from "react-icons/fa";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
-  selectAverageType, selectMetricData,
+  selectMetricData,
   selectMetricIndex,
-  selectSelectedTimeIndex, selectSensorParameter,
-  setAverageType
 } from "../../store/slices/sensorDataSlice";
 import MenuItem from "@mui/material/MenuItem";
 import {Slider} from "@mui/material";
-import {useCallback, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -149,30 +147,28 @@ export const HistoricalTimeslider = () => {
 
   // Find data points when granularity changes
   const metricIndex = useSelector(selectMetricIndex);
-  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
   const metricData = useSelector(selectMetricData);
-  const selectedParameter = useSelector(selectSensorParameter);
 
   const handleOpenClose = () => dispatch(setPanelState({ history: !panelState.history }));
   const [value, setValue] = useState(30);
 
   const handleChange = (event, newValue) => { setValue(newValue); };
 
-  const getStartDate = (endDate: Date): Date => {
+  const getStartDate = (endDate: Date, scale: string): Date => {
     const startDate = new Date(endDate);
-    if (granularity === 'day') {
+    if (scale === 'day') {
       // show "Last Day" => start = 1 day ago ~ end - 1 day
       startDate.setDate(endDate.getDate() - 1);
-    } else if (granularity === 'week') {
+    } else if (scale === 'week') {
       // show "Last Week" => start = 7 days ago ~ end - 7 days
       startDate.setDate(endDate.getDate() - 7);
-    } else if (granularity === 'month') {
+    } else if (scale === 'month') {
       // show "Last Month" => start = 30 days ago ~ end - 30 days
       startDate.setDate(endDate.getDate() - 30);
-    } else if (granularity === 'season') {
+    } else if (scale === 'season') {
       // show "Last Season" => start = 3 months ago ~ end - 90 days
       startDate.setDate(endDate.getDate() - 90);
-    } else if (granularity === 'year') {
+    } else if (scale === 'year') {
       // show "Last Year" => start = 1 year ago ~ end - 365 days
       startDate.setDate(endDate.getDate() - 365);
     }
@@ -181,12 +177,12 @@ export const HistoricalTimeslider = () => {
 
   const historicalSlice = useMemo(() => {
     const endDate = new Date(metricData?.[0]?.date);
-    const startDate = getStartDate(endDate);
+    const startDate = getStartDate(endDate, granularity);
 
     const filtered = metricData?.filter((m) => m?.date > startDate?.toISOString());
     console.log(filtered);
     return filtered;
-  }, [metricData, getStartDate]);
+  }, [metricData, granularity]);
 
   const [sliderStart: Date, sliderEnd: Date] = useMemo(() => {
     // Select dataset based on granularity
