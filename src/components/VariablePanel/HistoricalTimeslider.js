@@ -189,7 +189,7 @@ export const HistoricalTimeslider = () => {
   const historicalSlice = useMemo(() => {
     const hourlyData = metricData?.filter(m => m?.type === 'hour')
     const endDateIso = hourlyData?.find(() => true)?.date;
-    const endDate = new Date(endDateIso);
+    const endDate = fromIso(endDateIso);
     const startDate = getStartDate(endDate, granularity);
     return hourlyData?.filter(m =>
       new Date(m?.date?.split(' ').join('T') + 'Z')?.getTime() > startDate?.getTime() && endDate?.getTime() < new Date(m?.date?.split(' ').join('T') + 'Z')?.getTime());
@@ -223,11 +223,13 @@ export const HistoricalTimeslider = () => {
   const numTicks = () => {
     const now = new Date();
     if (granularity === 'day') {
-      const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > dayAgo)?.length;
+      return 24;
+      //const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
+      //return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > dayAgo)?.length;
     } else if (granularity === 'week') {
-      const weekAgo = new Date()?.setTime(now?.getTime() - 7*24*60*60*1000);  // 7 days
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > weekAgo)?.length;
+      return 7*24;
+      //const weekAgo = new Date()?.setTime(now?.getTime() - 7*24*60*60*1000);  // 7 days
+      //return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > weekAgo)?.length;
     } else if (granularity === 'month') {
       const monthAgo = new Date()?.setTime(now?.getTime() - 30*24*60*60*1000);  // 30 days
       return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > monthAgo)?.length;
@@ -247,6 +249,8 @@ export const HistoricalTimeslider = () => {
     const index = numTicks() - finalValue;
     console.log("Triggered only when mouse is released:", index);
     // Call your API or heavy logic here
+
+    console.log(`Now showing on the map: ${index}`);
 
     dispatch(setSelectedTimeIndex({ index }));
   };
