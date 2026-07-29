@@ -5,6 +5,8 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
+import {useDispatch, useSelector} from "react-redux";
+import {selectClickedSensor, selectMetricIndex, setSelectedTimeIndex} from "../../store/slices/sensorDataSlice";
 
 
 const getIsoWeekRange = (year, weekNumber) => {
@@ -44,11 +46,15 @@ const shortDateFormat = new Intl.DateTimeFormat("en-US", {
 
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
+  const dispatch = useDispatch();
+  const metricIndex = useSelector(selectMetricIndex);
+  const clickedSensor = useSelector(selectClickedSensor);
 
   // Listen for changes to averageType or selectedParameter
   // Reset page number when averageType or selectedParameter changes
   const prevType = useRef();
   const prevParam = useRef();
+  const prevSensor = useRef();
   useEffect(() => {
     if (prevType.current !== averageType) {
       prevType.current = averageType;
@@ -58,7 +64,11 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       prevParam.current = selectedParameter;
       setPage(0);
     }
-  }, [averageType, selectedParameter]);
+    if (prevSensor.current !== clickedSensor) {
+      prevSensor.current = clickedSensor;
+      setPage(0);
+    }
+  }, [averageType, selectedParameter, clickedSensor]);
 
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
@@ -76,23 +86,38 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   }
 
   const getMaxValue = () => {
-    if (selectedParameter === 'nowcast_aqi') {
-      return 500;
-    } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25')  {
-      return 500;
-    } else if (selectedParameter === 'clarity_no2') {
-      return 1500;
-    } else {
-      return `ERR`;
-    }
+    // For all metrics on the current page, compute and return the max numerical value
+    return metricData
+      ?.slice(pageStart, pageEnd)
+      ?.reduce((max, m) => {
+        const value =  m?.value || m?.[selectedParameter];
+        return value > max ? value : max;
+      }, -Infinity);
   };
 
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
-  const itemsCount = metricData?.length;
-  const numPages = Math.ceil(itemsCount / pageSize);
+  const numItems = metricData?.length;
+  const numPages = Math.ceil(numItems / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
+  const isLastPage = useMemo(() => pageEnd === numItems, [numItems, pageEnd]);
+  const numItemsOnLastPage = useMemo(() => numItems % pageSize, [numItems, pageSize]);
+
+  const onBarClick = (d) => {
+    const size = context === 'historical' ? pageSize : 24;
+    const negativeOffset = d?.dataIndex;
+    const lastPageOffset = (numItemsOnLastPage || (size-1)) - negativeOffset;
+    const offset = isLastPage ? lastPageOffset : (size-1) - negativeOffset;
+
+    // Now include metricIndex (to support everything but averageType=day)
+    const averageTypeOffset = pageStart + offset;
+    const averageTypeStart = metricIndex[averageType];
+    const index = averageTypeStart + averageTypeOffset
+    console.log('Selected:', index);
+
+    dispatch(setSelectedTimeIndex({ index }));
+  };
 
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
@@ -120,7 +145,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       disableTicks: true,
       position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
-      max: getMaxValue(),
+      max: getMaxValue() + 100,
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
@@ -243,7 +268,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} margin={{...margin, top:20, }} />
+          <BarChart {...chartSettings} onItemClick={(event, d) => onBarClick(d)} margin={{...margin, top:20, }} />
         </Grid>}
 
         {showScroll && <Grid size={1}>

@@ -35,7 +35,7 @@ import {
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
   selectClickedSensor, selectSelectedAreas,
-  selectSelectedSensors,
+  selectSelectedSensors, selectSelectedTimeIndex,
   selectSensorGeojsonData, selectSensorParameter,
   setClickedSensor
 } from "../../store/slices/sensorDataSlice";
@@ -186,6 +186,7 @@ const NavInlineButton = styled.button`
 
 function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const lon = searchParams.get('lon');
@@ -308,7 +309,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.[selectedTimeIndex]?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [200, 200, 200];
@@ -319,7 +320,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
-    opacity: selectedSensors?.length > 0 ? 0.15 : .85,
+    opacity: selectedSensors?.length > 0 ? 0.2 : .4,
     getPointRadius: 400,
     getLineWidth: 35,
     getLineColor: (feature) => {
@@ -328,7 +329,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.[selectedTimeIndex]?.value;
       if (isSensorOffline(latest)) {
         return [229, 238, 245];
         //return [68, 68, 68];
@@ -373,7 +374,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.[selectedTimeIndex]?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [100, 100, 100];
@@ -384,7 +385,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
-    opacity: 0.85,
+    opacity: 0.2,
     getPointRadius: 400,
     getLineWidth: 35,
     getLineColor: (feature) => {
@@ -393,7 +394,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.[selectedTimeIndex]?.value;
       if (isSensorOffline(latest)) {
         //return [229, 238, 245];
         //return [68, 68, 68];
@@ -441,7 +442,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.[selectedTimeIndex]?.value;
       if (isSensorOffline(latest)) {
       //return [79, 143, 197];
         return [100, 100, 100];
@@ -452,7 +453,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
-    opacity: 0.85,
+    opacity: 0.2,
     getPointRadius: 400,
     getLineWidth: 35,
     getLineColor: (feature) => {
@@ -462,7 +463,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [229, 238, 245];
       }
 
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.[selectedTimeIndex]?.value;
       if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
         //return [229, 238, 245];
         //return [68, 68, 68];
@@ -488,7 +489,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins]);
+  ], [dispatch, selectedTimeIndex, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins]);
 
   useEffect(() => {
     setViewStateFn(setViewState);
