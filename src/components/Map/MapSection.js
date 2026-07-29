@@ -615,13 +615,6 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     }
   }, [handlePanMap]);
 
-  const REDLINING_COLOR_SCALE = {
-    A: [115, 169, 77],
-    B: [52, 172, 198],
-    C: [219, 207, 0],
-    D: [226, 77, 90],
-  };
-
   const COLOR_SCALE = useCallback((x) =>
     scaleColor(x, mapParams.bins, mapParams.colorScale), [mapParams.colorScale, mapParams.bins]);
 
@@ -660,6 +653,12 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
           ]
         );
       case variableName.includes("redlining"):
+        const REDLINING_COLOR_SCALE = {
+          A: [115, 169, 77],
+          B: [52, 172, 198],
+          C: [219, 207, 0],
+          D: [226, 77, 90],
+        };
         return (
           REDLINING_COLOR_SCALE[
             feature.properties["primary_grade_4levels"]
@@ -668,7 +667,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       default:
         return color;
     }
-  }, [DISPLACEMENT_COLOR_SCALE, REDLINING_COLOR_SCALE, mapParams.variableName]);
+  }, [DISPLACEMENT_COLOR_SCALE, mapParams.variableName]);
 
   const baseLayers = useMemo(() => ([
     new GeoJsonLayer({
