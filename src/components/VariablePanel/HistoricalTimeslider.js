@@ -153,7 +153,7 @@ export const HistoricalTimeslider = () => {
   const handleOpenClose = () => dispatch(setPanelState({ history: !panelState.history }));
   const [value, setValue] = useState(30);
 
-  const fromIso = (d) => new Date(d.split(' ').join('T') + 'Z')
+  const fromIso = (d) => new Date(d?.split(' ').join('T') + 'Z');
   const getStartDate = useCallback((endDate: Date): Date => {
     const startDate = new Date(endDate);
     if (granularity === 'day') {
