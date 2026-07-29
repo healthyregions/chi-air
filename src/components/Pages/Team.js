@@ -41,7 +41,7 @@ const TeamHead1Text = styled(Grid)`
     margin-bottom: 1rem;
 `;
 
-const a = styled.a`
+const StyledAnchorLink = styled.a`
     color: #41b6e7;
     font-size: 20px;
     font-style: normal;
@@ -151,7 +151,7 @@ const coreteam = [
     description: 'Sr. Engineer, UIUC',
   },
   {
-    photo: '/img/team/x.png',
+    photo: '/img/team/person.png',
     name: 'Jocelyn Vazquez-Gomez',
     description: 'Park Organizer, LVEJO',
   }
@@ -164,7 +164,7 @@ const students = [
     description: 'Research Assistant, UIC',
   },
   {
-    photo: '/img/team/XX.png',
+    photo: '/img/team/person.png',
     name: 'Mallikarjun Bhansoor',
     description: 'Research Assistant, UIUC',
   },
@@ -334,7 +334,7 @@ export default function Team() {
                       </TeamHead1Text>
                       <img src="/img/team/uiuc.png" alt={''} style={{ marginRight: '64px' }} />
                   </Grid>
-                </Grid>            
+                </Grid>
           </CategorySection>
 
 
@@ -351,10 +351,10 @@ export default function Team() {
 
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              The Chicago Air Quality Program led by UIC was guided by the <b>Advisory Board</b>, 
-              including the following community organizations: Alliance of the Southeast, 
+              The Chicago Air Quality Program led by UIC was guided by the <b>Advisory Board</b>,
+              including the following community organizations: Alliance of the Southeast,
               Chicago Environment Justice Network, Communities United, Grow Greater Englewood,
-              Little Village Environmental Justice Organization, N4EJ, One Northside, Openlands, 
+              Little Village Environmental Justice Organization, N4EJ, One Northside, Openlands,
               People for Commnity Recovery, P.E.R.R.O., Southeast Environmental Task Force,
               the Southwest Collective, and Westside Cultural Alliance.
 
@@ -367,13 +367,13 @@ export default function Team() {
                 <Grid container spacing={10}>
                   <Grid size={{ xs: 12, md: 7 }}>
                       <TeamBodyText>
-                        The OpenAir mapping platform was developed by the Healthy Regions & Policies Lab at the University of Illinois, 
-                        directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers, 
+                        The OpenAir mapping platform was developed by the Healthy Regions & Policies Lab at the University of Illinois,
+                        directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
                         and dozens of Chicagoland contributors.
                       </TeamBodyText>
                   </Grid>
                   <Grid size={{ xs: 12, md: 5 }} container spacing={5}>
-                    <a href="https://healthyregions.org/"><img src="/img/team/herop.png" alt={''} height={90} /></a>
+                    <StyledAnchorLink href="https://healthyregions.org/"><img src="/img/team/herop.png" alt={''} height={90} /></StyledAnchorLink>
                     <img src="/img/team/i.png" alt={''} height={90} />
                     <img src="/img/team/CAMP.CIRC.SM.RGB.png" alt={''} height={90} />
                   </Grid>
@@ -399,8 +399,8 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support, <b className={'notranslate'}>Camrin Gartett</b> and 
-              <b className={'notranslate'}> Kamaria Barronville</b> for their invaluable science communications expertise, and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services. 
+              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support, <b className={'notranslate'}>Camrin Gartett</b> and
+              <b className={'notranslate'}> Kamaria Barronville</b> for their invaluable science communications expertise, and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services.
               Finally, we are grateful to the <i>Pilsen Arts & Community House</i> for hosting the live co-design session.
 
             </TeamBodyText>
