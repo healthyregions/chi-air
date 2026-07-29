@@ -21,6 +21,33 @@ const TeamBodyText = styled(Grid)`
     text-align: right;
 `;
 
+const TeamHeadText = styled(Grid)`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 1rem;
+`;
+
+const TeamHead1Text = styled(Grid)`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 1rem;
+`;
+
+const a = styled.a`
+    color: #41b6e7;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+`;
+
 const ContentContainer = styled.div`
     max-width: 1200px;
     margin: 0 auto;
@@ -71,14 +98,14 @@ const leadership = [
     description: 'Principal Investigator, University of Illinois Chicago',
   },
   {
-    photo: '/img/team/kolak.png',
-    name: 'Marynia Kolak, Ph.D.',
-    description: 'Co-Investigator, University of Illinois Urbana-Champaign',
-  },
-  {
     photo: '/img/team/persky.png',
     name: 'Victoria Persky, M.D.',
     description: 'Co-Investigator, University of Illinois Chicago',
+  },
+  {
+    photo: '/img/team/kolak.png',
+    name: 'Marynia Kolak, Ph.D.',
+    description: 'Co-Investigator, University of Illinois Urbana-Champaign',
   },
   {
     photo: '/img/team/wang.png',
@@ -294,9 +321,22 @@ export default function Team() {
 
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Chicago Air Quality Program Leadership</CategoryTitle>
-            <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
-            <img src="/img/team/uiuc.png" alt={''} />
+                <Grid container spacing={5}>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                      <TeamHeadText>
+                        Lead Institution
+                      </TeamHeadText>
+                      <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
+                  </Grid>
+                  <Grid size={{ xs: 12, md:4 }}>
+                      <TeamHead1Text>
+                        Contributing Institution
+                      </TeamHead1Text>
+                      <img src="/img/team/uiuc.png" alt={''} style={{ marginRight: '64px' }} />
+                  </Grid>
+                </Grid>            
           </CategorySection>
+
 
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {leadership?.map((contributor, index) =>
@@ -328,7 +368,7 @@ export default function Team() {
                   <Grid size={{ xs: 12, md: 7 }}>
                       <TeamBodyText>
                         The OpenAir mapping platform was developed by the Healthy Regions & Policies Lab at the University of Illinois, 
-                        directed by Dr. Kolak, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers, 
+                        directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers, 
                         and dozens of Chicagoland contributors.
                       </TeamBodyText>
                   </Grid>
