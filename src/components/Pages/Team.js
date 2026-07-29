@@ -67,22 +67,22 @@ const ContributorDescription = styled.div`
 const leadership = [
   {
     photo: '/img/team/erdal.png',
-    name: 'Serap Erdal',
+    name: 'Serap Erdal, Ph.D.',
     description: 'Principal Investigator, University of Illinois Chicago',
   },
   {
     photo: '/img/team/kolak.png',
-    name: 'Marynia Kolak',
+    name: 'Marynia Kolak, Ph.D.',
     description: 'Co-Investigator, University of Illinois Urbana-Champaign',
   },
   {
     photo: '/img/team/persky.png',
-    name: 'Victoria Persky',
+    name: 'Victoria Persky, M.D.',
     description: 'Co-Investigator, University of Illinois Chicago',
   },
   {
     photo: '/img/team/wang.png',
-    name: 'Meida Wang',
+    name: 'Meida Wang, Ph.D.',
     description: 'Co-Investigator, University of Illinois Chicago',
   }
 ];
@@ -95,22 +95,22 @@ const coreteam = [
   },
   {
     photo: '/img/team/kumar.png',
-    name: 'Shubham Kumar',
+    name: 'Shubham Kumar, MSIM',
     description: 'Sr. Product Designer, UIUC',
   },
   {
     photo: '/img/team/pagone.png',
-    name: 'Frank Pagone',
+    name: 'Frank Pagone, Ph.D.',
     description: 'Sr. Manager, RHP',
   },
   {
     photo: '/img/team/astacio-palmer.png',
-    name: 'Marc Astacio-Palmer',
+    name: 'Marc Astacio-Palmer, MS',
     description: 'Research Manager, UIUC',
   },
   {
     photo: '/img/team/fiffer.png',
-    name: 'Melissa Fiffer',
+    name: 'Melissa Fiffer, Ph.D.',
     description: 'Scientific Consultant, UIC',
   },
   {
@@ -120,7 +120,7 @@ const coreteam = [
   },
   {
     photo: '/img/team/cox.png',
-    name: 'Adam Cox',
+    name: 'Adam Cox, MS',
     description: 'Sr. Engineer, UIUC',
   },
   {
@@ -148,7 +148,7 @@ const students = [
   },
   {
     photo: '/img/team/mahjabin.png',
-    name: 'Mahjabin Kabir Adrita',
+    name: 'Mahjabin Kabir Adrita, MS',
     description: 'Research Assistant, UIUC',
   },
   {
@@ -221,11 +221,11 @@ const communityindividual = [
   },
   {
     name: '',
-    description: 'Benjamin Campbell, University of Illinois Urbana Champaign',
+    description: 'Benjamin Campbell, Ph.D., University of Illinois Urbana Champaign',
   },
   {
     name: '',
-    description: 'Bill Miller, Northwestern University',
+    description: 'Bill Miller, Ph.D., Northwestern University',
   },
   {
     name: '',
@@ -233,15 +233,15 @@ const communityindividual = [
   },
   {
     name: '',
-    description: 'Christine Dannhausen-Brun, Nordson Green Earth Foundation',
+    description: 'Christine Dannhausen-Brun, MPH, Nordson Green Earth Foundation',
   },
   {
     name: '',
-    description: 'Daisy Magana, Univeristy of Illinios Chicago School of Public Health',
+    description: 'Daisy Magana, MPH, Univeristy of Illinios Chicago School of Public Health',
   },
   {
     name: '',
-    description: 'Alex Peimer, Northeastern Illinois University',
+    description: 'Alex Peimer, Ph.D., Northeastern Illinois University',
   },
   {
     name: '',
@@ -274,7 +274,7 @@ export default function Team() {
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              <b className={'notranslate'}>{productName}</b>&nbsp;is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
+              <b className={'notranslate'}>{productName}</b>&nbsp;is a collective effort driven by a shared commitment to air quality and data science and transparency, and public health. This page honors the diverse group of individuals, from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the quality of air they breathe in Chicago, IL.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
