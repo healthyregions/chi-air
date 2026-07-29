@@ -668,7 +668,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       default:
         return color;
     }
-  }, [DISPLACEMENT_COLOR_SCALE, mapParams.variableName]);
+  }, [DISPLACEMENT_COLOR_SCALE, REDLINING_COLOR_SCALE, mapParams.variableName]);
 
   const baseLayers = useMemo(() => ([
     new GeoJsonLayer({
