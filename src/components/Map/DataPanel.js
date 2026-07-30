@@ -37,7 +37,7 @@ import {MdHomeFilled} from "react-icons/md";
 
 const DataPanelContainer = styled.div`
     position: fixed;
-    width: ${({ $large }) => $large ? '433px' : '100%'};
+    width: ${({ $large }) => $large ? '500px' : '100%'};
     top: ${({ $large }) => $large ? '2rem' : ''};
     bottom: ${({ $large }) => $large ? '' : '0'};
     left: ${({ $large }) => $large ? '' : '0'};
