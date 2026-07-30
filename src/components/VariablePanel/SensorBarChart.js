@@ -76,15 +76,13 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   }
 
   const getMaxValue = () => {
-    if (selectedParameter === 'nowcast_aqi') {
-      return 500;
-    } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25')  {
-      return 500;
-    } else if (selectedParameter === 'clarity_no2') {
-      return 1500;
-    } else {
-      return `ERR`;
-    }
+    // For all metrics on the current page, compute and return the max numerical value
+    return metricData
+      ?.slice(pageStart, pageEnd)
+      ?.reduce((max, m) => {
+        const value =  m?.value || m?.[selectedParameter];
+        return value > max ? value : max;
+      }, -Infinity);
   };
 
   // Paging metadata: item count, number of pages, page number, page size, etc
@@ -120,7 +118,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       disableTicks: true,
       position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
-      max: getMaxValue(),
+      max: getMaxValue() + 100,
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
