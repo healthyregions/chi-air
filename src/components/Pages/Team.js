@@ -399,7 +399,7 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support, <b className={'notranslate'}>Camrin Gartett</b> and
+              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support, <b className={'notranslate'}>Camrin Garrett</b> and
               <b className={'notranslate'}> Kamaria Barronville</b> for their invaluable science communications expertise, and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services.
               Finally, we are grateful to the <i>Pilsen Arts & Community House</i> for hosting the live co-design session.
 
