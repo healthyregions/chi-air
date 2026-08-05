@@ -652,6 +652,18 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
             0, 0, 0,
           ]
         );
+      case variableName.includes("redlining"):
+        const REDLINING_COLOR_SCALE = {
+          A: [115, 169, 77],
+          B: [52, 172, 198],
+          C: [219, 207, 0],
+          D: [226, 77, 90],
+        };
+        return (
+          REDLINING_COLOR_SCALE[
+            feature.properties["primary_grade_4levels"]
+            ] || [0, 0, 0]
+        );
       default:
         return color;
     }
