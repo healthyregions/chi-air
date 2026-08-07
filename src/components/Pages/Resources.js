@@ -4,12 +4,11 @@ import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   FaArrowRight,
-  FaBars,
   FaChartLine,
   FaDoorOpen,
   FaExternalLinkAlt,
   FaHeadSideCough,
-  FaLink, FaList, FaMap, FaMapMarker, FaMapMarkerAlt, FaToolbox,
+  FaLink, FaList, FaMap, FaMapMarkerAlt, FaToolbox,
   FaWind
 } from "react-icons/fa";
 import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
@@ -20,17 +19,15 @@ import Chip from "@mui/material/Chip";
 import {useState} from "react";
 import {FaChalkboardTeacher} from "@react-icons/all-files/fa/FaChalkboardTeacher";
 import {FaAirFreshener} from "@react-icons/all-files/fa/FaAirFreshener";
-import {FaDoorClosed} from "@react-icons/all-files/fa/FaDoorClosed";
 import {FaChartBar} from "@react-icons/all-files/fa/FaChartBar";
 import {FaInfo} from "@react-icons/all-files/fa/FaInfo";
 import {FaGraduationCap} from "@react-icons/all-files/fa/FaGraduationCap";
 import {FaHammer} from "@react-icons/all-files/fa/FaHammer";
 import {FaStickyNote} from "@react-icons/all-files/fa/FaStickyNote";
-import {FaQuestion} from "@react-icons/all-files/fa/FaQuestion";
 import {
   FaBoltLightning,
   FaCircleCheck,
-  FaEnvelopeCircleCheck, FaMapLocation, FaMobileScreen,
+  FaEnvelopeCircleCheck, FaMobileScreen,
   FaPersonThroughWindow,
   FaScaleBalanced
 } from "react-icons/fa6";
@@ -173,7 +170,6 @@ const supportingResources = [
   { url: 'https://www.atsdr.cdc.gov/place-health/php/eji/index.html', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'CDC/ATSDR\'s Environmental Justice Index', description: 'Recreated by Harvard University since the EPA site is no longer active.' },
   { url: 'https://www.policymap.com/', faIcon: <FaMap/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'PolicyMap', description: 'Cloud-based geographic information system (GIS) mapping and analytics platform designed to help users visualize and understand socio-economic, environmental, health, housing, etc data.' },
   { url: 'https://map.purpleair.com/', faIcon: <FaMapMarkerAlt/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'PurpleAir', description: 'PurpleAir Realtime Map for PM2.5 Concentrations.' },
-
 ].map(r => ({ ...r, category: 'supporting'}));
 
 // Combine into a single shared list of resources (now includes category)
