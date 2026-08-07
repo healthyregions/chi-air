@@ -151,7 +151,7 @@ const coreteam = [
     description: 'Sr. Engineer, UIUC',
   },
   {
-    photo: '/img/team/person.png',
+    photo: '/img/team/jocelynV.png',
     name: 'Jocelyn Vazquez-Gomez',
     description: 'Park Organizer, LVEJO',
   }
@@ -191,6 +191,12 @@ const students = [
 ];
 
 const communityorgs = [
+  {
+    url: 'https://www.lvejo.org/',
+    photo: '/img/team/lvejo.png',
+    name: 'Little Village Environmental Justice Organization',
+    description: '',
+  },
   {
     url: 'https://www.chicagoejn.org/',
     photo: '/img/team/cejn.png',
