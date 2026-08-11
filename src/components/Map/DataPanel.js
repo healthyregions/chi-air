@@ -149,6 +149,10 @@ const DataPanel = ({ mapRef }) => {
   // Page selector logic for navigating the panel via breadcrumbs and links
   const currentPage = breadcrumbs[breadcrumbs.length - 1];
   const pushPage = (bcs) => {
+    // no-op if we're already on this page
+    if (currentPage === bcs[0]) {
+      return false;
+    }
     setBreadcrumbs([...breadcrumbs, ...bcs]);
     return true;
   };
