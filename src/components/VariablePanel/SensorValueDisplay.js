@@ -65,7 +65,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
   const invertedColors = ['Good', 'Moderate'];
 
   const primary = invertedColors?.includes(range?.label) ? range?.border : range?.color;
-  const secondary = invertedColors?.includes(range?.label) ? range?.color : range?.border;
+  //const secondary = invertedColors?.includes(range?.label) ? range?.color : range?.border;
 
   return (
     <>
