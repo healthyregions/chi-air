@@ -4,7 +4,7 @@ import VariablesDropdown from "../VariablesDropdown";
 import OverlaysDropdown from "../OverlaysDropdown";
 import OverlaysColorLegend from "../OverlaysColorLegend";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
-import {LButton, LHeader, LinkText, SensorValueLabelTooltip, SGBody} from "../common";
+import {LButton, LHeader, SensorValueLabelTooltip, SGBody} from "../common";
 import Tooltip from "@mui/material/Tooltip";
 
 

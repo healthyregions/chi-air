@@ -4,8 +4,7 @@ import Select from "@mui/material/Select";
 import { parsedOverlays } from "../../config";
 import {selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {ListItemIcon, ListItemText, ListSubheader} from "@mui/material";
-import {FaCheck} from "@react-icons/all-files/fa/FaCheck";
+import {ListSubheader} from "@mui/material";
 
 
 const OverlaysDropdown = () => {
