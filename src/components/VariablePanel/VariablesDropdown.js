@@ -38,7 +38,7 @@ const VariablesDropdown = () => {
           <MenuItem value="">None</MenuItem>
           {Object.keys(variablePresets).map((variable,i) => (
             variable.includes("HEADER::")
-              ? <>{/*<ListSubheader key={`list-header-${i}`}>{variable.split("HEADER::")[1]}</ListSubheader>*/}</>
+              ? <div>{/*<ListSubheader key={`list-header-${i}`}>{variable.split("HEADER::")[1]}</ListSubheader>*/}</div>
               : <MenuItem value={variable} key={`variable-menu-item-${i}`}>
                 {variable}
               </MenuItem>
