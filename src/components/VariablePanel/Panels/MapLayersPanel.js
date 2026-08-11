@@ -3,9 +3,9 @@ import {FaArrowCircleLeft} from "react-icons/fa";
 import VariablesDropdown from "../VariablesDropdown";
 import OverlaysDropdown from "../OverlaysDropdown";
 import OverlaysColorLegend from "../OverlaysColorLegend";
-import Button from "@mui/material/Button";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
 import {LButton, LHeader, LinkText, SensorValueLabelTooltip, SGBody} from "../common";
+import Tooltip from "@mui/material/Tooltip";
 
 
 
@@ -35,41 +35,30 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
         <Grid size={9}>
           <SGBody>
             Community context
-            <Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>
+            <Tooltip title={'Choose the main community context you want to view on the map. You may only choose one.'}>
               <SensorValueLabelTooltip />
-            </Button>
+            </Tooltip>
+            {/*<Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>*/}
+            {/*  <SensorValueLabelTooltip />*/}
+            {/*</Button>*/}
           </SGBody>
           <VariablesDropdown></VariablesDropdown>
+          <VariableDescriptionDisplay style={{ marginTop: '1.5rem' }}></VariableDescriptionDisplay>
+
+          <SGBody>We recommend enabling only one at a time from each category below</SGBody>
 
           <SGBody>
             Boundaries
-            <Button variant={'text'} onClick={() => push(['Overlays / Boundaries'])}>
+            <Tooltip title={'A set of composable map overlays that allow you to stack, toggle, and analyze different geographical, administrative, and infrastructural data points. These overlays generally include administrative boundaries, residential areas, and transportation networks, which can be visualized independently or together to analyze relationships between them.'}>
               <SensorValueLabelTooltip />
-            </Button>
+            </Tooltip>
+            {/*<Button variant={'text'} onClick={() => push(['Overlays / Boundaries'])}>*/}
+            {/*  <SensorValueLabelTooltip />*/}
+            {/*</Button>*/}
           </SGBody>
           <OverlaysDropdown></OverlaysDropdown>
           <OverlaysColorLegend></OverlaysColorLegend>
         </Grid>
-      </Grid>}
-
-
-      {currentPage === 'Overlays / Community Context' && <Grid size={11}>
-        <LHeader><LinkText onClick={() => pop('Map Layers')}>Map Layers</LinkText> / Overlays / Community Context</LHeader>
-        <SGBody>
-          <VariablesDropdown></VariablesDropdown>
-          <VariableDescriptionDisplay style={{ marginTop: '1.5rem' }}></VariableDescriptionDisplay>
-        </SGBody>
-      </Grid>}
-
-      {currentPage === 'Overlays / Boundaries' && <Grid size={11}>
-        <LHeader><LinkText onClick={() => pop('Map Layers')}>Map Layers</LinkText> / Overlays / Boundaries</LHeader>
-        <SGBody>
-          <OverlaysDropdown></OverlaysDropdown>
-          <div style={{ marginTop: '1.5rem' }}>
-            A set of composable map overlays that allow users to stack, toggle, and analyze different geographical, administrative, and infrastructural data points. These overlays generally include administrative boundaries, residential areas, and transportation networks, which can be visualized independently or together to analyze relationships between them.
-          </div>
-          <OverlaysColorLegend></OverlaysColorLegend>
-        </SGBody>
       </Grid>}
     </Grid>
   );

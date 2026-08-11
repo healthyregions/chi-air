@@ -9,7 +9,7 @@ const VariableDescriptionDisplay = ({ style }) => {
     <>
         <div className="data-description" style={style}>
           {mapParams.variableName && mapParams.variableName in dataDescriptions && dataDescriptions[mapParams.variableName]}
-          {!mapParams.variableName && 'Select a variable for comparison'}
+          {/*!mapParams.variableName && 'Select a variable for comparison'*/}
         </div>
     </>
   )

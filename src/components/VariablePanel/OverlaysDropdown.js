@@ -4,6 +4,8 @@ import Select from "@mui/material/Select";
 import { parsedOverlays } from "../../config";
 import {selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {ListItemIcon, ListItemText, ListSubheader} from "@mui/material";
+import {FaCheck} from "@react-icons/all-files/fa/FaCheck";
 
 
 const OverlaysDropdown = () => {
@@ -41,11 +43,25 @@ const OverlaysDropdown = () => {
           onChange={(e) => handleMapOverlay(e.target.value)}
           multiple={true}
         >
-          <MenuItem value="None" key={"None"}>
-            None
-          </MenuItem>
+          <ListSubheader>Community Boundaries</ListSubheader>
           {
-            parsedOverlays?.map((overlay) =>
+            parsedOverlays?.filter(o => o?.categoryType === 'Community Boundary')?.map((overlay) =>
+              <MenuItem value={overlay.id} key={overlay.id}>
+                {overlay.displayName}
+              </MenuItem>
+            )
+          }
+          <ListSubheader>Community Resources</ListSubheader>
+          {
+            parsedOverlays?.filter(o => o?.categoryType === 'Community Resource')?.map((overlay) =>
+              <MenuItem value={overlay.id} key={overlay.id}>
+                {overlay.displayName}
+              </MenuItem>
+            )
+          }
+          <ListSubheader>Built Infrastructure</ListSubheader>
+          {
+            parsedOverlays?.filter(o => o?.categoryType === 'Built Infrastructure')?.map((overlay) =>
               <MenuItem value={overlay.id} key={overlay.id}>
                 {overlay.displayName}
               </MenuItem>

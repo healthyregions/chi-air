@@ -5,6 +5,7 @@ import { selectMapParams } from "../../store/slices/legacyStoreSlice";
 const OverlaysColorLegend = () => {
   const mapParams = useSelector(selectMapParams);
 
+  console.log('Overlays: ' , mapParams.overlays);
   return (
     <>
       {mapParams.overlays.map((selectedOverlay, index) => <div key={`overlay-legend-container-${index}`}>

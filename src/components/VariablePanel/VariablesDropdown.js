@@ -1,5 +1,4 @@
 import FormControl from "@mui/material/FormControl";
-import ListSubheader from "@mui/material/ListSubheader";
 import Select from "@mui/material/Select";
 import {variablePresets} from "../../config";
 import {changeVariable, selectMapParams} from "../../store/slices/legacyStoreSlice";
@@ -39,7 +38,7 @@ const VariablesDropdown = () => {
           <MenuItem value="">None</MenuItem>
           {Object.keys(variablePresets).map((variable,i) => (
             variable.includes("HEADER::")
-              ? <ListSubheader key={`list-header-${i}`}>{variable.split("HEADER::")[1]}</ListSubheader>
+              ? <>{/*<ListSubheader key={`list-header-${i}`}>{variable.split("HEADER::")[1]}</ListSubheader>*/}</>
               : <MenuItem value={variable} key={`variable-menu-item-${i}`}>
                 {variable}
               </MenuItem>
