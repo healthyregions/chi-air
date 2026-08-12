@@ -45,7 +45,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
           <VariablesDropdown></VariablesDropdown>
           <VariableDescriptionDisplay style={{ marginTop: '1.5rem' }}></VariableDescriptionDisplay>
 
-          <SGBody>We recommend enabling only one at a time from each category below</SGBody>
+          <br/>
 
           <SGBody>
             Boundaries
@@ -56,6 +56,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
             {/*  <SensorValueLabelTooltip />*/}
             {/*</Button>*/}
           </SGBody>
+          <SGBody style={{ fontSize: '12px' }}>We recommend enabling only one option from each category below</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
           <OverlaysColorLegend></OverlaysColorLegend>
         </Grid>
