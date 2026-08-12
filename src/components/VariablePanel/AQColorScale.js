@@ -126,7 +126,7 @@ export const AQColorScale = () => {
     <ColorScaleContainer $large={largeScreen} $open={panelState.key}>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200 }} justifyContent={'center'}>
         <Grid justifyContent={'end'}>
-          {selectedParameter === 'nowcast_aqi' && <LHeader>Nowcast AQI for PM2.5 </LHeader>}
+          {selectedParameter === 'nowcast_aqi' && <LHeader>EPA Particulate Matter Index</LHeader>}
           {selectedParameter === 'clarity_pm25' && <LHeader>Fine Particulate Matter</LHeader>}
           {selectedParameter === 'clarity_no2' && <LHeader>Nitrogen Dioxide</LHeader>}
         </Grid>
