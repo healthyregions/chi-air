@@ -116,34 +116,19 @@ const leadership = [
 
 const coreteam = [
   {
-    photo: '/img/team/lambert.png',
-    name: 'Sara Lambert',
-    description: 'Sr. Engineer, UIUC',
-  },
-  {
-    photo: '/img/team/kumar.png',
-    name: 'Shubham Kumar, MSIM',
-    description: 'Sr. Product Designer, UIUC',
-  },
-  {
-    photo: '/img/team/pagone.png',
-    name: 'Frank Pagone, Ph.D.',
-    description: 'Sr. Manager, RHP',
-  },
-  {
     photo: '/img/team/astacio-palmer.png',
     name: 'Marc Astacio-Palmer, MS',
     description: 'Research Manager, UIUC',
   },
   {
-    photo: '/img/team/fiffer.png',
-    name: 'Melissa Fiffer, Ph.D.',
-    description: 'Scientific Consultant, UIC',
+    photo: '/img/team/kamaria.png',
+    name: 'Kamaria Barronville, Ed.D.',
+    description: 'Research Specialist, UIUC',
   },
   {
-    photo: '/img/team/tootoo.png',
-    name: 'Joshua Tootoo',
-    description: 'Scientific Consultant, UIC',
+    photo: '/img/team/mallikarjun.png',
+    name: 'Mallikarjun Bhansoor, MS',
+    description: 'Research Scientist, UIUC',
   },
   {
     photo: '/img/team/cox.png',
@@ -151,9 +136,39 @@ const coreteam = [
     description: 'Sr. Engineer, UIUC',
   },
   {
+    photo: '/img/team/fiffer.png',
+    name: 'Melissa Fiffer, Ph.D.',
+    description: 'Scientific Consultant, UIC',
+  },
+  {
     photo: '/img/team/person.png',
+    name: 'Camrin Garret, MS',
+    description: 'Research Specialist, UIUC',
+  },
+  {
+    photo: '/img/team/kumar.png',
+    name: 'Shubham Kumar, MSIM',
+    description: 'Sr. Product Designer, UIUC',
+  },
+  {
+    photo: '/img/team/lambert.png',
+    name: 'Sara Lambert',
+    description: 'Lead Sr. Engineer, UIUC',
+  },
+  {
+    photo: '/img/team/pagone.png',
+    name: 'Frank Pagone, Ph.D.',
+    description: 'Sr. Manager, RHP',
+  },
+  {
+    photo: '/img/team/tootoo.png',
+    name: 'Joshua Tootoo',
+    description: 'Scientific Consultant, UIC',
+  },
+  {
+    photo: '/img/team/jocelynV.png',
     name: 'Jocelyn Vazquez-Gomez',
-    description: 'Park Organizer, LVEJO',
+    description: 'Community Science Organizer, LVEJO',
   }
 ];
 
@@ -162,11 +177,6 @@ const students = [
     photo: '/img/team/oni.png',
     name: 'Onongoo (Oni) Amar',
     description: 'Research Assistant, UIC',
-  },
-  {
-    photo: '/img/team/person.png',
-    name: 'Mallikarjun Bhansoor',
-    description: 'Research Assistant, UIUC',
   },
   {
     photo: '/img/team/discenza.png',
@@ -182,6 +192,11 @@ const students = [
     photo: '/img/team/zhengrui.png',
     name: 'Zhengrui Huang',
     description: 'Research Assistant, UIC',
+  },
+  {
+    photo: '/img/team/nianen.png',
+    name: 'Nianen Si',
+    description: 'Research Assistant, UIUC',
   },
   {
     photo: '/img/team/qingwen.png',
@@ -202,6 +217,12 @@ const communityorgs = [
     photo: '/img/team/gge.jpg',
     name: 'Grow Greater Englewood',
     description: 'John Paul Jones, Adonnis Platt',
+  },
+  {
+    url: 'https://www.lvejo.org/',
+    photo: '/img/team/lvejo.png',
+    name: 'Little Village Environmental Justice Organization',
+    description: 'Jocelyn Vazquez-Gomez',
   },
   {
     url: 'https://n4ej.org/',
@@ -351,23 +372,27 @@ export default function Team() {
 
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              The Chicago Air Quality Program led by UIC was guided by the <b>Advisory Board</b>,
-              including the following community organizations: Alliance of the Southeast,
-              Chicago Environment Justice Network, Communities United, Grow Greater Englewood,
-              Little Village Environmental Justice Organization, N4EJ, One Northside, Openlands,
-              People for Commnity Recovery, P.E.R.R.O., Southeast Environmental Task Force,
-              the Southwest Collective, and Westside Cultural Alliance.
+              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation 
+              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force 
+              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery 
+              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights 
+              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e., 
+              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest 
+              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of 
+              Public Health's (CDPH) <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"> 
+              Open Air </a> website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
 
             </TeamBodyText>
             </Grid>
           </Grid>
 
           <CategorySection>
-              <CategoryTitle $largeScreen={largeScreen}>OurAir Leadership</CategoryTitle>
+              <CategoryTitle $largeScreen={largeScreen}>OurAir Dashboard Leadership</CategoryTitle>
                 <Grid container spacing={10}>
                   <Grid size={{ xs: 12, md: 7 }}>
                       <TeamBodyText>
-                        The OpenAir mapping platform was developed by the Healthy Regions & Policies Lab at the University of Illinois,
+                        The OurAir mapping platform was developed by the <a href="https://healthyregions.org/"> Healthy Regions & Policies Lab </a>
+                         at the University of Illinois,
                         directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
                         and dozens of Chicagoland contributors.
                       </TeamBodyText>
@@ -399,8 +424,7 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support, <b className={'notranslate'}>Camrin Garrett</b> and
-              <b className={'notranslate'}> Kamaria Barronville</b> for their invaluable science communications expertise, and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services.
+              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services.
               Finally, we are grateful to the <i>Pilsen Arts & Community House</i> for hosting the live co-design session.
 
             </TeamBodyText>
@@ -443,7 +467,7 @@ export default function Team() {
       </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
-            <Grid key={'communityorgs-' + index} size={{ xs: 12, md: 3 }}
+            <Grid key={'communityorgs-' + index} size={{ xs: 12, md: 4 }}
               onClick={() => contributor?.url && window.open(contributor.url, '_blank', 'noopener,noreferrer')}
               style={{ cursor: 'pointer' }} justifyItems={'center'}>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
