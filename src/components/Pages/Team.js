@@ -210,7 +210,7 @@ const communityorgs = [
     url: 'https://www.lvejo.org/',
     photo: '/img/team/lvejo.png',
     name: 'Little Village Environmental Justice Organization',
-    description: '',
+    description: 'Jocelyn Vazquez-Gomez',
   },
   {
     url: 'https://www.chicagoejn.org/',
