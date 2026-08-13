@@ -207,12 +207,6 @@ const students = [
 
 const communityorgs = [
   {
-    url: 'https://www.lvejo.org/',
-    photo: '/img/team/lvejo.png',
-    name: 'Little Village Environmental Justice Organization',
-    description: 'Jocelyn Vazquez-Gomez',
-  },
-  {
     url: 'https://www.chicagoejn.org/',
     photo: '/img/team/cejn.png',
     name: 'Chicago Environmental Justice Network',
@@ -223,6 +217,12 @@ const communityorgs = [
     photo: '/img/team/gge.jpg',
     name: 'Grow Greater Englewood',
     description: 'John Paul Jones, Adonnis Platt',
+  },
+  {
+    url: 'https://www.lvejo.org/',
+    photo: '/img/team/lvejo.png',
+    name: 'Little Village Environmental Justice Organization',
+    description: 'Jocelyn Vazquez-Gomez',
   },
   {
     url: 'https://n4ej.org/',
@@ -372,12 +372,15 @@ export default function Team() {
 
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              The Chicago Air Quality Program led by UIC was guided by the <b>Advisory Board</b>,
-              including the following community organizations: Alliance of the Southeast,
-              Chicago Environment Justice Network, Communities United, Grow Greater Englewood,
-              Little Village Environmental Justice Organization, N4EJ, One Northside, Openlands,
-              People for Commnity Recovery, P.E.R.R.O., Southeast Environmental Task Force,
-              the Southwest Collective, and Westside Cultural Alliance.
+              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation 
+              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force 
+              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery 
+              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights 
+              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e., 
+              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest 
+              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of 
+              Public Health's (CDPH) <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"> 
+              Open Air </a> website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
 
             </TeamBodyText>
             </Grid>
@@ -388,7 +391,8 @@ export default function Team() {
                 <Grid container spacing={10}>
                   <Grid size={{ xs: 12, md: 7 }}>
                       <TeamBodyText>
-                        The OpenAir mapping platform was developed by the Healthy Regions & Policies Lab at the University of Illinois,
+                        The OurAir mapping platform was developed by the <a href="https://healthyregions.org/"> Healthy Regions & Policies Lab </a>
+                         at the University of Illinois,
                         directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
                         and dozens of Chicagoland contributors.
                       </TeamBodyText>
