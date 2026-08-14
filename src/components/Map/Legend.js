@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 
-import {colors, variablePresets} from '../../config';
+import {variablePresets} from '../../config';
 import {useChivesData} from "../../hooks/useChivesData";
 import {useSelector} from "react-redux";
 import {selectMapParams} from "../../store/slices/legacyStoreSlice";
