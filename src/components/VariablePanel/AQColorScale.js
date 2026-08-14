@@ -8,6 +8,7 @@ import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSli
 import {useDispatch, useSelector} from "react-redux";
 import {FaKey} from "react-icons/fa";
 import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
+import {LHeader} from "./common";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -123,7 +124,14 @@ export const AQColorScale = () => {
 
   return (
     <ColorScaleContainer $large={largeScreen} $open={panelState.key}>
-      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem' }}>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200 }} justifyContent={'center'}>
+        <Grid justifyContent={'end'}>
+          {selectedParameter === 'nowcast_aqi' && <LHeader>EPA Particulate Matter Index</LHeader>}
+          {selectedParameter === 'clarity_pm25' && <LHeader>Fine Particulate Matter</LHeader>}
+          {selectedParameter === 'clarity_no2' && <LHeader>Nitrogen Dioxide</LHeader>}
+        </Grid>
+      </Grid>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem', marginTop:'0.5rem' }}>
         {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'EPA’s Air Quality Index (AQI)'}>AQI-PM2.5</Tooltip>
         </Grid>}

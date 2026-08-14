@@ -149,7 +149,22 @@ const faqs = [
     id: 'map-data-access',
     category: 'data',
     question: "How can I access the data?",
-    answer: "Explore the Map to explore sensor-specific and regional data trends. Data can also be downloaded in a number of ways, including: direct download on this website (see 'Download' links on Map), direct download on the City Data Portal, and direct download on the Open Air Clarity Dashboard. Note that when downloading data from the Map, only the sensors that you clicked during exploration will be able to be downloaded. In the future, we plan to develop a more robust Data Download filter for more customized options."
+    answer: <>
+      Explore the Map to explore sensor-specific, community/neighborhood-specific, or city-wide data trends.
+      Data can also be downloaded in a number of ways, including: direct download on the{" "}
+      <a href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
+         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+         target={'_blank'} rel="noreferrer noopener">City Data Portal</a>,
+      direct download on the{" "}
+      <a href={'https://map.clarity.io/open-air-chicago'}
+         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+         target={'_blank'} rel="noreferrer noopener">
+        Open Air Clarity Dashboard
+      </a>, and direct download on this website (see 'Download' links on Map).
+      Note that when downloading data from the Our Air Map on this website, only the sensors that
+      you clicked during exploration will be able to be downloaded. In the future,
+      we plan to develop a more robust Data Download filter for more customized options.
+    </>
   },
   {
     id: 'map-data-details',
@@ -161,49 +176,164 @@ const faqs = [
     id: 'map-colors',
     category: 'map',
     question: "What do the colors on the map mean?",
-    answer: "Colors of individual sensor locations correspond to different value bins or groupings of air quality metrics. To identify the value range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application."
+    answer: <>
+      Colors of individual sensor locations correspond to different value bins or groupings of EPA’s Air Quality Index (AQI). The U.S. Air Quality Index (AQI) is EPA's tool for communicating about outdoor air quality and health. The AQI includes six color-coded
+      categories, each corresponding to a range of index values representing a different level of health concern. For example, while AQI value of 50 or below represents good air quality, an AQI value over 300 represents hazardous air quality. To identify the value
+      range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application. To learn more about the AQI, please consult{" "}
+      <a href={'https://www.airnow.gov/aqi/aqi-basics/'}
+         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+         target={'_blank'} rel="noreferrer noopener">
+        https://www.airnow.gov/aqi/aqi-basics/
+      </a>.
+    </>
+  },
+  {
+    id: "data-use-protection",
+    category: 'data',
+    question: 'How can I use the data to protect myself from harmful exposures to air pollutants?',
+    answer: <>
+      We highly recommend checking the map regularly and understanding the trends in air quality in your neighborhood. On days when the Air Quality Index (AQI) is unhealthy (i.e., greater than 100), we recommend using our Map as a “Public Health Messaging Tool” and adjust your daily activities to reduce your exposures to air pollutants and associated health risks.
+      Specifically, we recommend adopting one or more of the{" "}
+      <a href={'https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors'}
+         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+         target={'_blank'} rel="noreferrer noopener">
+        Strategies to Reduce Exposure Outdoors
+      </a>.
+      {" "}For example: adjusting outdoor activities (such as running) during time frames when the air quality is healthy, staying indoors, using an N95 mask, etc.)
+    </>
   },
   {
     id: 'data-source',
     category: 'data',
     question: "Where does this data come from and where is it stored?",
-    answer: "This data comes from Clarity sensor measurements of the Open Air Network, a co-owned sensor project between the University of Illinois and the Chicago Department of Public Health. Sensor readings are pulled directly from the Clarity programming interface, cleaned, summarized, and updated in this web mapping application. A copy of the data is stored in a U.S.-based web server. Data can be directly downloaded by time period of interest (e.g. hourly, monthly, seasonal) in the 'Details' section of the mapping interface. The University of Illinois is engaged in independent quality assurance and quality control of the data."
+    answer: <>
+      The data represents the Clarity Node-S sensor measurements for Fine Particulate
+      Matter (PM2.5) and Nitrogen Dioxide (NO2) of the “Open Air Chicago” network, a co-
+      owned sensor-based air monitoring and air quality assessment project between the
+      University of Illinois at Chicago and the Chicago Department of Public Health. Sensor
+      readings are pulled directly from the Clarity programming interface, cleaned, summarized,
+      and updated in this web mapping application. The data cleaning and data quality assurance
+      and quality control protocols are employed by Clarity (see below for
+      more details). A copy of the data is stored on a U.S.-based web server. Data can be
+      directly downloaded by time period of interest (e.g., hourly, monthly, seasonally) in
+      the 'Details' section of the mapping interface. The raw and weighted (average) data for
+      individual measurements, hourly and daily averages can also be accessed and downloaded from the
+      {" "}<a href={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'}
+        style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+        target={'_blank'} rel="noreferrer noopener">
+        CDPH Open Air Chicago website
+      </a>
+    </>
   },
   {
     id: 'protocol-sensor-owner',
     category: 'protocol',
     question: "Who owns the air quality sensors?",
-    answer: "Sensors of the Open Air Network are co-owned between the University of Illinois at Chicago (as led by Principal Investigator, Professor Erdal) and the City of Chicago, Chicago Department of Public Health. While 60% of 277 sensors were purchased from the two UIC grants, the remaining was purchased by the CDPH from various sources of city funding. Each entity also maintains extra sensors in the inventory for sensor replacements, if warranted."
+    answer: <>
+      Sensors of the Open Air Network are co-owned between the University of Illinois at Chicago
+      (as led by Principal Investigator, Professor Erdal) and the City of Chicago, Chicago Department
+      of Public Health. While 60% of 277 sensors were purchased from the two UIC grants, the remaining
+      was purchased by the CDPH from various sources of city funding. Each entity also maintains extra
+      sensors in the inventory for sensor replacements, if warranted.
+    </>
   },
   {
     id: 'protocol-sensor-maintenance',
     category: 'protocol',
-    question: "Who maintains the sensors?",
-    answer: "The University of Illinois at Chicago and the City of Chicago, Chicago Department of Public Health, and Clarity are collaborating on sensor and network maintenance, and this work is currently in progress. The City of Chicago, Chicago Department of Transportation is also an important collaborator since they maintain the light poles throughout the city. CDOT crews trained in sensor installation criteria and protocols prepared by UIC must perform sensor removals and installations."
+    question: "Who maintains the sensors and the network?",
+
+    answer: <>
+      The University of Illinois at Chicago and the City of Chicago, Chicago Department of Public Health,
+      and Clarity are collaborating on sensor and network maintenance, and this work is currently in
+      progress. The City of Chicago, Chicago Department of Transportation is also an important collaborator
+      since they maintain the light poles throughout the city. CDOT crews trained in sensor installation
+      criteria and protocols prepared by UIC must perform sensor removals and installations.
+    </>
   },
   {
     id: 'data-update-frequency',
     category: 'data',
     question: "How often is the data updated?",
-    answer: "We update the dashboard hourly. However, some sensors may have a slight delay depending on their cellular connectivity. Please always check the 'Last Updated' timestamp at the top of the map (e.g., updated 3:00 PM, 06/23/26) to access the latest air quality data."
+    answer: <>
+      We update the dashboard hourly. However, some sensors may have a slight delay depending
+      on their cellular connectivity. Please always check the 'Last Updated' timestamp at the
+      top of the map (e.g., updated 3:00 PM, 06/23/26) to access the latest air quality data.
+    </>
   },
   {
     id: 'data-raw-data',
     category: 'data',
     question: "Can I get access to raw, uncalibrated data?",
-    answer: "Raw measures are available on the City of Chicago Data Portal. Please review the Quality Assessment question below for more details on data choices made for this website. You may also review Clarity Monitoring documentation on the Resources page for further discussion on sensor limtiations, and why calibrated data is recommended over raw measurements. Deep expertise in air quality data, monitoring, and analyses domains remains necessary to be able to utilize data reliably for community assessment. We are challenged by this task, and our teams are happy to assist organizations with data interpretation needs."
+    answer: <>
+      Raw measurements from the Clarity Node-S sensors are available on the{" "}
+      <a href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
+         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+         target={'_blank'} rel="noreferrer noopener">
+        City of Chicago “Open Air Chicago” data portal
+      </a>. Raw data do not go through data cleaning, data quality assurance and control (QA/QC) checks,
+      and are not calibrated. Please review Clarity Monitoring documentation in the Resources section
+      for further discussion on sensor limitations and why calibrated
+      data is recommended over raw measurements for air quality assessment. Deep technical expertise in
+      air quality data, monitoring, and analyses domains remains necessary to analyze and utilize data reliably for community assessment. Our teams are happy to assist organizations with data interpretation needs.
+    </>
   },
   {
     id: 'data-quality',
     category: 'data',
     question: "How is the data quality assessed?",
-    answer: "Upon review and approval of the Clarity Node-S sensor performance and Clarity data cleaning and data Quality Assurance, and Quality Control (QA/QC) protocols by the U.S. EPA scientists, the U.S. EPA and U.S. Forest Service began displaying PM2.5 data from Clarity Node-S air sensors on EPA’s Fire and Smoke Map (FASM) (https://fire.airnow.gov/) located on EPA’s AirNow.gov website (https://www.airnow.gov/) on July 23, 2025. The Clarity Node-S sensor is currently one of only two commercially available, lower-cost, EPA-approved sensors that display sensor data directly in the FASM (the other is the PurpleAir sensor). Clarity reported that over 1,000 Clarity Node-S air quality sensors are providing PM2.5 data on the FASM as of June 2026, significantly expanding the air quality measurements collected at EPA air monitoring stations using regulatory-grade Federal Reference Monitors (FRMs) and Federal Equivalent Monitors (FEMs). EPA’s approval of Clarity's sensor performance and data QA/QC protocols, and their inclusion in the EPA’s FASM, facilitated the direct use of Clarity-produced quality-assured data by end users, such as us and others who operate Clarity sensors in their networks worldwide. Clarity’s automated data quality control process can be viewed here: https://help.clarity.io/knowledge/quality-control. Accordingly, we are using EPA-approved Clarity data, with several measures we are taking to safeguard the data and ensure its dissemination to the public in high quality. These measures are: \n(1) We are collaborating with CDPH and Clarity on network maintenance to check and track the health of the sensors and the network; (2) We performed a parking lot study prior to the installation of sensors on light poles, in which we evaluated the performance of 277 sensors for 4-6 weeks (i.e., intra-sensor performance assessment). This was an important QA/QC step. Only those sensors that passed the performance criteria were installed on the light poles. Finally, (3) We placed three Clarity sensors next to regulatory-grade PM2.5 and NO2 FRMs/FEMs at several EPA air monitoring stations in the Chicago area and are currently performing a collocation study to assess the inter-sensor performance of Clarity sensors against the EPA’s FRMs/FEMs for PM2.5 and NO2. This study will allow us to generate Chicago-specific calibration equations for the Clarity sensor, monitor the performance of Clarity's global calibrations for PM2.5 and NO2, and provide a rich dataset for model improvement. This study requires annual data collection, which will be completed at the end of November 2026. . "
+    answer: <>
+      Upon review of approval of the Clarity Node-S sensor performance and Clarity data cleaning and data
+      quality assurance and quality control protocols by the U.S. EPA scientists, the EPA and U.S.
+      Forest service began displaying PM2.5 data from Clarity Node-S air sensors on EPA’s{" "}
+      <a href={'https://fire.airnow.gov/'}
+              style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+              target={'_blank'} rel="noreferrer noopener">
+        Fire and Smoke Map (FASM)
+      </a>
+      {" "}located on EPA’s{" "}
+      <a href={'https://www.airnow.gov/'}
+              style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+              target={'_blank'} rel="noreferrer noopener">
+        AirNow.gov website
+      </a>{" "}
+      on July 23, 2025. The Clarity Node-S sensor is currently only one of the two commercially available
+      lower-cost indicative sensors approved by the USEPA to display sensor data directly in the FASM (the
+      other is PurpleAir sensor). Clarity reported that over 550 Clarity Node-S air quality sensors are
+      providing PM2.5 data on the FASM expanding air quality measurements obtained at EPA air monitoring
+      stations using regulatory-grade Federal Reference Monitors (FRMs) and Federal Equivalent Monitors (FEMs)
+      significantly and this number has been growing. The approval of Clarity sensor performance and
+      data QA/QC protocols by the EPA and inclusion in the EPA’s FASM
+      facilitated direct use of Clarity produced data by the end-users such as Los Angeles Unified School
+      District’s Clarity “Know Your Air” network (within the jurisdiction of South Coast Air Quality
+      Management District (SCAQMD)). Similarly, we are using EPA-approved Clarity data, with a number of
+      measures instituted to safeguard the data and to ensure dissemination of high-quality data to the
+      public. These measures are:
+      <ul>
+        <li>
+          We are collaborating with CDPH and Clarity on network maintenance to check and track the health of the sensors
+          and the network;
+        </li>
+        <li>
+          We placed triplicate Clarity sensors at a number of EPA air monitoring stations in the Chicago area and are currently performing a collocation study to assess the performance of Clarity sensors against the EPA’s regulatory grade FRMs/FEMs for PM2.5 and NO2. This study will allow us to generate Chicago-specific calibration equations
+          for the Clarity sensor and assessment of representativeness of Clarity’s global calibration equation for Chicago.
+          About Page Revisions-6-Under Protocol
+        </li>
+      </ul>
+    </>
   },
   {
     id: 'data-regulations',
     category: 'data',
     question: "Can the “Open Air Chicago” sensor data can be used for regulatory decision-making (e.g., enforcement of industrial sources)?",
-    answer: "The Clarity Node-S sensors (or any lower cost sensors) are not regulatory grade Federal Reference Monitors (FRMs) and Federal Equivalent Monitors (FEMs) used to assess compliance with the National Ambient Air Quality Standard (NAAQS) in a given area. Thus, they cannot be used for regulatory decision-making (e.g., compliance assessment, enforcement action, etc.). The lower cost sensors are called indicative sensors, and they are useful tools to assess variability in concentrations of air pollutants at community level and can produce supporting data for regulatory networks."  
+    answer: <>
+      The Clarity Node-S sensors (or any lower cost sensors) are not regulatory grade Federal
+      Reference Monitors (FRMs) and Federal Equivalent Monitors (FEMs) used to assess compliance
+      with the National Ambient Air Quality Standard (NAAQS) in a given area. Thus, they cannot be
+      used for regulatory decision-making (e.g., compliance assessment, enforcement action, etc.).
+      The lower cost sensors are called indicative sensors, and they are useful tools to assess
+      variability in concentrations of air pollutants at community level and can produce supporting
+      data for regulatory networks.
+    </>
   },
   {
     id: 'parameters-air-quality-metrics',
@@ -320,8 +450,14 @@ export default function About() {
                  </a>.
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
-                 The UIC and UIUC teams are the technical architects of the design of the “Open Air Chicago” air monitoring network. We adopted the technical principles behind EPA’s Network Design Criteria for Ambient Air Quality Monitoring under the
-                 Clean Air Act to create a neighborhood scale grid-based design, overlaying the grid-based design
+                 The UIC and UIUC teams are the technical architects of the design of the “Open Air Chicago” air monitoring
+                 network. We adopted the technical principles behind EPA’s {" "}
+                 <a href={'https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf'}
+                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                    target={'_blank'} rel="noreferrer noopener">
+                   Network Design Criteria for Ambient Air Quality Monitoring
+                 </a>
+                 {" "}under the Clean Air Act to create a neighborhood scale grid-based design, overlaying the grid-based design
                  on the Environmental Justice (EJ) Index Score map generated by CDPH through a comprehensive
                  stakeholder participatory process in 2023 under the{" "}
                  <a href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
