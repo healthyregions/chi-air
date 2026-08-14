@@ -118,11 +118,8 @@ export const ClickedSensorPanel = ({ push, pop }) => {
       </Grid>
 
       <Grid container spacing={0} alignItems={'center'}>
-        <Grid offset={2} size={7}>
+        <Grid offset={2} size={10}>
           <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
-        </Grid>
-        <Grid size={3}>
-          <LButton onClick={() => push(['Details'])}>Details &rarr;</LButton>
         </Grid>
       </Grid>
 
@@ -165,6 +162,8 @@ export const ClickedSensorPanel = ({ push, pop }) => {
                           )} />
         </Grid>
       </Grid>
+
+      <LButton as={Grid} size={12} textAlign={'center'} onClick={() => push(['Details'])}>Explore Historical Trends &rarr;</LButton>
     </>
   );
 }

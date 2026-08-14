@@ -9,53 +9,7 @@ import {selectMapParams} from "../../store/slices/legacyStoreSlice";
 // import Tooltip from './tooltip';
 
 const BottomPanel = styled.div`
-    position: fixed;
-    bottom:0;
-    left:50%;
-    background:${colors.ivory};
-    transform:translateX(-50%);
-    width:25vw;
-    max-width: 500px;
-    box-sizing: border-box;
-    padding: .5rem;
-    margin:0;
-    box-shadow: 0px 0px 5px ${colors.gray}55;
-    border-radius:0.5vh 0.5vh 0 0;
-    transition:250ms all;
-    color:${colors.black};
-    hr {
-        opacity:0.5;
-    }
-    @media (max-width:1024px){
-        width:50vw;
-        div {
-            padding-bottom:5px;
-        }
-        #binModeSwitch {
-            position:absolute !important;
-            right: 10px !important;
-            top: 10px !important;
-        }
-        #dateRangeSelector {
-            position:absolute !important;
-            left: 66% !important;
-            transform:translateX(-50%) !important;
-            top: 10px !important;
-        }
-    }
 
-    @media (max-width:768px){
-
-        width:100%;
-        max-width:100%;
-        padding:2em 1em 0 1em;
-        left:0;
-        transform:none;
-    }
-    @media (max-width:750px) and (orientation: landscape) {
-        // bottom all the way down for landscape phone
-    }
-    user-select:none;
 `
 
 const LegendContainer = styled.div`
@@ -70,9 +24,10 @@ const LegendContainer = styled.div`
 
 const LegendTitle = styled.h3`
     text-align: center;
-    font-family:'Roboto', sans-serif;
+    font-family:'Lexend', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
     padding:0;
-    font-weight:bold;
     margin:0;
 `
 
@@ -163,7 +118,7 @@ const BinLabel = ({ label }) => {
 }
 
 const Legend = ({
-    precision = 2
+  precision = 2
 }) => {
   const { storedGeojson } = useChivesData();
   const mapParams = useSelector(selectMapParams);
@@ -182,9 +137,12 @@ const Legend = ({
   const bins = mapParams?.bins || mapParams?.Bins;
   const colorScale = mapParams.colorScale;
 
+  const lowerBounds = colorScale.slice(0, colorScale?.length - 2).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
+  const upperBounds = colorScale.slice(1, colorScale?.length - 1).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
+
   return (
     <>
-      <BottomPanel id="bottomPanel">
+      <BottomPanel style={{ marginTop: '1rem' }}>
         <LegendContainer>
           <Grid container spacing={0} id='legend-bins-container'>
             <Grid size={{ xs: 12 }}>
@@ -212,14 +170,16 @@ const Legend = ({
                 </BinBars>
               }
               {!!colorScale && categorical && <>
-                <BinBars>
-                  <div className="color-bars">
+                <BinBars style={{ display: 'flex' }}>
+                  <div className="color-bars" style={{ flexDirection: 'column' }}>
                     {colorScale.map((color, i) =>
                       <div key={'color-bar' + i} className="bin color"
-                           style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}></div>)}
+                           style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}>
+                        {lowerBounds[i]} - {upperBounds[i]}
+                      </div>)}
+                    <BinLabel label={label}></BinLabel>
                   </div>
                 </BinBars>
-                <BinLabel label={label}></BinLabel>
               </>}
             </Grid>
           </Grid>

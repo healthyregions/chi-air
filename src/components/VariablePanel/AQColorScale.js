@@ -4,11 +4,13 @@ import styled from "styled-components";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
+import {selectMapParams, selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {FaKey} from "react-icons/fa";
 import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
 import {LHeader} from "./common";
+import OverlaysColorLegend from "./OverlaysColorLegend";
+import Legend from "../Map/Legend";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -119,6 +121,7 @@ export const AQColorScale = () => {
   const panelState = useSelector(selectPanelState);
   const selectedParameter = useSelector(selectSensorParameter);
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const mapParams = useSelector(selectMapParams);
 
   const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }));
 
@@ -168,6 +171,10 @@ export const AQColorScale = () => {
           </Grid>
         </Grid>
       )}
+
+      {mapParams?.variableName && <Legend />}
+
+      <OverlaysColorLegend></OverlaysColorLegend>
 
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.key ? 'active' : 'hidden'}><FaKey /></button>
     </ColorScaleContainer>

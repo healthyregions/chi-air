@@ -7,7 +7,7 @@ const VariableDescriptionDisplay = ({ style }) => {
 
   return (
     <>
-        <div className="data-description" style={style}>
+        <div className="data-description" style={{ fontWeight: 300, ...style }}>
           {mapParams.variableName && mapParams.variableName in dataDescriptions && dataDescriptions[mapParams.variableName]}
           {/*!mapParams.variableName && 'Select a variable for comparison'*/}
         </div>

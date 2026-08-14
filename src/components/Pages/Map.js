@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { fitBounds } from "@math.gl/web-mercator";
 import {
   MapSection,
-  Legend,
   DataPanel,
 } from "../../components";
 import { selectMapParams } from "../../store/slices/legacyStoreSlice";
@@ -38,7 +37,7 @@ function Map() {
       <div id="mainContainer">
         { mapParams && <>
             <MapSection bounds={defaultBounds} mapRef={mapRef} handlePanMap={handlePanMap} />
-            {mapParams?.variableName && <Legend />}
+            {/*{mapParams?.variableName && <Legend />}*/}
             {/*<VariablePanel />*/}
             <DataPanel mapRef={mapRef} handlePanMap={handlePanMap} />
             <AQColorScale />

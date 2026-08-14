@@ -17,6 +17,7 @@ import Select from "@mui/material/Select";
 import {SensorBarChart} from "../SensorBarChart";
 import {useState} from "react";
 import Menu from "@mui/material/Menu";
+import {ListSubheader} from "@mui/material";
 
 const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
 const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
@@ -151,8 +152,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             },
           }}
         >
+          <ListSubheader>Downloads all data from current session</ListSubheader>
           <MenuItem onClick={() => {downloadCsv();handleClose();}}>CSV</MenuItem>
           <MenuItem onClick={() => {downloadGeoJson();handleClose();}}>GeoJSON</MenuItem>
+          <ListSubheader>Downloads all data for current indicator</ListSubheader>
           <MenuItem onClick={() => {downloadParquet();handleClose();}}>Parquet</MenuItem>
         </Menu>
       </Grid>

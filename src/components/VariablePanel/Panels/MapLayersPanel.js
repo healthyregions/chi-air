@@ -2,7 +2,6 @@ import Grid from "@mui/material/Grid";
 import {FaArrowCircleLeft} from "react-icons/fa";
 import VariablesDropdown from "../VariablesDropdown";
 import OverlaysDropdown from "../OverlaysDropdown";
-import OverlaysColorLegend from "../OverlaysColorLegend";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
 import {LButton, LHeader, SensorValueLabelTooltip, SGBody} from "../common";
 import Tooltip from "@mui/material/Tooltip";
@@ -58,7 +57,6 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
           </SGBody>
           <SGBody style={{ fontSize: '12px' }}>We recommend enabling only one option from each category below</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
-          <OverlaysColorLegend></OverlaysColorLegend>
         </Grid>
       </Grid>}
     </Grid>

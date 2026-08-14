@@ -33,7 +33,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {useCookies} from "react-cookie";
-import {MdHomeFilled} from "react-icons/md";
+import {MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
 
 const DataPanelContainer = styled.div`
     position: fixed;
@@ -173,16 +173,19 @@ const DataPanel = ({ mapRef }) => {
     dispatch(setLocale(locale));
   }
 
+  const paramDisplayName = selectedParameter === 'nowcast_aqi' ? 'AQI-PM2.5' : selectedParameter === 'clarity_pm25' ? 'PM2.5' : 'NO₂';
+
   return (
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
       <Grid container spacing={2} alignItems={'center'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><DropdownButton ButtonComponent={LButton} truncate={3} label={getLocaleLabel(cookies['googtrans'])} onChange={onLocaleChange}  options={locales} /></Grid>
+        <Grid><DropdownButton size={'large'} ButtonComponent={LButton} truncate={3} label={getLocaleLabel(cookies['googtrans'])} onChange={onLocaleChange} icon={<MdOutlineTranslate />}  options={locales} /></Grid>
       </Grid>
 
-      <Grid container spacing={8} alignItems={'center'}>
+      <Grid container spacing={8} alignItems={'center'} justifyContent={'space-between'} marginBottom={'1rem'}>
         <LButton
           component={NavLink}
+          size={'large'}
           to="/"
           variant="text"
           style={{ paddingLeft: '0', gap: '0.4rem' }}
@@ -190,7 +193,7 @@ const DataPanel = ({ mapRef }) => {
         >
           <MdHomeFilled style={{ width: '15px', height: '15px' }} /> Home
         </LButton>
-        <LButton variant={'text'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
+        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
       </Grid>
 
       {currentPage === 'root' && <>
@@ -216,8 +219,11 @@ const DataPanel = ({ mapRef }) => {
                   {/*<MenuItem value="mean_bc">BC (ng/m³)</MenuItem>*/}
                 </Select>
               </FormControl>
-              <LButton as={Grid} justifyContent={'start'} style={{ width: '2rem' }} onClick={() => pushPage(['Explain'])}>
-                <FaInfoCircle style={{ margin: '.5rem .2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
+              <LButton as={Grid} size={'small'} style={{ textWrap: 'nowrap', display: 'flex', flexDirection:'row', width: '2rem' }} onClick={() => pushPage(['Explain'])}>
+                <span style={{ display:'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <FaInfoCircle style={{ margin: '.5rem .2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
+                  What is {paramDisplayName}?
+                </span>
               </LButton>
             </Grid>
             <Grid size={{ xs: 8 }}>

@@ -142,7 +142,7 @@ const coreteam = [
   },
   {
     photo: '/img/team/person.png',
-    name: 'Camrin Garret, MS',
+    name: 'Camrin Garrett, MS',
     description: 'Research Specialist, UIUC',
   },
   {
@@ -265,35 +265,35 @@ const communityorgs = [
 const communityindividual = [
   {
     name: '',
-    description: 'Ben Barrett, Northwestern University',
+    description: <><strong>Ben Barrett</strong>, Northwestern University</>
   },
   {
     name: '',
-    description: 'Benjamin Campbell, Ph.D., University of Illinois Urbana Champaign',
+    description: <><strong>Benjamin Campbell, Ph.D.</strong>, University of Illinois Urbana Champaign</>
   },
   {
     name: '',
-    description: 'Bill Miller, Ph.D., Northwestern University',
+    description: <><strong>Bill Miller, Ph.D.</strong>, Northwestern University</>
   },
   {
     name: '',
-    description: 'Beth Beyer, The Technology Alliance',
+    description: <><strong>Beth Beyer</strong>, The Technology Alliance</>
   },
   {
     name: '',
-    description: 'Christine Dannhausen-Brun, MPH, Nordson Green Earth Foundation',
+    description: <><strong>Christine Dannhausen-Brun, MPH</strong>, Nordson Green Earth Foundation</>
   },
   {
     name: '',
-    description: 'Daisy Magana, MPH, Univeristy of Illinios Chicago School of Public Health',
+    description: <><strong>Daisy Magana, MPH</strong>, Univeristy of Illinios Chicago School of Public Health</>
   },
   {
     name: '',
-    description: 'Alex Peimer, Ph.D., Northeastern Illinois University',
+    description: <><strong>Alex Peimer, Ph.D.</strong>, Northeastern Illinois University</>
   },
   {
     name: '',
-    description: 'Julia McKenna, STRONG Manoomin Collective',
+    description: <><strong>Julia McKenna</strong>, STRONG Manoomin Collective</>
   }
 ];
 
@@ -372,15 +372,18 @@ export default function Team() {
 
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation 
-              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force 
-              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery 
-              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights 
-              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e., 
-              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest 
-              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of 
-              Public Health's (CDPH) <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"> 
-              Open Air </a> website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
+              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation
+              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force
+              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery
+              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights
+              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e.,
+              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest
+              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of
+              Public Health's (CDPH){" "}
+              <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
+                 style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 target={'_blank'} rel="noreferrer noopener">
+              Open Air</a>{" "}website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
 
             </TeamBodyText>
             </Grid>
@@ -391,9 +394,13 @@ export default function Team() {
                 <Grid container spacing={10}>
                   <Grid size={{ xs: 12, md: 7 }}>
                       <TeamBodyText>
-                        The OurAir mapping platform was developed by the <a href="https://healthyregions.org/"> Healthy Regions & Policies Lab </a>
-                         at the University of Illinois,
-                        directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
+                        The OurAir mapping platform was developed by the{" "}
+                        <a href="https://healthyregions.org/"
+                           style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                           target={'_blank'} rel="noreferrer noopener">
+                          Healthy Regions & Policies Lab
+                        </a>{" "}at the University of Illinois, directed by <b>Dr. M. Kolak</b>, in close
+                        collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
                         and dozens of Chicagoland contributors.
                       </TeamBodyText>
                   </Grid>
