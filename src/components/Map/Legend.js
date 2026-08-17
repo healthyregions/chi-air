@@ -137,12 +137,13 @@ const Legend = ({
   const bins = mapParams?.bins || mapParams?.Bins;
   const colorScale = mapParams.colorScale;
 
-  const lowerBounds = colorScale.slice(0, colorScale?.length - 2).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
-  const upperBounds = colorScale.slice(1, colorScale?.length - 1).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
+  // WIP: an attempt to gather the pieces needed to make this Legend appear as the others do
+  //const lowerBounds = colorScale.slice(0, colorScale?.length - 2).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
+  //const upperBounds = colorScale.slice(1, colorScale?.length - 1).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
 
   return (
     <>
-      <BottomPanel style={{ marginTop: '1rem' }}>
+      <BottomPanel style={{ marginTop: '2rem' }}>
         <LegendContainer>
           <Grid container spacing={0} id='legend-bins-container'>
             <Grid size={{ xs: 12 }}>
@@ -170,15 +171,13 @@ const Legend = ({
                 </BinBars>
               }
               {!!colorScale && categorical && <>
-                <BinBars style={{ display: 'flex' }}>
-                  <div className="color-bars" style={{ flexDirection: 'column' }}>
+                <BinBars>
+                  <div className="color-bars">
                     {colorScale.map((color, i) =>
                       <div key={'color-bar' + i} className="bin color"
-                           style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}>
-                        {lowerBounds[i]} - {upperBounds[i]}
-                      </div>)}
-                    <BinLabel label={label}></BinLabel>
+                           style={{backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})`}}></div>)}
                   </div>
+                  <BinLabel label={label}></BinLabel>
                 </BinBars>
               </>}
             </Grid>

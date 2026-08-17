@@ -12,7 +12,7 @@ const OverlaysColorLegend = ({ style }) => {
         {parsedOverlays.map((parsedOverlay, subindex) => {
           const fillColor = JSON.parse(parsedOverlay?.fillColor);
           return (<div key={`parsed-overlay-${index}-${subindex}`}>
-            { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-colorlegend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'1em', fontFamily: 'Lexend', fontSize: '16px', fontWeight: 500, textAlign: 'center' }}>
+            { selectedOverlay === parsedOverlay?.id && parsedOverlay?.fillColor && <div key={`overlay-colorlegend-${selectedOverlay}-${index}-${subindex}`} style={{ display: "flex", flexDirection: "column", marginTop:'2em', fontFamily: 'Lexend', fontSize: '16px', fontWeight: 500, textAlign: 'center' }}>
               <div>{parsedOverlay?.displayName}</div>
               {parsedOverlay?.fillColor && !Array.isArray(fillColor) && Object.entries(fillColor).map(([key, color], subsubindex) => (
                 <div key={`overlay-array-legend-${selectedOverlay}-${index}-${subindex}-${subsubindex}`} style={{ display: "flex", margin:'.25em 0', justifyContent: 'center' }}>
@@ -25,7 +25,7 @@ const OverlaysColorLegend = ({ style }) => {
                       height: '16px',
                     }}
                   ></span>
-                  <span style={{padding:0, margin:'0 0 0 .25em', fontFamily: 'Space Grotesk', fontSize: '13px' }}>{key}</span>
+                  <span style={{padding:0, margin:'0 0 0 .25em', fontFamily: 'Space Grotesk', fontSize: '13px', fontWeight: 300}}>{key}</span>
                 </div>
               ))}
               {parsedOverlay?.fillColor && Array.isArray(fillColor) && <div key={`overlay-nonarray-legend-${selectedOverlay}`} style={{ display: "flex", margin:'.25em 0', justifyContent: 'center'  }}>
@@ -38,7 +38,7 @@ const OverlaysColorLegend = ({ style }) => {
                      height: '16px',
                    }}
                  ></span>
-                <span style={{padding:0, margin:'0 0 0 1rem', fontFamily: 'Space Grotesk', fontSize: '13px'}}>{parsedOverlay?.description}</span>
+                <span style={{padding:0, margin:'0 0 0 1rem', fontFamily: 'Space Grotesk', fontSize: '13px', fontWeight: 300}}>{parsedOverlay?.description}</span>
               </div>}
             </div>}
           </div>)})}
