@@ -137,7 +137,7 @@ const Legend = ({
   const bins = mapParams?.bins || mapParams?.Bins;
   const colorScale = mapParams.colorScale;
 
-  // WIP: an attempt to gather the pieces needed to make this Legend appear as the others do
+  // WIP: an attempt to gather the pieces needed to make this Legend appear as the others do, does not work for categorical
   //const lowerBounds = colorScale.slice(0, colorScale?.length - 2).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
   //const upperBounds = colorScale.slice(1, colorScale?.length - 1).map((c, i) => Math.round(bins[i - 1] * 100) / 100);
 
