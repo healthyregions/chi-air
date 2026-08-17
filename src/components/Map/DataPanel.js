@@ -177,7 +177,7 @@ const DataPanel = ({ mapRef }) => {
 
   return (
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
-      <Grid container spacing={2} alignItems={'center'}>
+      <Grid container spacing={2} alignItems={'center'} justifyContent={'space-between'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton size={'large'} ButtonComponent={LButton} truncate={3} label={getLocaleLabel(cookies['googtrans'])} onChange={onLocaleChange} icon={<MdOutlineTranslate />}  options={locales} /></Grid>
       </Grid>
