@@ -21,19 +21,18 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
       </LButton>
 
       {currentPage === 'Map Layers' && <Grid size={11}>
-        <LHeader>Map Layers</LHeader>
+        <LHeader>Add Community Context</LHeader>
 
         <SGBody style={{ margin: '0.5rem 0' }}>
           Customize your view to see how air quality intersects with
-          your community. Use overlays and filters to explore how
-          social determinants impact health outcomes in your area.
+          your community. Explore different indicators, resources, and boundaries.
         </SGBody>
 
-        <LHeader style={{ fontSize: '18px' }}>Overlays</LHeader>
+        <LHeader style={{ fontSize: '18px' }}>Mapping Overlays</LHeader><br></br>
 
         <Grid size={9}>
           <SGBody>
-            Community context
+            Neighborhood Indicators
             <Tooltip title={'Choose the main community context you want to view on the map. You may only choose one.'}>
               <SensorValueLabelTooltip />
             </Tooltip>
@@ -47,7 +46,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
           <br/>
 
           <SGBody>
-            Boundaries
+            Additional Resources & Context
             <Tooltip title={'A set of composable map overlays that allow you to stack, toggle, and analyze different geographical, administrative, and infrastructural data points. These overlays generally include administrative boundaries, residential areas, and transportation networks, which can be visualized independently or together to analyze relationships between them.'}>
               <SensorValueLabelTooltip />
             </Tooltip>
@@ -55,7 +54,7 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
             {/*  <SensorValueLabelTooltip />*/}
             {/*</Button>*/}
           </SGBody>
-          <SGBody style={{ fontSize: '12px' }}>We recommend enabling only one option from each category below</SGBody>
+          <SGBody style={{ fontSize: '12px' }}>We recommend selecting only one option from each category below, to avoid clutter.</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
         </Grid>
       </Grid>}
