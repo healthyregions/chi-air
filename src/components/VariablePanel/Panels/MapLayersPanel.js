@@ -64,8 +64,8 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
 
           <LHeader style={{ fontSize: '18px' }}>Overlay Additional Resources</LHeader><br></br>
 
-          <SGBody style={{ fontSize: '12px' }}>Add neighborhood boundaries, community resources, and built infrastructure. 
-            We recommend selecting only one option from each category below, to avoid clutter.</SGBody>
+          <SGBody style={{ fontSize: '12px' }}>Add boundaries, resources, & infrastructure. 
+            We recommend selecting only one option from each category, to avoid clutter.</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
         </Grid>
       </Grid>}
