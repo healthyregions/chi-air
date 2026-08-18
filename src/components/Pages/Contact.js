@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { ContentContainer } from '../../styled_components';
 import { NavBar } from '../../components';
 import {Container, Snackbar} from "@mui/material";
-import {GradientBackground, LButton, WhiteBackground} from "../VariablePanel/common";
+import {GradientBackground, LButton} from "../VariablePanel/common";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -195,7 +194,7 @@ const Contact = () => {
     <ContactPageContent>
       <NavBar />
 
-      <GradientBackground style={{ maxHeight: '100vh', flexGrow: 1, marginBottom: 0 }}>
+      <GradientBackground $largeScreen={largeScreen} style={{ maxHeight: '100vh', flexGrow: 1, marginBottom: 0 }}>
         <Container maxWidth="sm">
           <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Grid container spacing={1} justifyContent={'center'} textAlign={'center'} marginTop={'2rem'}>
