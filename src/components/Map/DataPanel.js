@@ -177,7 +177,7 @@ const DataPanel = ({ mapRef }) => {
 
   return (
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
-      <Grid container spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+      <Grid container spacing={2} alignItems={'center'} justifyContent={'space-between'} flexWrap={'nowrap'}>
         <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
         <Grid><DropdownButton size={'large'} ButtonComponent={LButton} truncate={3} label={getLocaleLabel(cookies['googtrans'])} onChange={onLocaleChange} icon={<MdOutlineTranslate />}  options={locales} /></Grid>
       </Grid>
@@ -242,10 +242,11 @@ const DataPanel = ({ mapRef }) => {
 
       {(breadcrumbs?.includes('Details') || breadcrumbs?.includes('Explain')) && currentPage !== 'Color Coding Air Quality' && <>
         <Grid container spacing={0} marginTop={'1rem'}>
-          {currentPage !== 'Map Layers' && <LButton as={Grid} size={1} variant={'text'} onClick={() => popPage('root')}
+          {currentPage !== 'Map Layers' && <Grid size={1}><LButton as={Grid} variant={'text'} onClick={() => popPage('root')}
                    style={{ cursor: 'pointer', marginTop: '0.4rem' }}>
-            <FaArrowCircleLeft style={{ width: '19px', height: '19px' }} />
-          </LButton>}
+              <FaArrowCircleLeft style={{ width: '19px', height: '19px' }} />
+            </LButton>
+          </Grid>}
 
           {currentPage === 'Details' && <ClickedSensorDetailsPanel pop={popPage} push={pushPage} />}
           {currentPage === 'Explain' && <ClickedSensorExplain pop={popPage} />}

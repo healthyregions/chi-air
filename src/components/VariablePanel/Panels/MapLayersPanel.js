@@ -5,6 +5,7 @@ import OverlaysDropdown from "../OverlaysDropdown";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
 //import {LButton, LHeader, SensorValueLabelTooltip, SGBody} from "../common";
 import {LButton, LHeader, SGBody} from "../common";
+import OverlaysDescriptionDisplay from "../OverlaysDescriptionDisplay";
 //import Tooltip from "@mui/material/Tooltip";
 
 
@@ -15,11 +16,11 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
   const currentPage = breadcrumbs[breadcrumbs.length - 1];
 
   return (
-    <Grid container spacing={0} marginTop={'1rem'}>
-      <LButton as={Grid} size={1} variant={'text'} onClick={() => pop()}
-               style={{ cursor: 'pointer', marginTop: '0.4rem' }}>
+    <Grid container spacing={0} marginTop={'1rem'} maxHeight={'60vh'} overflow={'auto'}>
+      <Grid size={1}><LButton variant={'text'} onClick={() => pop()}
+               style={{ marginLeft: '-1.25rem' }}>
         <FaArrowCircleLeft style={{ width: '19px', height: '19px' }} />
-      </LButton>
+      </LButton></Grid>
 
       {currentPage === 'Map Layers' && <Grid size={11}>
         <LHeader>Add Community Context</LHeader>
@@ -29,22 +30,22 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
           your community. Explore different indicators, resources, and boundaries.
         </SGBody>
 
-        
+
 
         <Grid size={9}>
-          
+
           <LHeader style={{ fontSize: '18px' }}>Neighborhood Indicators</LHeader><br></br>
 
           <SGBody style={{ fontSize: '12px' }}>Choose the main measure you want to view on the map. You may only choose one.</SGBody>
 
           {/* <SGBody> */}
-              
+
             {/*<Tooltip title={'Check out the legend on the left side of the map for more data details.'}>
               <SensorValueLabelTooltip />
             </Tooltip>*/}
             {/*<Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>*/}
             {/*  <SensorValueLabelTooltip />*/}
-            {/*</Button>*/} 
+            {/*</Button>*/}
           {/* </SGBody> */}
 
           <VariablesDropdown></VariablesDropdown>
@@ -64,9 +65,10 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
 
           <LHeader style={{ fontSize: '18px' }}>Overlay Additional Resources</LHeader><br></br>
 
-          <SGBody style={{ fontSize: '12px' }}>Add boundaries, resources, & infrastructure. 
+          <SGBody style={{ fontSize: '12px' }}>Add boundaries, resources, & infrastructure.
             We recommend selecting only one option from each category, to avoid clutter.</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
+          <OverlaysDescriptionDisplay style={{ marginTop: '1.5rem' }}></OverlaysDescriptionDisplay>
         </Grid>
       </Grid>}
     </Grid>
