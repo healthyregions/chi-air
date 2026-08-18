@@ -28,32 +28,41 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
           your community. Explore different indicators, resources, and boundaries.
         </SGBody>
 
-        <LHeader style={{ fontSize: '18px' }}>Mapping Overlays</LHeader><br></br>
+        
 
         <Grid size={9}>
-          <SGBody>
-            Neighborhood Indicators
+          
+          <LHeader style={{ fontSize: '18px' }}>Neighborhood Indicators</LHeader><br></br>
+
+          <SGBody style={{ fontSize: '12px' }}>Choose the main measure you want to view on the map. You may only choose one.</SGBody>
+
+          {/* <SGBody> */}
+           {/*   Neighborhood Indicators
             <Tooltip title={'Choose the main community context you want to view on the map. You may only choose one.'}>
               <SensorValueLabelTooltip />
             </Tooltip>
             {/*<Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>*/}
             {/*  <SensorValueLabelTooltip />*/}
-            {/*</Button>*/}
-          </SGBody>
+            {/*</Button>*/} 
+          {/* </SGBody> */}
+
           <VariablesDropdown></VariablesDropdown>
           <VariableDescriptionDisplay style={{ marginTop: '1.5rem' }}></VariableDescriptionDisplay>
 
           <br/>
 
-          <SGBody>
-            Additional Resources & Context
+          {/* <SGBody> */}
+{/*             Additional Resources & Context
             <Tooltip title={'A set of composable map overlays that allow you to stack, toggle, and analyze different geographical, administrative, and infrastructural data points. These overlays generally include administrative boundaries, residential areas, and transportation networks, which can be visualized independently or together to analyze relationships between them.'}>
               <SensorValueLabelTooltip />
-            </Tooltip>
+            </Tooltip> */}
             {/*<Button variant={'text'} onClick={() => push(['Overlays / Boundaries'])}>*/}
             {/*  <SensorValueLabelTooltip />*/}
             {/*</Button>*/}
-          </SGBody>
+          {/* </SGBody> */}
+
+          <LHeader style={{ fontSize: '18px' }}>Additional Resources, Boundaries & Context</LHeader><br></br>
+
           <SGBody style={{ fontSize: '12px' }}>We recommend selecting only one option from each category below, to avoid clutter.</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
         </Grid>
