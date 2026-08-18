@@ -193,7 +193,7 @@ const DataPanel = ({ mapRef }) => {
         >
           <MdHomeFilled style={{ width: '15px', height: '15px' }} /> Home
         </LButton>
-        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Map Layers</LButton>
+        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Add Community Context</LButton>
       </Grid>
 
       {currentPage === 'root' && <>

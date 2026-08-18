@@ -164,7 +164,7 @@ export const ClickedSensorPanel = ({ push, pop }) => {
       </Grid>
 
       <Grid size={12} textAlign={'center'}>
-        <LButton variant={'outlined'} onClick={() => push(['Details'])}>Explore Historical Trends &rarr;</LButton>
+        <LButton variant={'outlined'} onClick={() => push(['Details'])}>Explore Historical Trends & Download &rarr;</LButton>
       </Grid>
     </>
   );
