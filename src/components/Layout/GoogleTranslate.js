@@ -59,7 +59,7 @@ export const GoogleTranslate = () => {
 
     setTimeout(() => {
       window.location.reload();
-    }, 300);
+    }, 600);
   }, [locale, loaded, previous, removeCookie, setCookie]);
 
   // Prevent auto-translation before text contents are fully loaded
