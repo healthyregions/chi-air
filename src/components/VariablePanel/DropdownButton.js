@@ -7,7 +7,7 @@ import {LButton} from "./common";
 
 const ITEM_HEIGHT = 48;
 
-export const DropdownButton = ({ className = '', icon = undefined, onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ className = '', size, icon = undefined, onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -41,7 +41,7 @@ export const DropdownButton = ({ className = '', icon = undefined, onOpen = () =
     <>
       <Btn
         id="basic-button"
-        size={'small'}
+        size={size || 'small'}
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
