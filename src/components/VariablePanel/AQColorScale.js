@@ -129,14 +129,14 @@ export const AQColorScale = () => {
     <ColorScaleContainer $large={largeScreen} $open={panelState.key}>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200 }} justifyContent={'center'}>
         <Grid justifyContent={'end'}>
-          {selectedParameter === 'nowcast_aqi' && <LHeader>EPA Particulate Matter Index</LHeader>}
-          {selectedParameter === 'clarity_pm25' && <LHeader>Fine Particulate Matter</LHeader>}
+          {selectedParameter === 'nowcast_aqi' && <LHeader>EPA PM 2.5 Air Quality Index</LHeader>}
+          {selectedParameter === 'clarity_pm25' && <LHeader>Fine Particulate Matter </LHeader>}
           {selectedParameter === 'clarity_no2' && <LHeader>Nitrogen Dioxide</LHeader>}
         </Grid>
       </Grid>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem', marginTop:'0.5rem' }}>
         {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
-          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'EPA’s Air Quality Index (AQI)'}>AQI-PM2.5</Tooltip>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'EPA’s PM2.5 Air Quality Index (AQI)'}>AQI-PM2.5</Tooltip>
         </Grid>}
         {selectedParameter === 'clarity_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM2.5</Tooltip>

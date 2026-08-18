@@ -3,7 +3,8 @@ import {FaArrowCircleLeft} from "react-icons/fa";
 import VariablesDropdown from "../VariablesDropdown";
 import OverlaysDropdown from "../OverlaysDropdown";
 import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
-import {LButton, LHeader, SensorValueLabelTooltip, SGBody} from "../common";
+//import {LButton, LHeader, SensorValueLabelTooltip, SGBody} from "../common";
+import {LButton, LHeader, SGBody} from "../common";
 import Tooltip from "@mui/material/Tooltip";
 
 
@@ -38,9 +39,9 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
 
           {/* <SGBody> */}
               
-            <Tooltip title={'Check out the legend on the left side of the map for more data details.'}>
+            {/*<Tooltip title={'Check out the legend on the left side of the map for more data details.'}>
               <SensorValueLabelTooltip />
-            </Tooltip>
+            </Tooltip>*/}
             {/*<Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>*/}
             {/*  <SensorValueLabelTooltip />*/}
             {/*</Button>*/} 
@@ -61,9 +62,10 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
             {/*</Button>*/}
           {/* </SGBody> */}
 
-          <LHeader style={{ fontSize: '18px' }}>Additional Resources, Boundaries & Context</LHeader><br></br>
+          <LHeader style={{ fontSize: '18px' }}>Overlay Additional Resources</LHeader><br></br>
 
-          <SGBody style={{ fontSize: '12px' }}>We recommend selecting only one option from each category below, to avoid clutter.</SGBody>
+          <SGBody style={{ fontSize: '12px' }}>Add neighborhood boundaries, community resources, and built infrastructure. 
+            We recommend selecting only one option from each category below, to avoid clutter.</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
         </Grid>
       </Grid>}
