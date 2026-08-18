@@ -50,18 +50,16 @@ export const GoogleTranslate = () => {
     if (locale === previous) { console.log('locale unchanged.');return; }
 
     console.log('Setting locale to: ', locale);
-    /*
     // FIXME: removeCookie does not appear to work in Safari
-    if (!locale || locale === 'auto') {
-      removeCookie('googtrans', { path: '/' });
-    } else {
-    */
-      setCookie('googtrans', `/auto/${locale}`, { path: '/' })
+    // if (!locale || locale === 'auto') {
+    //   removeCookie('googtrans', { path: '/', domain: `.${window.location.host.split(':')?.[0]}` });
+    // } else {
+      setCookie('googtrans', `/auto/${locale}`, { path: '/', domain: `.${window.location.host.split(':')?.[0]}` })
     //}
 
     setTimeout(() => {
       window.location.reload();
-    }, 300)
+    }, 300);
   }, [locale, loaded, previous, removeCookie, setCookie]);
 
   // Prevent auto-translation before text contents are fully loaded
