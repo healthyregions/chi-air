@@ -37,8 +37,8 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
           <SGBody style={{ fontSize: '12px' }}>Choose the main measure you want to view on the map. You may only choose one.</SGBody>
 
           {/* <SGBody> */}
-           {/*   Neighborhood Indicators
-            <Tooltip title={'Choose the main community context you want to view on the map. You may only choose one.'}>
+              
+            <Tooltip title={'Check out the legend on the left side of the map for more data details.'}>
               <SensorValueLabelTooltip />
             </Tooltip>
             {/*<Button variant={'text'} onClick={() => push(['Overlays / Community Context'])}>*/}
