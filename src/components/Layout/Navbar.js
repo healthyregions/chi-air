@@ -153,6 +153,7 @@ export default function Nav({
                 <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/contact')}>Contact Us</MenuItem>
                 </NavDropdown>
               </Grid>}
             </Grid>
@@ -161,40 +162,6 @@ export default function Nav({
             </Grid>
           </Grid>
 
-          {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
-            <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
-            {SVG.hamburger}
-          </LogoButtonContainer>*/}
-          <Popover
-            id="nav-container"
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            className="menu-popover"
-            style={{
-              border: `1px solid ${colors.chicagoBlue}`,
-            }}
-          >
-            <NavInner>
-              {!!showMapControls && <>
-                <Typography>Map Controls</Typography>
-                <NavItems>
-                  <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
-                  <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
-                </NavItems>
-              </>}
-              <NavItems>
-                <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
-                <li><NavLink to="/map">Map</NavLink></li>
-                <li><NavLink to="/team">Team</NavLink></li>
-                <li><NavLink to="/about">About</NavLink></li>
-              </NavItems>
-            </NavInner>
-          </Popover>
         </ContentContainer>
       </NavContainer>
     </>
