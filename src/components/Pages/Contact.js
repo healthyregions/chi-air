@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavBar } from '../../components';
 import {Container, Snackbar} from "@mui/material";
-import {GradientBackground, LButton} from "../VariablePanel/common";
+import {GradientBackground, LButton, SGBody} from "../VariablePanel/common";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -204,7 +204,7 @@ const Contact = () => {
             </Grid>
             <Grid container spacing={3} textAlign={'center'} marginTop={'0.5rem'}>
               <Grid size={12}>
-                Hit a problem? Want to share feedback or feature suggestions?
+                <SGBody>Hit a problem? Want to share feedback or feature suggestions?</SGBody>
               </Grid>
             </Grid>
 
