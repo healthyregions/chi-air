@@ -224,6 +224,12 @@ const communityorgs = [
     name: 'Little Village Environmental Justice Organization',
     description: 'Jocelyn Vazquez-Gomez',
   },
+   {
+    url: 'https://openlands.org/',
+    photo: '/img/team/OPL-Htag-purple.jpg',
+    name: 'Openlands',
+    description: '',
+  },
   {
     url: 'https://n4ej.org/',
     photo: '/img/team/n4ej.jpg',
@@ -235,6 +241,12 @@ const communityorgs = [
     photo: '/img/team/pcr.png',
     name: 'People for Community Recovery',
     description: 'Jasmine Ray, Jermica Davis',
+  },
+    {
+    url: 'https://prn.mayfirst.info/about-us/',
+    photo: '/img/team/prn.png',
+    name: 'People\'s Response Network',
+    description: '',
   },
   {
     url: 'https://pilsenperro.org/',
@@ -252,12 +264,6 @@ const communityorgs = [
     url: 'https://www.womenforgreenspaces.org/',
     photo: '/img/team/wgs.png',
     name: 'Women for Green Spaces',
-    description: '',
-  },
-  {
-    url: 'https://prn.mayfirst.info/about-us/',
-    photo: '/img/team/prn.png',
-    name: 'People\'s Response Network',
     description: '',
   }
 ];
@@ -474,7 +480,7 @@ export default function Team() {
       </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
-            <Grid key={'communityorgs-' + index} size={{ xs: 12, md: 4 }}
+            <Grid key={'communityorgs-' + index} size={{ xs: 12, md: 3 }}
               onClick={() => contributor?.url && window.open(contributor.url, '_blank', 'noopener,noreferrer')}
               style={{ cursor: 'pointer' }} justifyItems={'center'}>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
