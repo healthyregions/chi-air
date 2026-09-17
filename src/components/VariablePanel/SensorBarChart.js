@@ -5,6 +5,8 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
+import {useSelector} from "react-redux";
+import {selectClickedSensor} from "../../store/slices/sensorDataSlice";
 
 
 const getIsoWeekRange = (year, weekNumber) => {
@@ -44,11 +46,13 @@ const shortDateFormat = new Intl.DateTimeFormat("en-US", {
 
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
+  const clickedSensor = useSelector(selectClickedSensor);
 
   // Listen for changes to averageType or selectedParameter
   // Reset page number when averageType or selectedParameter changes
   const prevType = useRef();
   const prevParam = useRef();
+  const prevSensor = useRef();
   useEffect(() => {
     if (prevType.current !== averageType) {
       prevType.current = averageType;
@@ -58,7 +62,11 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       prevParam.current = selectedParameter;
       setPage(0);
     }
-  }, [averageType, selectedParameter]);
+    if (prevSensor.current !== clickedSensor) {
+      prevSensor.current = clickedSensor;
+      setPage(0);
+    }
+  }, [averageType, selectedParameter, clickedSensor]);
 
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);
@@ -87,8 +95,8 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
 
   // Paging metadata: item count, number of pages, page number, page size, etc
   // TODO: how to calculate this with multiple parameters?
-  const itemsCount = metricData?.length;
-  const numPages = Math.ceil(itemsCount / pageSize);
+  const numItems = metricData?.length;
+  const numPages = Math.ceil(numItems / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
 
@@ -118,7 +126,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       disableTicks: true,
       position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
-      max: getMaxValue(),
+      max: getMaxValue() + 100,
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
@@ -241,7 +249,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} margin={{...margin, top:20, }} />
+          <BarChart {...chartSettings}  />
         </Grid>}
 
         {showScroll && <Grid size={1}>

@@ -7,6 +7,7 @@ import {
 } from "../../components";
 import { selectMapParams } from "../../store/slices/legacyStoreSlice";
 import { AQColorScale } from "../VariablePanel/AQColorScale";
+import {HistoricalTimeslider} from "../VariablePanel/HistoricalTimeslider";
 
 // US bounds
 export const defaultBounds = fitBounds({
@@ -41,6 +42,7 @@ function Map() {
             {/*<VariablePanel />*/}
             <DataPanel mapRef={mapRef} handlePanMap={handlePanMap} />
             <AQColorScale />
+            <HistoricalTimeslider />
           </>
         }
       </div>

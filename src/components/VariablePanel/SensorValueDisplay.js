@@ -14,6 +14,7 @@ const SensorValueColorIndicator = styled.div`
     background-color: ${({ $color }) => $color};
     border: 4px solid ${({ $border }) => $border};
     border-radius: 100px;
+    opacity: 75%;
     margin-right: 0.8rem;
     width: 32px;
     height: 32px;
