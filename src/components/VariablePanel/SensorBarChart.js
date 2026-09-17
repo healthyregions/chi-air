@@ -5,8 +5,8 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
-import {useDispatch, useSelector} from "react-redux";
-import {selectClickedSensor, selectMetricIndex, setSelectedTimeIndex} from "../../store/slices/sensorDataSlice";
+import {useSelector} from "react-redux";
+import {selectClickedSensor} from "../../store/slices/sensorDataSlice";
 
 
 const getIsoWeekRange = (year, weekNumber) => {
@@ -46,8 +46,6 @@ const shortDateFormat = new Intl.DateTimeFormat("en-US", {
 
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
-  const dispatch = useDispatch();
-  const metricIndex = useSelector(selectMetricIndex);
   const clickedSensor = useSelector(selectClickedSensor);
 
   // Listen for changes to averageType or selectedParameter
@@ -101,8 +99,6 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   const numPages = Math.ceil(numItems / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
-  const isLastPage = useMemo(() => pageEnd === numItems, [numItems, pageEnd]);
-  const numItemsOnLastPage = useMemo(() => numItems % pageSize, [numItems, pageSize]);
 
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
