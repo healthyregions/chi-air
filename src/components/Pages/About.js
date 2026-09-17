@@ -156,31 +156,17 @@ const faqs = [
     category: 'data',
     question: "How can I access the data?",
     answer: <>
-<<<<<<< HEAD
-      Explore the Map to explore sensor-specific, community/neighborhood-specific, or city-
-      wide data trends. Data can also be downloaded in a number of ways, including direct download on
-      this website (see 'Download' links on Map), direct download on the{" "}
-      <ExternalLink href="https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data"
-                    target={'_blank'} rel="noreferrer noopener">
-        City Data Portal
-      </ExternalLink>, and direct download on the{" "}
-      <ExternalLink href="https://map.clarity.io/open-air-chicago"
-                    target={'_blank'} rel="noreferrer noopener">
-        {platformName} Clarity Dashboard
-      </ExternalLink>.
-    </>
-=======
       Explore the Map to explore sensor-specific, community/neighborhood-specific, or city-wide data trends.
       Data can also be downloaded in a number of ways, including: direct download on the{" "}
-      <a href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
+      <ExternalLink href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
          style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-         target={'_blank'} rel="noreferrer noopener">City Data Portal</a>,
+         target={'_blank'} rel="noreferrer noopener">City Data Portal</ExternalLink>,
       direct download on the{" "}
-      <a href={'https://map.clarity.io/open-air-chicago'}
+      <ExternalLink href={'https://map.clarity.io/open-air-chicago'}
          style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
         Open Air Clarity Dashboard
-      </a>, and direct download on this website (see 'Download' links on Map).
+      </ExternalLink>, and direct download on this website (see 'Download' links on Map).
       Note that when downloading data from the Our Air Map on this website, only the sensors that
       you clicked during exploration will be able to be downloaded. In the future,
       we plan to develop a more robust Data Download filter for more customized options.
@@ -191,67 +177,20 @@ const faqs = [
     category: 'map',
     question: "How do I get more details on the data in the mapping interface?",
     answer: "The 'Details' Section on the Map provides many more details on the air quality measures. On the Map page, click a sensor to see a graph appear in the DataPanel. To the top-right of this graph, you should see the 'Details →' button - clicking this button will show the Details panel for the chosen sensor, which shows the Historical Trends graph. Here you should see a 'Download →' button, that offers downloads in various common formats."
->>>>>>> 773766bfe24bbbb62ee9887b4a185ec01151ce96
   },
   {
     id: 'map-colors',
     category: 'map',
     question: "What do the colors on the map mean?",
     answer: <>
-<<<<<<< HEAD
-      Colors of individual sensor locations correspond to different value bins or groupings
-      of EPA’s Air Quality Index (AQI). The U.S. Air Quality Index (AQI) is EPA's tool for
-      communicating about outdoor air quality and health. The AQI includes six color-coded
-      categories, each corresponding to a range of index values representing a different
-      level of health concern. For example, while AQI value of 50 or below represents good
-      air quality, an AQI value over 300 represents hazardous air quality. To identify the
-      value range and corresponding advisory for each color, use the legend 'key' on the
-      top left part.
-    </>
-  },
-  {
-    id: 'map-data-howtouse',
-    category: 'map',
-    question: "How can I use the data to protect myself from harmful exposures to air pollutants?",
-    answer: <>
-      We highly recommend checking the map regularly and understanding the trends in
-      air quality in your neighborhood. On days when the Air Quality Index (AQI) is
-      unhealthy (i.e., greater than 100), we recommend using our Map as a “Public
-      Health Messaging Tool” and adjust your daily activities to reduce your exposures
-      to air pollutants and associated health risks.
-      <br />
-      <br />
-      Specifically, we recommend adopting one or more of the{" "}
-      <ExternalLink href="https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors"
-                    target={'_blank'} rel="noreferrer noopener">
-        Strategies to Reduce Exposure Outdoors
-      </ExternalLink>
-      {" "}(e.g., staying indoors, adjusting outdoor activities (e.g., running) at time frames when the air quality is healthy, using an N95 mask, etc.)
-    </>
-  },
-  {
-    id: 'protocol-data-source',
-    category: 'protocol',
-    question: "Where does the data come from and where it is stored?",
-    answer: <>
-      The data represent the Clarity Node-S sensor measurements for Fine Particulate Matter (PM2.5)
-      and Nitrogen Dioxide (NO2) of the “Open Air Chicago” network, a co-owned sensor-based air
-      monitoring and air quality assessment project between the University of Illinois at
-      Chicago and the Chicago Department of Public Health. Sensor readings are pulled directly
-      from the Clarity programming interface, cleaned, summarized, and updated in this web mapping
-      application. The data cleaning and data quality assurance and quality control protocols are
-      employed by Clarity (see below for more details). A copy of the data is stored on a U.S.-based
-      web server. Data can be directly downloaded by time period of interest (e.g., hourly, monthly,
-      seasonally) in the 'Details' section of the mapping interface.
-=======
       Colors of individual sensor locations correspond to different value bins or groupings of EPA’s Air Quality Index (AQI). The U.S. Air Quality Index (AQI) is EPA's tool for communicating about outdoor air quality and health. The AQI includes six color-coded
       categories, each corresponding to a range of index values representing a different level of health concern. For example, while AQI value of 50 or below represents good air quality, an AQI value over 300 represents hazardous air quality. To identify the value
       range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application. To learn more about the AQI, please consult{" "}
-      <a href={'https://www.airnow.gov/aqi/aqi-basics/'}
+      <ExternalLink href={'https://www.airnow.gov/aqi/aqi-basics/'}
          style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
         https://www.airnow.gov/aqi/aqi-basics/
-      </a>.
+      </ExternalLink>.
     </>
   },
   {
@@ -261,11 +200,11 @@ const faqs = [
     answer: <>
       We highly recommend checking the map regularly and understanding the trends in air quality in your neighborhood. On days when the Air Quality Index (AQI) is unhealthy (i.e., greater than 100), we recommend using our Map as a “Public Health Messaging Tool” and adjust your daily activities to reduce your exposures to air pollutants and associated health risks.
       Specifically, we recommend adopting one or more of the{" "}
-      <a href={'https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors'}
+      <ExternalLink href={'https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors'}
          style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
         Strategies to Reduce Exposure Outdoors
-      </a>.
+      </ExternalLink>.
       {" "}For example: adjusting outdoor activities (such as running) during time frames when the air quality is healthy, staying indoors, using an N95 mask, etc.)
     </>
   },
@@ -285,12 +224,11 @@ const faqs = [
       directly downloaded by time period of interest (e.g., hourly, monthly, seasonally) in
       the 'Details' section of the mapping interface. The raw and weighted (average) data for
       individual measurements, hourly and daily averages can also be accessed and downloaded from the
-      {" "}<a href={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'}
+      {" "}<ExternalLink href={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'}
         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
         target={'_blank'} rel="noreferrer noopener">
         CDPH Open Air Chicago website
-      </a>
->>>>>>> 773766bfe24bbbb62ee9887b4a185ec01151ce96
+      </ExternalLink>
     </>
   },
   {
