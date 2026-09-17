@@ -10,12 +10,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
   selectMetricData,
-  selectMetricIndex,
+  selectMetricIndex, selectSelectedTimeIndex,
   setSelectedTimeIndex,
 } from "../../store/slices/sensorDataSlice";
 import MenuItem from "@mui/material/MenuItem";
 import {Slider} from "@mui/material";
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -141,6 +141,7 @@ const SliderLabel = styled.span`
 
 export const HistoricalTimeslider = () => {
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   const dispatch = useDispatch();
   const panelState = useSelector(selectPanelState);
@@ -214,37 +215,45 @@ export const HistoricalTimeslider = () => {
   const numTicks = () => {
     const now = new Date();
     if (granularity === 'day') {
-      return 24;
-      //const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
-      //return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > dayAgo)?.length;
+      const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > dayAgo)?.length - 1;
     } else if (granularity === 'week') {
-      return 7*24;
-      //const weekAgo = new Date()?.setTime(now?.getTime() - 7*24*60*60*1000);  // 7 days
-      //return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > weekAgo)?.length;
+      const weekAgo = new Date()?.setTime(now?.getTime() - 7*24*60*60*1000);  // 7 days
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > weekAgo)?.length - 1;
     } else if (granularity === 'month') {
       const monthAgo = new Date()?.setTime(now?.getTime() - 30*24*60*60*1000);  // 30 days
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > monthAgo)?.length;
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > monthAgo)?.length - 1;
     } else if (granularity === 'season') {
       const threeMonthsAgo = new Date()?.setTime(now?.getTime() - 3*30*24*60*60*1000);  // 90 days
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > threeMonthsAgo)?.length;
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > threeMonthsAgo)?.length - 1;
     } else if (granularity === 'year') {
       const oneYearAgo = new Date()?.setTime(now?.getTime() - 365*24*60*60*1000);  // 24 hours
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > oneYearAgo)?.length;
+      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > oneYearAgo)?.length - 1;
     } else {
-      return metricData?.filter(m => m?.type === 'hour')?.length;
+      return metricData?.filter(m => m?.type === 'hour')?.length - 1;
     }
   }
 
   const handleChange = (event, newValue) => { setValue(newValue); };
   const handleCommit = (event, finalValue) => {
     const index = numTicks() - finalValue;
-    console.log("Triggered only when mouse is released:", index);
     // Call your API or heavy logic here
 
-    console.log(`Now showing on the map: ${index}`);
+    const row = metricData?.[index];
+    const date = row?.date;
+    const type = row?.type;
+    console.log(`index=${index}  date=${date}  type=${type}`);
 
-    dispatch(setSelectedTimeIndex({ index }));
+    dispatch(setSelectedTimeIndex({ index, date, type }));
   };
+
+  const prev = useRef();
+  useEffect(() => {
+    if (prev.current !== selectedTimeIndex?.index) {
+      selectedTimeIndex?.index && setValue(numTicks() - selectedTimeIndex?.index);
+      prev.current = selectedTimeIndex?.index;
+    }
+  }, [numTicks, selectedTimeIndex?.index])
 
   return (
     <TimesliderContainer $large={largeScreen} $open={panelState.history}>
@@ -273,9 +282,10 @@ export const HistoricalTimeslider = () => {
       <Grid marginTop={'1.5rem'}>
         <Grid container alignItems={'center'}>
           <Grid size={{ xs: 2 }}>
-            { granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderStart}</SliderLabel> }
-            { granularity === 'year' && <SliderLabel>{sliderStart}</SliderLabel> }
-            { granularity === 'all' && <SliderLabel>{sliderStart}</SliderLabel> }
+            {/*{ granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderStart}</SliderLabel> }*/}
+            {/*{ granularity === 'year' && <SliderLabel>{sliderStart}</SliderLabel> }*/}
+            {/*{ granularity === 'all' && <SliderLabel>{sliderStart}</SliderLabel> }*/}
+            <SliderLabel>{sliderStart}</SliderLabel>
           </Grid>
           <Grid size={{ xs: 8 }}>
             <Slider aria-label="History"
@@ -317,9 +327,10 @@ export const HistoricalTimeslider = () => {
             />
           </Grid>
           <Grid size={{ xs: 2 }} textAlign={'end'}>
-            { granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }
-            { granularity === 'year' && <SliderLabel>{sliderEnd}</SliderLabel> }
-            { granularity === 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }
+            {/*{ granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }*/}
+            {/*{ granularity === 'year' && <SliderLabel>{sliderEnd}</SliderLabel> }*/}
+            {/*{ granularity === 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }*/}
+            <SliderLabel>{sliderEnd}</SliderLabel>
           </Grid>
         </Grid>
       </Grid>

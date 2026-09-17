@@ -115,8 +115,11 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
     const averageTypeStart = metricIndex[averageType];
     const index = averageTypeStart + averageTypeOffset
     console.log('Selected:', index);
+    const row = metricData?.[index];
+    const date = row?.date;
+    const type = row?.type;
 
-    dispatch(setSelectedTimeIndex({ index }));
+    dispatch(setSelectedTimeIndex({ index, date, type }));
   };
 
   // Filter the data and build a bar graph from it
@@ -268,7 +271,8 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} onItemClick={(event, d) => onBarClick(d)} margin={{...margin, top:20, }} />
+          {/* Experimental time travel: onItemClick={(event, d) => onBarClick(d)} margin={{...margin, top:20, }} */}
+          <BarChart {...chartSettings}  />
         </Grid>}
 
         {showScroll && <Grid size={1}>

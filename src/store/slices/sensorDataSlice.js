@@ -43,7 +43,7 @@ export const sensorDataSlice = createSlice({
   reducers: {
     setSelectedTimeIndex: (state, action) => ({
       ...state,
-      selectedTimeIndex: action.payload.index
+      selectedTimeIndex: action.payload
     }),
     setBreadcrumbs: (state, action) => ({
       ...state,

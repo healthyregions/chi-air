@@ -148,13 +148,14 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     const startTime = new Date().getTime();
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
-      rowStart: selectedTimeIndex,
-      rowEnd: selectedTimeIndex+1,
+      rowStart: selectedTimeIndex?.index,
+      rowEnd: selectedTimeIndex?.index+1,
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
-
+      const checkDate = data?.find(() => true)?.date;
       const endTime = new Date().getTime();
-      console.log(`Finished fetching ${selectedParameter} map data for index=${selectedTimeIndex}: ${endTime - startTime}ms`);
+      console.log(`Finished fetching ${selectedParameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
+      console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
     });
   }, [dispatch, locations, selectedParameter, selectedTimeIndex]);
 

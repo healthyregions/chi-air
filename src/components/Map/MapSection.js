@@ -309,7 +309,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.[selectedTimeIndex]?.value;
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [200, 200, 200];
@@ -329,7 +329,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.[selectedTimeIndex]?.value;
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
         return [229, 238, 245];
         //return [68, 68, 68];
@@ -364,7 +364,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     pickable: true,
     stroked: true,
     filled: true,
-    extruded: false,
+    extruded: true,
     /*pointType: 'circle+text',
     getText: f => f?.properties?.name,
     getTextSize: 12,*/
@@ -374,7 +374,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.[selectedTimeIndex]?.value;
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [100, 100, 100];
@@ -394,7 +394,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.[selectedTimeIndex]?.value;
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
         //return [229, 238, 245];
         //return [68, 68, 68];
@@ -442,7 +442,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.[selectedTimeIndex]?.value;
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
       //return [79, 143, 197];
         return [100, 100, 100];
@@ -463,8 +463,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return [229, 238, 245];
       }
 
-      const latest = data?.[selectedTimeIndex]?.value;
-      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      if (isSensorOffline(latest)) {
         //return [229, 238, 245];
         //return [68, 68, 68];
         return [200, 200, 200];

@@ -160,7 +160,8 @@ export const AQColorScale = () => {
               style={{
                 display: 'block',
                 backgroundColor: color,
-                border: `1px solid ${border}`,
+                opacity: '75%',
+                border: `2px solid ${border}`,
                 borderRadius: '10px',
                 width: '16px',
                 height: '16px',
