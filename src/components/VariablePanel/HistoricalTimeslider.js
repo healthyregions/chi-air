@@ -154,7 +154,7 @@ export const HistoricalTimeslider = () => {
   const handleOpenClose = () => dispatch(setPanelState({ history: !panelState.history }));
   const [value, setValue] = useState(30);
 
-  const fromIso = (d) => new Date(d?.split(' ').join('T') + 'Z');
+  const fromIso = useCallback((d) => new Date(d?.split(' ').join('T') + 'Z'), []);
   const getStartDate = useCallback((endDate: Date): Date => {
     const startDate = new Date(endDate);
     if (granularity === 'day') {
@@ -186,7 +186,7 @@ export const HistoricalTimeslider = () => {
       return new Date(metricData?.filter(m => m?.type === 'hour')?.reverse()?.find(() => true)?.date.split(' ').join('T') + 'Z');
     }
     return startDate;
-  }, [metricData, granularity]);
+  }, [metricData, granularity, fromIso]);
 
   function valuetext(value, length) {
     const offset = length - value;
@@ -212,7 +212,7 @@ export const HistoricalTimeslider = () => {
     return [start, end];
   }, [getStartDate, metricData]);
 
-  const numTicks = () => {
+  const numTicks = useCallback(() => {
     const now = new Date();
     if (granularity === 'day') {
       const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
@@ -232,7 +232,7 @@ export const HistoricalTimeslider = () => {
     } else {
       return metricData?.filter(m => m?.type === 'hour')?.length - 1;
     }
-  }
+  }, [metricData, fromIso, granularity]);
 
   const handleChange = (event, newValue) => { setValue(newValue); };
   const handleCommit = (event, finalValue) => {

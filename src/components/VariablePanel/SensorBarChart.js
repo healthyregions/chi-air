@@ -104,24 +104,6 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   const isLastPage = useMemo(() => pageEnd === numItems, [numItems, pageEnd]);
   const numItemsOnLastPage = useMemo(() => numItems % pageSize, [numItems, pageSize]);
 
-  const onBarClick = (d) => {
-    const size = context === 'historical' ? pageSize : 24;
-    const negativeOffset = d?.dataIndex;
-    const lastPageOffset = (numItemsOnLastPage || (size-1)) - negativeOffset;
-    const offset = isLastPage ? lastPageOffset : (size-1) - negativeOffset;
-
-    // Now include metricIndex (to support everything but averageType=day)
-    const averageTypeOffset = pageStart + offset;
-    const averageTypeStart = metricIndex[averageType];
-    const index = averageTypeStart + averageTypeOffset
-    console.log('Selected:', index);
-    const row = metricData?.[index];
-    const date = row?.date;
-    const type = row?.type;
-
-    dispatch(setSelectedTimeIndex({ index, date, type }));
-  };
-
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
   const chartSettings: BarChartProps = {
@@ -271,7 +253,6 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          {/* Experimental time travel: onItemClick={(event, d) => onBarClick(d)} margin={{...margin, top:20, }} */}
           <BarChart {...chartSettings}  />
         </Grid>}
 
