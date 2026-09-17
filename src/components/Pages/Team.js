@@ -21,6 +21,33 @@ const TeamBodyText = styled(Grid)`
     text-align: right;
 `;
 
+const TeamHeadText = styled(Grid)`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 1rem;
+`;
+
+const TeamHead1Text = styled(Grid)`
+    color: #444444;
+    font-family: Space Grotesk,serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 1rem;
+`;
+
+const StyledAnchorLink = styled.a`
+    color: #41b6e7;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+`;
+
 const ContentContainer = styled.div`
     max-width: 1200px;
     margin: 0 auto;
@@ -67,51 +94,71 @@ const ContributorDescription = styled.div`
 const leadership = [
   {
     photo: '/img/team/erdal.png',
-    name: 'Serap Erdal',
+    name: 'Serap Erdal, Ph.D.',
     description: 'Principal Investigator, University of Illinois Chicago',
   },
   {
-    photo: '/img/team/kolak.png',
-    name: 'Marynia Kolak',
-    description: 'Co-Investigator, University of Illinois Urbana-Champaign',
-  },
-  {
     photo: '/img/team/persky.png',
-    name: 'Victoria Persky',
+    name: 'Victoria Persky, M.D.',
     description: 'Co-Investigator, University of Illinois Chicago',
   },
   {
+    photo: '/img/team/kolak.png',
+    name: 'Marynia Kolak, Ph.D.',
+    description: 'Co-Investigator, University of Illinois Urbana-Champaign',
+  },
+  {
     photo: '/img/team/wang.png',
-    name: 'Meida Wang',
+    name: 'Meida Wang, Ph.D.',
     description: 'Co-Investigator, University of Illinois Chicago',
   }
 ];
 
 const coreteam = [
   {
-    photo: '/img/team/lambert.png',
-    name: 'Sara Lambert',
-    description: 'Sr. Engineer, UIUC',
-  },
-  {
-    photo: '/img/team/kumar.png',
-    name: 'Shubham Kumar',
-    description: 'Sr. Product Designer, UIUC',
-  },
-  {
-    photo: '/img/team/pagone.png',
-    name: 'Frank Pagone',
-    description: 'Sr. Manager, RHP',
-  },
-  {
     photo: '/img/team/astacio-palmer.png',
-    name: 'Marc Astacio-Palmer',
+    name: 'Marc Astacio-Palmer, MS',
     description: 'Research Manager, UIUC',
   },
   {
+    photo: '/img/team/kamaria.png',
+    name: 'Kamaria Barronville, Ed.D.',
+    description: 'Research Specialist, UIUC',
+  },
+  {
+    photo: '/img/team/mallikarjun.png',
+    name: 'Mallikarjun Bhansoor, MS',
+    description: 'Research Scientist, UIUC',
+  },
+  {
+    photo: '/img/team/cox.png',
+    name: 'Adam Cox, MS',
+    description: 'Sr. Engineer, UIUC',
+  },
+  {
     photo: '/img/team/fiffer.png',
-    name: 'Melissa Fiffer',
+    name: 'Melissa Fiffer, Ph.D.',
     description: 'Scientific Consultant, UIC',
+  },
+  {
+    photo: '/img/team/person.png',
+    name: 'Camrin Garrett, MS',
+    description: 'Research Specialist, UIUC',
+  },
+  {
+    photo: '/img/team/kumar.png',
+    name: 'Shubham Kumar, MSIM',
+    description: 'Sr. Product Designer, UIUC',
+  },
+  {
+    photo: '/img/team/lambert.png',
+    name: 'Sara Lambert',
+    description: 'Lead Sr. Engineer, UIUC',
+  },
+  {
+    photo: '/img/team/pagone.png',
+    name: 'Frank Pagone, Ph.D.',
+    description: 'Sr. Manager, RHP',
   },
   {
     photo: '/img/team/tootoo.png',
@@ -119,9 +166,9 @@ const coreteam = [
     description: 'Scientific Consultant, UIC',
   },
   {
-    photo: '/img/team/cox.png',
-    name: 'Adam Cox',
-    description: 'Sr. Engineer, UIUC',
+    photo: '/img/team/jocelynV.png',
+    name: 'Jocelyn Vazquez-Gomez',
+    description: 'Community Science Organizer, LVEJO',
   }
 ];
 
@@ -138,13 +185,18 @@ const students = [
   },
   {
     photo: '/img/team/mahjabin.png',
-    name: 'Mahjabin Kabir Adrita',
+    name: 'Mahjabin Kabir Adrita, MS',
     description: 'Research Assistant, UIUC',
   },
   {
     photo: '/img/team/zhengrui.png',
     name: 'Zhengrui Huang',
     description: 'Research Assistant, UIC',
+  },
+  {
+    photo: '/img/team/nianen.png',
+    name: 'Nianen Si',
+    description: 'Research Assistant, UIUC',
   },
   {
     photo: '/img/team/qingwen.png',
@@ -167,6 +219,18 @@ const communityorgs = [
     description: 'John Paul Jones, Adonnis Platt',
   },
   {
+    url: 'https://www.lvejo.org/',
+    photo: '/img/team/lvejo.png',
+    name: 'Little Village Environmental Justice Organization',
+    description: 'Jocelyn Vazquez-Gomez',
+  },
+   {
+    url: 'https://openlands.org/',
+    photo: '/img/team/OPL-Htag-purple.jpg',
+    name: 'Openlands',
+    description: '',
+  },
+  {
     url: 'https://n4ej.org/',
     photo: '/img/team/n4ej.jpg',
     name: 'Neighbors for Environmental Justice',
@@ -177,6 +241,12 @@ const communityorgs = [
     photo: '/img/team/pcr.png',
     name: 'People for Community Recovery',
     description: 'Jasmine Ray, Jermica Davis',
+  },
+    {
+    url: 'https://prn.mayfirst.info/about-us/',
+    photo: '/img/team/prn.png',
+    name: 'People\'s Response Network',
+    description: '',
   },
   {
     url: 'https://pilsenperro.org/',
@@ -195,51 +265,41 @@ const communityorgs = [
     photo: '/img/team/wgs.png',
     name: 'Women for Green Spaces',
     description: '',
-  },
-  {
-    url: 'https://prn.mayfirst.info/about-us/',
-    photo: '/img/team/prn.png',
-    name: 'People\'s Response Network',
-    description: '',
   }
 ];
 
 const communityindividual = [
   {
     name: '',
-    description: 'Ben Barrett, Northwestern University',
+    description: <><strong>Ben Barrett</strong>, Northwestern University</>
   },
   {
     name: '',
-    description: 'Benjamin Campbell, University of Illinois Urbana Champaign',
+    description: <><strong>Benjamin Campbell, Ph.D.</strong>, University of Illinois Urbana Champaign</>
   },
   {
     name: '',
-    description: 'Bill Miller, Northwestern University',
+    description: <><strong>Bill Miller, Ph.D.</strong>, Northwestern University</>
   },
   {
     name: '',
-    description: 'Beth Beyer, The Technology Alliance',
+    description: <><strong>Beth Beyer</strong>, The Technology Alliance</>
   },
   {
     name: '',
-    description: 'Christine Dannhausen-Brun, Nordson Green Earth Foundation',
+    description: <><strong>Christine Dannhausen-Brun, MPH</strong>, Nordson Green Earth Foundation</>
   },
   {
     name: '',
-    description: 'Daisy Magana, Univeristy of Illinios Chicago School of Public Health',
+    description: <><strong>Daisy Magana, MPH</strong>, Univeristy of Illinios Chicago School of Public Health</>
   },
   {
     name: '',
-    description: 'Alex Peimer, Northeastern Illinois University',
+    description: <><strong>Alex Peimer, Ph.D.</strong>, Northeastern Illinois University</>
   },
   {
     name: '',
-    description: 'Jocelyn Vazquez-Gomez, Little Village Environmental Justice Organization',
-  },
-  {
-    name: '',
-    description: 'Julia McKenna, STRONG Manoomin Collective',
+    description: <><strong>Julia McKenna</strong>, STRONG Manoomin Collective</>
   }
 ];
 
@@ -268,7 +328,7 @@ export default function Team() {
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              <b className={'notranslate'}>{productName}</b>&nbsp;is a collective effort driven by a shared commitment to data transparency and public health. This page honors the diverse group of individuals from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the air they breathe.
+              <b className={'notranslate'}>{productName}</b>&nbsp;is a collective effort driven by a shared commitment to air quality and data science and transparency, and public health. This page honors the diverse group of individuals, from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the quality of air they breathe in Chicago, IL.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
@@ -287,10 +347,23 @@ export default function Team() {
           {/*buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}*/}
 
           <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>Leadership</CategoryTitle>
-            <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
-            <img src="/img/team/uiuc.png" alt={''} />
+            <CategoryTitle $largeScreen={largeScreen}>Chicago Air Quality Program Leadership</CategoryTitle>
+                <Grid container spacing={5}>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                      <TeamHeadText>
+                        Lead Institution
+                      </TeamHeadText>
+                      <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
+                  </Grid>
+                  <Grid size={{ xs: 12, md:4 }}>
+                      <TeamHead1Text>
+                        Contributing Institution
+                      </TeamHead1Text>
+                      <img src="/img/team/uiuc.png" alt={''} style={{ marginRight: '64px' }} />
+                  </Grid>
+                </Grid>
           </CategorySection>
+
 
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {leadership?.map((contributor, index) =>
@@ -302,7 +375,49 @@ export default function Team() {
                 </Grid>
               </Grid>
             )}
+
+            <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
+            <TeamBodyText>
+              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation
+              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force
+              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery
+              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights
+              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e.,
+              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest
+              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of
+              Public Health's (CDPH){" "}
+              <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
+                 style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 target={'_blank'} rel="noreferrer noopener">
+              Open Air</a>{" "}website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
+
+            </TeamBodyText>
+            </Grid>
           </Grid>
+
+          <CategorySection>
+              <CategoryTitle $largeScreen={largeScreen}>OurAir Dashboard Leadership</CategoryTitle>
+                <Grid container spacing={10}>
+                  <Grid size={{ xs: 12, md: 7 }}>
+                      <TeamBodyText>
+                        The OurAir mapping platform was developed by the{" "}
+                        <a href="https://healthyregions.org/"
+                           style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                           target={'_blank'} rel="noreferrer noopener">
+                          Healthy Regions & Policies Lab
+                        </a>{" "}at the University of Illinois, directed by <b>Dr. M. Kolak</b>, in close
+                        collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
+                        and dozens of Chicagoland contributors.
+                      </TeamBodyText>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 5 }} container spacing={5}>
+                    <StyledAnchorLink href="https://healthyregions.org/"><img src="/img/team/herop.png" alt={''} height={90} /></StyledAnchorLink>
+                    <img src="/img/team/i.png" alt={''} height={90} />
+                    <img src="/img/team/CAMP.CIRC.SM.RGB.png" alt={''} height={90} />
+                  </Grid>
+              </Grid>
+
+          </CategorySection>
 
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Core Team</CategoryTitle>
@@ -322,10 +437,11 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b className={'notranslate'}>Mallikarjun Bhusnoor</b> and <b className={'notranslate'}>Pengyin Shan</b> at UIUC for their technical support.
+              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services.
+              Finally, we are grateful to the <i>Pilsen Arts & Community House</i> for hosting the live co-design session.
+
             </TeamBodyText>
           </Grid>
-
 
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Student Team</CategoryTitle>
@@ -355,9 +471,12 @@ export default function Team() {
         />
       </ContentContainer>
 
+
+      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+
       <ContentContainer>
       <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>Group Contributors</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>OurAir Group Contributors</CategoryTitle>
       </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
@@ -375,11 +494,9 @@ export default function Team() {
 
       </ContentContainer>
 
-      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
-
         <ContentContainer>
         <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>Individual Contributors</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>OurAir Individual Contributors</CategoryTitle>
         </CategorySection>
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {communityindividual?.map((contributor, index) =>
@@ -392,10 +509,10 @@ export default function Team() {
             )}
           </Grid>
           <TeamBodyText>
-            <h3>Gratitude to all contributors, survey and focus group participants, and conversations.</h3>
+            <h3>Gratitude to all OurAir contributors, survey & focus group participants, and conversations.</h3>
           </TeamBodyText>
           <TeamBodyText>
-            While only consenting members are featured, this platform was shaped by the collective input of everyone involved.
+            While only consenting members are featured, this mapping platform was shaped by the collective input of everyone involved.
           </TeamBodyText>
         </ContentContainer>
       </GradientBackground>

@@ -1,14 +1,8 @@
 import {useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {Link, NavLink, useLocation, useNavigate} from 'react-router-dom';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { useDispatch } from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from '../../config';
-import Box from '@mui/material/Box';
-import {selectPanelState, setPanelState} from '../../store/slices/legacyStoreSlice';
-import * as SVG from '../../config/svg';
 import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
@@ -17,56 +11,8 @@ import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
 import {NavDropdown} from "./NavDropdown";
 import MenuItem from "@mui/material/MenuItem";
-import {getLocaleLabel, locales, productName} from "../VariablePanel/common";
+import {getLocaleLabel, LButton, locales, productName} from "../VariablePanel/common";
 
-const NavItems = styled.ul`
-  margin-top:.25em;
-  margin-bottom:2em;
-  background:none;
-  list-style:none;
-  line-height:2;
-  font-size:1rem;
-  transition: 250ms all;
-  li a, button {
-    &.active {
-      color: ${colors.chicagoDarkBlue};
-    }
-    text-decoration:none;
-    font-family:"Roboto", sans-serif;
-    color: ${colors.chicagoBlue};
-    transition:250ms all;
-    cursor: pointer;
-    text-transform:none;
-    padding:0.5em 0;
-    svg { 
-      width:1em;
-      height:1em;
-      margin:0 .5em 0 0;
-      @media (max-width:600px){
-        width:20px;
-        height:20px;
-        margin:5px;
-      }
-      fill:${colors.chicagoBlue};
-      transform:rotate(0deg);
-      transition:500ms all;
-      .cls-1 {
-        fill:none;
-        stroke-width:6px;
-        stroke:${colors.chicagoBlue};
-      }
-    }
-    &:hover {
-      color: ${colors.chicagoBlue};
-        svg {
-          fill: ${colors.chicagoBlue};
-        .cls-1 {
-          stroke:${colors.chicagoBlue};
-        }
-      }
-    }
-  }
-`;
 const NavContainer = styled.div`
   padding: ${({ $largeScreen }) => $largeScreen ? '4rem 6rem 0 6rem' : '6rem 0 0 0'};
   top:.5em;
@@ -80,16 +26,6 @@ const NavContainer = styled.div`
     //border: 1px solid ${colors.chicagoBlue};
   }
 `;
-const NavInner = styled(Box)`
-  padding:1em;
-  min-width: 11.5em;
-
-`;
-const LButton = styled(Button)`
-    font-family: Lexend,serif;
-    text-transform: none;
-    color: #005899;
-`;
 
 const ContentContainer = styled.div`
     max-width: 1200px; /* Standard container width */
@@ -100,25 +36,12 @@ const ContentContainer = styled.div`
 `;
 
 export default function Nav({
-  showMapControls = false,
-  style,
-  bounds,
-  setViewState
+  style
 }) {
 
   const dispatch = useDispatch();
   const [cookies] = useCookies(['googtrans']);
 
-  const panelState = useSelector(selectPanelState);
-  const handleOpenClose = (panel) => dispatch(setPanelState({ [panel]: !panelState[panel] }))
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const loc = useLocation();
   const navigate = useNavigate();
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -153,6 +76,7 @@ export default function Nav({
                 <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }}>
                   <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/contact')}>Contact Us</MenuItem>
                 </NavDropdown>
               </Grid>}
             </Grid>
@@ -161,40 +85,6 @@ export default function Nav({
             </Grid>
           </Grid>
 
-          {/*<LogoButtonContainer aria-describedby={id} variant="outlined" onClick={handleClick} title={id} color="success">
-            <Typography><span style={{fontWeight:"bold", color:colors.chicagoDarkBlue}} translate="no">Chi Air</span></Typography>
-            {SVG.hamburger}
-          </LogoButtonContainer>*/}
-          <Popover
-            id="nav-container"
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            className="menu-popover"
-            style={{
-              border: `1px solid ${colors.chicagoBlue}`,
-            }}
-          >
-            <NavInner>
-              {!!showMapControls && <>
-                <Typography>Map Controls</Typography>
-                <NavItems>
-                  <li><Button href="#" onClick={() => handleOpenClose('variables')}>{SVG.settings} Variables Panel</Button></li>
-                  <li><Button href="#" onClick={() => handleOpenClose('info')}>{SVG.report}Data View</Button></li>
-                </NavItems>
-              </>}
-              <NavItems>
-                <li><Link to="/" className={loc.pathname === '/' ? 'active' : 'inactive'}>Home</Link></li>
-                <li><NavLink to="/map">Map</NavLink></li>
-                <li><NavLink to="/team">Team</NavLink></li>
-                <li><NavLink to="/about">About</NavLink></li>
-              </NavItems>
-            </NavInner>
-          </Popover>
         </ContentContainer>
       </NavContainer>
     </>

@@ -65,7 +65,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
   const invertedColors = ['Good', 'Moderate'];
 
   const primary = invertedColors?.includes(range?.label) ? range?.border : range?.color;
-  const secondary = invertedColors?.includes(range?.label) ? range?.color : range?.border;
+  //const secondary = invertedColors?.includes(range?.label) ? range?.color : range?.border;
 
   return (
     <>
@@ -98,7 +98,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
 
         {/* Show latest reading */}
         {!!rounded && <Grid container spacing={0} alignItems={'center'}>
-          {showColor && <SensorValueColorIndicator $color={primary} $border={secondary}></SensorValueColorIndicator>}
+          {showColor && <SensorValueColorIndicator $color={range?.color} $border={range?.border}></SensorValueColorIndicator>}
           <Grid>
             <SensorNumericalValue $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
               {selectedParameter === 'nowcast_aqi' && Number(rounded)}

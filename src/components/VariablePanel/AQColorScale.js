@@ -4,10 +4,13 @@ import styled from "styled-components";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
+import {selectMapParams, selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {FaKey} from "react-icons/fa";
 import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
+import {LHeader} from "./common";
+import OverlaysColorLegend from "./OverlaysColorLegend";
+import Legend from "../Map/Legend";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -119,14 +122,22 @@ export const AQColorScale = () => {
   const panelState = useSelector(selectPanelState);
   const selectedParameter = useSelector(selectSensorParameter);
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const mapParams = useSelector(selectMapParams);
 
   const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }));
 
   return (
     <ColorScaleContainer $large={largeScreen} $open={panelState.key}>
-      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem' }}>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200 }} justifyContent={'center'}>
+        <Grid justifyContent={'end'}>
+          {selectedParameter === 'nowcast_aqi' && <LHeader>EPA PM 2.5 Air Quality Index</LHeader>}
+          {selectedParameter === 'clarity_pm25' && <LHeader>Fine Particulate Matter </LHeader>}
+          {selectedParameter === 'clarity_no2' && <LHeader>Nitrogen Dioxide</LHeader>}
+        </Grid>
+      </Grid>
+      <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem', marginTop:'0.5rem' }}>
         {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
-          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'EPA’s Air Quality Index (AQI)'}>AQI-PM2.5</Tooltip>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'EPA’s PM2.5 Air Quality Index (AQI)'}>AQI-PM2.5</Tooltip>
         </Grid>}
         {selectedParameter === 'clarity_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
           <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM2.5</Tooltip>
@@ -161,6 +172,10 @@ export const AQColorScale = () => {
           </Grid>
         </Grid>
       )}
+
+      {mapParams?.variableName && <Legend />}
+
+      <OverlaysColorLegend></OverlaysColorLegend>
 
       <button onClick={handleOpenClose} id="showHideRight" className={panelState.key ? 'active' : 'hidden'}><FaKey /></button>
     </ColorScaleContainer>

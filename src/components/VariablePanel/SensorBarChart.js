@@ -92,7 +92,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       ?.reduce((max, m) => {
         const value =  m?.value || m?.[selectedParameter];
         return value > max ? value : max;
-      }, -Infinity);
+      }, -Infinity) + (selectedParameter === 'nowcast_aqi' ? 100 : 30);
   };
 
   // Paging metadata: item count, number of pages, page number, page size, etc
