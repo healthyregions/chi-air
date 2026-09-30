@@ -30,7 +30,7 @@ import {
   selectFilterValues,
   selectMapParams,
   selectPanelState,
-  selectUse3d
+  selectUse3d, setPanelState
 } from "../../store/slices/legacyStoreSlice";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
@@ -41,6 +41,7 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
 import {getBoundariesPath, getFeature} from "../VariablePanel/common";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -186,6 +187,7 @@ const NavInlineButton = styled.button`
 
 function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
+  const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const [searchParams, setSearchParams] = useSearchParams();
   const lon = searchParams.get('lon');
@@ -342,10 +344,26 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     pointRadiusUnits: 'meters',
     visible: true,
     onClick: (feature) => {
-      const id = feature?.object?.properties?.['datasourceId'];
+      const properties = feature?.object?.properties;
+      const id = properties?.['datasourceId'];
       //dispatch(addSensorsToSelection([id]));
       dispatch(setClickedSensor(id));
+
+      // Select the clicked sensor, set the sensor ID as a URL querystring parameter
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
+
+      // Open the DataPanel, since its contents have updated
+      id && dispatch(setPanelState({ info: true }));
+
+      // For mobile, close the Legend & zoom in on the clicked point
+      if (!largeScreen) {
+        id && dispatch(setPanelState({ key: false }));
+
+        const lon = properties?.['locationLongitude'];
+        const lat = properties?.['locationLatitude'];
+        const z = 7;
+        id && setSearchParams({ lon, lat: lat - 0.02, z, key: 'sensor' });
+      }
     },
     onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
@@ -488,7 +506,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins]);
+  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins, largeScreen]);
 
   useEffect(() => {
     setViewStateFn(setViewState);
