@@ -259,7 +259,7 @@ export const HistoricalTimeslider = () => {
     <TimesliderContainer $large={largeScreen} $open={panelState.history}>
       <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
         <Grid size={{ xs: 6 }} style={{ fontFamily: 'Lexend', fontWeight: 400, fontSize: '18px', color: 'rgba(68, 68, 68, 1)' }}>
-          <HistoryIcon /> Historical Trends
+          <HistoryIcon /> Change Over Time
         </Grid>
         <Grid size={{ xs: 5 }}>
           <FormControl id="avgTypeSelectHistorical" variant="outlined" fullWidth>
