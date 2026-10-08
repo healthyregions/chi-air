@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {FaHistory} from "react-icons/fa";
+import {FaHistory, FaRegCalendarAlt} from "react-icons/fa";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
@@ -25,7 +25,7 @@ const TimesliderContainer = styled.div`
   border: 1px solid rgba(65, 182, 230, 1);
   width: 433px;
   left: ${({ $open }) => $open ? '2rem' : '0'};
-  top: ${({ $large }) => $large ? '2rem' : '0'};
+  bottom: ${({ $large }) => $large ? '2rem' : '0'};
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
@@ -49,19 +49,19 @@ const TimesliderContainer = styled.div`
   }
     
     @media (max-width:600px) {
-        width:calc(100% - 1em); 
-        bottom:calc(1em + 45px);
+        width:calc(100% - 1em);
+        top:calc(1em + 45px);
         height: max-content; // calc(100% - 55em);
-        top:.5em;
+        bottom:.5em;
         left: ${({ $large, $open }) => $open ?  '.5em' : '' };
-        padding-top: 2em;
+        padding-bottom: 2em;
         z-index:51;
         display: ${props => (props.otherPanels || props.dataLength === 0) ? 'none' : 'initial'};
     }
 
     button#showHideRight {
         position:absolute;
-        top:20px;
+        bottom:20px;
         right: ${({  $open }) => $open ? '-20px' : '-60px'};
         width:40px;
         height:40px;
@@ -81,7 +81,7 @@ const TimesliderContainer = styled.div`
                 margin:5px;
             }
             fill:${colors.gray};
-            transform:rotate(180deg);
+            //transform:rotate(180deg);
             transition:500ms all;
         }
         :after {
@@ -89,7 +89,7 @@ const TimesliderContainer = styled.div`
             font-weight:bold;
             color:${colors.gray};
             position: relative;
-            top:-17px;
+            bottom:-17px;
             transition:500ms all;
             content: 'Report';
             right:50px;
@@ -97,7 +97,7 @@ const TimesliderContainer = styled.div`
         }
         &.hidden {
             svg {
-                transform:rotate(0deg);
+                //transform:rotate(0deg);
             }
             :after {
                 opacity:1;
@@ -112,7 +112,7 @@ const TimesliderContainer = styled.div`
             height:3em;
             top:0;
             &.hidden svg {
-                transform:rotate(0deg);
+                //transform:rotate(0deg);
             }
             :after {
                 display:none;
@@ -121,7 +121,7 @@ const TimesliderContainer = styled.div`
                 left:90%;
             }
             &.active svg {
-                transform:rotate(90deg);
+                //transform:rotate(90deg);
             }
         }
     }
@@ -335,7 +335,7 @@ export const HistoricalTimeslider = () => {
         </Grid>
       </Grid>
 
-      <button onClick={handleOpenClose} id="showHideRight" className={panelState.history ? 'active' : 'hidden'}><FaHistory /></button>
+      <button onClick={handleOpenClose} id="showHideRight" className={panelState.history ? 'active' : 'hidden'}><FaRegCalendarAlt /></button>
     </TimesliderContainer>
   );
 }
