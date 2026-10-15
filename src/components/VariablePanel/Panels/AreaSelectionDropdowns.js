@@ -145,9 +145,12 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   const locations = useSelector(selectSensorLocations);
 
-  const comareaIdMap = Object.fromEntries(
-    locations?.map(l => [l?.community, l?.comarea])
-  );
+  // Build a map of community name => comarea id
+  const comareaIdMap = {};
+  locations?.forEach(l => {
+    // Ignore null/invalid comarea ids
+    l?.comarea && (comareaIdMap[l?.community] = l?.comarea);
+  })
 
   // Handle user opening or closing the dropdown
   const handleOpen = (e, key) => {
