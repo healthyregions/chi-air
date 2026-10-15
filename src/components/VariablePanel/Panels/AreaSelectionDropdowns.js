@@ -150,7 +150,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   locations?.forEach(l => {
     // Ignore null/invalid comarea ids
     l?.comarea && (comareaIdMap[l?.community] = l?.comarea);
-  })
+  });
 
   // Handle user opening or closing the dropdown
   const handleOpen = (e, key) => {
