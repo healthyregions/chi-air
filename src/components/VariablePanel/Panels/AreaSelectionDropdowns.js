@@ -289,7 +289,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
                     return (
                       <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
-                        <Grid container justifyContent={'space-between'}>
+                        <Grid container justifyContent={'space-between'} flexWrap={'nowrap'}>
                           <Grid size>
                             {parts.map((part, index) => (part.highlight ? (
                               <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
