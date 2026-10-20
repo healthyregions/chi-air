@@ -137,6 +137,7 @@ const SliderLabel = styled.span`
     font-family: Space Grotesk, sans-serif;
     font-size: 14px;
     font-weight: 400;
+    color: #444444;
 `;
 
 export const HistoricalTimeslider = () => {
@@ -258,13 +259,14 @@ export const HistoricalTimeslider = () => {
   return (
     <TimesliderContainer $large={largeScreen} $open={panelState.history}>
       <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
-        <Grid size={{ xs: 6 }} style={{ fontFamily: 'Lexend', fontWeight: 400, fontSize: '18px', color: 'rgba(68, 68, 68, 1)' }}>
-          <HistoryIcon /> Change Over Time
+        <Grid size={{ xs: 6 }} style={{ fontFamily: 'Lexend', fontWeight: 400, fontSize: '18px', color: '#444444' }}>
+          Change Over Time
         </Grid>
         <Grid size={{ xs: 5 }}>
           <FormControl id="avgTypeSelectHistorical" variant="outlined" fullWidth>
             <Select
               variant={"outlined"}
+              sx={{ color: '#444444' }}
               value={granularity}
               onChange={(e) => setGranularity(e.target.value)}
             >
@@ -313,10 +315,10 @@ export const HistoricalTimeslider = () => {
                       },
                       // Target the value label container
                       '& .MuiSlider-valueLabel': {
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: 'normal',
                         fontFamily: 'Space Grotesk',
-                        top: 50, // Adjust distance from thumb
+                        bottom: 50, // Adjust distance from thumb
                         backgroundColor: '#00000000', // transparent background
                         color: '#41B6E6', // Change text color
                         '&::before': {
