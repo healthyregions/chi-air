@@ -455,7 +455,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     opacity: 0.85,
     getPointRadius: 400,
     getLineWidth: 60,
-    getLineColor: (feature) => [0,0,0],
+    getLineColor: (feature) => [68,68,68],
     pointRadiusUnits: 'meters',
     visible: true,
     onClick: (feature) => {
