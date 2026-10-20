@@ -128,11 +128,6 @@ const TimesliderContainer = styled.div`
     
 `;
 
-const HistoryIcon = styled(FaHistory)`
-    height: 16px;
-    color: rgba(0, 88, 153, 0.5);
-`;
-
 const SliderLabel = styled.span`
     font-family: Space Grotesk, sans-serif;
     font-size: 14px;
