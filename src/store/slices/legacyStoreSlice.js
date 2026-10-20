@@ -408,6 +408,7 @@ export const legacyStoreSlice = createSlice({
     selectUrlParams: state => state.urlParams,
 
     // Helper accessors for common panels
+    selectHistoryPanelState: state => state.panelState.history,
     selectVariablePanelState: state => state.panelState.variables,
     selectDataPanelState: state => state.panelState.info,
 
