@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {selectPanelState, setPanelState} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {FaHistory, FaRegCalendarAlt} from "react-icons/fa";
+import {FaRegCalendarAlt} from "react-icons/fa";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
