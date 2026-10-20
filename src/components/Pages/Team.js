@@ -147,7 +147,7 @@ const coreteam = [
   },
   {
     photo: '/img/team/kumar.png',
-    name: 'Shubham Kumar, MSIM',
+    name: 'Shubham Kumar, MS',
     description: 'Sr. Product Designer, UIUC',
   },
   {
