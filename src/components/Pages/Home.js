@@ -424,8 +424,8 @@ export default function Home() {
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               <Grid container spacing={0}>
                 <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks in our communities. To close this gap, we created the "{platformName} Network" and deployed a network of {sensorCount} Clarity Node-S sensors to blanket the city to measure Fine Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) in ambient air. {platformName} is co-owned between University of Illinois at Chicago (UIC) and Chicago Department of Public Health (CDPH).</div>
-                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>{platformName}</NavLink> sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
-                <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>{!largeScreen && <br/> }
+                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} target={'_blank'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>{platformName} <FaExternalLinkAlt /></NavLink> platform sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
+                <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <NavLink to={'/about'} style={{ textWrap: 'nowrap', textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>{!largeScreen && <br/> }
               </Grid>
               <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
                 <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} style={{ maxWidth: '100%' }} />
@@ -437,7 +437,7 @@ export default function Home() {
       </GradientBackground>
 
 
-      <NavBar style={{ marginBottom: '4rem' }} />
+      <NavBar style={{ padding: '4rem' }} />
     </>
   );
 }

@@ -280,7 +280,7 @@ export default function Resources() {
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
       </GradientBackground>
 
-      <NavBar />
+      <NavBar style={{ padding: '4rem' }} />
     </ResourcesPage>
   );
 }

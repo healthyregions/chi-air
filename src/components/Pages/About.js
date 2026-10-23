@@ -593,7 +593,7 @@ export default function About() {
 
 
 
-         <NavBar />
+         <NavBar style={{ padding: '4rem' }} />
        </AboutPage>
     );
 }
