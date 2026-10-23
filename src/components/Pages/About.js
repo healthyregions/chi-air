@@ -3,7 +3,7 @@ import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {GradientBackground, platformName, productName, WhiteBackground} from "../VariablePanel/common";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -384,7 +384,9 @@ export default function About() {
       });
     };
 
-
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
 
     return (
        <AboutPage>
@@ -593,7 +595,7 @@ export default function About() {
 
 
 
-         <NavBar />
+         <NavBar style={{ padding: '4rem' }} />
        </AboutPage>
     );
 }

@@ -16,7 +16,7 @@ import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {useNavigate} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FaChalkboardTeacher} from "@react-icons/all-files/fa/FaChalkboardTeacher";
 import {FaAirFreshener} from "@react-icons/all-files/fa/FaAirFreshener";
 import {FaChartBar} from "@react-icons/all-files/fa/FaChartBar";
@@ -197,6 +197,10 @@ export default function Resources() {
     ? resourceCategories
     : resourceCategories.filter(({ id }) => id === activeCategory);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   return (
     <ResourcesPage>
       <NavBar />
@@ -276,7 +280,7 @@ export default function Resources() {
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
       </GradientBackground>
 
-      <NavBar />
+      <NavBar style={{ padding: '4rem' }} />
     </ResourcesPage>
   );
 }

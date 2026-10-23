@@ -30,8 +30,8 @@ const HomeDropdownCard = styled.div`
   //overflow: hidden;
 
   position: ${({ $largeScreen }) => $largeScreen ? 'absolute' : 'relative'};
-  left: 0;
-  right: 0;
+  left: ${({ $isHomeVariant, $largeScreen }) => $isHomeVariant ? ($largeScreen ? 0 : 0) : 0};
+  right: ${({ $isHomeVariant, $largeScreen }) => $isHomeVariant ? 0 : 0};
 `;
 
 const HomeDropdownSearchRow = styled.div`
@@ -237,7 +237,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
         </Grid>
       }
 
-      {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? 'column' : 'row'}>
+      {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? (largeScreen ? 'row' : 'column') : 'row'}>
         {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'}>
           <LButton
             id={`basic-button-${key}`}
@@ -251,6 +251,8 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
               fontFamily: 'Lexend,sans-serif',
               fontSize: '1.5rem',
               fontWeight: 500,
+              textDecoration: type===key ? 'underline' : 'none',
+              borderRadius: '0.75rem',
               lineHeight: 'normal',
               textTransform: 'none',
               padding: '0.25rem 0.5rem'
@@ -261,7 +263,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
           {type === key && <>
             <ClickAwayListener onClickAway={handleClose}>
-              <HomeDropdownCard $largeScreen={largeScreen}>
+              <HomeDropdownCard $isHomeVariant={isHomeVariant} $largeScreen={largeScreen}>
                 <HomeDropdownSearchRow>
                   <FaSearch style={{ color: '#005899', fontSize: '0.75rem' }} />
                   <HomeDropdownSearchInput
