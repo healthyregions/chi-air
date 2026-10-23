@@ -454,8 +454,24 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     },
     opacity: 0.85,
     getPointRadius: 400,
-    getLineWidth: 60,
-    getLineColor: (feature) => [0,0,0],
+    getLineWidth: 100,
+    getLineColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
+        return [79, 143, 197];
+      }
+      const latest = data?.find(() => true)?.value;
+      if (isSensorOffline(latest)) {
+        return [229, 238, 245];
+        //return [68, 68, 68];
+      }
+
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
+    },
     pointRadiusUnits: 'meters',
     visible: true,
     onClick: (feature) => {
