@@ -17,6 +17,7 @@ const brandColors = {
 const ChiBlackText = styled(Grid)`
     font-family: Lexend,sans-serif;
     font-weight: 400;
+    color: #444444;
     font-style: normal;
 `;
 const ChiRedText = styled.span`
@@ -27,6 +28,7 @@ const ChiRedText = styled.span`
 `;
 const SectionIcon = styled.img`
     width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
+    margin-left: 3rem;
     height: auto;
 `
 
@@ -39,14 +41,14 @@ export const SectionHeader = ({ style = {}, buttonIcon = <></>, buttonText = '',
           {buttonText} {buttonIcon}
         </LButton>}
 
-      <Grid container alignItems={'center'} spacing={8}>
+      <Grid container spacing={8}>
         <ChiBlackText spacing={0} style={{ fontSize: largeScreen ? '32px': '18px', fontWeight: 400, textAlign: 'right' }}>
-          <Grid container spacing={2} alignItems={'center'} justifyContent={'right'}>
+          <Grid container alignItems={'center'} justifyContent={'right'}>
             <Grid alignItems={'right'} size={{ xs: 10 }}>
               {topRowText} <div style={{ fontWeight:700 }}>{bottomRowTextBlack+' '} <ChiRedText>{bottomRowTextRed}</ChiRedText></div>
             </Grid>
             <Grid size={{ xs: 2 }}>
-              <SectionIcon width={largeScreen ? 100 : 42} src={imgSrc} alt={imgAlt} />
+              <SectionIcon $largeScreen={largeScreen} width={100} height={100} src={imgSrc} alt={imgAlt} />
             </Grid>
           </Grid>
         </ChiBlackText>
