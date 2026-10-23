@@ -420,7 +420,7 @@ export default function Home() {
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <ContentContainer>
           <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'flex-start'}>
-            <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+            <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large-textless.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               <Grid container spacing={0}>
                 <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks in our communities. To close this gap, we created the "{platformName} Network" and deployed a network of {sensorCount} Clarity Node-S sensors to blanket the city to measure Fine Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) in ambient air. {platformName} is co-owned between University of Illinois at Chicago (UIC) and Chicago Department of Public Health (CDPH).</div>
