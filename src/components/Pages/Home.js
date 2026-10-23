@@ -399,7 +399,7 @@ export default function Home() {
               <img style={{ position: 'absolute', marginLeft: '2rem' }} src={'/icons/chiair/resources-view-all.svg'} alt={''} />
             </Grid>
             <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-              <ResourceLabel $largeScreen={largeScreen}>View All Resources <ResourceLinkIcon /></ResourceLabel>
+              <ResourceLabel $largeScreen={largeScreen}>View All Resources</ResourceLabel>
               <ResourceDescription>Explore more learning materials & lesson plans, access reports, and explore additional maps.</ResourceDescription>
             </Grid>
           </Grid>
