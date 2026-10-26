@@ -145,6 +145,13 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
   const locations = useSelector(selectSensorLocations);
 
+  // Build a map of community name => comarea id
+  const comareaIdMap = {};
+  locations?.forEach(l => {
+    // Ignore null/invalid comarea ids
+    l?.comarea && (comareaIdMap[l?.community] = l?.comarea);
+  });
+
   // Handle user opening or closing the dropdown
   const handleOpen = (e, key) => {
     setAnchorEl(e?.currentTarget);
@@ -207,7 +214,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
     if (type === 'ward') {
       return value.split(' ')?.[1];
     } else if (type === 'community') {
-      return value?.toUpperCase()
+      return value?.toUpperCase();
     }
     return value;
   }
@@ -282,11 +289,16 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
                     return (
                       <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
-                        {parts.map((part, index) => (part.highlight ? (
-                          <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
-                        ) : (
-                          <span>{part.text}</span>
-                        )))}
+                        <Grid container justifyContent={'space-between'} flexWrap={'nowrap'}>
+                          <Grid size>
+                            {parts.map((part, index) => (part.highlight ? (
+                              <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
+                            ) : (
+                              <span>{part.text}</span>
+                            )))}
+                          </Grid>
+                          <Grid size={1}>{comareaIdMap[unformat(option, type)]}</Grid>
+                        </Grid>
                       </HomeDropdownOption>
                     );
                   }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
@@ -299,7 +311,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
       {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} margin={'0.3rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
         <Grid size>
-          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {format(selections?.community?.[0], 'community')}</span>}
+          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {format(selections?.community?.[0], 'community')} ({comareaIdMap[selections?.community?.[0]]})</span>}
           {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}
           {selections?.ward?.length > 0 && <span><LLabel>Ward:</LLabel> {selections?.ward?.[0]}</span>}
         </Grid>
