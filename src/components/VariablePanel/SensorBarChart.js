@@ -100,6 +100,8 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
 
+  const maxValue = getMaxValue();
+
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
   const chartSettings: BarChartProps = {
@@ -126,7 +128,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       disableTicks: true,
       position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
-      max: getMaxValue() + 50,
+      max: maxValue + (0.15 * maxValue),
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
