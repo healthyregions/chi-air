@@ -35,6 +35,7 @@ import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {useCookies} from "react-cookie";
 import {MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
 
+/* position: ${({ $large }) => $large ? 'fixed' : 'absolute'}; */
 const DataPanelContainer = styled.div`
     position: fixed;
     width: ${({ $large }) => $large ? '500px' : '100%'};
