@@ -27,7 +27,7 @@ const ChiRedText = styled.span`
     text-align: right;
 `;
 const SectionIcon = styled.img`
-    width: ${({ $largeScreen }) => $largeScreen ? '72px' : '42px'};
+    width: 72px;
     height: auto;
 `
 
