@@ -347,12 +347,17 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       dispatch(setClickedSensor(id));
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
     },
-    onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
+    beforeId: "water",
+    onHover: (info, event) => setHoverInfo({
+      x: null,
+      y: null,
+      object: {
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
-      }})}
+      }
+    }),
   }),
-    new GeoJsonLayer({
+  new GeoJsonLayer({
     id: "selected-sensors",
     data: {
       ...geojsonData,
@@ -413,7 +418,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       dispatch(setClickedSensor(id));
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
     },
-    beforeId: "state-label",
+    beforeId: "water",
     onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
@@ -432,9 +437,10 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     stroked: true,
     filled: true,
     extruded: false,
-    /*pointType: 'circle+text',
-    getText: f => f?.properties?.name,
-    getTextSize: 12,*/
+    // pointType: 'circle+text',
+    // getText: f => f?.properties?.name,
+    // getTextSize: 12,
+    // textFontFamily: 'Lexend',
     getFillColor: (feature) => {
       // Detect loading state, display soft colors while loading
       const data = feature.properties.metrics?.[selectedParameter]?.data;
@@ -482,7 +488,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       dispatch(setClickedSensor(id));
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
     },
-    beforeId: "state-label",
+    beforeId: "water",
     onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
