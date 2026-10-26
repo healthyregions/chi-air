@@ -443,8 +443,8 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       const latest = data?.find(() => true)?.value;
       if (isSensorOffline(latest)) {
-      //return [79, 143, 197];
-        return [100, 100, 100];
+        //return [79, 143, 197];
+        return [200, 200, 200];
       }
 
       if (clickedSensor === feature.properties['datasourceId']) {
@@ -463,7 +463,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       const latest = data?.find(() => true)?.value;
       if (isSensorOffline(latest)) {
-        return [229, 238, 245];
+        return [100,100,100];
         //return [68, 68, 68];
       }
 
