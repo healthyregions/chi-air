@@ -467,29 +467,6 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       const latest = data?.find(() => true)?.value;
       if (isSensorOffline(latest)) {
-      //return [79, 143, 197];
-        return [100, 100, 100];
-      }
-
-      if (clickedSensor === feature.properties['datasourceId']) {
-        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
-      }
-      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
-    },
-    opacity: 0.85,
-    getPointRadius: 400,
-    getLineWidth: 35,
-    getLineColor: (feature) => {
-      // Detect loading state, display soft colors while loading
-      const data = feature.properties.metrics?.[selectedParameter]?.data;
-      if (!data?.length) {
-        return [229, 238, 245];
-      }
-
-      const latest = data?.find(() => true)?.value;
-      if (latest === "None" || latest === "NaN" || latest === null || latest === undefined) {
-        //return [229, 238, 245];
-        //return [68, 68, 68];
         return [200, 200, 200];
       }
 
@@ -497,6 +474,25 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+    },
+    opacity: 0.85,
+    getPointRadius: 400,
+    getLineWidth: 100,
+    getLineColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
+        return [229, 238, 245];
+      }
+      const latest = data?.find(() => true)?.value;
+      if (isSensorOffline(latest)) {
+        return [100,100,100];
+      }
+
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
     pointRadiusUnits: 'meters',
     visible: true,
