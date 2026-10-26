@@ -142,12 +142,12 @@ const coreteam = [
   },
   {
     photo: '/img/team/person.png',
-    name: 'Camrin Garrett, MS',
+    name: 'Camrin Garrett, MUP',
     description: 'Research Specialist, UIUC',
   },
   {
     photo: '/img/team/kumar.png',
-    name: 'Shubham Kumar, MSIM',
+    name: 'Shubham Kumar, MS',
     description: 'Sr. Product Designer, UIUC',
   },
   {
