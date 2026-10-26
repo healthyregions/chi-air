@@ -142,7 +142,7 @@ const coreteam = [
   },
   {
     photo: '/img/team/person.png',
-    name: 'Camrin Garrett, MS',
+    name: 'Camrin Garrett, MUP',
     description: 'Research Specialist, UIUC',
   },
   {
