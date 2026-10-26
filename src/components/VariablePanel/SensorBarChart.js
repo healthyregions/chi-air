@@ -90,7 +90,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       ?.reduce((max, m) => {
         const value =  m?.value || m?.[selectedParameter];
         return value > max ? value : max;
-      }, -Infinity) + (selectedParameter === 'nowcast_aqi' ? 100 : 30);
+      }, -Infinity);
   };
 
   // Paging metadata: item count, number of pages, page number, page size, etc
@@ -126,7 +126,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       disableTicks: true,
       position: 'none',  // Hides the Y-Axis, since bars have individual values
       width: 60,
-      max: getMaxValue() + 100,
+      max: getMaxValue() + 50,
       colorMap: {
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
