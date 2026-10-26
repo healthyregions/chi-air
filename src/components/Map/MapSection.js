@@ -30,7 +30,7 @@ import {
   selectFilterValues,
   selectMapParams,
   selectPanelState,
-  selectUse3d
+  selectUse3d, setPanelState
 } from "../../store/slices/legacyStoreSlice";
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
@@ -41,6 +41,7 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
 import {getBoundariesPath, getFeature} from "../VariablePanel/common";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -186,6 +187,7 @@ const NavInlineButton = styled.button`
 
 function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
+  const largeScreen = useMediaQuery('(min-width: 600px)');
   const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -343,17 +345,38 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     pointRadiusUnits: 'meters',
     visible: true,
     onClick: (feature) => {
-      const id = feature?.object?.properties?.['datasourceId'];
+      const properties = feature?.object?.properties;
+      const id = properties?.['datasourceId'];
       //dispatch(addSensorsToSelection([id]));
       dispatch(setClickedSensor(id));
+
+      // Select the clicked sensor, set the sensor ID as a URL querystring parameter
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
+
+      // Open the DataPanel, since its contents have updated
+      id && dispatch(setPanelState({ info: true }));
+
+      // For mobile, close the Legend & zoom in on the clicked point
+      if (!largeScreen) {
+        id && dispatch(setPanelState({ key: false }));
+
+        const lon = properties?.['locationLongitude'];
+        const lat = properties?.['locationLatitude'];
+        const z = 7;
+        id && setSearchParams({ lon, lat: lat - 0.02, z, key: 'sensor' });
+      }
     },
-    onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
+    beforeId: "water",
+    onHover: (info, event) => setHoverInfo({
+      x: null,
+      y: null,
+      object: {
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
-      }})}
+      }
+    }),
   }),
-    new GeoJsonLayer({
+  new GeoJsonLayer({
     id: "selected-sensors",
     data: {
       ...geojsonData,
@@ -414,7 +437,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       dispatch(setClickedSensor(id));
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
     },
-    beforeId: "state-label",
+    beforeId: "water",
     onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
@@ -433,9 +456,10 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     stroked: true,
     filled: true,
     extruded: false,
-    /*pointType: 'circle+text',
-    getText: f => f?.properties?.name,
-    getTextSize: 12,*/
+    // pointType: 'circle+text',
+    // getText: f => f?.properties?.name,
+    // getTextSize: 12,
+    // textFontFamily: 'Lexend',
     getFillColor: (feature) => {
       // Detect loading state, display soft colors while loading
       const data = feature.properties.metrics?.[selectedParameter]?.data;
@@ -444,29 +468,6 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
-      //return [79, 143, 197];
-        return [100, 100, 100];
-      }
-
-      if (clickedSensor === feature.properties['datasourceId']) {
-        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
-      }
-      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
-    },
-    opacity: 0.85,
-    getPointRadius: 400,
-    getLineWidth: 35,
-    getLineColor: (feature) => {
-      // Detect loading state, display soft colors while loading
-      const data = feature.properties.metrics?.[selectedParameter]?.data;
-      if (!data?.length) {
-        return [229, 238, 245];
-      }
-
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
-      if (isSensorOffline(latest)) {
-        //return [229, 238, 245];
-        //return [68, 68, 68];
         return [200, 200, 200];
       }
 
@@ -474,6 +475,25 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+    },
+    opacity: 0.85,
+    getPointRadius: 400,
+    getLineWidth: 100,
+    getLineColor: (feature) => {
+      // Detect loading state, display soft colors while loading
+      const data = feature.properties.metrics?.[selectedParameter]?.data;
+      if (!data?.length) {
+        return [229, 238, 245];
+      }
+      const latest = data?.find(() => true)?.value;
+      if (isSensorOffline(latest)) {
+        return [100,100,100];
+      }
+
+      if (clickedSensor === feature.properties['datasourceId']) {
+        return scaleColor(latest, bins, pm2_5Ranges.map(r => r.borderComponents));
+      }
+      return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
     pointRadiusUnits: 'meters',
     visible: true,
@@ -483,13 +503,13 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       dispatch(setClickedSensor(id));
       id && dispatch(setClickedSensor(id)) && setSearchParams({ location: id });
     },
-    beforeId: "state-label",
+    beforeId: "water",
     onHover: (info, event) => {setHoverInfo({x:null, y:null, object:{
         popupTitle: "{datasourceId}",
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-  ], [dispatch, selectedTimeIndex, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins]);
+  ], [dispatch, selectedTimeIndex, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins, largeScreen]);
 
   useEffect(() => {
     setViewStateFn(setViewState);
