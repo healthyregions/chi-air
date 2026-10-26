@@ -320,7 +320,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
-    opacity: selectedSensors?.length > 0 ? 0.2 : .4,
+    opacity: selectedSensors?.length > 0 ? 0.15 : .85,
     getPointRadius: 400,
     getLineWidth: 35,
     getLineColor: (feature) => {
@@ -385,7 +385,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
-    opacity: 0.2,
+    opacity: 0.85,
     getPointRadius: 400,
     getLineWidth: 35,
     getLineColor: (feature) => {
@@ -453,7 +453,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       }
       return scaleColor(latest, bins, pm2_5Ranges.map(r => r.colorComponents));
     },
-    opacity: 0.2,
+    opacity: 0.85,
     getPointRadius: 400,
     getLineWidth: 35,
     getLineColor: (feature) => {
