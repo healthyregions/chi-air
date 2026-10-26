@@ -595,7 +595,7 @@ export default function About() {
 
 
 
-         <NavBar style={{ padding: '4rem' }} />
+         <NavBar style={{ padding: '4rem' }} asFooter={true} />
        </AboutPage>
     );
 }

@@ -517,7 +517,7 @@ export default function Team() {
         </ContentContainer>
       </GradientBackground>
 
-      <NavBar style={{ padding: '4rem' }} />
+      <NavBar style={{ padding: '4rem' }} asFooter={true} />
     </ResourcesPage>
   );
 }

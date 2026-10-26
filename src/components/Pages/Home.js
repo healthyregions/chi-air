@@ -73,7 +73,7 @@ const HeroBench = styled.img`
     position: absolute;
     left: ${({ $largeScreen }) => $largeScreen ? '3.65rem' : '1.9rem'};
     bottom: ${({ $largeScreen }) => $largeScreen ? '-6.75rem' : '-3.25rem'};
-    width: ${({ $largeScreen, $tinyScreen }) => $largeScreen ? '35rem' : $tinyScreen ? '20rem' : '100%'};
+    width: ${({ $largeScreen }) => $largeScreen ? '35rem' : '100%'};
     height: auto;
     z-index: 4;
 `;
@@ -251,7 +251,7 @@ const searchBandHeader6RightAnchor = 25.75;
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tinyScreen = useMediaQuery('(min-width: 300px)');
+  //const tinyScreen = useMediaQuery('(min-width: 300px)');
   const largeScreen = useMediaQuery('(min-width: 600px)');
   const xlScreen = useMediaQuery('(min-width: 900px)');
 
@@ -292,7 +292,7 @@ export default function Home() {
                   <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroWifi src={'/img/header/wifi.svg'} alt={''} $largeScreen={largeScreen} />
-                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} $tinyScreen={tinyScreen} />
+                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
                 </HeroArtwork>
               </Grid>
@@ -437,7 +437,7 @@ export default function Home() {
       </GradientBackground>
 
 
-      <NavBar style={{ padding: '4rem' }} />
+      <NavBar style={{ padding: '4rem' }} asFooter={true} />
     </>
   );
 }

@@ -30,8 +30,20 @@ const HomeDropdownCard = styled.div`
   //overflow: hidden;
 
   position: ${({ $largeScreen }) => $largeScreen ? 'absolute' : 'relative'};
-  left: ${({ $isHomeVariant, $largeScreen }) => $isHomeVariant ? ($largeScreen ? 0 : 0) : 0};
-  right: ${({ $isHomeVariant, $largeScreen }) => $isHomeVariant ? 0 : 0};
+  left: ${({ $isHomeVariant, $largeScreen, $type }) => {
+      if (!$isHomeVariant || !$largeScreen) return 0;
+      if ($type === 'community') return 0;
+      if ($type === 'ward') return '15rem';
+      if ($type === 'zip') return '12rem';
+      return 0;
+  }};
+  right: ${({ $isHomeVariant, $largeScreen, $type }) => {
+      if (!$isHomeVariant || !$largeScreen) return 0;
+      if ($type === 'community') return '15rem';
+      if ($type === 'ward') return 0;
+      if ($type === 'zip') return '8rem';
+      return 0;
+  }};
 `;
 
 const HomeDropdownSearchRow = styled.div`
@@ -270,7 +282,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
           {type === key && <>
             <ClickAwayListener onClickAway={handleClose}>
-              <HomeDropdownCard $isHomeVariant={isHomeVariant} $largeScreen={largeScreen}>
+              <HomeDropdownCard $type={type} $isHomeVariant={isHomeVariant} $largeScreen={largeScreen}>
                 <HomeDropdownSearchRow>
                   <FaSearch style={{ color: '#005899', fontSize: '0.75rem' }} />
                   <HomeDropdownSearchInput
