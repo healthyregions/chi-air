@@ -17,6 +17,7 @@ const brandColors = {
 const ChiBlackText = styled(Grid)`
     font-family: Lexend,sans-serif;
     font-weight: 400;
+    color: #444444;
     font-style: normal;
 `;
 const ChiRedText = styled.span`
@@ -26,7 +27,7 @@ const ChiRedText = styled.span`
     text-align: right;
 `;
 const SectionIcon = styled.img`
-    width: ${({ $largeScreen }) => $largeScreen ? '100px' : '42px'};
+    width: 72px;
     height: auto;
 `
 
@@ -35,19 +36,17 @@ export const SectionHeader = ({ style = {}, buttonIcon = <></>, buttonText = '',
 
   return (
     <Grid style={{...style}} container spacing={0} justifyContent={'space-between'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
-      {(buttonIcon || buttonText) && <LButton style={{ fontSize: largeScreen ? '24px': '16px', marginTop: largeScreen ? '' : '2rem' }} onClick={buttonOnClick}>
+      {(buttonIcon || buttonText) && <Grid><LButton style={{ fontSize: largeScreen ? '24px': '16px', marginTop: largeScreen ? '' : '2rem' }} onClick={buttonOnClick}>
           {buttonText} {buttonIcon}
-        </LButton>}
+      </LButton></Grid>}
 
-      <Grid container alignItems={'center'} spacing={8}>
+      <Grid container spacing={8} size justifyContent={'end'} flexGrow={1} flexWrap={'nowrap'}>
         <ChiBlackText spacing={0} style={{ fontSize: largeScreen ? '32px': '18px', fontWeight: 400, textAlign: 'right' }}>
-          <Grid container spacing={2} alignItems={'center'} justifyContent={'right'}>
-            <Grid alignItems={'right'} size={{ xs: 10 }}>
+          <Grid container gap={5} alignItems={'center'} justifyContent={'right'} flexWrap={'nowrap'}>
+            <Grid>
               {topRowText} <div style={{ fontWeight:700 }}>{bottomRowTextBlack+' '} <ChiRedText>{bottomRowTextRed}</ChiRedText></div>
             </Grid>
-            <Grid size={{ xs: 2 }}>
-              <SectionIcon width={largeScreen ? 100 : 42} src={imgSrc} alt={imgAlt} />
-            </Grid>
+            <SectionIcon $largeScreen={largeScreen} src={imgSrc} alt={imgAlt} />
           </Grid>
         </ChiBlackText>
       </Grid>

@@ -4,10 +4,11 @@ import Button from "@mui/material/Button";
 import {useEffect, useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
 import {LButton} from "./common";
+import {FaCaretUp} from "@react-icons/all-files/fa/FaCaretUp";
 
 const ITEM_HEIGHT = 48;
 
-export const DropdownButton = ({ className = '', size, icon = undefined, onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique = true, sortOptions = true }) => {
+export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique=true, sortOptions=true, dropup=false }) => {
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -50,12 +51,20 @@ export const DropdownButton = ({ className = '', size, icon = undefined, onOpen 
         style={style}
         {...buttonProps}
       >
-        {icon ? <span style={{ marginRight: '1rem' }}>{icon}</span> : <></>} {label} <FaCaretDown style={{ marginLeft: '2px' }} />
+        {icon ? <span style={{ marginRight: '1rem' }}>{icon}</span> : <></>} {label} {dropup ? <FaCaretUp style={{ marginLeft: '2px' }} /> : <FaCaretDown style={{ marginLeft: '2px' }} />}
       </Btn>
       <Menu
           id="basic-menu"
           anchorEl={anchorEl}
           open={open}
+          anchorOrigin={{
+            vertical: dropup ? 'top' : 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: dropup ? 'bottom' : 'top',
+            horizontal: 'left',
+          }}
           onClose={handleClose}
           style={menuStyle}
           slotProps={{
