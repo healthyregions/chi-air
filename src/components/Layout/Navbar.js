@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import { useDispatch } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import {getLocaleLabel, LButton, locales, productName} from "../VariablePanel/common";
 
 const NavContainer = styled.div`
-  padding: ${({ $largeScreen }) => $largeScreen ? '4rem 6rem 0 6rem' : '6rem 0 0 0'};
+  padding: ${({ $largeScreen }) => $largeScreen ? '4rem 6rem 0 6rem' : '0'};
   top:.5em;
   left:.5em;
   z-index:500;
@@ -36,21 +35,15 @@ const ContentContainer = styled.div`
 `;
 
 export default function Nav({
-  style
+  style,
+  asFooter=false
 }) {
 
   const dispatch = useDispatch();
   const [cookies] = useCookies(['googtrans']);
 
   const navigate = useNavigate();
-
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
   const largeScreen = useMediaQuery('(min-width: 600px)');
-  const logoClicked = () => {
-    if (largeScreen) { return; }
-    setMobileNavOpen(!mobileNavOpen)
-  };
 
   const onLocaleChange = (locale) => {
     dispatch(setLocale(locale));
@@ -64,24 +57,24 @@ export default function Nav({
     <>
       <NavContainer style={style} $largeScreen={largeScreen}>
         <ContentContainer $largeScreen={largeScreen}>
-          <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
+          <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={asFooter ? 'column' : (largeScreen ? 'row' : 'column-reverse')}>
             <Grid size='grow'>
-              {(largeScreen || mobileNavOpen) && <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
-                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} />
+              <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
+                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} dropup={asFooter} />
                 <LButton style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
-                <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }}>
+                <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }} dropup={asFooter}>
                   <MenuItem as={LButton} onClick={() => navigate('/map')}><span className={'notranslate'}>{productName}</span>&nbsp;Map</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
                 </NavDropdown>
-                <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }}>
+                <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }} dropup={asFooter}>
                   <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/contact')}>Contact Us</MenuItem>
                 </NavDropdown>
-              </Grid>}
+              </Grid>
             </Grid>
-            <Grid alignItems={'end'} justifyContent={'right'} onClick={logoClicked} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
-              <img width={largeScreen ? 477 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+            <Grid alignItems={'end'} justifyContent={'right'} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
+              <img width={largeScreen ? 400 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
             </Grid>
           </Grid>
 

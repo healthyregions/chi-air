@@ -73,7 +73,7 @@ const HeroBench = styled.img`
     position: absolute;
     left: ${({ $largeScreen }) => $largeScreen ? '3.65rem' : '1.9rem'};
     bottom: ${({ $largeScreen }) => $largeScreen ? '-6.75rem' : '-3.25rem'};
-    width: ${({ $largeScreen, $tinyScreen }) => $largeScreen ? '35rem' : $tinyScreen ? '20rem' : '100%'};
+    width: ${({ $largeScreen }) => $largeScreen ? '35rem' : '100%'};
     height: auto;
     z-index: 4;
 `;
@@ -251,7 +251,7 @@ const searchBandHeader6RightAnchor = 25.75;
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const tinyScreen = useMediaQuery('(min-width: 300px)');
+  //const tinyScreen = useMediaQuery('(min-width: 300px)');
   const largeScreen = useMediaQuery('(min-width: 600px)');
   const xlScreen = useMediaQuery('(min-width: 900px)');
 
@@ -292,7 +292,7 @@ export default function Home() {
                   <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroWifi src={'/img/header/wifi.svg'} alt={''} $largeScreen={largeScreen} />
-                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} $tinyScreen={tinyScreen} />
+                  <HeroBench src={'/img/header/bench.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
                 </HeroArtwork>
               </Grid>
@@ -399,7 +399,7 @@ export default function Home() {
               <img style={{ position: 'absolute', marginLeft: '2rem' }} src={'/icons/chiair/resources-view-all.svg'} alt={''} />
             </Grid>
             <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-              <ResourceLabel $largeScreen={largeScreen}>View All Resources <ResourceLinkIcon /></ResourceLabel>
+              <ResourceLabel $largeScreen={largeScreen}>View All Resources</ResourceLabel>
               <ResourceDescription>Explore more learning materials & lesson plans, access reports, and explore additional maps.</ResourceDescription>
             </Grid>
           </Grid>
@@ -420,12 +420,12 @@ export default function Home() {
       <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
         <ContentContainer>
           <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'flex-start'}>
-            <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large.svg'} alt={''} />
+            <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large-textless.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               <Grid container spacing={0}>
                 <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks in our communities. To close this gap, we created the "{platformName} Network" and deployed a network of {sensorCount} Clarity Node-S sensors to blanket the city to measure Fine Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) in ambient air. {platformName} is co-owned between University of Illinois at Chicago (UIC) and Chicago Department of Public Health (CDPH).</div>
-                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>{platformName}</NavLink> sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
-                <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <NavLink to={'/about'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>{!largeScreen && <br/> }
+                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} target={'_blank'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>{platformName} <FaExternalLinkAlt /></NavLink> platform sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
+                <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <NavLink to={'/about'} style={{ textWrap: 'nowrap', textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>{!largeScreen && <br/> }
               </Grid>
               <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
                 <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} style={{ maxWidth: '100%' }} />
@@ -437,7 +437,7 @@ export default function Home() {
       </GradientBackground>
 
 
-      <NavBar style={{ marginBottom: '4rem' }} />
+      <NavBar style={{ padding: '4rem' }} asFooter={true} />
     </>
   );
 }
