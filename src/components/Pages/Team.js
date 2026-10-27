@@ -174,6 +174,11 @@ const coreteam = [
 
 const students = [
   {
+    photo: '/img/team/mahjabin.png',
+    name: 'Mahjabin Kabir Adrita, MS',
+    description: 'Research Assistant, UIUC',
+  },
+  {
     photo: '/img/team/oni.png',
     name: 'Onongoo (Oni) Amar',
     description: 'Research Assistant, UIC',
@@ -181,11 +186,6 @@ const students = [
   {
     photo: '/img/team/discenza.png',
     name: 'Catherine Discenza',
-    description: 'Research Assistant, UIUC',
-  },
-  {
-    photo: '/img/team/mahjabin.png',
-    name: 'Mahjabin Kabir Adrita, MS',
     description: 'Research Assistant, UIUC',
   },
   {
@@ -224,6 +224,12 @@ const communityorgs = [
     name: 'Little Village Environmental Justice Organization',
     description: 'Jocelyn Vazquez-Gomez',
   },
+  {
+    url: 'https://n4ej.org/',
+    photo: '/img/team/n4ej.jpg',
+    name: 'Neighbors for Environmental Justice',
+    description: 'Madalynn Benavides, Anthony Moser, Alfredo Romo, Sonia Monet Saxon',
+  },
    {
     url: 'https://openlands.org/',
     photo: '/img/team/OPL-Htag-purple.jpg',
@@ -231,16 +237,10 @@ const communityorgs = [
     description: '',
   },
   {
-    url: 'https://n4ej.org/',
-    photo: '/img/team/n4ej.jpg',
-    name: 'Neighbors for Environmental Justice',
-    description: 'Sonia Monet Saxon, Alfredo Romo, Madalynn Benavides, Anthony Moser',
-  },
-  {
     url: 'https://www.peopleforcommunityrecovery.org/',
     photo: '/img/team/pcr.png',
     name: 'People for Community Recovery',
-    description: 'Jasmine Ray, Jermica Davis',
+    description: 'Jermica Davis, Jasmine Ray',
   },
     {
     url: 'https://prn.mayfirst.info/about-us/',
@@ -252,7 +252,7 @@ const communityorgs = [
     url: 'https://pilsenperro.org/',
     photo: '/img/team/perro.png',
     name: 'Pilsen Environmental Rights & Reform Organization',
-    description: 'Ajay Chatha, Apriori Diaz, Citlalli Trujillo, Estephany Baumgarder Leandro-Torres, Jaime Valero-Torres, Rose Gomez, Zitlalli Paez',
+    description: 'Ajay Chatha, Apriori Diaz, Rose Gomez, Estephany Baumgarder Leandro-Torres, Citlalli Trujillo, Jaime Valero-Torres, Zitlalli Paez',
   },
   {
     url: 'https://www.swcollective.org/',
@@ -275,15 +275,11 @@ const communityindividual = [
   },
   {
     name: '',
-    description: <><strong>Benjamin Campbell, Ph.D.</strong>, University of Illinois Urbana Champaign</>
-  },
-  {
-    name: '',
-    description: <><strong>Bill Miller, Ph.D.</strong>, Northwestern University</>
-  },
-  {
-    name: '',
     description: <><strong>Beth Beyer</strong>, The Technology Alliance</>
+  },
+  {
+    name: '',
+    description: <><strong>Benjamin Campbell, Ph.D.</strong>, University of Illinois Urbana Champaign</>
   },
   {
     name: '',
@@ -295,11 +291,15 @@ const communityindividual = [
   },
   {
     name: '',
-    description: <><strong>Alex Peimer, Ph.D.</strong>, Northeastern Illinois University</>
+    description: <><strong>Julia McKenna</strong>, STRONG Manoomin Collective</>
   },
   {
     name: '',
-    description: <><strong>Julia McKenna</strong>, STRONG Manoomin Collective</>
+    description: <><strong>Bill Miller, Ph.D.</strong>, Northwestern University</>
+  },
+  {
+    name: '',
+    description: <><strong>Alex Peimer, Ph.D.</strong>, Northeastern Illinois University</>
   }
 ];
 
