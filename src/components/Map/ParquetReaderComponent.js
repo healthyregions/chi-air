@@ -112,11 +112,11 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date', clickedSensor],
       rowStart: 0,
-      rowEnd: 24
+      rowEnd: 30
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
-      console.log(`Finished fetching 24hr clicked sensor data: ${endTime - startTime}ms`);
+      console.log(`Finished fetching ~24hr clicked sensor data: ${endTime - startTime}ms`);
     });
   }, [dispatch, clickedSensor, selectedParameter]);
 
@@ -146,16 +146,18 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   useEffect(() => {
     // Fetch initial metric data for the map
     const startTime = new Date().getTime();
-    fetchPq({
-      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
-      rowStart: selectedTimeIndex?.index,
-      rowEnd: selectedTimeIndex?.index+1,
-    }).then(data => {
-      dispatch(setMetricData({ parameter: selectedParameter, data }));
-      const checkDate = data?.find(() => true)?.date;
-      const endTime = new Date().getTime();
-      console.log(`Finished fetching ${selectedParameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
-      console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
+    allMetrics?.forEach(parameter => {
+      fetchPq({
+        url: `${s3prefix}/${parameter}.parquet.brotli`,
+        rowStart: selectedTimeIndex?.index,
+        rowEnd: selectedTimeIndex?.index+2,
+      }).then(data => {
+        dispatch(setMetricData({ parameter, data }));
+        const checkDate = data?.find(() => true)?.date;
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching ${parameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
+        console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
+      });
     });
   }, [dispatch, locations, selectedParameter, selectedTimeIndex]);
 

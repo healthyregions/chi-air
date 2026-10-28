@@ -102,7 +102,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           {showColor && <SensorValueColorIndicator $color={range?.color} $border={range?.border}></SensorValueColorIndicator>}
           <Grid>
             <SensorNumericalValue $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
-              {selectedParameter === 'nowcast_aqi' && Number(rounded)}
+              {selectedParameter === 'nowcast_aqi' && Number(rounded).toFixed(0)}
               {/*{selectedParameter === 'mean_pm25' && Number(rounded).toFixed(1)}*/}
               {selectedParameter === 'clarity_pm25' && Number(rounded).toFixed(1)}
               {selectedParameter === 'clarity_no2' && Number(rounded).toFixed(1)}

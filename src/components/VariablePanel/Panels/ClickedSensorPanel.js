@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import {
   selectClickedSensor, selectMetricData,
-  selectSelectedSensors, selectSensorGeojsonData,
+  selectSelectedSensors, selectSelectedTimeIndex, selectSensorGeojsonData,
   selectSensorLocations, selectSensorParameter,
   setClickedSensor
 } from "../../../store/slices/sensorDataSlice";
@@ -76,12 +76,13 @@ export const ClickedSensorPanel = ({ push, pop }) => {
   const selectedParameter = useSelector(selectSensorParameter);
   const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   const clickedLocation = getLocation(locations, clickedSensor);
 
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
-  const {latestValue, latestRow} = getMetadata({parameter: selectedParameter, datasourceId: clickedSensor, geojsonData});
+  const {latestValue, latestRow} = getMetadata({parameter: selectedParameter, datasourceId: clickedSensor, geojsonData, selectedTimeIndex});
 
   // Page backward by one, if our clicked sensor is in the list of selected sensors
   const prevSensor = () => {
@@ -153,7 +154,7 @@ export const ClickedSensorPanel = ({ push, pop }) => {
 
       <Grid container alignItems={'center'}>
         <Grid offset={1} size={11}>
-          <SensorBarChart pageSize={30}
+          <SensorBarChart pageSize={24}
                           averageType={'hour'}
                           context={'recent'}
                           selectedParameter={selectedParameter}

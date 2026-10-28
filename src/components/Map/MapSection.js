@@ -485,7 +485,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
       if (isSensorOffline(latest)) {
         return [100,100,100];
       }

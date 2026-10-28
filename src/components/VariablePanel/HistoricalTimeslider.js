@@ -9,13 +9,28 @@ import {FaRegCalendarAlt} from "react-icons/fa";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
+  selectAverageType,
   selectMetricData,
-  selectMetricIndex, selectSelectedTimeIndex,
+  selectMetricIndex, selectSelectedTimeIndex, setAverageType,
   setSelectedTimeIndex,
 } from "../../store/slices/sensorDataSlice";
 import MenuItem from "@mui/material/MenuItem";
 import {Slider} from "@mui/material";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import isoWeek from 'dayjs/plugin/isoWeek';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import InputLabel from "@mui/material/InputLabel";
+import {fromIso} from "./common";
+
+// Extend dayjs with the required plugins
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isoWeek);
 
 //// Styled components CSS
 // Main container for entire panel
@@ -132,7 +147,8 @@ const SliderLabel = styled.span`
     font-family: Space Grotesk, sans-serif;
     font-size: 14px;
     font-weight: 400;
-    color: #444444;
+    cursor: pointer;
+    color: ${colors.chicagoDarkBlue};
 `;
 
 export const HistoricalTimeslider = () => {
@@ -141,199 +157,273 @@ export const HistoricalTimeslider = () => {
 
   const dispatch = useDispatch();
   const panelState = useSelector(selectPanelState);
-  const [granularity, setGranularity] = useState('day');
+  const averageType = useSelector(selectAverageType);
 
-  // Find data points when granularity changes
+  // Find data points when averageType changes
   const metricIndex = useSelector(selectMetricIndex);
   const metricData = useSelector(selectMetricData);
 
+  // State for the start/end DatePickers
+  const sliderStartRef = useRef();
+  const sliderEndRef = useRef();
+  const sliderStartValueRef = useRef();
+  const sliderEndValueRef = useRef();
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
+  const [sliderStartDate, setSliderStartDate] = useState(dayjs(new Date().getTime() - (60*60*24*7*1000)));
+  const [sliderEndDate, setSliderEndDate] = useState(dayjs(new Date()));
+
   const handleOpenClose = () => dispatch(setPanelState({ history: !panelState.history }));
-  const [value, setValue] = useState(30);
+  const [value, setValue] = useState(9999999);
 
-  const fromIso = useCallback((d) => new Date(d?.split(' ').join('T') + 'Z'), []);
-  const getStartDate = useCallback((endDate: Date): Date => {
-    const startDate = new Date(endDate);
-    if (granularity === 'day') {
-      // show "Last Day" => start = 1 day ago ~ end - 1 day
-      startDate.setDate(endDate.getDate() - 1);
-      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
-      return fromIso(firstDataPoint?.date);
-    } else if (granularity === 'week') {
-      // show "Last Week" => start = 7 days ago ~ end - 7 days
-      startDate.setDate(endDate.getDate() - 7);
-      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
-      return fromIso(firstDataPoint?.date);
-    } else if (granularity === 'month') {
-      // show "Last Month" => start = 1 month ago ~ end - 1 month
-      startDate.setMonth(endDate.getMonth() - 1);
-      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
-      return fromIso(firstDataPoint?.date);
-    } else if (granularity === 'season') {
-      // show "Last Season" => start = 3 months ago ~ end - 3 months
-      startDate.setMonth(endDate.getMonth() - 3);
-      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
-      return fromIso(firstDataPoint?.date);
-    } else if (granularity === 'year') {
-      // show "Last Year" => start = 1 year ago ~ end - 1 year
-      startDate.setFullYear(endDate.getFullYear() - 1);
-      const firstDataPoint = metricData?.filter(m => m?.type === 'hour')?.reverse()?.find((m) => fromIso(m?.date)?.getTime() > startDate?.getTime());
-      return fromIso(firstDataPoint?.date);
-    } else if (granularity === 'all') {
-      return new Date(metricData?.filter(m => m?.type === 'hour')?.reverse()?.find(() => true)?.date.split(' ').join('T') + 'Z');
+  const formatDate = (date) => {
+    console.log(`Formatting: date=${date}`);
+    if (averageType === 'hour') {
+      const format = { month: 'short', day: 'numeric', hour: 'numeric' };
+      if (sliderStartDate?.year() !== sliderEndDate?.year()) {
+        format.year = 'numeric';    // show year only if it is relevant
+      }
+      return new Date(fromIso(date))?.toLocaleTimeString('en-US', format);
+    } else if (averageType === 'day') {
+      const format = { month: 'short', day: 'numeric', year: 'numeric' };
+      return dayjs(date)?.toDate().toLocaleDateString('en-US', format);
+    } else if (averageType === 'week') {
+      const [year, weekNum] = date.split('-W');
+      console.log(`Formatting: date=${date}   year=${year}   week=${weekNum}`);
+      return `Week of ${dayjs().isoWeek(date).toDate()}`;
+    } else if (averageType === 'month') {
+      const [year, monthNum] = date.split('-');
+      console.log(`Formatting: date=${date}   year=${year}   month=${monthNum}`);
+      return `Month of ${dayjs().year(year).month(monthNum).toDate()}`;
+    } else if (averageType === 'season') {
+      const [year, seasonName] = date.split('-');
+      console.log(`Formatting: date=${date}   year=${year}   season=${seasonName}`);
+      return `Season of ${dayjs().toDate()}`;
+    } else if (averageType === 'year') {
+      console.log(`Formatting: date=${date}   year=${date}`);
+      return dayjs().year(date).toDate();
     }
-    return startDate;
-  }, [metricData, granularity, fromIso]);
-
-  function valuetext(value, length) {
-    const offset = length - value;
-    const isoDate = metricData?.filter(m => m?.type === 'hour')?.[offset]?.date?.split(' ').join('T') + 'Z';
-    return new Date(isoDate)?.toLocaleTimeString('en-US', { month: 'short', day: 'numeric', hour: 'numeric' });
   }
 
-  const [sliderStart: Date, sliderEnd: Date] = useMemo(() => {
-    // Select dataset based on granularity
-    // Filter by time, unless user chooses "all"
-    //const data = granularity === 'all' ? metricData : historicalSlice;
-
-    // Determine start + end dates based on our historical slice
-    //const endDate = new Date(data?.[0]?.date.split(' ').join('T') + 'Z');
-    const endDateIso = metricData?.filter(m => m?.type === 'hour')?.find(() => true)?.date.split(' ').join('T') + 'Z';
-    const endDate = new Date(endDateIso);
-
-    const end = endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    //const startDate = new Date(data?.[data?.length - 1]?.date.split(' ').join('T') + 'Z');
-    const startDate = getStartDate(endDate);
-    const start = startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-    return [start, end];
-  }, [getStartDate, metricData]);
-
-  const numTicks = useCallback(() => {
-    const now = new Date();
-    if (granularity === 'day') {
-      const dayAgo = new Date()?.setTime(now?.getTime() - 24*60*60*1000);  // 24 hours
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > dayAgo)?.length - 1;
-    } else if (granularity === 'week') {
-      const weekAgo = new Date()?.setTime(now?.getTime() - 7*24*60*60*1000);  // 7 days
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > weekAgo)?.length - 1;
-    } else if (granularity === 'month') {
-      const monthAgo = new Date()?.setTime(now?.getTime() - 30*24*60*60*1000);  // 30 days
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > monthAgo)?.length - 1;
-    } else if (granularity === 'season') {
-      const threeMonthsAgo = new Date()?.setTime(now?.getTime() - 3*30*24*60*60*1000);  // 90 days
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > threeMonthsAgo)?.length - 1;
-    } else if (granularity === 'year') {
-      const oneYearAgo = new Date()?.setTime(now?.getTime() - 365*24*60*60*1000);  // 24 hours
-      return metricData?.filter(m => m?.type === 'hour' && fromIso(m?.date)?.getTime() > oneYearAgo)?.length - 1;
-    } else {
-      return metricData?.filter(m => m?.type === 'hour')?.length - 1;
+  const filteredValues = useMemo(() => {
+    const filteredData = metricData?.filter(m => m?.type === averageType);
+    if (averageType === 'hour') {
+      const start = dayjs(sliderStartDate).tz("America/Chicago").hour(0).minute(0).second(0).millisecond(0);
+      const end = dayjs(sliderEndDate).tz("America/Chicago").hour(0).minute(0).second(0).millisecond(0);
+      const hourFiltered = filteredData?.filter(m => {
+        const current = dayjs(fromIso(m?.date));
+        return (start <= current) && (current <= end);
+      });
+      console.log(`start=${start}   end=${end}`, hourFiltered);
+      return hourFiltered;
+    } else if (averageType ==='day') {
+      const start = dayjs(sliderStartDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const end = dayjs(sliderEndDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const dayFiltered = filteredData?.filter(m => {
+        const current = dayjs(m?.date).tz("utc");
+        return (start <= current) && (current <= end);
+      });
+      console.log(`start=${start}   end=${end}`, dayFiltered);
+      return dayFiltered;
     }
-  }, [metricData, fromIso, granularity]);
+  }, [sliderStartDate, sliderEndDate, averageType, metricData]);
 
-  const handleChange = (event, newValue) => { setValue(newValue); };
-  const handleCommit = (event, finalValue) => {
-    const index = numTicks() - finalValue;
-    // Call your API or heavy logic here
+  function valuetext(value, length) {
+    if (!length || value === null || value === undefined || value?.isNaN) { return ''; }
+    // Value is numerical index of the slider selection
+    // We want to dereference this index, then format the resulting date
+    const offsetInRange = (length - 1) - value;
+    console.log(`Offset=${offsetInRange}   Length=${length}`);
+    const filteredData = filteredValues?.[offsetInRange];
+    console.log(`Selected=`, filteredData);
+    return formatDate(filteredData?.date);
+  }
 
-    const row = metricData?.[index];
+  const getRow = useCallback((finalValue) => {
+    // Timeslider returns a reverse index into filteredData
+    const offset = filteredValues?.length - 1 - finalValue;
+    const startIndex = metricIndex[averageType];
+
+    // Find the index into the full dataset
+    const index = startIndex + offset;
+    return [metricData?.[index], index];
+  }, [filteredValues, averageType, metricIndex, metricData]);
+
+  const setMapState = useCallback((offset) => {
+    const [row, index] = getRow(offset);
     const date = row?.date;
     const type = row?.type;
     console.log(`index=${index}  date=${date}  type=${type}`);
 
     dispatch(setSelectedTimeIndex({ index, date, type }));
+  }, [dispatch, getRow]);
+
+  const handleChange = (event, newValue) => { setValue(newValue); };
+  const handleCommit = (event, finalValue) => {
+    setValue(finalValue);
+    setMapState(finalValue);
   };
 
-  const prev = useRef();
+  const selectedDateRef = useRef();
+
   useEffect(() => {
-    if (prev.current !== selectedTimeIndex?.index) {
-      selectedTimeIndex?.index && setValue(numTicks() - selectedTimeIndex?.index);
-      prev.current = selectedTimeIndex?.index;
+    // if (selectedDateRef?.current !== selectedTimeIndex?.date) {
+    //   selectedDateRef.current = selectedTimeIndex?.date;
+    //   const found = filteredValues?.find(r => r?.date === selectedDateRef.current);
+    //   const index = filteredValues?.indexOf(found);
+    //   setValue(filteredValues?.length - 1 - index);
+    // }
+    const selectedDate = fromIso(selectedTimeIndex?.date);
+    console.log(`SelectedDate=${dayjs(selectedDate).tz("America/Chicago")}`, filteredValues);
+    const prevStart = sliderStartValueRef?.current;
+    const currStart = sliderStartDate?.toDate();
+    const beforeRangeStart = sliderStartDate.toDate().getTime() > dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
+    if (prevStart !== currStart && beforeRangeStart) {
+      // Set to range start
+      setValue(0);
+      setMapState(0);
+      sliderStartValueRef.current = sliderStartDate.toDate();
     }
-  }, [numTicks, selectedTimeIndex?.index])
+    const prevEnd = sliderEndValueRef?.current;
+    const currEnd = sliderEndDate?.toDate();
+    const afterRangeEnd = sliderEndDate.toDate().getTime() < dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
+    if (prevEnd !== currEnd && afterRangeEnd) {
+      // Set to range end
+      setValue(filteredValues?.length - 1);
+      setMapState(filteredValues?.length - 1);
+      sliderEndValueRef.current = sliderEndDate.toDate();
+    }
+  }, [filteredValues, sliderStartDate, sliderEndDate, selectedTimeIndex?.date, setMapState]);
 
   return (
-    <TimesliderContainer $large={largeScreen} $open={panelState.history}>
-      <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
-        <Grid size={{ xs: 6 }} style={{ fontFamily: 'Lexend', fontWeight: 400, fontSize: '18px', color: '#444444' }}>
-          Change Over Time
-        </Grid>
-        <Grid size={{ xs: 5 }}>
-          <FormControl id="avgTypeSelectHistorical" variant="outlined" fullWidth>
-            <Select
-              variant={"outlined"}
-              sx={{ color: '#444444' }}
-              value={granularity}
-              onChange={(e) => setGranularity(e.target.value)}
-            >
-              <MenuItem value="day" disabled={metricIndex.day <= 0}>Past Day</MenuItem>
-              <MenuItem value="week" disabled={metricIndex.week <= 0}>Past Week</MenuItem>
-              <MenuItem value="month" disabled={metricIndex.month <= 0}>Past Month</MenuItem>
-              <MenuItem value="season" disabled={metricIndex.season <= 0}>Past 3 Months</MenuItem>
-              <MenuItem value="year" disabled={metricIndex.year <= 0}>Past Year</MenuItem>
-              <MenuItem value="all">All Time</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-
-      <Grid marginTop={'1.5rem'}>
-        <Grid container alignItems={'center'}>
-          <Grid size={{ xs: 2 }}>
-            {/*{ granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderStart}</SliderLabel> }*/}
-            {/*{ granularity === 'year' && <SliderLabel>{sliderStart}</SliderLabel> }*/}
-            {/*{ granularity === 'all' && <SliderLabel>{sliderStart}</SliderLabel> }*/}
-            <SliderLabel>{sliderStart}</SliderLabel>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <TimesliderContainer $large={largeScreen} $open={panelState.history}>
+        <Grid container spacing={0} alignItems={'center'} justifyContent={'space-between'}>
+          <Grid size={{ xs: 6 }} style={{ fontFamily: 'Lexend', fontWeight: 400, fontSize: '18px', color: '#444444' }}>
+            Change Over Time
           </Grid>
-          <Grid size={{ xs: 8 }}>
-            <Slider aria-label="History"
-                    // Value format & display
-                    getAriaValueText={valuetext}
-                    valueLabelFormat={(value) => valuetext(value, numTicks())}
-                    valueLabelDisplay="on"
-                    value={value}
+          <Grid size={{ xs: 5 }}>
+            <FormControl id="avgTypeSelectSlider" variant="outlined" fullWidth>
+              <InputLabel id={"avgTypeSelectSlider-label"}>Type</InputLabel>
+              <Select
+                aria-describedby={`avgTypeSelectSlider-helper-text`}
+                labelId={`avgTypeSelectSlider-label`}
+                variant={"outlined"}
+                sx={{ color: '#444444' }}
+                value={averageType}
+                label={"Type"}
+                onChange={(e) => dispatch(setAverageType(e.target.value))}
+              >
+                <MenuItem value="hour">Hour</MenuItem>
+                <MenuItem value="day" disabled={metricIndex.day <= 0}>Day</MenuItem>
+                <MenuItem value="week" disabled={metricIndex.week <= 0}>Week</MenuItem>
+                <MenuItem value="month" disabled={metricIndex.month <= 0}>Month</MenuItem>
+                <MenuItem value="season" disabled={metricIndex.season <= 0}>Season</MenuItem>
+                <MenuItem value="year" disabled={metricIndex.year <= 0}>Year</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
 
-                    // Numerical behavior
-                    shiftStep={8}
-                    min={0}
-                    max={numTicks()}
-                    onChange={handleChange}
-                    onChangeCommitted={handleCommit}
 
-                    // Custom styling for valueLabel / tooltip
-                    track={false}
-                    sx={{
-                      '& .MuiSlider-rail': {
-                        color: '#41B6E6'
-                      },
-                      '& .MuiSlider-thumb': {
-                        color: '#005899'
-                      },
-                      // Target the value label container
-                      '& .MuiSlider-valueLabel': {
-                        fontSize: 14,
-                        fontWeight: 'normal',
-                        fontFamily: 'Space Grotesk',
-                        bottom: 50, // Adjust distance from thumb
-                        backgroundColor: '#00000000', // transparent background
-                        color: '#41B6E6', // Change text color
-                        '&::before': {
-                          display: 'none', // Hides the default little arrow bubble point
+        <Grid marginTop={'2rem'}>
+          <Grid container alignItems={'center'}>
+            <Grid size={{ xs: 2 }}>
+              <SliderLabel ref={sliderStartRef} onClick={() => setStartDateOpen(true)}>
+                <div>{sliderStartDate?.format('MMM D')}</div>
+                <small>{sliderStartDate?.format('YYYY')}</small>
+              </SliderLabel>
+              <DatePicker
+                inputRef={sliderStartRef?.current}
+                open={startDateOpen}
+                maxDate={sliderEndDate}
+                format={'MMM D\nYYYY'}
+                onOpen={() => setStartDateOpen(true)}
+                onClose={() => setStartDateOpen(false)}
+                value={sliderStartDate}
+                onChange={(newValue) => setSliderStartDate(newValue)}
+                slotProps={{
+                  popper: {
+                    anchorEl: sliderStartRef?.current
+                  },
+                  textField: {
+                    style: {display:'none'}
+                  }
+                }}
+              />
+            </Grid>
+            <Grid size={{ xs: 8 }}>
+              <Slider aria-label="History"
+                      // Value format & display
+                      getAriaValueText={valuetext}
+                      valueLabelFormat={(value) => valuetext(value, filteredValues?.length)}
+                      valueLabelDisplay="on"
+                      value={value}
+
+                      // Numerical behavior
+                      shiftStep={8}
+                      min={0}
+                      max={filteredValues?.length - 1}
+                      onChange={handleChange}
+                      onChangeCommitted={handleCommit}
+
+                      // Custom styling for valueLabel / tooltip
+                      track={false}
+                      sx={{
+                        '& .MuiSlider-rail': {
+                          color: '#41B6E6'
                         },
-                      },
-                    }}
-            />
-          </Grid>
-          <Grid size={{ xs: 2 }} textAlign={'end'}>
-            {/*{ granularity !== 'year' && granularity !== 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }*/}
-            {/*{ granularity === 'year' && <SliderLabel>{sliderEnd}</SliderLabel> }*/}
-            {/*{ granularity === 'all' && <SliderLabel>{sliderEnd}</SliderLabel> }*/}
-            <SliderLabel>{sliderEnd}</SliderLabel>
+                        '& .MuiSlider-thumb': {
+                          color: '#005899'
+                        },
+                        // Target the value label container
+                        '& .MuiSlider-valueLabel': {
+                          fontSize: 14,
+                          fontWeight: 'semibold',
+                          fontFamily: 'Space Grotesk',
+                          bottom: 50, // Adjust distance from thumb
+                          paddingBottom: '0.75rem',
+                          backgroundColor: '#00000000', // transparent background
+                          color: '#005899', // Change text color
+                          '&::before': {
+                            display: 'none', // Hides the default little arrow bubble point
+                          },
+                        },
+                      }}
+              />
+            </Grid>
+            <Grid size={{ xs: 2 }} textAlign={'end'}>
+              <SliderLabel ref={sliderEndRef} onClick={() => setEndDateOpen(true)}>
+                <div>{sliderEndDate?.format('MMM D')}</div>
+                <small>{sliderEndDate?.format('YYYY')}</small>
+              </SliderLabel>
+              <DatePicker
+                inputRef={sliderEndRef?.current}
+                open={endDateOpen}
+                format={'MMM D\nYYYY'}
+                minDate={sliderStartDate}
+                maxDate={dayjs(new Date())}
+                onOpen={() => setEndDateOpen(true)}
+                onClose={() => setEndDateOpen(false)}
+                value={sliderEndDate}
+                onChange={(newValue) => setSliderEndDate(newValue)}
+                slotProps={{
+                  popper: {
+                    anchorEl: sliderEndRef?.current
+                  },
+                  textField: {
+                    style: {display:'none'}
+                  }
+                }}
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <button onClick={handleOpenClose} id="showHideRight" className={panelState.history ? 'active' : 'hidden'}><FaRegCalendarAlt /></button>
-    </TimesliderContainer>
+        <button onClick={handleOpenClose} id="showHideRight" className={panelState.history ? 'active' : 'hidden'}><FaRegCalendarAlt /></button>
+
+      </TimesliderContainer>
+    </LocalizationProvider>
   );
 }
 

@@ -90,11 +90,10 @@ export const getLocation = (locations, datasourceId) => {
 };
 
 // Given a sensorId + related datasets, extract basic fragments needed by a few different views
-export const getMetadata = ({ geojsonData, parameter, datasourceId }) => {
+export const getMetadata = ({ geojsonData, parameter, datasourceId, selectedTimeIndex }) => {
   // Grab our previously-fetched data to determine some stats
-  // TODO: we can do better for this logic, but for now this should work alright
   const feature = geojsonData?.features?.find(f => f?.properties?.datasourceId === datasourceId);
-  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[0];
+  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[selectedTimeIndex?.index || 0];
   const latestValue = latestRow?.value;
   return { feature, latestRow, latestValue };
 }
@@ -137,6 +136,8 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
     date, iso, utc
   };
 }
+
+export const fromIso = (d) => new Date(d?.split(' ').join('T') + 'Z');
 
 // Adapter to provide a selector/reducer as a drop-in replacement for useState
 export const useSelectorAsState = (selector, reducer, dispatch) => {

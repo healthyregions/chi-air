@@ -5,8 +5,13 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
-import {useSelector} from "react-redux";
-import {selectClickedSensor} from "../../store/slices/sensorDataSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  selectClickedSensor,
+  selectMetricIndex, selectSelectedTimeIndex,
+  setSelectedTimeIndex
+} from "../../store/slices/sensorDataSlice";
+import {scaleColor} from "../../utils";
 
 
 const getIsoWeekRange = (year, weekNumber) => {
@@ -44,9 +49,12 @@ const shortDateFormat = new Intl.DateTimeFormat("en-US", {
 });
 
 
-export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
+export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 20, metricData, averageType }) => {
   const [page, setPage] = useState(0);
   const clickedSensor = useSelector(selectClickedSensor);
+  const dispatch = useDispatch();
+  const metricIndex = useSelector(selectMetricIndex);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   // Listen for changes to averageType or selectedParameter
   // Reset page number when averageType or selectedParameter changes
@@ -99,11 +107,24 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   const numPages = Math.ceil(numItems / pageSize);
   const pageStart = useMemo(() => pageSize * (page), [page, pageSize]);
   const pageEnd = useMemo(() => pageSize * (page + 1), [page, pageSize]);
+  //const isLastPage = useMemo(() => pageEnd === numItems, [numItems, pageEnd]);
+  //const numItemsOnLastPage = useMemo(() => numItems % pageSize, [numItems, pageSize]);
+
+  //const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
+
+  /*useEffect(() => {
+    const type = selectedTimeIndex?.type;
+    const index = metricIndex?.[type];
+    const date = metricData?.[index]?.date;
+
+    dispatch(setSelectedTimeIndex({ index, type, date }))
+  }, [selectedTimeIndex?.type, dispatch, metricData, metricIndex]);*/
 
   const maxValue = getMaxValue();
 
   // Filter the data and build a bar graph from it
   const filteredData = useMemo(() => metricData?.slice(pageStart, pageEnd)?.reverse(), [metricData, pageStart, pageEnd]);
+
   const chartSettings: BarChartProps = {
     dataset: filteredData,
     height: 175,
@@ -229,17 +250,32 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
     }],
   };
 
-  // Additional styling for Historical Trends
-  if (context === 'historical') {
-    chartSettings.sx = {
-      // Shrinks the legend/series labels
-      '& .MuiBarChart-seriesLabels > text': {
-        fontSize: '0.6rem',
-        fontFamily: 'Lexend',
-        fontWeight: 500,
-      },
-    };
-  }
+  const bins = pm2_5Ranges.map(r => {
+    if (selectedParameter === 'nowcast_aqi') {
+      return r.aqi_max;
+    } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25') {
+      return r.pm25_max;
+    } else if (selectedParameter === 'clarity_no2') {
+      return r.no2_max;
+    } else {
+      console.error('Unsupported metric name: ' + selectedParameter)
+      return undefined
+    }
+  });
+
+  const onBarClick = (d) => {
+    const negativeOffset = d?.dataIndex;
+    const offset = (page * pageSize) + ((pageSize-1) - negativeOffset);
+    const startIndex = metricIndex?.[averageType];
+
+    const index = startIndex + offset;
+    const row = metricData?.[index];
+    const type = averageType;
+    const date = row?.date;
+
+    console.log(`Selected:  negativeOffset=${negativeOffset}   index=${index}   date=${date}   type=${type}`);
+    dispatch(setSelectedTimeIndex({ index, date, type }));
+  };
 
   return (
     <>
@@ -251,7 +287,59 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings}  />
+          <BarChart {...chartSettings} onItemClick={(event, d) => onBarClick(d)} slots={{
+            // 2. Conditionally color the barLabel text
+            barLabel: (props) => {
+              // BarGraph dataIndex returns a reverse index into the page
+              const offsetIntoPage = pageSize - 1 - Number(props.dataIndex);
+              const startOfPage = pageSize*page;
+              const startIndex = metricIndex[averageType];
+              const index = startIndex + startOfPage + offsetIntoPage;
+              const value = metricData?.[index]?.[selectedParameter];
+
+              const fill = scaleColor(value, bins, value >= 100 ? pm2_5Ranges.map(r => r.color) : pm2_5Ranges.map(r => r.border));
+
+              // Extract positioning metrics supplied by MUI X
+              const { x, y, width, height, ...restOfMuiProps } = props;
+
+              // Calculate the exact horizontal midpoint of the bar
+              const barCenterRelativeX = x + width / 2;
+
+              // Offset the Y value slightly if you want a bit of breathing room above the bar
+              const labelSpacingAboveY = y - 8;
+              return (
+                <text
+                  {...restOfMuiProps}
+                  fill={fill}
+                  x={barCenterRelativeX}       // Assign the calculated center point
+                  y={labelSpacingAboveY}       // Assign the vertical placement
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  style={{ fontWeight: 'semibold', fontFamily: 'Lexend', fontSize: '0.6rem' }}
+                >
+                  {value}
+                </text>
+              );
+            },
+          }} slotProps={{
+            axisLabel: {
+              fontFamily: 'Lexend'
+            },
+            bar: (ownerState) => {
+              // BarGraph dataIndex is a reverse index into the page
+              const offsetIntoPage = pageSize - 1 - Number(ownerState.dataIndex);
+              const startOfPage = pageSize*page;
+              const startIndex = metricIndex[averageType];
+              const index = startIndex + startOfPage + offsetIntoPage;
+              const value = metricData?.[index]?.[selectedParameter];
+
+              const stroke = scaleColor(value, bins, pm2_5Ranges.map(r => r.border));
+              return {
+                stroke,
+                strokeWidth: index === selectedTimeIndex?.index ? 6 : 3,
+              }
+            },
+          }} />
         </Grid>}
 
         {showScroll && <Grid size={1}>
