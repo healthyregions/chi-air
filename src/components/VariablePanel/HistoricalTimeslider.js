@@ -264,7 +264,7 @@ export const HistoricalTimeslider = () => {
     setMapState(finalValue);
   };
 
-  const selectedDateRef = useRef();
+  //const selectedDateRef = useRef();
 
   useEffect(() => {
     // if (selectedDateRef?.current !== selectedTimeIndex?.date) {
