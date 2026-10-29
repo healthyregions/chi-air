@@ -24,13 +24,14 @@ import dayjs from "dayjs";
 import isoWeek from 'dayjs/plugin/isoWeek';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import InputLabel from "@mui/material/InputLabel";
-import {fromIso} from "./common";
+import isBetween from 'dayjs/plugin/isBetween';
+import {formatWeekDate, fromIso} from "./common";
 
 // Extend dayjs with the required plugins
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isoWeek);
+dayjs.extend(isBetween);
 
 //// Styled components CSS
 // Main container for entire panel
@@ -171,13 +172,14 @@ export const HistoricalTimeslider = () => {
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const [sliderStartDate, setSliderStartDate] = useState(dayjs(new Date().getTime() - (60*60*24*7*1000)));
-  const [sliderEndDate, setSliderEndDate] = useState(dayjs(new Date()));
+  const [sliderEndDate, setSliderEndDate] = useState(dayjs(new Date()?.toISOString()));
 
   const handleOpenClose = () => dispatch(setPanelState({ history: !panelState.history }));
   const [value, setValue] = useState(9999999);
 
   const formatDate = (date) => {
-    console.log(`Formatting: date=${date}`);
+    if (!date) { return; }
+    //console.log(`Formatting: date=${date}`, averageType);
     if (averageType === 'hour') {
       const format = { month: 'short', day: 'numeric', hour: 'numeric' };
       if (sliderStartDate?.year() !== sliderEndDate?.year()) {
@@ -188,20 +190,27 @@ export const HistoricalTimeslider = () => {
       const format = { month: 'short', day: 'numeric', year: 'numeric' };
       return dayjs(date)?.toDate().toLocaleDateString('en-US', format);
     } else if (averageType === 'week') {
-      const [year, weekNum] = date.split('-W');
-      console.log(`Formatting: date=${date}   year=${year}   week=${weekNum}`);
-      return `Week of ${dayjs().isoWeek(date).toDate()}`;
+      const [weekStartDate,] = formatWeekDate(date);
+      return 'Week of ' + weekStartDate;
     } else if (averageType === 'month') {
-      const [year, monthNum] = date.split('-');
-      console.log(`Formatting: date=${date}   year=${year}   month=${monthNum}`);
-      return `Month of ${dayjs().year(year).month(monthNum).toDate()}`;
+      const startOfMonth = dayjs(date).tz("utc").startOf('month');
+      return 'Month of ' + startOfMonth.format('MMMM YYYY');
     } else if (averageType === 'season') {
-      const [year, seasonName] = date.split('-');
-      console.log(`Formatting: date=${date}   year=${year}   season=${seasonName}`);
-      return `Season of ${dayjs().toDate()}`;
+      const [year: string, season: string] = date?.split('-');
+      const s = season?.toLowerCase();
+      if (s === 'spring') {
+        return `Spring ${year}`;
+      } else if (s === 'summer') {
+        return `Summer ${year}`;
+      } else if (s === 'winter') {
+        return `Winter ${year}`;
+      } else if (s === 'fall') {
+        return `Fall ${year}`;
+      }
     } else if (averageType === 'year') {
-      console.log(`Formatting: date=${date}   year=${date}`);
-      return dayjs().year(date).toDate();
+      return date;
+    } else {
+      console.log(`WARNING: unrecognized averageType=${averageType}`);
     }
   }
 
@@ -214,28 +223,75 @@ export const HistoricalTimeslider = () => {
         const current = dayjs(fromIso(m?.date));
         return (start <= current) && (current <= end);
       });
-      console.log(`start=${start}   end=${end}`, hourFiltered);
+      //console.log(`start=${start}   end=${end}`, hourFiltered);
       return hourFiltered;
-    } else if (averageType ==='day') {
+    } else if (averageType === 'day') {
       const start = dayjs(sliderStartDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
       const end = dayjs(sliderEndDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
       const dayFiltered = filteredData?.filter(m => {
         const current = dayjs(m?.date).tz("utc");
         return (start <= current) && (current <= end);
       });
-      console.log(`start=${start}   end=${end}`, dayFiltered);
+      //console.log(`start=${start}   end=${end}`, dayFiltered);
       return dayFiltered;
+    } else if (averageType === 'week') {
+      const start = dayjs(sliderStartDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const end = dayjs(sliderEndDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const weekFiltered = filteredData?.filter(m => {
+        const [weekStartDate, weekEndDate] = formatWeekDate(m?.date);
+        return dayjs(weekStartDate).isBetween(start, end) || dayjs(weekEndDate).isBetween(start, end) || dayjs(start).isBetween(weekStartDate, weekEndDate) || dayjs(end).isBetween(weekStartDate, weekEndDate);
+      });
+      //console.log(`start=${start}   end=${end}`, weekFiltered);
+      return weekFiltered;
+    } else if (averageType === 'month') {
+      const start = dayjs(sliderStartDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const end = dayjs(sliderEndDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const monthFiltered = filteredData?.filter(m => {
+        const startOfMonth = dayjs(m?.date).tz("utc").startOf('month');
+        const endOfMonth = dayjs(m?.date).tz("utc").endOf('month');
+        return dayjs(startOfMonth).isBetween(start, end) || dayjs(endOfMonth).isBetween(start, end) || dayjs(start).isBetween(startOfMonth, endOfMonth) || dayjs(end).isBetween(startOfMonth, endOfMonth);
+      });
+      //console.log(`start=${start}   end=${end}`, monthFiltered);
+      return monthFiltered;
+    } else if (averageType === 'season') {
+      const start = dayjs(sliderStartDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const end = dayjs(sliderEndDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const seasonFiltered = filteredData?.filter(m => {
+        const [year, season] = m?.date?.split('-');
+        const month =
+          season?.toLowerCase() === 'spring' ? 3 :
+          season?.toLowerCase() === 'summer' ? 6 :
+          season?.toLowerCase() === 'fall' || season?.toLowerCase() === 'autumn' ? 9 : 12;
+        //console.log(`DATE=${m?.date}   year=${year}   season=${season}   month=${month}`, );
+        const startOfSeason = dayjs().month(month).year(year).tz("utc").startOf('month');
+        const endOfSeason = dayjs().month(month).year(year).tz("utc").endOf('month');
+        return dayjs(startOfSeason).isBetween(start, end) || dayjs(endOfSeason).isBetween(start, end) || dayjs(start).isBetween(startOfSeason, endOfSeason) || dayjs(end).isBetween(startOfSeason, endOfSeason);
+      });
+      //console.log(`start=${start}   end=${end}`, seasonFiltered);
+      return seasonFiltered;
+    } else if (averageType === 'year') {
+      const start = dayjs(sliderStartDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const end = dayjs(sliderEndDate).tz("utc").hour(0).minute(0).second(0).millisecond(0);
+      const yearFiltered = filteredData?.filter(m => {
+        const year = m?.date;
+        const startOfYear = dayjs().year(year).tz("utc").startOf('year');
+        const endOfYear = dayjs().year(year).tz("utc").endOf('year');
+        return dayjs(startOfYear).isBetween(start, end) || dayjs(endOfYear).isBetween(start, end) || dayjs(start).isBetween(startOfYear, endOfYear) || dayjs(end).isBetween(startOfYear, endOfYear);
+      });
+      //console.log(`start=${start}   end=${end}`, yearFiltered);
+      return yearFiltered;
+    } else {
+      console.log(`WARNING: encountered unrecognized averageType=${averageType}`);
     }
   }, [sliderStartDate, sliderEndDate, averageType, metricData]);
 
   function valuetext(value, length) {
-    if (!length || value === null || value === undefined || value?.isNaN) { return ''; }
     // Value is numerical index of the slider selection
     // We want to dereference this index, then format the resulting date
     const offsetInRange = (length - 1) - value;
-    console.log(`Offset=${offsetInRange}   Length=${length}`);
+    //console.log(`Offset=${offsetInRange}   Length=${length}`);
     const filteredData = filteredValues?.[offsetInRange];
-    console.log(`Selected=`, filteredData);
+    //console.log(`Selected=`, filteredData);
     return formatDate(filteredData?.date);
   }
 
@@ -260,40 +316,50 @@ export const HistoricalTimeslider = () => {
 
   const handleChange = (event, newValue) => { setValue(newValue); };
   const handleCommit = (event, finalValue) => {
-    setValue(finalValue);
+    //setValue(finalValue);
     setMapState(finalValue);
   };
 
-  //const selectedDateRef = useRef();
+  const selectedDateRef = useRef();
 
   useEffect(() => {
-    // if (selectedDateRef?.current !== selectedTimeIndex?.date) {
-    //   selectedDateRef.current = selectedTimeIndex?.date;
-    //   const found = filteredValues?.find(r => r?.date === selectedDateRef.current);
-    //   const index = filteredValues?.indexOf(found);
-    //   setValue(filteredValues?.length - 1 - index);
-    // }
+    // Update slider value if it changes elsewhere (sync w/ Historical Trends panel)
+    if (selectedDateRef?.current !== selectedTimeIndex?.date) {
+      selectedDateRef.current = selectedTimeIndex?.date;
+      const found = filteredValues?.find(r => r?.date === selectedDateRef.current);
+      const index = filteredValues?.indexOf(found);
+      setValue(filteredValues?.length - 1 - index);
+    }
     const selectedDate = fromIso(selectedTimeIndex?.date);
     console.log(`SelectedDate=${dayjs(selectedDate).tz("America/Chicago")}`, filteredValues);
-    const prevStart = sliderStartValueRef?.current;
-    const currStart = sliderStartDate?.toDate();
-    const beforeRangeStart = sliderStartDate.toDate().getTime() > dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
-    if (prevStart !== currStart && beforeRangeStart) {
-      // Set to range start
-      setValue(0);
-      setMapState(0);
-      sliderStartValueRef.current = sliderStartDate.toDate();
-    }
-    const prevEnd = sliderEndValueRef?.current;
-    const currEnd = sliderEndDate?.toDate();
-    const afterRangeEnd = sliderEndDate.toDate().getTime() < dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
-    if (prevEnd !== currEnd && afterRangeEnd) {
-      // Set to range end
-      setValue(filteredValues?.length - 1);
-      setMapState(filteredValues?.length - 1);
-      sliderEndValueRef.current = sliderEndDate.toDate();
-    }
+    // const prevStart = sliderStartValueRef?.current;
+    // const currStart = sliderStartDate?.toDate();
+    // const beforeRangeStart = sliderStartDate.toDate().getTime() > dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
+    // if (prevStart !== currStart && beforeRangeStart) {
+    //   // Set to range start
+    //   setValue(0);
+    //   setMapState(0);
+    //   sliderStartValueRef.current = currStart;
+    // }
+    // const prevEnd = sliderEndValueRef?.current;
+    // const currEnd = sliderEndDate?.toDate();
+    // const afterRangeEnd = sliderEndDate.toDate().getTime() < dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
+    // if (prevEnd !== currEnd && afterRangeEnd) {
+    //   // Set to range end
+    //   setValue(filteredValues?.length - 1);
+    //   setMapState(filteredValues?.length - 1);
+    //   sliderEndValueRef.current = currEnd;
+    // }
   }, [filteredValues, sliderStartDate, sliderEndDate, selectedTimeIndex?.date, setMapState]);
+
+  const prettyAverageType = ((type) => {
+    if (type === 'season') {
+      return 'seasonal';
+    } else if (type === 'day') {
+      return 'daily';
+    }
+    return `${type}ly`;
+  })(averageType);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -304,22 +370,23 @@ export const HistoricalTimeslider = () => {
           </Grid>
           <Grid size={{ xs: 5 }}>
             <FormControl id="avgTypeSelectSlider" variant="outlined" fullWidth>
-              <InputLabel id={"avgTypeSelectSlider-label"}>Type</InputLabel>
+              {/*<InputLabel id={"avgTypeSelectSlider-label"}>Type</InputLabel>*/}
               <Select
                 aria-describedby={`avgTypeSelectSlider-helper-text`}
                 labelId={`avgTypeSelectSlider-label`}
                 variant={"outlined"}
                 sx={{ color: '#444444' }}
                 value={averageType}
-                label={"Type"}
+                renderValue={(value) => prettyAverageType[0]?.toUpperCase() + prettyAverageType.substring(1)}
+                //label={"Type"}
                 onChange={(e) => dispatch(setAverageType(e.target.value))}
               >
-                <MenuItem value="hour">Hour</MenuItem>
-                <MenuItem value="day" disabled={metricIndex.day <= 0}>Day</MenuItem>
-                <MenuItem value="week" disabled={metricIndex.week <= 0}>Week</MenuItem>
-                <MenuItem value="month" disabled={metricIndex.month <= 0}>Month</MenuItem>
-                <MenuItem value="season" disabled={metricIndex.season <= 0}>Season</MenuItem>
-                <MenuItem value="year" disabled={metricIndex.year <= 0}>Year</MenuItem>
+                <MenuItem value="hour">Hourly</MenuItem>
+                <MenuItem value="day" disabled={metricIndex.day <= 0}>Daily</MenuItem>
+                <MenuItem value="week" disabled={metricIndex.week <= 0}>Weekly</MenuItem>
+                <MenuItem value="month" disabled={metricIndex.month <= 0}>Monthly</MenuItem>
+                <MenuItem value="season" disabled={metricIndex.season <= 0}>Seasonal</MenuItem>
+                <MenuItem value="year" disabled={metricIndex.year <= 0}>Yearly</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -359,6 +426,7 @@ export const HistoricalTimeslider = () => {
                       valueLabelFormat={(value) => valuetext(value, filteredValues?.length)}
                       valueLabelDisplay="on"
                       value={value}
+                      disabled={filteredValues?.length === 0}
 
                       // Numerical behavior
                       shiftStep={8}
@@ -391,6 +459,13 @@ export const HistoricalTimeslider = () => {
                         },
                       }}
               />
+              {filteredValues?.length > 0 ? <Grid container justifyContent={'center'} textAlign={'center'} style={{ fontFamily: 'Space Grotesk', fontSize:'0.6rem' }}>
+                Results: {filteredValues?.length}
+              </Grid> : <></>}
+              {filteredValues?.length === 0 ? <Grid container justifyContent={'center'} textAlign={'center'} style={{ fontFamily: 'Space Grotesk', fontSize:'0.6rem', color: colors.chicagoRed }}>
+                No {prettyAverageType} results found within selected dates.<br/>
+                Click the Start/End Date to choose a new range.
+              </Grid> : <></>}
             </Grid>
             <Grid size={{ xs: 2 }} textAlign={'end'}>
               <SliderLabel ref={sliderEndRef} onClick={() => setEndDateOpen(true)}>

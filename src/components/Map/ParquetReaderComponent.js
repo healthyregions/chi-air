@@ -193,6 +193,26 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
     });
   }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
+  //
+  // useEffect(() => {
+  //   // FIXME: Determine row indices for target data
+  //   const rowStart = metricIndex[averageType];
+  //   const rowEnd = Object.keys(metricIndex).find(key => metricIndex[key]);
+  //   console.log(metricIndex);
+  //   console.log(`Fetching from ${rowStart} to ${rowEnd} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
+  //
+  //   // Fetch metric for the Historical Trends graph with the given parameters
+  //   const startTime = new Date().getTime();
+  //   fetchPq({
+  //     url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+  //     columns: ['type', 'date', clickedSensor],
+  //     rowStart,
+  //   }).then(data => {
+  //     dispatch(setMetricData({ parameter: selectedParameter, data }));
+  //     const endTime = new Date().getTime();
+  //     console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+  //   });
+  // }, [dispatch, clickedSensor, selectedParameter, metricIndex, averageType]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data
