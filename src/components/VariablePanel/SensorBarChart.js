@@ -31,10 +31,10 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
     if (prevType.current !== averageType) {
       prevType.current = averageType;
       setPage(0);
-      const index = metricIndex[averageType];
+      //const index = metricIndex[averageType];
       const row = metricData?.[0];
       const date = row?.date;
-      const value = row?.[selectedParameter];
+      //const value = row?.[selectedParameter];
       dispatch(setSelectedTimeIndex({ type: averageType, index: 0, date }));
     } else if (prevParam.current !== selectedParameter) {
       prevParam.current = selectedParameter;
@@ -43,7 +43,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       prevSensor.current = clickedSensor;
       setPage(0);
     }
-  }, [averageType, selectedParameter, clickedSensor]);
+  }, [dispatch, metricData, averageType, selectedParameter, clickedSensor]);
 
   const scrollBack = () => page > 0 && setPage(page - 1);
   const scrollForward = () => page < (numPages - 1) && setPage(page + 1);

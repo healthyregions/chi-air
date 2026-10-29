@@ -167,8 +167,8 @@ export const HistoricalTimeslider = () => {
   // State for the start/end DatePickers
   const sliderStartRef = useRef();
   const sliderEndRef = useRef();
-  const sliderStartValueRef = useRef();
-  const sliderEndValueRef = useRef();
+  //const sliderStartValueRef = useRef();
+  //const sliderEndValueRef = useRef();
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
   const [sliderStartDate, setSliderStartDate] = useState(dayjs(new Date().getTime() - (60*60*24*7*1000)));
