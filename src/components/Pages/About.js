@@ -33,12 +33,6 @@ const ContentContainer = styled.div`
     box-sizing: border-box;
 `;
 
-const FAQTopDivider = styled.hr`
-    padding: 2.75rem 0 5.375rem;
-    border: 0;
-    border-top: 1px solid #41B6E6;
-`;
-
 const FAQFilterRow = styled(Stack)`
     margin: 3rem 0 2.5rem;
 `;
