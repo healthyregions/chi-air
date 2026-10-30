@@ -9,7 +9,7 @@ import {formatDate, formatWeekDate, LButton, shortDateFormat} from "./common";
 import {useDispatch, useSelector} from "react-redux";
 import {
   selectClickedSensor,
-  selectMetricIndex, selectSelectedTimeIndex,
+  selectSelectedTimeIndex,
   setSelectedTimeIndex
 } from "../../store/slices/sensorDataSlice";
 import {scaleColor} from "../../utils";
@@ -19,7 +19,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   const [page, setPage] = useState(0);
   const clickedSensor = useSelector(selectClickedSensor);
   const dispatch = useDispatch();
-  const metricIndex = useSelector(selectMetricIndex);
+  //const metricIndex = useSelector(selectMetricIndex);
   const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   // Listen for changes to averageType or selectedParameter
@@ -236,7 +236,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
     const type = averageType;
     const date = row?.date;
 
-    console.log(`Selected:  negativeOffset=${negativeOffset}   index=${index}   date=${date}   type=${type}`, metricIndex);
+    //console.log(`Selected:  negativeOffset=${negativeOffset}   index=${index}   date=${date}   type=${type}`, metricIndex);
     dispatch(setSelectedTimeIndex({ index, date, type }));
   };
 
@@ -320,7 +320,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
               const value = metricData?.[index]?.[selectedParameter];
 
               const stroke = scaleColor(value, bins, pm2_5Ranges.map(r => r.border));
-              console.log(`BAR  offsetIntoPage=${offsetIntoPage}   startOfPage=${startOfPage}   index=${index}   value=${value}   stroke=${stroke}`);
+              //console.log(`BAR  offsetIntoPage=${offsetIntoPage}   startOfPage=${startOfPage}   index=${index}   value=${value}   stroke=${stroke}`);
 
               return {
                 stroke,

@@ -330,8 +330,8 @@ export const HistoricalTimeslider = () => {
       const index = filteredValues?.indexOf(found);
       setValue(filteredValues?.length - 1 - index);
     }
-    const selectedDate = fromIso(selectedTimeIndex?.date);
-    console.log(`SelectedDate=${dayjs(selectedDate).tz("America/Chicago")}`, filteredValues);
+    //const selectedDate = fromIso(selectedTimeIndex?.date);
+    //console.log(`SelectedDate=${dayjs(selectedDate).tz("America/Chicago")}`, filteredValues);
     // const prevStart = sliderStartValueRef?.current;
     // const currStart = sliderStartDate?.toDate();
     // const beforeRangeStart = sliderStartDate.toDate().getTime() > dayjs(fromIso(selectedTimeIndex?.date)).toDate().getTime();
@@ -459,7 +459,7 @@ export const HistoricalTimeslider = () => {
                         },
                       }}
               />
-              {filteredValues?.length > 0 ? <Grid container justifyContent={'center'} textAlign={'center'} style={{ fontFamily: 'Space Grotesk', fontSize:'0.6rem' }}>
+              {filteredValues?.length > 0 ? <Grid container justifyContent={'center'} textAlign={'center'} style={{ fontFamily: 'Space Grotesk', fontSize:'0.6rem', color: '#444444' }}>
                 Results: {filteredValues?.length}
               </Grid> : <></>}
               {filteredValues?.length === 0 ? <Grid container justifyContent={'center'} textAlign={'center'} style={{ fontFamily: 'Space Grotesk', fontSize:'0.6rem', color: colors.chicagoRed }}>
