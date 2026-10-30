@@ -11,7 +11,7 @@ import {
   FaLink, FaList, FaMap, FaMapMarkerAlt, FaToolbox,
   FaWind
 } from "react-icons/fa";
-import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
+import {GradientBackground, productName, TopDivider, WhiteBackground} from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {useNavigate} from "react-router-dom";
 import Stack from "@mui/material/Stack";
@@ -78,7 +78,7 @@ const CategorySection = styled.section`
 `;
 
 const CategoryTitle = styled.h3`
-    margin: 0 0 4rem;
+    margin: 3.5rem 0 2.5rem;
     color: #444444;
     font-family: Lexend,sans-serif;
     font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '20px'};
@@ -97,7 +97,7 @@ const TeamBodyText = styled(Grid)`
 
 // Borrowed from About page
 const FilterRow = styled(Stack)`
-    margin: 3rem 0 2.5rem;
+    margin: 3rem 0;
 `;
 
 const FilterChip = styled(Chip)`
@@ -207,21 +207,21 @@ export default function Resources() {
 
       <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
-          <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
+          <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'4rem'}>
             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
-              Access useful Air Quality Resources
+              All Resources
             </Grid>
           </Grid>
-          <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
-            <TeamBodyText size={12}>
+          <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} justifyContent={'end'}>
+            <TeamBodyText size={9} justifyContent={'end'}>
               This list of air quality resources includes tools, data repositories, and monitoring networks designed for the general public, researchers, and policymakers, ranging from local, government-regulated data to global, satellite-based datasets.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
       </WhiteBackground>
 
-
       <ContentContainer>
+        <TopDivider />
         <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                        topRowText={'Access useful'}
                        bottomRowTextBlack={'Air Quality'}
@@ -230,7 +230,9 @@ export default function Resources() {
                        buttonText={`View ${productName} Map`}
                        buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
         />
+      </ContentContainer>
 
+      <ContentContainer>
         <FilterRow direction="row" spacing={1} justifyContent={'flex-end'} useFlexGap flexWrap={'wrap'}>
           <FilterChip
             clickable
@@ -248,36 +250,41 @@ export default function Resources() {
             />
           ))}
         </FilterRow>
-
-        {visibleCategories?.map((category, catIndex) =>
-          <CategorySection key={`resource-category-${catIndex}`}>
-            <CategoryTitle $largeScreen={largeScreen}>{category?.label}</CategoryTitle>
-            <Grid container spacing={8} marginBottom={16} alignItems={'start'} rowSpacing={4}>
-              {resources?.filter(r => r?.category === category?.id)?.map((resource, resIndex) =>
-                <Grid key={'resources-'+resIndex} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
-                      onClick={() => window.open(resource.url)}
-                      justifyItems={'center'}>
-                  <Grid container spacing={0} marginY={'1rem'}>
-                    <img style={{ marginRight: '2rem' }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
-                    {/*resource?.icon && <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />*/}
-                    {resource?.faIcon && <div style={{ fontSize: '3rem', position: 'absolute', marginLeft: '2rem', color: 'rgb(5, 87, 153)' }}>
-                      {resource?.faIcon}
-                    </div>}
-                  </Grid>
-                  <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                    <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
-                    <ResourceDescription>{resource?.description}</ResourceDescription>
-                  </Grid>
-                </Grid>
-              )}
-            </Grid>
-          </CategorySection>
-        )}
-
       </ContentContainer>
 
+      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundPosition: 'bottom center' }}>
+        <ContentContainer>
+          {visibleCategories?.map((category, catIndex) =>
+            <CategorySection key={`resource-category-${catIndex}`}>
+              <CategoryTitle $largeScreen={largeScreen}>{category?.label}</CategoryTitle>
+              <Grid container spacing={8} alignItems={'start'} rowSpacing={4}>
+                {resources?.filter(r => r?.category === category?.id)?.map((resource, resIndex) =>
+                    <Grid key={'resources-'+resIndex} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
+                          onClick={() => window.open()}
+                          justifyItems={'center'}>
+                      <a href={resource.url} target={'_blank'} rel={'noreferrer noopener'} style={{ textDecoration: 'none' }}>
+                        <Grid container spacing={0} marginY={'1rem'} justifyContent={'center'}>
+                          <img style={{ marginRight: '2rem' }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
+                          {/*resource?.icon && <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />*/}
+                          {resource?.faIcon && <div style={{ fontSize: '3rem', position: 'absolute', marginLeft: '2rem', color: 'rgb(5, 87, 153)' }}>
+                            {resource?.faIcon}
+                          </div>}
+                        </Grid>
+                        <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                          <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
+                          <ResourceDescription>{resource?.description}</ResourceDescription>
+                        </Grid>
+                      </a>
+                    </Grid>
 
-      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+                )}
+              </Grid>
+            </CategorySection>
+          )}
+
+        </ContentContainer>
+
+
       </GradientBackground>
 
       <NavBar style={{ padding: '4rem' }} asFooter={true} />

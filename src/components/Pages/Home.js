@@ -23,6 +23,7 @@ import {
   setSelectedSensors
 } from "../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {MdArrowOutward} from "react-icons/md";
 
 const brandColors = {
   chiDarkBlue: '#005899',
@@ -222,6 +223,7 @@ const ContentContainer = styled.div`
     margin: 0 auto;    /* Centering the container */
     padding: 0 2rem;   /* Prevents text from touching edges */
     width: 100%;
+    color: #444444;
     box-sizing: border-box;
 `;
 
@@ -287,7 +289,7 @@ export default function Home() {
         <ContentContainer>
           <HeroSectionInner>
             <Grid container spacing={largeScreen ? 4 : 0} justifyContent={'end'}>
-              <Grid size={{ xs: 12, md: 1 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <HeroArtwork $largeScreen={largeScreen} $xlScreen={xlScreen}>
                   <HeroLight src={'/img/header/light.svg'} alt={''} $largeScreen={largeScreen} />
                   <HeroGroup src={'/img/header/group.svg'} alt={''} $largeScreen={largeScreen} />
@@ -296,7 +298,7 @@ export default function Home() {
                   <HeroSquirrel src={'/img/header/squirrel.svg'} alt={''} $largeScreen={largeScreen} />
                 </HeroArtwork>
               </Grid>
-              <Grid size={{ xs: 12, md: 11 }}>
+              <Grid size={{ xs: 12, md: 6 }} style={{ zIndex: 25 }}>
                 <HeroContent $largeScreen={largeScreen}>
                   <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
                     {
@@ -381,14 +383,16 @@ export default function Home() {
             <Grid key={'resources-'+index} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
                   onClick={() => window.open(resource?.url, '_blank')}
                   justifyItems={'center'}>
-              <Grid container spacing={0} marginY={'1rem'}>
-                <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
-                <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
-              </Grid>
-              <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
-                <ResourceDescription>{resource?.description}</ResourceDescription>
-              </Grid>
+              <a href={resource.url} target={'_blank'} rel={'noreferrer noopener'} style={{ textDecoration: 'none' }}>
+                <Grid container spacing={0} marginY={'1rem'} justifyContent={'center'}>
+                  <img style={{ marginRight: '2rem'  }} src={'/icons/chiair/resources-backlayer.svg'} alt={''} />
+                  <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
+                </Grid>
+                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                  <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
+                  <ResourceDescription>{resource?.description}</ResourceDescription>
+                </Grid>
+              </a>
             </Grid>
           )}
           <Grid key={'resources-view-all'} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
@@ -417,14 +421,14 @@ export default function Home() {
         </ContentContainer>
       </WhiteBackground>
 
-      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0 }}>
+      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundPosition: 'bottom center' }}>
         <ContentContainer>
           <Grid container spacing={0} flexDirection={largeScreen ? 'row' : 'column-reverse'} justifyContent={'space-between'} alignItems={'flex-start'}>
             <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large-textless.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               <Grid container spacing={0}>
                 <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks in our communities. To close this gap, we created the "{platformName} Network" and deployed a network of {sensorCount} Clarity Node-S sensors to blanket the city to measure Fine Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) in ambient air. {platformName} is co-owned between University of Illinois at Chicago (UIC) and Chicago Department of Public Health (CDPH).</div>
-                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} target={'_blank'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>{platformName} <FaExternalLinkAlt /></NavLink> platform sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
+                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} target={'_blank'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}>{platformName} <MdArrowOutward /></NavLink> platform sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
                 <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <NavLink to={'/about'} style={{ textWrap: 'nowrap', textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>{!largeScreen && <br/> }
               </Grid>
               <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>

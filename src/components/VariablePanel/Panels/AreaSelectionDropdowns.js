@@ -28,18 +28,18 @@ const HomeDropdownCard = styled.div`
   background: #FFF;
   box-shadow: 2px 2px 4px 0 rgba(30, 30, 30, 0.05);
   //overflow: hidden;
-
+    margin-top: ${({ $largeScreen }) => $largeScreen ? '0.5rem' : 0};
   position: ${({ $largeScreen }) => $largeScreen ? 'absolute' : 'relative'};
   left: ${({ $isHomeVariant, $largeScreen, $type }) => {
       if (!$isHomeVariant || !$largeScreen) return 0;
       if ($type === 'community') return 0;
-      if ($type === 'ward') return '15rem';
+      if ($type === 'ward') return '22rem';
       if ($type === 'zip') return '12rem';
       return 0;
   }};
   right: ${({ $isHomeVariant, $largeScreen, $type }) => {
       if (!$isHomeVariant || !$largeScreen) return 0;
-      if ($type === 'community') return '15rem';
+      if ($type === 'community') return '18rem';
       if ($type === 'ward') return 0;
       if ($type === 'zip') return '8rem';
       return 0;
@@ -259,6 +259,10 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
       {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? (largeScreen ? 'row' : 'column') : 'row'}>
         {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'}>
           <LButton
+            disableRipple
+            sx={{
+              '&:hover': { backgroundColor: '#00000000' }   // transparent background
+            }}
             id={`basic-button-${key}`}
             size={'small'}
             aria-controls={open ? 'basic-menu' : undefined}
@@ -270,7 +274,6 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
               fontFamily: 'Lexend,sans-serif',
               fontSize: '1.5rem',
               fontWeight: 500,
-              textDecoration: type===key ? 'underline' : 'none',
               borderRadius: '0.75rem',
               lineHeight: 'normal',
               textTransform: 'none',

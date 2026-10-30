@@ -8,6 +8,7 @@ import {
   setMetricData,
   selectMetricData,
   setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
+  selectSelectedTimeIndex,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
@@ -29,6 +30,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const breadcrumbs = useSelector(selectBreadcrumbs);
   const metricIndex = useSelector(selectMetricIndex);
   const averageType = useSelector(selectAverageType);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   // Awareness of current dataset
   // TODO: Only fetch new data if we don't already have it?
@@ -76,9 +78,22 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       rowEnd: 2,
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
-
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    });
+  }, [dispatch, locations, selectedParameter]);
+
+  useEffect(() => {
+    // Fetch initial timestamp for the historical slider
+    const startTime = new Date().getTime();
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date']
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching historical timestamps: ${endTime - startTime}ms`);
     });
   }, [dispatch, locations, selectedParameter]);
 
@@ -97,15 +112,15 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date', clickedSensor],
       rowStart: 0,
-      rowEnd: 24
+      rowEnd: 30
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
-      console.log(`Finished fetching 24hr clicked sensor data: ${endTime - startTime}ms`);
+      console.log(`Finished fetching ~24hr clicked sensor data: ${endTime - startTime}ms`);
     });
   }, [dispatch, clickedSensor, selectedParameter]);
 
-  // Fetch latest row(s) of PM2.5 when Details panel opens
+  // Fetch latest row(s) for selected parameter when Details panel opens
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
     if (!clickedSensor || currentPage !== 'Details') {
@@ -127,6 +142,24 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       });
     });
   }, [dispatch, clickedSensor, breadcrumbs]);
+
+  useEffect(() => {
+    // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
+    allMetrics?.forEach(parameter => {
+      fetchPq({
+        url: `${s3prefix}/${parameter}.parquet.brotli`,
+        rowStart: selectedTimeIndex?.index,
+        rowEnd: selectedTimeIndex?.index+2,
+      }).then(data => {
+        dispatch(setMetricData({ parameter, data }));
+        const checkDate = data?.find(() => true)?.date;
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching ${parameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
+        console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
+      });
+    });
+  }, [dispatch, locations, selectedParameter, selectedTimeIndex]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -160,6 +193,26 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
     });
   }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
+  //
+  // useEffect(() => {
+  //   // FIXME: Determine row indices for target data
+  //   const rowStart = metricIndex[averageType];
+  //   const rowEnd = Object.keys(metricIndex).find(key => metricIndex[key]);
+  //   console.log(metricIndex);
+  //   console.log(`Fetching from ${rowStart} to ${rowEnd} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
+  //
+  //   // Fetch metric for the Historical Trends graph with the given parameters
+  //   const startTime = new Date().getTime();
+  //   fetchPq({
+  //     url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+  //     columns: ['type', 'date', clickedSensor],
+  //     rowStart,
+  //   }).then(data => {
+  //     dispatch(setMetricData({ parameter: selectedParameter, data }));
+  //     const endTime = new Date().getTime();
+  //     console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+  //   });
+  // }, [dispatch, clickedSensor, selectedParameter, metricIndex, averageType]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data
