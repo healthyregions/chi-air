@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {GradientBackground, platformName, productName, WhiteBackground} from "../VariablePanel/common";
+import {GradientBackground, platformName, productName, TopDivider, WhiteBackground} from "../VariablePanel/common";
 import {useEffect, useState} from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -28,6 +28,7 @@ const AboutBodyText = styled(Grid)`
 const ContentContainer = styled.div`
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 2rem;   /* Prevents text from touching edges */
     width: 100%;
     box-sizing: border-box;
 `;
@@ -167,7 +168,7 @@ const faqs = [
          target={'_blank'} rel="noreferrer noopener">
         Open Air Clarity Dashboard
       </ExternalLink>, and direct download on this website (see 'Download' links on Map).
-      Note that when downloading data from the Our Air Map on this website, only the sensors that
+      Note that when downloading data from the {productName} Map on this website, only the sensors that
       you clicked during exploration will be able to be downloaded. In the future,
       we plan to develop a more robust Data Download filter for more customized options.
     </>
@@ -400,7 +401,7 @@ export default function About() {
 
          <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
-             <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
+             <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'4rem'}>
                <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
                  About
                </Grid>
@@ -410,8 +411,8 @@ export default function About() {
                Air pollution is often invisible, but its impact is real. Now, real-time air quality data is available for every neighborhood, for every Chicagoan.
              </Grid>
            </Grid> */}
-             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
-               <AboutBodyText size={12}>
+             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} justifyContent={'end'}>
+               <AboutBodyText size={9}>
                 <b className={'notranslate'}>{productName}</b> is a Chicago
                  mapping application that serves as a vital bridge between air quality data,
                  scientific exploration, community empowerment, and advocacy, making city-wide
@@ -428,9 +429,11 @@ export default function About() {
          </WhiteBackground>
 
          <WhiteBackground $largeScreen={largeScreen}>
-            <Grid container spacing={3} justifyContent={'center'} textAlign={'center'}>
-              <div className="item"><img src="/img/sensor-calibration.jpg" alt={''} /></div>
-            </Grid>
+           <ContentContainer>
+             <Grid container justifyContent={'center'} textAlign={'center'}>
+               <img width={'100%'} height={'100%'} src="/img/sensor-calibration.jpg" alt={''} />
+             </Grid>
+           </ContentContainer>
          </WhiteBackground>
 
 
@@ -499,9 +502,9 @@ export default function About() {
            </ContentContainer>
          </WhiteBackground>
 
-         <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+         <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
-             <FAQTopDivider />
+             <TopDivider />
              <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                             topRowText={'Some'}
                             bottomRowTextBlack={'Frequently Asked'}
@@ -528,53 +531,47 @@ export default function About() {
                  />
                ))}
              </FAQFilterRow>
-
-             {visibleCategories.map(({ id, label }) => (
-               <FAQCategorySection key={id}>
-                 <FAQCategoryTitle $largeScreen={largeScreen}>{label}</FAQCategoryTitle>
-                 {faqs
-                   .filter((faq) => faq.category === id)
-                   .map((faq) => {
-                     const isExpanded = expandedFaqIds.includes(faq.id);
-
-                     return (
-                       <FAQAccordion
-                         key={faq.id}
-                         expanded={isExpanded}
-                         onChange={(_, shouldExpand) => toggleFaq(faq.id, shouldExpand)}
-                       >
-                         <FAQAccordionSummary
-                           expandIcon={isExpanded ? <FaCaretDown /> : <FaCaretRight />}
-                         >
-                           <FAQQuestion $largeScreen={largeScreen}>{faq.question}</FAQQuestion>
-                         </FAQAccordionSummary>
-                         <FAQAccordionDetails>
-                           <FAQAnswer $largeScreen={largeScreen}>{faq.answer}</FAQAnswer>
-                         </FAQAccordionDetails>
-                       </FAQAccordion>
-                     );
-                   })}
-               </FAQCategorySection>
-             ))}
-           </ContentContainer>
-         </GradientBackground>
-
-         <WhiteBackground  style={{ margin: 0, backgroundColor: '#41B6E633' }} >
-           <ContentContainer>
-             <FAQTopDivider/>
            </ContentContainer>
          </WhiteBackground>
 
-         <GradientBackground $direction={'to top'} $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+         <GradientBackground $direction={'to top'} $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundPosition: 'bottom center' }}>
            <ContentContainer>
-             <SectionHeader imgSrc={'/icons/chiair/aq-team-collab.svg'}
+               {visibleCategories.map(({ id, label }) => (
+                 <FAQCategorySection key={id}>
+                   <FAQCategoryTitle $largeScreen={largeScreen}>{label}</FAQCategoryTitle>
+                   {faqs
+                     .filter((faq) => faq.category === id)
+                     .map((faq) => {
+                       const isExpanded = expandedFaqIds.includes(faq.id);
+
+                       return (
+                         <FAQAccordion
+                           key={faq.id}
+                           expanded={isExpanded}
+                           onChange={(_, shouldExpand) => toggleFaq(faq.id, shouldExpand)}
+                         >
+                           <FAQAccordionSummary
+                             expandIcon={isExpanded ? <FaCaretDown /> : <FaCaretRight />}
+                           >
+                             <FAQQuestion $largeScreen={largeScreen}>{faq.question}</FAQQuestion>
+                           </FAQAccordionSummary>
+                           <FAQAccordionDetails>
+                             <FAQAnswer $largeScreen={largeScreen}>{faq.answer}</FAQAnswer>
+                           </FAQAccordionDetails>
+                         </FAQAccordion>
+                       );
+                     })}
+                 </FAQCategorySection>
+               ))}
+             <TopDivider/>
+             <SectionHeader imgSrc={'/icons/chiair/aq-funders.svg'}
                             topRowText={'Our Funders'}
                             bottomRowTextBlack={'and'}
                             bottomRowTextRed={'Acknowledgments'}
                             style={{ marginBottom: '6rem' }}
              />
 
-             <Grid container spacing={2} textAlign={'left'}>
+             <Grid container spacing={2} textAlign={'left'} marginBottom={'2rem'}>
                <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
                  Dr. Serap Erdal (PI). U.S. Congress Earmark/National Institute of
                  Standards and Technology (NIST). Community-Driven Air Quality and

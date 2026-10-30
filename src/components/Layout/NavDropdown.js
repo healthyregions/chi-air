@@ -17,6 +17,11 @@ export const NavDropdown = ({ keyName = 'basic', label, style, children = <></>,
   return (
     <>
       <LButton
+        disableRipple
+        // TODO: If we can show menu on hover, remove hover "mask"?
+        // sx={{
+        //   '&:hover': { backgroundColor: '#00000000' }   // transparent background
+        // }}
         id={`${keyName}-button`}
         aria-controls={open ? `${keyName}-menu` : undefined}
         aria-haspopup="true"

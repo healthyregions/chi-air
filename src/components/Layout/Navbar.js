@@ -57,12 +57,12 @@ export default function Nav({
     <>
       <NavContainer style={style} $largeScreen={largeScreen}>
         <ContentContainer $largeScreen={largeScreen}>
-          <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={asFooter ? 'column' : (largeScreen ? 'row' : 'column-reverse')}>
+          <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
             <Grid size='grow'>
               <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
                 <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} dropup={asFooter} />
-                <LButton style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
-                <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }} dropup={asFooter}>
+                <LButton disableRipple sx={{'&:hover': { backgroundColor: '#00000000' } }} style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
+                <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }} dropup={asFooter} >
                   <MenuItem as={LButton} onClick={() => navigate('/map')}><span className={'notranslate'}>{productName}</span>&nbsp;Map</MenuItem>
                   <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
                 </NavDropdown>

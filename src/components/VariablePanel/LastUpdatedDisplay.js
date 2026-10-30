@@ -20,6 +20,9 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
 
   const selectedTimestamp = selectedTimeIndex?.type === 'hour' ? fromIso(selectedTimeIndex?.date) : selectedTimeIndex?.date;
   const prettyAverageType = ((type) => {
+    if (!type) {
+      return 'hourly';
+    }
     if (type === 'season') {
       return 'seasonal';
     } else if (type === 'day') {

@@ -149,6 +149,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       tickLabelStyle: {
         fontFamily: 'Space Grotesk',
         fontSize: '0.7rem',
+        color: '#444444'
       },
       valueFormatter: (v, context) => {
         // no-op for weekly / seasonal averages (e.g. 2026-W01, 2026-S1, etc)
@@ -338,8 +339,8 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
       </Grid>
 
       <Grid container>
-        <Grid size={{ xs: 12 }} textAlign={'center'}>
-          { averageType === 'week' && <strong>Start of Week</strong> }
+        <Grid size={{ xs: 12 }} textAlign={'center'} style={{ fontFamily: 'Lexend', color: '#444444' }}>
+          { averageType === 'week' && <>Start of Week</> }
         </Grid>
       </Grid>
     </>

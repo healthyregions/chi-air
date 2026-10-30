@@ -24,6 +24,12 @@ export const Divider = styled.hr`
     border-width: 1px;
     margin: .5rem 0 0.5rem 0;
 `;
+// ??
+export const TopDivider = styled.hr`
+    margin: 4rem 0;
+    border: 0;
+    border-top: 1px solid #41B6E6;
+`;
 // Header with Lexend font
 export const LHeader = styled.span`
     font-size: clamp(16px, 24px, 32px);
