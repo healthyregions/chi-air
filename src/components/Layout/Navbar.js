@@ -9,7 +9,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
 import {getLocaleLabel, LButton, locales, productName} from "../VariablePanel/common";
-import { useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
 import {FaArrowDown} from "@react-icons/all-files/fa/FaArrowDown";
 import Button from "@mui/material/Button";
@@ -51,12 +51,15 @@ type Props = {
   directLink?: string;
 };
 function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }: Props) {
-  const btnRef = useRef();
+  const btnRef = useRef(null);
   console.log('BtnRef=',btnRef?.current);
+
+  //const rect = useMemo(() => btnRef?.current?.getBoundingClientRect(), [btnRef?.current]);
+
   return (
-    <>
+    <div style={{ display: 'inline-flex' }}>
       <LButton
-        ref={btnRef}
+        id={`${dropdownElId}-btn`}
         style={style}
         sx={{'&:hover': {backgroundColor: '#00000000'}}}
         onMouseLeave={() => {
@@ -79,8 +82,8 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }:
           position: 'absolute',
           backgroundColor: '#eeeeee',
           color: colors.chicagoDarkBlue,
-          left: btnRef?.current?.getBoundingClientRect()?.left,
-          top: btnRef?.current?.getBoundingClientRect()?.top + 50,
+          left: 'auto',
+          top: 120,
         }}
         onMouseEnter={() => {
           document.getElementById(dropdownElId).removeAttribute("hidden");
@@ -101,7 +104,7 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }:
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 
