@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import {NavLink, useLocation, useNavigate} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from '../../config';
 import Grid from "@mui/material/Grid";
@@ -8,14 +8,11 @@ import {MdArrowOutward, MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
-import {NavDropdown} from "./NavDropdown";
-import MenuItem from "@mui/material/MenuItem";
 import {getLocaleLabel, LButton, locales, productName} from "../VariablePanel/common";
-import {useEffect, useRef, useState} from "react";
+import { useRef, useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
 import {FaArrowDown} from "@react-icons/all-files/fa/FaArrowDown";
 import Button from "@mui/material/Button";
-import {FaBars} from "@react-icons/all-files/fa/FaBars";
 import {AiOutlineClose} from "@react-icons/all-files/ai/AiOutlineClose";
 import {AiOutlineMenu} from "@react-icons/all-files/ai/AiOutlineMenu";
 
@@ -40,62 +37,6 @@ const ContentContainer = styled.div`
     width: 100%;
     box-sizing: border-box;
 `;
-
-const Nav = ({
-  style,
-  asFooter=false
-}) => {
-
-  const dispatch = useDispatch();
-  const [cookies] = useCookies(['googtrans']);
-
-  const navigate = useNavigate();
-  const largeScreen = useMediaQuery('(min-width: 600px)');
-
-  const onLocaleChange = (locale) => {
-    dispatch(setLocale(locale));
-  };
-
-
-  const lgFontSize  = '24px';
-  const xsFontSize = '30px';
-  const fontSize = largeScreen ? lgFontSize : xsFontSize;
-
-  const DesktopNavbar = <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={largeScreen ? 'row' : 'column-reverse'}>
-    <Grid size='grow'>
-      <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
-        <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} dropup={asFooter} />
-        <LButton disableRipple sx={{'&:hover': { backgroundColor: '#00000000' } }} style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
-        <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }} dropup={asFooter}>
-          <MenuItem as={LButton} onClick={() => navigate('/map')}><span className={'notranslate'}>{productName}</span>&nbsp;Map</MenuItem>
-          <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
-        </NavDropdown>
-        <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }} dropup={asFooter}>
-          <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
-          <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
-          <MenuItem as={LButton} onClick={() => navigate('/contact')}>Contact Us</MenuItem>
-        </NavDropdown>
-      </Grid>
-    </Grid>
-    <Grid alignItems={'end'} justifyContent={'right'} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
-      <img width={largeScreen ? 400 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
-    </Grid>
-  </Grid>;
-
-  const MobileNavbar = <Grid container>
-    <Grid size={12}>Mobile Navbar</Grid>
-  </Grid>;
-
-  return (
-    <>
-      <NavContainer style={style} $largeScreen={largeScreen}>
-        <ContentContainer $largeScreen={largeScreen}>
-          { largeScreen ? DesktopNavbar : MobileNavbar }
-        </ContentContainer>
-      </NavContainer>
-    </>
-  );
-}
 
 type NavLinkType = {
   title: string;
@@ -209,7 +150,6 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const NavBar = ({ asFooter=false }) => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const largeScreen = useMediaQuery('(min-width: 600px)');
