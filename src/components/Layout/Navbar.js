@@ -9,7 +9,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {setLocale} from "../../store/slices/sensorDataSlice";
 import {useCookies} from "react-cookie";
 import {getLocaleLabel, LButton, locales, productName} from "../VariablePanel/common";
-import {useMemo, useRef, useState} from "react";
+import {useState} from "react";
 import {FaCaretDown} from "react-icons/fa";
 import {FaArrowDown} from "@react-icons/all-files/fa/FaArrowDown";
 import Button from "@mui/material/Button";
@@ -51,11 +51,6 @@ type Props = {
   directLink?: string;
 };
 function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }: Props) {
-  const btnRef = useRef(null);
-  console.log('BtnRef=',btnRef?.current);
-
-  //const rect = useMemo(() => btnRef?.current?.getBoundingClientRect(), [btnRef?.current]);
-
   return (
     <div style={{ display: 'inline-flex' }}>
       <LButton
