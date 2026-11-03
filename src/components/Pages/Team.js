@@ -345,27 +345,27 @@ export default function Team() {
 
           <CategorySection>
             <CategoryTitle $largeScreen={largeScreen}>Chicago Air Quality Program Leadership</CategoryTitle>
-                <Grid container spacing={5}>
-                  <Grid size={{ xs: 12, md: 4 }}>
-                      <TeamHeadText>
-                        Lead Institution
-                      </TeamHeadText>
-                      <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
-                  </Grid>
-                  <Grid size={{ xs: 12, md:4 }}>
-                      <TeamHead1Text>
-                        Contributing Institution
-                      </TeamHead1Text>
-                      <img src="/img/team/uiuc.png" alt={''} style={{ marginRight: '64px' }} />
-                  </Grid>
-                </Grid>
+            <Grid container spacing={5}>
+              <Grid size={{ xs: 12, md: 4 }}>
+                  <TeamHeadText>
+                    Lead Institution
+                  </TeamHeadText>
+                  <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
+              </Grid>
+              <Grid size={{ xs: 12, md:4 }}>
+                  <TeamHead1Text>
+                    Contributing Institution
+                  </TeamHead1Text>
+                  <img src="/img/team/uiuc.png" alt={''} style={{ marginRight: '64px' }} />
+              </Grid>
+            </Grid>
           </CategorySection>
 
 
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {leadership?.map((contributor, index) =>
               <Grid key={'leadership-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
-                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'} flexDirection={largeScreen ? 'row' : 'column'}>
                   <img src={contributor?.photo} alt={''} height={113} />
                   <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
@@ -374,46 +374,46 @@ export default function Team() {
             )}
 
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
-            <TeamBodyText>
-              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation
-              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force
-              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery
-              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights
-              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e.,
-              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest
-              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of
-              Public Health's (CDPH){" "}
-              <NavLink to="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
-                 style={{ textDecoration: 'none', color: '#005899', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}
-                 target={'_blank'} rel="noreferrer noopener">
-                Open Air<MdArrowOutward /></NavLink>{" "}
-              website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
-            </TeamBodyText>
+              <TeamBodyText>
+                The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation
+                and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force
+                (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery
+                (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights
+                and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e.,
+                Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest
+                Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of
+                Public Health's (CDPH){" "}
+                <NavLink to="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
+                   style={{ textDecoration: 'none', color: '#005899', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}
+                   target={'_blank'} rel="noreferrer noopener">
+                  Open Air<MdArrowOutward /></NavLink>{" "}
+                website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
+              </TeamBodyText>
             </Grid>
           </Grid>
 
           <CategorySection>
-              <CategoryTitle $largeScreen={largeScreen}>{productName} Dashboard Leadership</CategoryTitle>
-                <Grid container spacing={10}>
-                  <Grid size={{ xs: 12, md: 7 }}>
-                      <TeamBodyText>
-                        The {productName} mapping platform was developed by the{" "}
-                        <NavLink to="https://healthyregions.org/"
-                           style={{ textDecoration: 'none', color: '#005899', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}
-                           target={'_blank'} rel="noreferrer noopener">
-                          Healthy Regions & Policies Lab <MdArrowOutward />
-                        </NavLink>{" "}
-                        at the University of Illinois, directed by <b>Dr. M. Kolak</b>, in close
-                        collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
-                        and dozens of Chicagoland contributors.
-                      </TeamBodyText>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 5 }} container spacing={5}>
-                    <StyledAnchorLink href="https://healthyregions.org/"><img src="/img/team/herop.png" alt={''} height={90} /></StyledAnchorLink>
-                    <img src="/img/team/i.png" alt={''} height={90} />
-                    <img src="/img/team/CAMP.CIRC.SM.RGB.png" alt={''} height={90} />
-                  </Grid>
-              </Grid>
+            <CategoryTitle $largeScreen={largeScreen}>{productName} Dashboard Leadership</CategoryTitle>
+              <Grid container spacing={10}>
+                <Grid size={{ xs: 12, md: 7 }}>
+                  <TeamBodyText>
+                    The {productName} mapping platform was developed by the{" "}
+                    <NavLink to="https://healthyregions.org/"
+                       style={{ textDecoration: 'none', color: '#005899', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}
+                       target={'_blank'} rel="noreferrer noopener">
+                      Healthy Regions & Policies Lab <MdArrowOutward />
+                    </NavLink>{" "}
+                    at the University of Illinois, directed by <b>Dr. M. Kolak</b>, in close
+                    collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
+                    and dozens of Chicagoland contributors.
+                  </TeamBodyText>
+                </Grid>
+                <Grid size={{ xs: 12, md: 5 }} container spacing={5}>
+                  <StyledAnchorLink href="https://healthyregions.org/"><img src="/img/team/herop.png" alt={''} height={90} /></StyledAnchorLink>
+                  <img src="/img/team/i.png" alt={''} height={90} />
+                  <img src="/img/team/CAMP.CIRC.SM.RGB.png" alt={''} height={90} />
+                </Grid>
+            </Grid>
 
           </CategorySection>
 
@@ -424,7 +424,7 @@ export default function Team() {
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {coreteam?.map((contributor, index) =>
               <Grid key={'coreteam-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
-                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'} flexDirection={largeScreen ? 'row' : 'column'}>
                   <img src={contributor?.photo} alt={''} height={113} />
                   <ContributorLabel className={contributor?.name === 'Sara Lambert' && locale !== 'zh-CN' ? '' : 'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>
@@ -448,7 +448,7 @@ export default function Team() {
           <Grid container spacing={8} marginTop={9} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {students?.map((contributor, index) =>
               <Grid key={'students-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
-                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
+                <Grid container spacing={3} alignItems={'center'} justifyContent={'center'} flexDirection={largeScreen ? 'row' : 'column'}>
                   <img src={contributor?.photo} alt={''} height={113} />
                   <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
                   <ContributorDescription>{contributor?.description}</ContributorDescription>

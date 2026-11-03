@@ -17,7 +17,7 @@ import {AiOutlineClose} from "@react-icons/all-files/ai/AiOutlineClose";
 import {AiOutlineMenu} from "@react-icons/all-files/ai/AiOutlineMenu";
 
 const NavContainer = styled.div`
-  padding: ${({ $largeScreen }) => $largeScreen ? '4rem 6rem 0 6rem' : '0'};
+  padding: ${({ $asFooter, $largeScreen }) => $largeScreen ? `4rem 6rem ${$asFooter ? '4rem' : 0} 6rem` : '0'};
   top:.5em;
   left:.5em;
   z-index: 500;
@@ -75,9 +75,10 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }:
         style={{
           ...style,
           position: 'absolute',
-          backgroundColor: '#eeeeee',
+          backgroundColor: '#f5f5f5',
           color: colors.chicagoDarkBlue,
           left: 'auto',
+          fontSize: '18px',
           marginTop: '50px',
           top: 'auto',
           zIndex: 10,
@@ -117,7 +118,7 @@ function NavDropdownMobile({ title, dropdownElId, items, style={} }: Props) {
       <LButton
         disableRipple
         fullWidth
-        style={{ ...style, textAlign: 'center', position: 'static', padding: '16px 32px' }}
+        style={{ ...style, textAlign: 'center', position: 'static', padding: '16px 0', width: '100%' }}
         className={'text-uppercase'}
         onClick={() => {
           document.getElementById(dropdownElId).toggleAttribute("hidden");
@@ -129,18 +130,22 @@ function NavDropdownMobile({ title, dropdownElId, items, style={} }: Props) {
         ...style,
         textAlign: 'center',
         backgroundColor: colors.chicagoDarkBlue,
-        padding: '16px 32px'
       }} hidden>
         {items.map((item, index) => (
-          <li key={index}>
-            <NavLink
-              className={"text-white no-underline text-base"}
-              to={item.url}
-              style={{ ...style, textDecoration: 'none', color: colors.white, fontFamily: 'Lexend', width: '100%' }}
-            >
-              {item.subitem && <FaArrowDown style={{ marginLeft: '0.25rem' }} />}{item.title}
-            </NavLink>
-          </li>
+          <>
+            {index > 0 && <>
+              <hr/>
+            </>}
+            <li key={index} style={{ padding: '16px 0' }}>
+              <NavLink
+                className={"text-white no-underline text-base"}
+                to={item.url}
+                style={{ ...style, textDecoration: 'none', color: colors.white, fontFamily: 'Lexend', width: '100%' }}
+              >
+                {item.subitem && <FaArrowDown style={{ marginLeft: '0.25rem' }} />}{item.title}
+              </NavLink>
+            </li>
+          </>
         ))}
       </ul>
     </>
@@ -202,7 +207,7 @@ const NavBar = ({ asFooter=false }) => {
   // TODO: Translate tailwind -> CSS via styled component
   return (
     <>
-      <NavContainer $largeScreen={largeScreen}>
+      <NavContainer $asFooter={asFooter} $largeScreen={largeScreen}>
         <ContentContainer $largeScreen={largeScreen}>
           {largeScreen && <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'}
                 flexDirection={largeScreen ? 'row' : 'column-reverse'}>
@@ -231,12 +236,12 @@ const NavBar = ({ asFooter=false }) => {
               onClick={handleNav}
               //className="block min-[940px]:hidden pl-[25px] z-50"
              >
-              <AiOutlineClose size={35} color={"#444444"} style={{ transition: 'all 0.3s fade-in', transitionDelay: '0.3s', position: 'fixed' }} opacity={nav ? 1 : 0} top={0} left={0} />
-              <AiOutlineMenu size={35} color={"#444444"} style={{ transition: 'all 0.3s fade-in', transitionDelay: '0.3s', position: 'fixed' }} opacity={nav ? 0 : 1} top={0} left={0} />
+              <AiOutlineClose size={35} color={"#444444"} style={{ transition: 'all 0.6s fade-in', transitionDelay: '0.3s', position: 'fixed' }} opacity={nav ? 1 : 0} top={0} left={0} />
+              <AiOutlineMenu size={35} color={"#444444"} style={{ transition: 'all 0.6s fade-in', transitionDelay: '0.3s', position: 'fixed' }} opacity={nav ? 0 : 1} top={0} left={0} />
             </Button>
 
             {/* Mobile Menu */}
-            <Grid style={{ transition: 'all 0.3s ease-in-out' }} backgroundColor={colors.chicagoLightBlue} zIndex={50} position={'absolute'} left={0} top={nav ? 0 : '-100%'} bottom={0} justifyContent={'center'} width={'100%'} alignItems={'baseline'} paddingTop={'50px'} height={'100vh'}
+            <Grid style={{ transition: 'all 0.3s ease-in-out' }} backgroundColor={colors.chicagoLightBlue} zIndex={50} position={'fixed'} left={0} top={nav ? 0 : '-100%'} bottom={0} justifyContent={'center'} width={'100%'} alignItems={'baseline'} paddingTop={'50px'} height={'100vh'}
               // className={`absolute ${
               //   nav ? "left-0" : "left-[-100%]"
               // } top-0 bottom-0 right-0 pt-100 flex justify-center items-baseline w-full
@@ -279,7 +284,7 @@ const NavBar = ({ asFooter=false }) => {
                 <li>
                   <DropdownButton style={{fontSize}} ButtonComponent={LButton} icon={<MdOutlineTranslate/>}
                                   label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange}
-                                  dropup={asFooter}/>
+                                  dropup={asFooter} />
                 </li>
               </ul>
             </Grid>
