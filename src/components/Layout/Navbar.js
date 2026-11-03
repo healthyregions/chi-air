@@ -78,7 +78,9 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }:
           backgroundColor: '#eeeeee',
           color: colors.chicagoDarkBlue,
           left: 'auto',
-          top: 120,
+          marginTop: '50px',
+          top: 'auto',
+          zIndex: 10,
         }}
         onMouseEnter={() => {
           document.getElementById(dropdownElId).removeAttribute("hidden");
@@ -89,7 +91,13 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }:
         hidden
       >
         {items.map((item, index) => (
-          <li key={index} style={{ padding: '10px 30px' }}>
+          <li key={index} style={{ padding: '10px 30px' }}
+              onMouseEnter={() => {
+                document.getElementById(dropdownElId).removeAttribute("hidden");
+              }}
+              onMouseLeave={() => {
+                document.getElementById(dropdownElId).setAttribute("hidden", "");
+              }}>
             <NavLink to={item.url} target={item.target || ''} style={{ textDecoration: 'none', color: colors.chicagoDarkBlue }}>
               <span>
                 {item.subitem && <FaArrowDown style={{height:".9em"}} />}
