@@ -396,7 +396,7 @@ export default function About() {
          <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
              <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'4rem'}>
-               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
+               <Grid size={12} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
                  About
                </Grid>
              </Grid>

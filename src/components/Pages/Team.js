@@ -319,14 +319,13 @@ export default function Team() {
       <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'4rem'}>
-            <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
+            <Grid size={12} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
               Team
             </Grid>
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} justifyContent={'end'}>
             <TeamBodyText size={9}>
-              <b className={'notranslate'}>{productName}</b>
-              is a collective effort driven by a shared commitment to air quality and data science and transparency, and public health. This page honors the diverse group of individuals, from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the quality of air they breathe in Chicago, IL.
+              <b className={'notranslate'}>{productName}</b>{" "}is a collective effort driven by a shared commitment to air quality and data science and transparency, and public health. This page honors the diverse group of individuals, from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the quality of air they breathe in Chicago, IL.
             </TeamBodyText>
           </Grid>
         </ContentContainer>
