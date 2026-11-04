@@ -51,8 +51,7 @@ const LoadingMessage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const width = '50';
-  const height = '142';
+  const size = '100';
 
   return (
     <PreloaderPage style={styles.container}>
@@ -64,18 +63,16 @@ const LoadingMessage = () => {
       <div style={styles.content}>
         {/* The 4 Iconic Chicago 6-pointed Stars Layout */}
         <div style={styles.starRow}>
-          <svg width={width} height={height} viewBox={`0 0 100 100`} style={{
+          <svg viewBox={`0 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
             animationDelay: `0s`
           }}>
             <path d="M100 120C44.7715 120 0 75.2285 0 20C55.2285 20 100 64.7715 100 120Z" fill="#41B6E6"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`100 0 100 100`} style={{
+          <svg viewBox={`100 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `0.15s`
+            animationDelay: `0.1s`
           }}>
             <path d="M100 120V70C127.614 70 150 92.3858 150 120H100Z" fill="#41B6E6"/>
             <path d="M150 120V70C177.614 70 200 92.3858 200 120H150Z" fill="#005899"/>
@@ -83,36 +80,32 @@ const LoadingMessage = () => {
             <path d="M150 70V20C177.614 20 200 42.3858 200 70H150Z" fill="#41B6E6"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`200 0 100 100`} style={{
+          <svg viewBox={`200 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `0.3s`
+            animationDelay: `0.2s`
           }}>
             <circle cx="250" cy="70" r="50" transform="rotate(90 250 70)" fill="#41B6E6"/>
             <path d="M285 105C246.34 105 215 73.6599 215 35C253.66 35 285 66.3401 285 105Z" fill="#005899"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`300 0 100 100`} style={{
+          <svg viewBox={`300 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `0.45s`
+            animationDelay: `0.3s`
           }}>
             <path d="M300 120V20C355.228 20 400 64.7715 400 120H300Z" fill="#005899"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`392 0 100 100`} style={{
+          <svg viewBox={`392 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `0.6s`
+            animationDelay: `0.4s`
           }}>
             <circle cx="442" cy="70" r="50" transform="rotate(90 442 70)" fill="#41B6E6"/>
             <circle cx="442" cy="70" r="25" transform="rotate(90 442 70)" fill="#005899"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`488 0 100 100`} style={{
+          <svg viewBox={`488 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `0.75s`
+            animationDelay: `0.5s`
           }}>
             <circle cx="563" cy="45" r="25" transform="rotate(90 563 45)" fill="#41B6E6"/>
             <circle cx="563" cy="95" r="25" transform="rotate(90 563 95)" fill="#005899"/>
@@ -120,49 +113,29 @@ const LoadingMessage = () => {
             <circle cx="513" cy="45" r="25" transform="rotate(90 513 45)" fill="#005899"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`570 0 100 100`} style={{
+          <svg viewBox={`570 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `0.90s`
+            animationDelay: `0.6s`
           }}>
             <path d="M573 70L623 20L673 70H573Z" fill="#41B6E6"/>
             <path d="M673 70L623 120L573 70H673Z" fill="#005899"/>
           </svg>
 
-          <svg width={width} height={height} viewBox={`673 0 100 100`} style={{
+          <svg viewBox={`673 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `1.05s`
+            animationDelay: `0.7s`
           }}>
             <path d="M688.322 105.678C668.796 86.1514 668.796 54.4932 688.322 34.9669L759.033 105.678C739.507 125.204 707.849 125.204 688.322 105.678Z" fill="#005899"/>
             <path d="M758.644 35.3553C778.171 54.8816 778.171 86.5398 758.644 106.066L687.934 35.3553C707.46 15.8291 739.118 15.8291 758.644 35.3553Z" fill="#41B6E6"/>
 
           </svg>
-          <svg width={width} height={height} viewBox={`775 0 100 100`} style={{
+          <svg viewBox={`775 0 ${size} ${size}`} style={{
             ...styles.star,
-            animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
-            animationDelay: `1.05s`
+            animationDelay: `0.8s`
           }}>
             <path d="M824 70C824 97.6142 801.614 120 774 120V20C801.614 20 824 42.3858 824 70Z" fill="#005899"/>
             <path d="M874 70C874 97.6142 851.614 120 824 120V20C851.614 20 874 42.3858 874 70Z" fill="#41B6E6"/>
           </svg>
-
-          {/*<svg*/}
-          {/*  key={i}*/}
-          {/*  */}
-          {/*  viewBox="0 0 24 24"*/}
-          {/*  style={{*/}
-          {/*    ...styles.star,*/}
-          {/*    animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,*/}
-          {/*    animationDelay: `${i * 0.15}s`*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  /!* Custom SVG Path for the specific 6-pointed sharp Chicago Star *!/*/}
-          {/*  <path*/}
-          {/*    fill="#E4002B"*/}
-          {/*    d="M12,2 L14,9 L21,7 L16,12 L21,17 L14,15 L12,22 L10,15 L3,17 L8,12 L3,7 L10,9 Z"*/}
-          {/*  />*/}
-          {/*</svg>*/}
         </div>
 
         {/* Dynamic Chicago-Style Progress Indicator */}
@@ -174,6 +147,24 @@ const LoadingMessage = () => {
         {/* Typography structured strictly via Chicago Design System specs */}
         <h1 style={styles.title}>{productName}</h1>
         <h3 style={styles.subtitle}>CHICAGO</h3>
+
+        <svg
+          viewBox="0 0 24 24"
+          style={{
+            ...styles.star,
+            marginTop: '1rem',
+            width: '40px',
+            height: '40px',
+            animation: 'none',
+            animationDelay: `0s`
+          }}
+        >
+          {/* Custom SVG Path for the specific 6-pointed sharp Chicago Star */}
+          <path
+            fill="#E4002B"
+            d="M12,2 L14,9 L21,7 L16,12 L21,17 L14,15 L12,22 L10,15 L3,17 L8,12 L3,7 L10,9 Z"
+          />
+        </svg>
       </div>
 
       {/* Embedded keyframe styles for standard browser rendering */}
@@ -218,7 +209,8 @@ const styles = {
   },
   star: {
     width: '50px',
-    height: '142px',
+    height: '80px',
+    animation: `chicagoPulse 1.2s ease-in-out infinite alternate`,
     //width: '40px',
     //height: '40px',
   },
