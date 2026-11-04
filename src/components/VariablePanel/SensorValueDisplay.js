@@ -5,8 +5,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {selectIsLoading, selectSensorParameter, setIsLoading} from "../../store/slices/sensorDataSlice";
 import {FaSlash, FaWifi} from "react-icons/fa";
 import { colors } from '../../config';
-import {useState} from "react";
-import {useSelectorAsState} from "./common";
 
 const SensorValueDisplayContainer = styled.div`
     font-family: Lexend,sans-serif;
@@ -52,9 +50,6 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
   const selectedParameter = useSelector(selectSensorParameter);
 
   const loading = useSelector(selectIsLoading);
-  const setLoading = (s) => {
-    dispatch(setIsLoading(s))
-  }
 
   const scale = selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'ppb' : 'μg/m³';
 
@@ -83,13 +78,13 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
         {/* No recent reading, report sensor offline */}
         {(loading) &&
           <Grid container spacing={0} alignItems={'center'}>
-            <Grid size={{ xs: 12 }} style={{ marginTop: '2rem' }}>
+            <Grid size={{ xs: 12 }} style={{ marginTop: '1rem' }}>
               <Grid container spacing={0} alignItems={'center'}>
                 <Grid size={{ xs: 2 }}>
-                  <SensorValueColorIndicator $color={'rgba(68, 68, 68, 0.2)'} $border={'rgba(68, 68, 68, 0.3)'}></SensorValueColorIndicator>
+                  <SensorValueColorIndicator $color={colors.chicagoLightBlue} $border={colors.chicagoBlue}></SensorValueColorIndicator>
                 </Grid>
                 <Grid size={{ xs: 10 }}>
-                  <SensorValueLabel $color={'rgba(68, 68, 68, 0.75)'}>
+                  <SensorValueLabel $color={colors.chicagoBlue}>
                     LOADING...
                   </SensorValueLabel>
                 </Grid>
