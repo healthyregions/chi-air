@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { colors } from '../../config';
 import {useEffect, useState} from "react";
 import {productName} from "../VariablePanel/common";
+import {useSelector} from "react-redux";
+import {selectIsLoading} from "../../store/slices/sensorDataSlice";
 
 const PreloaderPage = styled.div`
     background:${colors.gray};
@@ -23,18 +25,28 @@ const PreloaderPage = styled.div`
     }
 `
 
+const PRELOADER_MESSAGES = [
+  "Fetching the latest data...",
+  "Optimizing performance...",
+  "Almost there...",
+  "Powered by Chicago...",
+  "Securing connection...",
+  "Preparing your workspace...",
+  "Generating matrices...",
+  "Reticulating splines...",
+  "Replicating topology...",
+  "Sorry for the wait...",
+];
 
 const LoadingMessage = () => {
-  const [loadingText, setLoadingText] = useState('Loading');
+  const [messageIndex, setMessageIndex] = useState(0);
 
-  // Simple dots animation text fallback
   useEffect(() => {
-    const intervals = ['Loading.', 'Loading..', 'Loading...'];
-    let idx = 0;
+    // Cycle through messages every 2.5 seconds
     const interval = setInterval(() => {
-      setLoadingText(intervals[idx]);
-      idx = (idx + 1) % intervals.length;
-    }, 400);
+      setMessageIndex((prevIndex) => (prevIndex + 1) % PRELOADER_MESSAGES.length);
+    }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -126,9 +138,12 @@ const LoadingMessage = () => {
         </div>
 
         {/* Dynamic Chicago-Style Progress Indicator */}
-        <small style={styles.loadingText}>{loadingText.toUpperCase()}</small>
+        <p key={messageIndex} style={styles.loadingText}>{PRELOADER_MESSAGES?.[messageIndex]}</p>
         <div style={styles.track}>
-          <div style={styles.progressBar} />
+          <div style={{
+            ...styles.progressBar,
+            width: `${messageIndex / (PRELOADER_MESSAGES?.length - 1)}%`
+          }} />
         </div>
 
         {/* Typography structured strictly via Chicago Design System specs */}

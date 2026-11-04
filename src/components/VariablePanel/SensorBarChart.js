@@ -302,8 +302,8 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         </Grid>}
 
         {filteredData.length > 0 && <Grid size={showScroll ? 10 : 12}>
-          <BarChart {...chartSettings} loading={loading} onItemClick={(event, d) => onBarClick(d)} slots={{
-            loadingOverlay: LoadingOverlay,
+          <BarChart {...chartSettings} /*loading={loading}*/ onItemClick={(event, d) => onBarClick(d)} slots={{
+            //loadingOverlay: LoadingOverlay,
             axisTickLabel: (props) => {
               const { text, ...otherProps } = props;
               if (!text) { return (<></>); }
