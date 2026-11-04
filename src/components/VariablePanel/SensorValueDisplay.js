@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import {pm2_5Ranges} from "../../config";
 import styled from "styled-components";
-import {useDispatch, useSelector} from "react-redux";
-import {selectIsLoading, selectSensorParameter, setIsLoading} from "../../store/slices/sensorDataSlice";
+import {useSelector} from "react-redux";
+import {selectIsLoading, selectSensorParameter} from "../../store/slices/sensorDataSlice";
 import {FaSlash, FaWifi} from "react-icons/fa";
 import { colors } from '../../config';
 
@@ -46,7 +46,6 @@ const SensorValueLabel = styled.span`
 `;
 
 export const SensorValueDisplay = ({ showColor = true, style, value }) => {
-  const dispatch = useDispatch();
   const selectedParameter = useSelector(selectSensorParameter);
 
   const loading = useSelector(selectIsLoading);

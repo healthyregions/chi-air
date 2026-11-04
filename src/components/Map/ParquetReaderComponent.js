@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations,
@@ -8,9 +8,9 @@ import {
   setMetricData,
   selectMetricData,
   setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
-  selectSelectedTimeIndex, selectIsLoading, setIsLoading,
+  selectSelectedTimeIndex, setIsLoading,
 } from '../../store/slices/sensorDataSlice';
-import {fetchPq, useSelectorAsState} from "../VariablePanel/common";
+import {fetchPq} from "../VariablePanel/common";
 
 // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
 // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
@@ -37,10 +37,9 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   // const mean_pm25 = metricData?.['mean_pm25']?.data;
   // const nowcast_aqi = metricData?.['nowcast_aqi']?.data;
 
-  const loading = useSelector(selectIsLoading);
-  const setLoading = (s) => {
+  const setLoading = useCallback((s) => {
     dispatch(setIsLoading(s))
-  }
+  }, [dispatch])
 
   useEffect(() => {
     // Fetch index JSON file for each metric
@@ -58,7 +57,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           setLoading(false);
         });
     });
-  }, [dispatch]);
+  }, [dispatch, setLoading]);
 
   useEffect(() => {
     // Fetch the list of location id, name, coordinates for all sensors
@@ -78,7 +77,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).finally(() => {
       setLoading(false);
     });
-  }, [dispatch]);
+  }, [dispatch, setLoading]);
 
   useEffect(() => {
     // Fetch initial metric data for the map
@@ -95,7 +94,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).finally(() => {
       setLoading(false);
     });
-  }, [dispatch, locations, selectedParameter]);
+  }, [dispatch, locations, selectedParameter, setLoading]);
 
   useEffect(() => {
     // Fetch initial timestamp for the historical slider
@@ -112,7 +111,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).finally(() => {
       setLoading(false);
     });
-  }, [dispatch, locations, selectedParameter]);
+  }, [dispatch, locations, selectedParameter, setLoading]);
 
   useEffect(() => {
     if (!clickedSensor){
@@ -138,7 +137,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).finally(() => {
       setLoading(false);
     });
-  }, [dispatch, clickedSensor, selectedParameter]);
+  }, [dispatch, clickedSensor, selectedParameter, setLoading]);
 
   // Fetch latest row(s) for selected parameter when Details panel opens
   useEffect(() => {
@@ -164,7 +163,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         setLoading(false);
       });
     });
-  }, [dispatch, clickedSensor, breadcrumbs]);
+  }, [dispatch, clickedSensor, breadcrumbs, setLoading]);
 
   useEffect(() => {
     // Fetch initial metric data for the map
@@ -185,7 +184,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         setLoading(false);
       });
     });
-  }, [dispatch, locations, selectedParameter, selectedTimeIndex]);
+  }, [dispatch, locations, selectedParameter, selectedTimeIndex, setLoading]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -220,7 +219,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).finally(() => {
       setLoading(false);
     });
-  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
+  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType, setLoading]);
   //
   // useEffect(() => {
   //   // FIXME: Determine row indices for target data

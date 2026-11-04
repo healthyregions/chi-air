@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import { ContentContainer } from '../../styled_components';
 import { colors } from '../../config';
-import ParquetReaderComponent from "../Map/ParquetReaderComponent";
 import {useEffect, useState} from "react";
 import {productName} from "../VariablePanel/common";
 
@@ -11,7 +9,7 @@ const PreloaderPage = styled.div`
     h2 {
         position:fixed;
         left:50%;
-        top:60%;
+        top:50%;
         transform:translateX(-50%);
         color:white;
     }
@@ -24,17 +22,6 @@ const PreloaderPage = styled.div`
         transform:translate(-50%, -50%);
     }
 `
-
-const PrevLoadingMessage = () => {
-    return (
-       <PreloaderPage>
-           <ContentContainer className="transferInfo">
-                <h2>loading...</h2>
-                <img src={`${process.env.PUBLIC_URL}/assets/img/preloader.gif`} alt="Preloader" />
-           </ContentContainer>
-       </PreloaderPage>
-    );
-}
 
 
 const LoadingMessage = () => {
