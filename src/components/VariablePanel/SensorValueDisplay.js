@@ -1,9 +1,12 @@
 import Grid from "@mui/material/Grid";
 import {pm2_5Ranges} from "../../config";
 import styled from "styled-components";
-import {useSelector} from "react-redux";
-import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {selectIsLoading, selectSensorParameter, setIsLoading} from "../../store/slices/sensorDataSlice";
 import {FaSlash, FaWifi} from "react-icons/fa";
+import { colors } from '../../config';
+import {useState} from "react";
+import {useSelectorAsState} from "./common";
 
 const SensorValueDisplayContainer = styled.div`
     font-family: Lexend,sans-serif;
@@ -45,7 +48,13 @@ const SensorValueLabel = styled.span`
 `;
 
 export const SensorValueDisplay = ({ showColor = true, style, value }) => {
+  const dispatch = useDispatch();
   const selectedParameter = useSelector(selectSensorParameter);
+
+  const loading = useSelector(selectIsLoading);
+  const setLoading = (s) => {
+    dispatch(setIsLoading(s))
+  }
 
   const scale = selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'ppb' : 'μg/m³';
 
@@ -71,9 +80,25 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
   return (
     <>
       <SensorValueDisplayContainer style={{...style}}>
+        {/* No recent reading, report sensor offline */}
+        {(loading) &&
+          <Grid container spacing={0} alignItems={'center'}>
+            <Grid size={{ xs: 12 }} style={{ marginTop: '2rem' }}>
+              <Grid container spacing={0} alignItems={'center'}>
+                <Grid size={{ xs: 2 }}>
+                  <SensorValueColorIndicator $color={'rgba(68, 68, 68, 0.2)'} $border={'rgba(68, 68, 68, 0.3)'}></SensorValueColorIndicator>
+                </Grid>
+                <Grid size={{ xs: 10 }}>
+                  <SensorValueLabel $color={'rgba(68, 68, 68, 0.75)'}>
+                    LOADING...
+                  </SensorValueLabel>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>}
 
         {/* No recent reading, report sensor offline */}
-        {(!value || value === "NaN" || value === "None") &&
+        {!loading && (!value || value === "NaN" || value === "None") &&
           <Grid container spacing={0} alignItems={'center'}>
             <Grid size={{ xs: 12 }}>
               <span style={{ color: 'rgba(228, 0, 43, 1)' }}>
@@ -98,7 +123,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           </Grid>}
 
         {/* Show latest reading */}
-        {!!rounded && <Grid container spacing={0} alignItems={'center'}>
+        {!loading && !!rounded && <Grid container spacing={0} alignItems={'center'}>
           {showColor && <SensorValueColorIndicator $color={range?.color} $border={range?.border}></SensorValueColorIndicator>}
           <Grid>
             <SensorNumericalValue $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
@@ -111,7 +136,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           </Grid>
         </Grid>}
 
-        {!!rounded && <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
+        {!loading && !!rounded && <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
           <Grid offset={2}>
             <SensorLabelPanel $color={primary}>
               <SensorValueLabel $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>

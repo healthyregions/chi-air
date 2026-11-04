@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations,
@@ -8,9 +8,9 @@ import {
   setMetricData,
   selectMetricData,
   setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
-  selectSelectedTimeIndex,
+  selectSelectedTimeIndex, selectIsLoading, setIsLoading,
 } from '../../store/slices/sensorDataSlice';
-import {fetchPq} from "../VariablePanel/common";
+import {fetchPq, useSelectorAsState} from "../VariablePanel/common";
 
 // MINIO => host="http://localhost:9000" bucket_name="chicago-aq"
 // AWS S3 => host="s3.us-east-2.amazonaws.com" bucket_name="chicago-aq"
@@ -37,10 +37,16 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   // const mean_pm25 = metricData?.['mean_pm25']?.data;
   // const nowcast_aqi = metricData?.['nowcast_aqi']?.data;
 
+  const loading = useSelector(selectIsLoading);
+  const setLoading = (s) => {
+    dispatch(setIsLoading(s))
+  }
+
   useEffect(() => {
     // Fetch index JSON file for each metric
     // This will tell us the first occurrence of each type (e.g. "hour", "day", etc)
     const startTime = new Date().getTime();
+    setLoading(true);
     allMetrics.forEach(metric_name => {
       fetch(`${s3prefix}/${metric_name}.index.json`)
         .then(async index_file_json => {
@@ -48,6 +54,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           dispatch(setMetricIndex({ parameter: metric_name, index: respJson }));
           const endTime = new Date().getTime();
           console.log(`Finished locating first rows for ${metric_name}: ${endTime - startTime}ms`);
+        }).finally(() => {
+          setLoading(false);
         });
     });
   }, [dispatch]);
@@ -55,6 +63,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   useEffect(() => {
     // Fetch the list of location id, name, coordinates for all sensors
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/locations.parquet.brotli`,
     }).then(l => {
@@ -66,12 +75,15 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       );
       const endTime = new Date().getTime();
       console.log(`Finished fetching sensor locations: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
   }, [dispatch]);
 
   useEffect(() => {
     // Fetch initial metric data for the map
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       rowStart: 0,
@@ -80,12 +92,15 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
   }, [dispatch, locations, selectedParameter]);
 
   useEffect(() => {
     // Fetch initial timestamp for the historical slider
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date']
@@ -94,6 +109,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
 
       const endTime = new Date().getTime();
       console.log(`Finished fetching historical timestamps: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
   }, [dispatch, locations, selectedParameter]);
 
@@ -108,6 +125,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }*/
     // Fetch ~24hrs graph data for the graph when a sensor is clicked
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date', clickedSensor],
@@ -117,6 +135,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
       console.log(`Finished fetching ~24hr clicked sensor data: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
   }, [dispatch, clickedSensor, selectedParameter]);
 
@@ -129,6 +149,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }
 
     const startTime = new Date().getTime();
+    setLoading(true);
     allMetrics.forEach(parameter => {
       fetchPq({
         url: `${s3prefix}/${parameter}.parquet.brotli`,
@@ -139,6 +160,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         dispatch(setMetricData({ parameter, data }));
         const endTime = new Date().getTime();
         console.log(`Finished fetching initial Details panel data: ${endTime - startTime}ms`);
+      }).finally(() => {
+        setLoading(false);
       });
     });
   }, [dispatch, clickedSensor, breadcrumbs]);
@@ -146,6 +169,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   useEffect(() => {
     // Fetch initial metric data for the map
     const startTime = new Date().getTime();
+    setLoading(true);
     allMetrics?.forEach(parameter => {
       fetchPq({
         url: `${s3prefix}/${parameter}.parquet.brotli`,
@@ -157,6 +181,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         const endTime = new Date().getTime();
         console.log(`Finished fetching ${parameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
         console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
+      }).finally(() => {
+        setLoading(false);
       });
     });
   }, [dispatch, locations, selectedParameter, selectedTimeIndex]);
@@ -191,6 +217,8 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
   }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
   //

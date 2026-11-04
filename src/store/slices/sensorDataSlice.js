@@ -30,6 +30,7 @@ const initialState = {
     zip: [],
     ward: [],
   },
+  isLoading: true,
   selectedSensors: [],
   selectedParameter: 'nowcast_aqi',
   clickedSensor: undefined,
@@ -41,6 +42,10 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setIsLoading: (state, action) => ({
+      ...state,
+      isLoading: action.payload
+    }),
     setSelectedTimeIndex: (state, action) => ({
       ...state,
       selectedTimeIndex: action.payload
@@ -167,6 +172,7 @@ export const sensorDataSlice = createSlice({
     selectMetricData: state => state.metrics?.[state.selectedParameter]?.data,
     selectMetrics: state => state.metrics,
     selectBreadcrumbs: state => state.breadcrumbs,
+    selectIsLoading: state => state.isLoading,
   }
 });
 
@@ -187,6 +193,7 @@ export const {
   setMetricData,
   setBreadcrumbs,
   setSelectedTimeIndex,
+  setIsLoading,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
@@ -204,5 +211,6 @@ export const {
   selectMetrics,
   selectBreadcrumbs,
   selectSelectedTimeIndex,
+  selectIsLoading,
 } = sensorDataSlice.selectors
 
