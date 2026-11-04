@@ -123,16 +123,16 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
         type: 'piecewise',
         thresholds: pm2_5Ranges?.map(r => {
           if (selectedParameter === 'nowcast_aqi') {
-            return r.aqi_max;
+            return r.aqi_min;
           } else if (selectedParameter === 'clarity_pm25' || selectedParameter === 'mean_pm25') {
-            return r.pm25_max;
+            return r.pm25_min;
           } else if (selectedParameter === 'clarity_no2') {
-            return r.no2_max;
+            return r.no2_min;
           } else {
             console.error('Unsupported metric name: ' + selectedParameter)
             return undefined;
           }
-        }),
+        }).slice(1),
         colors: pm2_5Ranges?.map(r => r.color),
       },
     }],
@@ -290,7 +290,9 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
               const startOfPage = pageSize*page;
               const index = startOfPage + offsetIntoPage;
               const value = metricData?.[index]?.[selectedParameter];
-              const fill = scaleColor(value, bins, value >= 100 ? pm2_5Ranges.map(r => r.color) : pm2_5Ranges.map(r => r.border));
+              const rounded = Number(value?.toFixed(selectedParameter === 'nowcast_aqi' ? 0 : 1));
+              const colors = rounded >= 100 ? pm2_5Ranges.map(r => r.color) : pm2_5Ranges.map(r => r.border);
+              const fill = scaleColor(rounded, bins, colors);
               //console.log(`BARLABEL  offsetIntoPage=${offsetIntoPage}   startOfPage=${startOfPage}   index=${index}   value=${value}   fill=${fill}`);
 
               // Calculate the exact horizontal midpoint of the bar
@@ -320,7 +322,9 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
               const index = startOfPage + offsetIntoPage;
               const value = metricData?.[index]?.[selectedParameter];
 
-              const stroke = scaleColor(value, bins, pm2_5Ranges.map(r => r.border));
+              const rounded = Number(value?.toFixed(selectedParameter === 'nowcast_aqi' ? 0 : 1));
+              const colors = rounded >= 100 ? pm2_5Ranges.map(r => r.color) : pm2_5Ranges.map(r => r.border);
+              const stroke = scaleColor(rounded, bins, colors);
               //console.log(`BAR  offsetIntoPage=${offsetIntoPage}   startOfPage=${startOfPage}   index=${index}   value=${value}   stroke=${stroke}`);
 
               return {
