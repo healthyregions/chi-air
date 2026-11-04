@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { colors } from '../../config';
 import {useEffect, useState} from "react";
 import {productName} from "../VariablePanel/common";
-import {useSelector} from "react-redux";
-import {selectIsLoading} from "../../store/slices/sensorDataSlice";
 
 const PreloaderPage = styled.div`
     background:${colors.gray};

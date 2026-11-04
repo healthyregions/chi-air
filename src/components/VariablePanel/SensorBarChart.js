@@ -8,61 +8,61 @@ import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, formatWeekDate, LButton, shortDateFormat} from "./common";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  selectClickedSensor, selectIsLoading,
+  selectClickedSensor,
   selectSelectedTimeIndex,
   setSelectedTimeIndex
 } from "../../store/slices/sensorDataSlice";
 import {scaleColor} from "../../utils";
-import {useDrawingArea, useXScale, useYScale} from "@mui/x-charts";
-import styled from "styled-components";
+//import {useDrawingArea, useXScale, useYScale} from "@mui/x-charts";
+//import styled from "styled-components";
 
 
-const LoadingRect = styled.rect`
-  opacity: 0.5;
-  fill: none;
-`;
-
-const LoadingText = styled.text`
-  stroke: none;
-  fill: #444444;
-  font-family: Lexend, serif;
-  font-weight: bold;
-  font-size: 1rem;
-  shape-rendering: crispEdges;
-  text-anchor: middle;
-  dominant-baseline: middle;
-`;
-
-const random = () => 0.5 * Math.random();
-const LoadingOverlay = () => {
-  const xScale = useXScale();
-  const yScale = useYScale();
-  const { left, width, height } = useDrawingArea();
-  const bandWidth = xScale.bandwidth();
-  const [bottom, top] = yScale.range();
-
-  return (
-    <g style={{ zIndex: 0 }}>
-      {xScale.domain().map((item, index) => {
-        const ratio = random();
-        const barHeight = ratio * (bottom - top);
-
-        return (
-          <LoadingRect
-            key={index}
-            x={xScale(item)}
-            width={bandWidth}
-            y={bottom - barHeight}
-            height={height}
-          />
-        );
-      })}
-      <LoadingText x={left + width / 2} y={top + height / 2}>
-        Loading data...
-      </LoadingText>
-    </g>
-  );
-}
+// const LoadingRect = styled.rect`
+//   opacity: 0.5;
+//   fill: none;
+// `;
+//
+// const LoadingText = styled.text`
+//   stroke: none;
+//   fill: #444444;
+//   font-family: Lexend, serif;
+//   font-weight: bold;
+//   font-size: 1rem;
+//   shape-rendering: crispEdges;
+//   text-anchor: middle;
+//   dominant-baseline: middle;
+// `;
+//
+//const random = () => 0.5 * Math.random();
+// const LoadingOverlay = () => {
+//   const xScale = useXScale();
+//   const yScale = useYScale();
+//   const { left, width, height } = useDrawingArea();
+//   const bandWidth = xScale.bandwidth();
+//   const [bottom, top] = yScale.range();
+//
+//   return (
+//     <g style={{ zIndex: 0 }}>
+//       {xScale.domain().map((item, index) => {
+//         const ratio = random();
+//         const barHeight = ratio * (bottom - top);
+//
+//         return (
+//           <LoadingRect
+//             key={index}
+//             x={xScale(item)}
+//             width={bandWidth}
+//             y={bottom - barHeight}
+//             height={height}
+//           />
+//         );
+//       })}
+//       <LoadingText x={left + width / 2} y={top + height / 2}>
+//         Loading data...
+//       </LoadingText>
+//     </g>
+//   );
+// }
 
 
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 20, metricData, averageType }) => {
@@ -71,7 +71,6 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
   const dispatch = useDispatch();
   //const metricIndex = useSelector(selectMetricIndex);
   const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
-  const loading = useSelector(selectIsLoading);
 
   // Listen for changes to averageType or selectedParameter
   // Reset page number when averageType or selectedParameter changes
