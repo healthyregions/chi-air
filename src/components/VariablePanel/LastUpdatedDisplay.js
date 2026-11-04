@@ -43,14 +43,14 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
   })(selectedTimeIndex?.type);
 
   const { latestRow } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId, selectedTimeIndex });
-  const {time, date, utc} = (!selectedTimeIndex?.type || selectedTimeIndex?.type === 'hour') ? formatDate({
+  const {time, date, utc} = (!selectedTimeIndex?.index || selectedTimeIndex?.type === 'hour') ? formatDate({
     timestamp: timestamp || latestRow?.['date'],
     format: 'long'
   }) : {time: undefined, date: undefined, utc: undefined};
 
   return (
     <div style={{ margin: '0.5rem 0' }}>
-      {(selectedTimeIndex?.type === 'hour' && selectedTimeIndex?.index === 0) ?
+      {(!selectedTimeIndex?.index) ?
         <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
           <FaHistory style={{ transform: 'scaleX(-1)', color: 'rgba(0, 88, 153, 0.5)', marginRight: '0.35rem' }} />
           <Tooltip arrow={true} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }} title={`Updated hourly: ${utc?.toUTCString()}`}>updat{time ? 'ed' : 'ing'}</Tooltip>
