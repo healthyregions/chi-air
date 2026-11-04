@@ -2,12 +2,8 @@ import styled from 'styled-components';
 import { NavBar } from '..';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {
-  FaExternalLinkAlt,
-} from "react-icons/fa";
 import {GradientBackground, WhiteBackground} from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
-import {useNavigate} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import {FaMagnifyingGlassArrowRight} from "react-icons/fa6";
@@ -38,28 +34,6 @@ const DownloadPage = styled.div`
     background:white;
 `;
 
-// Borrowed from Home page
-const ResourceLabel = styled.div`
-    text-align: center;
-    font-family: Lexend,sans-serif;
-    font-weight: 700;
-    font-size: 24px;
-    color: #005899;
-    min-height: ${({ $largeScreen }) => $largeScreen ? '4rem' : ''}
-`;
-const ResourceDescription = styled.div`
-    text-align: center;
-    font-family: Space Grotesk,serif;
-    font-weight: 400;
-    font-size: 18px;
-    color: #444444;
-`;
-const ResourceLinkIcon = styled(FaExternalLinkAlt)`
-    font-size: 18px;
-    margin-left: 0.5rem;
-    color: #00589980;
-`;
-
 const ContentContainer = styled.div`
     max-width: 1200px; /* Standard container width */
     margin: 0 auto;    /* Centering the container */
@@ -68,21 +42,7 @@ const ContentContainer = styled.div`
     box-sizing: border-box;
 `;
 
-// Borrowed from Team page
-const CategorySection = styled.section`
-    margin-bottom: 4rem;
-`;
-
-const CategoryTitle = styled.h3`
-    margin: 0 0 4rem;
-    color: #444444;
-    font-family: Lexend,sans-serif;
-    font-size: ${({ $largeScreen }) => $largeScreen ? '24px' : '20px'};
-    font-weight: 400;
-    line-height: 1.2;
-`;
-
-const TeamBodyText = styled(Grid)`
+const DownloadBodyText = styled(Grid)`
     color: #444444;
     font-family: Space Grotesk,serif;
     font-size: 18px;
@@ -91,31 +51,7 @@ const TeamBodyText = styled(Grid)`
     text-align: right;
 `;
 
-// Borrowed from About page
-const FilterRow = styled(Stack)`
-    margin: 3rem 0 2.5rem;
-`;
-
-const FilterChip = styled(Chip)`
-    && {
-        height: 36px;
-        border-radius: 999px;
-        border: 1px solid #9BC4DF;
-        background: ${({ $active }) => $active ? '#DCEEF8' : 'transparent'};
-        color: #005899;
-        cursor: pointer;
-        font-family: Space Grotesk,serif;
-        font-size: 18px;
-        font-weight: 700;
-    }
-
-    && .MuiChip-label {
-        padding: 0 16px;
-    }
-`;
-
-
-const Download = ({  }) => {
+const Download = () => {
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const locations = useSelector(selectSensorLocations);
@@ -218,9 +154,9 @@ const Download = ({  }) => {
               </Grid>
             </Grid>
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
-              <TeamBodyText size={12}>
+              <DownloadBodyText size={12}>
                 This is the subheader for the page
-              </TeamBodyText>
+              </DownloadBodyText>
             </Grid>
           </ContentContainer>
         </WhiteBackground>
