@@ -19,6 +19,7 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
   //const averageType = useSelector(selectAverageType);
 
   const selectedTimestamp = selectedTimeIndex?.type === 'hour' ? fromIso(selectedTimeIndex?.date) : selectedTimeIndex?.date;
+  console.log(`Dates selected: selectedTimeIndex=${JSON.stringify(selectedTimeIndex)}   selectedTimestamp=${selectedTimestamp}`);
   const prettyAverageType = ((type) => {
     if (!type) {
       return 'hourly';
@@ -48,7 +49,6 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
     format: 'long'
   }) : {time: undefined, date: undefined, utc: undefined};
 
-  console.log(selectedTimestamp?.date);
 
   return (
     <div style={{ margin: '0.5rem 0' }}>
@@ -72,8 +72,6 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
           }
         </span>
       }
-      <div>Selected: {JSON.stringify(selectedTimeIndex)}</div>
-      {selectedTimestamp && <div>Timestamp: {selectedTimestamp?.toISOString()}</div>}
     </div>
   );
 };
