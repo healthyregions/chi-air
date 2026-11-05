@@ -93,20 +93,30 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
       <SensorValueDisplayContainer style={{...style}}>
         {/* No recent reading, report sensor offline */}
         {(timer) &&
-          <Grid container spacing={0} alignItems={'center'}>
-            <Grid size={{ xs: 12 }} style={{ marginTop: '0.4rem' }}>
+          <Grid container spacing={0} alignItems={'center'} style={{ marginTop: '0.4rem' }}>
+            <Grid size={{ xs: 12 }}>
               <Grid container spacing={0} alignItems={'center'}>
                 <Grid size={{ xs: 2 }}>
                   <SensorValueColorIndicator $color={colors.chicagoLightBlue} $border={colors.chicagoBlue}></SensorValueColorIndicator>
                 </Grid>
                 <Grid size={{ xs: 10 }}>
-                  <SensorValueLabel $color={colors.chicagoBlue}>
-                    LOADING...
-                  </SensorValueLabel>
+                  <SensorValueScale $color={colors.chicagoBlue}>
+                    LOADING
+                  </SensorValueScale>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>}
+
+        {(timer) && !!rounded && <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
+          <Grid offset={2} marginTop={'0.4rem'}>
+            <SensorLabelPanel $color={colors.chicagoBlue}>
+              <SensorValueLabel $color={colors.chicagoBlue}>
+                Please Wait...
+              </SensorValueLabel>
+            </SensorLabelPanel>
+          </Grid>
+        </Grid>}
 
         {/* No recent reading, report sensor offline */}
         {!(timer) && (!value || value === "NaN" || value === "None") &&
