@@ -78,7 +78,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           dispatch(setIsLoading(false));
           clearInterval(timer);
           setTimer(null);
-        }, 2000)
+        }, 1250)
       );
     }
   }, [loading, dispatch, timer]);
@@ -92,7 +92,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
     <>
       <SensorValueDisplayContainer style={{...style}}>
         {/* No recent reading, report sensor offline */}
-        {(loading || timer) &&
+        {(timer) &&
           <Grid container spacing={0} alignItems={'center'}>
             <Grid size={{ xs: 12 }} style={{ marginTop: '0.4rem' }}>
               <Grid container spacing={0} alignItems={'center'}>
@@ -109,7 +109,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           </Grid>}
 
         {/* No recent reading, report sensor offline */}
-        {!(loading || timer) && (!value || value === "NaN" || value === "None") &&
+        {!(timer) && (!value || value === "NaN" || value === "None") &&
           <Grid container spacing={0} alignItems={'center'}>
             <Grid size={{ xs: 12 }}>
               <span style={{ color: 'rgba(228, 0, 43, 1)' }}>
@@ -134,7 +134,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           </Grid>}
 
         {/* Show latest reading */}
-        {!(loading || timer) && !!rounded && <Grid container spacing={0} alignItems={'center'}>
+        {!(timer) && !!rounded && <Grid container spacing={0} alignItems={'center'}>
           {showColor && <SensorValueColorIndicator $color={range?.color} $border={range?.border}></SensorValueColorIndicator>}
           <Grid>
             <SensorNumericalValue $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
@@ -147,7 +147,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           </Grid>
         </Grid>}
 
-        {!(loading || timer) && !!rounded && <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
+        {!(timer) && !!rounded && <Grid container spacing={0} alignItems={'center'} marginTop={'0.5rem'}>
           <Grid offset={2}>
             <SensorLabelPanel $color={primary}>
               <SensorValueLabel $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
