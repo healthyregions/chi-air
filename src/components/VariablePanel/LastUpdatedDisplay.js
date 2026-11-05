@@ -60,7 +60,6 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
         </span> : <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
           <FaHistory style={{ transform: 'scaleX(-1)', color: 'rgba(0, 88, 153, 0.5)', marginRight: '0.35rem' }} />
           <Tooltip arrow={true} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }} title={`Viewing past ${prettyAverageType} average: ${selectedTimestamp}`}>past {prettyAverageType} average</Tooltip>
-
           {
             selectedTimeIndex?.type === 'day' || selectedTimeIndex?.type === 'hour' ? dayjs(selectedTimestamp).tz("America/Chicago")?.format(template) :
               selectedTimeIndex?.type === 'week' ? `${formatWeekDate(selectedTimestamp)[0]} - ${formatWeekDate(selectedTimestamp)[1]}` :
@@ -71,10 +70,10 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
                           (selectedTimestamp?.split('-')[1]?.toLowerCase() === 'fall' || selectedTimestamp?.split('-')[1]?.toLowerCase() === 'autumn') ? `Fall ${selectedTimestamp?.split('-')[0]}` : `Winter ${selectedTimestamp?.split('-')[0]}`
                     ) : selectedTimestamp
           }
-          <br/>Selected: {selectedTimeIndex?.date}
-          <br/>Timestamp: {selectedTimestamp?.toISOString()}
         </span>
       }
+      <br/>Selected: {selectedTimeIndex?.date}
+      <br/>Timestamp: {selectedTimestamp?.toISOString()}
     </div>
   );
 };
