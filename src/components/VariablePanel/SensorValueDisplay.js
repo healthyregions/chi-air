@@ -100,7 +100,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
                   <SensorValueColorIndicator $color={colors.chicagoLightBlue} $border={colors.chicagoBlue}></SensorValueColorIndicator>
                 </Grid>
                 <Grid size={{ xs: 10 }}>
-                  <SensorValueScale $color={colors.chicagoBlue}>
+                  <SensorValueScale $color={colors.chicagoBlue} style={{ margin: 0, padding: 0 }}>
                     LOADING
                   </SensorValueScale>
                 </Grid>
