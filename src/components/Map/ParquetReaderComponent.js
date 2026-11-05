@@ -45,7 +45,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     // Fetch index JSON file for each metric
     // This will tell us the first occurrence of each type (e.g. "hour", "day", etc)
     const startTime = new Date().getTime();
-    setLoading(true);
     allMetrics.forEach(metric_name => {
       fetch(`${s3prefix}/${metric_name}.index.json`)
         .then(async index_file_json => {
@@ -53,8 +52,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           dispatch(setMetricIndex({ parameter: metric_name, index: respJson }));
           const endTime = new Date().getTime();
           console.log(`Finished locating first rows for ${metric_name}: ${endTime - startTime}ms`);
-        }).finally(() => {
-          setLoading(false);
         });
     });
   }, [dispatch, setLoading]);
@@ -62,7 +59,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   useEffect(() => {
     // Fetch the list of location id, name, coordinates for all sensors
     const startTime = new Date().getTime();
-    setLoading(true);
     fetchPq({
       url: `${s3prefix}/locations.parquet.brotli`,
     }).then(l => {
@@ -74,8 +70,6 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       );
       const endTime = new Date().getTime();
       console.log(`Finished fetching sensor locations: ${endTime - startTime}ms`);
-    }).finally(() => {
-      setLoading(false);
     });
   }, [dispatch, setLoading]);
 
