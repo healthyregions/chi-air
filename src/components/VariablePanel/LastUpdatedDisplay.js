@@ -73,7 +73,7 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
         </span>
       }
       <div>Selected: {JSON.stringify(selectedTimeIndex)}</div>
-      <div>Timestamp: {selectedTimestamp}</div>
+      {selectedTimestamp && <div>Timestamp: {selectedTimestamp?.toISOString()}</div>}
     </div>
   );
 };
