@@ -24,6 +24,12 @@ export const Divider = styled.hr`
     border-width: 1px;
     margin: .5rem 0 0.5rem 0;
 `;
+// ??
+export const TopDivider = styled.hr`
+    margin: 4rem 0;
+    border: 0;
+    border-top: 1px solid #41B6E6;
+`;
 // Header with Lexend font
 export const LHeader = styled.span`
     font-size: clamp(16px, 24px, 32px);
@@ -90,11 +96,10 @@ export const getLocation = (locations, datasourceId) => {
 };
 
 // Given a sensorId + related datasets, extract basic fragments needed by a few different views
-export const getMetadata = ({ geojsonData, parameter, datasourceId }) => {
+export const getMetadata = ({ geojsonData, parameter, datasourceId, selectedTimeIndex }) => {
   // Grab our previously-fetched data to determine some stats
-  // TODO: we can do better for this logic, but for now this should work alright
   const feature = geojsonData?.features?.find(f => f?.properties?.datasourceId === datasourceId);
-  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[0];
+  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[selectedTimeIndex?.index || 0];
   const latestValue = latestRow?.value;
   return { feature, latestRow, latestValue };
 }
@@ -137,6 +142,57 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
     date, iso, utc
   };
 }
+
+export const fromIso = (d) => new Date(d?.split(' ').join('T') + 'Z');
+
+export const getIsoWeekRange = (year, weekNumber) => {
+  // ISO 8601 rule: Week 1 always contains January 4th
+  const jan4 = new Date(year, 0, 4);
+
+  // Get Day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const dayOfWeek = jan4.getDay();
+
+  // Adjust so Monday is 1 and Sunday is 7
+  const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+  // Find the Monday of Week 1
+  const startOfWeek1 = new Date(jan4);
+  startOfWeek1.setDate(jan4.getDate() - isoDayOfWeek + 1);
+
+  // Calculate the target week's Monday (Start Date)
+  const startDate = new Date(startOfWeek1);
+  startDate.setDate(startOfWeek1.getDate() + (weekNumber - 1) * 7);
+
+  // Calculate the target week's Sunday (End Date)
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+
+  // Optional: Reset time to midnight/end of day if needed
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  return { startDate, endDate };
+};
+export const formatWeekDate = (v) => {
+  if (!v) {return [];}
+  const [year, weekNum] = v?.split('-W');
+
+  const {startDate, endDate} = getIsoWeekRange(year, weekNum);
+
+  // Format ISO dates to be more human-readable
+  const startOfWeek = startDate.toISOString().split('T')[0];
+  const endOfWeek = endDate.toISOString().split('T')[0];
+  const shortStartDate = shortDateFormat.format(new Date(startOfWeek));
+  const shortEndDate = shortDateFormat.format(new Date(endOfWeek));
+
+  return [shortStartDate, shortEndDate];
+};
+export const shortDateFormat = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+  timeZone: "UCT",
+});
+
+
 
 // Adapter to provide a selector/reducer as a drop-in replacement for useState
 export const useSelectorAsState = (selector, reducer, dispatch) => {

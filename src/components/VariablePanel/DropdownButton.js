@@ -41,6 +41,11 @@ export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = 
   return (
     <>
       <Btn
+        disableRipple
+        // TODO: If we can show menu on hover, remove hover "mask"?
+        // sx={{
+        //   '&:hover': { backgroundColor: '#00000000' }   // transparent background
+        // }}
         id="basic-button"
         size={size || 'small'}
         aria-controls={open ? 'basic-menu' : undefined}
