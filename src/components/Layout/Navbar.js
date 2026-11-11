@@ -89,7 +89,7 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, dropup=fals
           left: 'auto',
           borderRadius: '8px',
           boxShadow: dropup ? '2px 2px 4px 0px #1E1E1E0D' : '2px 2px 4px 0px #1E1E1E0D',
-           zIndex: 20,
+          zIndex: 20,
         }}>
           <ul
             id={dropdownElId}
@@ -100,6 +100,7 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, dropup=fals
               color: colors.chicagoDarkBlue,
               fontSize: '24px',
               border: 'none',
+              borderRadius: '8px',
               margin: 0,
               padding: '16px 0',
             }}
