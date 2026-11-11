@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import {FaCaretDown, FaCaretRight} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
+import {MdArrowOutward} from "react-icons/md";
 
 const AboutPage = styled.div`
     background:white;
@@ -92,6 +93,7 @@ const FAQAccordionSummary = styled(AccordionSummary)`
         flex-direction: row-reverse;
         align-items: flex-start;
         gap: 0.5rem;
+        margin-top: 1.25rem;
     }
 
     && .MuiAccordionSummary-content {
@@ -107,11 +109,15 @@ const FAQAccordionSummary = styled(AccordionSummary)`
         font-size: 18px;
         margin-top: 0.375rem;
     }
+    
+    && .MuiAccordionSummary-expandIconWrapper.Mui-expanded {
+        transform: rotate(-180deg);
+    }
 `;
 
 const FAQAccordionDetails = styled(AccordionDetails)`
     && {
-        padding: 1rem 0 1rem 1.5rem;
+        padding: 1rem 0 0.625rem 1.5rem;
     }
 `;
 
@@ -154,13 +160,11 @@ const faqs = [
       Explore the Map to explore sensor-specific, community/neighborhood-specific, or city-wide data trends.
       Data can also be downloaded in a number of ways, including: direct download on the{" "}
       <ExternalLink href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-         target={'_blank'} rel="noreferrer noopener">City Data Portal</ExternalLink>,
+         target={'_blank'} rel="noreferrer noopener">City Data Portal <MdArrowOutward /></ExternalLink>,
       direct download on the{" "}
       <ExternalLink href={'https://map.clarity.io/open-air-chicago'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
-        Open Air Clarity Dashboard
+        Open Air Clarity Dashboard <MdArrowOutward />
       </ExternalLink>, and direct download on this website (see 'Download' links on Map).
       Note that when downloading data from the {productName} Map on this website, only the sensors that
       you clicked during exploration will be able to be downloaded. In the future,
@@ -182,9 +186,8 @@ const faqs = [
       categories, each corresponding to a range of index values representing a different level of health concern. For example, while AQI value of 50 or below represents good air quality, an AQI value over 300 represents hazardous air quality. To identify the value
       range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application. To learn more about the AQI, please consult{" "}
       <ExternalLink href={'https://www.airnow.gov/aqi/aqi-basics/'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
-        https://www.airnow.gov/aqi/aqi-basics/
+        https://www.airnow.gov/aqi/aqi-basics/ <MdArrowOutward />
       </ExternalLink>.
     </>
   },
@@ -196,9 +199,8 @@ const faqs = [
       We highly recommend checking the map regularly and understanding the trends in air quality in your neighborhood. On days when the Air Quality Index (AQI) is unhealthy (i.e., greater than 100), we recommend using our Map as a “Public Health Messaging Tool” and adjust your daily activities to reduce your exposures to air pollutants and associated health risks.
       Specifically, we recommend adopting one or more of the{" "}
       <ExternalLink href={'https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
-        Strategies to Reduce Exposure Outdoors
+        Strategies to Reduce Exposure Outdoors <MdArrowOutward />
       </ExternalLink>.
       {" "}For example: adjusting outdoor activities (such as running) during time frames when the air quality is healthy, staying indoors, using an N95 mask, etc.)
     </>
@@ -220,9 +222,8 @@ const faqs = [
       the 'Details' section of the mapping interface. The raw and weighted (average) data for
       individual measurements, hourly and daily averages can also be accessed and downloaded from the
       {" "}<ExternalLink href={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'}
-        style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
         target={'_blank'} rel="noreferrer noopener">
-        CDPH Open Air Chicago website
+        CDPH Open Air Chicago website <MdArrowOutward />
       </ExternalLink>
     </>
   },
@@ -268,9 +269,8 @@ const faqs = [
     answer: <>
       Raw measurements from the Clarity Node-S sensors are available on the{" "}
       <a href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
-        City of Chicago “Open Air Chicago” data portal
+        City of Chicago “Open Air Chicago” data portal <MdArrowOutward />
       </a>. Raw data do not go through data cleaning, data quality assurance and control (QA/QC) checks,
       and are not calibrated. Please review Clarity Monitoring documentation in the Resources section
       for further discussion on sensor limitations and why calibrated
@@ -287,15 +287,13 @@ const faqs = [
       quality assurance and quality control protocols by the U.S. EPA scientists, the EPA and U.S.
       Forest service began displaying PM2.5 data from Clarity Node-S air sensors on EPA’s{" "}
       <a href={'https://fire.airnow.gov/'}
-              style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
               target={'_blank'} rel="noreferrer noopener">
-        Fire and Smoke Map (FASM)
+        Fire and Smoke Map (FASM) <MdArrowOutward />
       </a>
       {" "}located on EPA’s{" "}
       <a href={'https://www.airnow.gov/'}
-              style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
               target={'_blank'} rel="noreferrer noopener">
-        AirNow.gov website
+        AirNow.gov website <MdArrowOutward />
       </a>{" "}
       on July 23, 2025. The Clarity Node-S sensor is currently only one of the two commercially available
       lower-cost indicative sensors approved by the USEPA to display sensor data directly in the FASM (the
@@ -425,7 +423,7 @@ export default function About() {
          <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
              <Grid container justifyContent={'center'} textAlign={'center'}>
-               <img width={'100%'} height={'100%'} src="/img/sensor-calibration.jpg" alt={''} />
+               <img width={'100%'} height={'100%'} style={{ borderRadius: '8px' }} src="/img/sensor-calibration.jpg" alt={''} />
              </Grid>
            </ContentContainer>
          </WhiteBackground>
@@ -434,7 +432,7 @@ export default function About() {
          <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
              <Grid container spacing={3} justifyContent={'left'} textAlign={'left'}>
-               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
+               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#444444' }}>
                  Background on "{platformName}" Network
                </Grid>
              </Grid>
@@ -450,23 +448,22 @@ export default function About() {
                  grants (CEJN, ASE, SETF, PCR, PERRO, LVEJO, and N4EJ). Please refer to CDPH website to{" "}
                  <ExternalLink href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
                     target={'_blank'} rel="noreferrer noopener">
-                   learn about the “Open Air Chicago” Partner Organizations
+                   learn about the “Open Air Chicago” Partner Organizations <MdArrowOutward />
                  </ExternalLink>.
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
                  The UIC and UIUC teams are the technical architects of the design of the “Open Air Chicago” air monitoring
                  network. We adopted the technical principles behind EPA’s {" "}
-                 <a href={'https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf'}
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 <ExternalLink href={'https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf'}
                     target={'_blank'} rel="noreferrer noopener">
-                   Network Design Criteria for Ambient Air Quality Monitoring
-                 </a>
+                   Network Design Criteria for Ambient Air Quality Monitoring <MdArrowOutward />
+                 </ExternalLink>
                  {" "}under the Clean Air Act to create a neighborhood scale grid-based design, overlaying the grid-based design
                  on the Environmental Justice (EJ) Index Score map generated by CDPH through a comprehensive
                  stakeholder participatory process in 2023 under the{" "}
                  <ExternalLink href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
                     target={'_blank'} rel="noreferrer noopener">
-                   Cumulative Impact Assessment project
+                   Cumulative Impact Assessment project <MdArrowOutward />
                  </ExternalLink>. Neighborhoods in or near EJ zones have a grid size of 1.4 km x 1.4 km (i.e., 0.87 miles x 0.87 miles),
                  and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles x 0.93 miles). This means that there
                  are sensors across Chicago less than 1 mile from each other in every direction. This design,
@@ -483,7 +480,7 @@ export default function About() {
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
                  <ExternalLink href="https://publichealth.uic.edu/profiles/serap-erdal/"
-                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal</ExternalLink>
+                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal <MdArrowOutward /></ExternalLink>
                  {" "}from UIC led the scientific and community engagement process of network
                  development and is the principal Investigator of two grants, the National Institute of
                  Standard and Technology (NIST) (i.e., a Congressional Earmark from Senator Tammy Duckworth

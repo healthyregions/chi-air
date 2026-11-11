@@ -9,7 +9,7 @@ import {createSearchParams} from "react-router-dom";
 import centroid from "@turf/centroid";
 
 export const platformName = 'Open Air Chicago';
-export const productName = 'Our Air';
+export const productName = 'OurAir';
 
 // Button with Lexend font
 export const LButton = styled(Button)`

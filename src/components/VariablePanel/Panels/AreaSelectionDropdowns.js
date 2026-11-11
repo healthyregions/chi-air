@@ -131,7 +131,7 @@ const HomeDropdownEmpty = styled.div`
 `;
 
 const ASDHeader = styled(SGBody)`
-    padding: .4rem 0 0 .4rem;
+    padding: 0 .4rem;
     font-size: 12px;
     font-weight: ${({ $variant }) => $variant === 'home' ? 400 : 200};
     font-family: Space Grotesk,serif;
@@ -249,10 +249,8 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   return(
     <>
       {
-        !isHomeVariant && <Grid container fullWidth>
-          <Grid size>
-            <ASDHeader $variant={variant}><strong>Find</strong> your community, zip code, or ward</ASDHeader>
-          </Grid>
+        !isHomeVariant && <Grid display={'inline-flex'} alignItems={'center'}>
+          <ASDHeader $variant={variant}><strong>Or your</strong></ASDHeader>
         </Grid>
       }
 
@@ -277,10 +275,10 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
               borderRadius: '0.75rem',
               lineHeight: 'normal',
               textTransform: 'none',
-              padding: '0.25rem 0.5rem'
+              padding: '0.25rem 0.5rem',
             } : undefined}
           >
-            {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px' }} />
+            {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px', transition: 'transform 0.3s ease-in-out', transform: type === key ? 'rotate(-180deg)' : '' }} />
           </LButton>
 
           {type === key && <>

@@ -185,6 +185,7 @@ const DataPanel = ({ mapRef }) => {
 
       <Grid container spacing={8} alignItems={'center'} justifyContent={'space-between'} marginBottom={'1rem'}>
         <LButton
+          disableRipple
           component={NavLink}
           size={'large'}
           to="/"
@@ -194,7 +195,7 @@ const DataPanel = ({ mapRef }) => {
         >
           <MdHomeFilled style={{ width: '15px', height: '15px' }} /> Home
         </LButton>
-        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Add Community Context</LButton>
+        <LButton disableRipple variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Add Community Context</LButton>
       </Grid>
 
       {currentPage === 'root' && <>

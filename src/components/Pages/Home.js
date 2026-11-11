@@ -11,8 +11,8 @@ import {FaExternalLinkAlt} from "react-icons/fa";
 import {FaChevronDown} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
 import {
-  GradientBackground, platformName,
-  productName,
+  GradientBackground,
+  platformName,
   useSelectorAsState,
   WhiteBackground
 } from "../VariablePanel/common";
@@ -106,6 +106,7 @@ const HeroTitle = styled.h1`
 `;
 const HeroTitleAccent = styled.span`
     margin-left: 0.5rem;
+    margin-right: 0.20rem;
     font-family: Lexend,sans-serif;
     color: ${brandColors.chiDarkBlue};
     font-weight: 700;
@@ -301,11 +302,7 @@ export default function Home() {
               <Grid size={{ xs: 12, md: 6 }} style={{ zIndex: 25 }}>
                 <HeroContent $largeScreen={largeScreen}>
                   <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
-                    {
-                      productName?.split(' ')?.map((s, i) =>
-                        (i > 0) ? <HeroTitleAccent>{s}</HeroTitleAccent> : <>{s}</>
-                      )
-                    }
+                    { <><HeroTitleAccent>Our</HeroTitleAccent>Air</> }
                   </HeroTitle>
                   <HeroKicker $largeScreen={largeScreen}>Building on <span style={{ fontWeight: 500 }} className={'no-translate'}>{platformName}</span></HeroKicker>
                   <HeroKickerAccent $largeScreen={largeScreen}>Built with Chicago, for Chicago.</HeroKickerAccent>

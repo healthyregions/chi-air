@@ -19,7 +19,7 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
   //const averageType = useSelector(selectAverageType);
 
   const selectedTimestamp = selectedTimeIndex?.type === 'hour' ? fromIso(selectedTimeIndex?.date) : selectedTimeIndex?.date;
-  console.log(`Dates selected: selectedTimeIndex=${JSON.stringify(selectedTimeIndex)}   selectedTimestamp=${selectedTimestamp}`);
+  //console.log(`Dates selected: selectedTimeIndex=${JSON.stringify(selectedTimeIndex)}   selectedTimestamp=${selectedTimestamp?.toISOString()}     localized=${selectedTimestamp}`);
   const prettyAverageType = ((type) => {
     if (!type) {
       return 'hourly';

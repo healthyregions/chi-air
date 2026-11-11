@@ -15,6 +15,8 @@ import {FaArrowDown} from "@react-icons/all-files/fa/FaArrowDown";
 import Button from "@mui/material/Button";
 import {AiOutlineClose} from "@react-icons/all-files/ai/AiOutlineClose";
 import {AiOutlineMenu} from "@react-icons/all-files/ai/AiOutlineMenu";
+import {FaArrowUp} from "@react-icons/all-files/fa/FaArrowUp";
+import {FaCaretUp} from "@react-icons/all-files/fa/FaCaretUp";
 
 const NavContainer = styled.div`
   padding: ${({ $asFooter, $largeScreen }) => $largeScreen ? `4rem 6rem ${$asFooter ? '4rem' : 0} 6rem` : '0'};
@@ -50,10 +52,11 @@ type Props = {
   items: NavLinkType[];
   directLink?: string;
 };
-function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }: Props) {
+function NavDropdownButton({ title, dropdownElId, items, directLink, dropup=false, style={} }: Props) {
   return (
     <div style={{ display: 'inline-flex' }}>
       <LButton
+        disableRipple
         id={`${dropdownElId}-btn`}
         style={style}
         sx={{'&:hover': {backgroundColor: '#00000000'}}}
@@ -67,47 +70,59 @@ function NavDropdownButton({ title, dropdownElId, items, directLink, style={} }:
           if (directLink) window.location.href = directLink;
         }}
       >
-        {title} <FaCaretDown />
+        {title} {dropup ? <FaCaretUp style={{height:".9em"}} /> : <FaCaretDown style={{height:".9em"}} />}
       </LButton>
-      <ul
-        id={dropdownElId}
-        type={'none'}
-        style={{
-          ...style,
-          position: 'absolute',
-          backgroundColor: '#f5f5f5',
-          color: colors.chicagoDarkBlue,
-          left: 'auto',
-          fontSize: '18px',
-          marginTop: '50px',
-          top: 'auto',
-          zIndex: 10,
-        }}
+      <div
         onMouseEnter={() => {
           document.getElementById(dropdownElId).removeAttribute("hidden");
         }}
         onMouseLeave={() => {
           document.getElementById(dropdownElId).setAttribute("hidden", "");
         }}
-        hidden
-      >
-        {items.map((item, index) => (
-          <li key={index} style={{ padding: '10px 30px' }}
-              onMouseEnter={() => {
-                document.getElementById(dropdownElId).removeAttribute("hidden");
-              }}
-              onMouseLeave={() => {
-                document.getElementById(dropdownElId).setAttribute("hidden", "");
-              }}>
-            <NavLink to={item.url} target={item.target || ''} style={{ textDecoration: 'none', color: colors.chicagoDarkBlue }}>
-              <span>
-                {item.subitem && <FaArrowDown style={{height:".9em"}} />}
-              </span>
-              {item.title}
-              {item.target === "_blank" && <MdArrowOutward style={{height:".75em"}} />}</NavLink>
-          </li>
-        ))}
-      </ul>
+        style={{
+          backgroundColor: '#ffffff',
+          padding:0,
+          marginTop: dropup ? '' : '50px',
+          top: dropup ? '' : 'auto',
+          bottom: dropup ? '116px' : '',
+          position: 'absolute',
+          left: 'auto',
+          borderRadius: '8px',
+          boxShadow: dropup ? '2px 2px 4px 0px #1E1E1E0D' : '2px 2px 4px 0px #1E1E1E0D',
+           zIndex: 20,
+        }}>
+          <ul
+            id={dropdownElId}
+            type={'none'}
+            style={{
+              ...style,
+              background: dropup ? 'linear-gradient(180deg, rgba(65, 182, 230, 0.25) 0%, rgba(255, 255, 255, 0.25) 100%)' : 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(65, 182, 230, 0.25) 100%)',
+              color: colors.chicagoDarkBlue,
+              fontSize: '24px',
+              border: 'none',
+              margin: 0,
+              padding: '16px 0',
+            }}
+            hidden
+          >
+            {items.map((item, index) => (
+              <li key={index} style={{ padding: '8px 19px' }}
+                  onMouseEnter={() => {
+                    document.getElementById(dropdownElId).removeAttribute("hidden");
+                  }}
+                  onMouseLeave={() => {
+                    document.getElementById(dropdownElId).setAttribute("hidden", "");
+                  }}>
+                <NavLink to={item.url} target={item.target || ''} style={{ textDecoration: 'none', color: colors.chicagoDarkBlue, fontFamily: 'Space Grotesk, serif' }}>
+                <span>
+                  {item.subitem && (dropup ? <FaArrowUp style={{height:".9em"}} /> : <FaArrowDown style={{height:".9em"}} />) }
+                </span>
+                  {item.title}
+                  {item.target === "_blank" && <MdArrowOutward style={{height:".75em"}} />}</NavLink>
+              </li>
+            ))}
+          </ul>
+      </div>
     </div>
   );
 }
@@ -215,12 +230,13 @@ const NavBar = ({ asFooter=false }) => {
               <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
                 <DropdownButton style={{fontSize}} ButtonComponent={LButton} icon={<MdOutlineTranslate/>}
                                 label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange}
-                                dropup={asFooter}/>
+                                dropup={asFooter} />
                 <LButton disableRipple sx={{'&:hover': {backgroundColor: '#00000000'}}} style={{fontSize}}
                          onClick={() => navigate('/')}><MdHomeFilled/></LButton>
-                <NavDropdownButton dropdownElId={'maps-dd'} title={'Maps & more'} items={mapsAndMoreItems}
-                                   style={{fontSize}}/>
-                <NavDropdownButton dropdownElId={'about-dd'} title={'About'} items={aboutItems} style={{fontSize}}/>
+                <NavDropdownButton dropdownElId={`maps-dd${asFooter ? '-footer' : ''}`} title={'Maps & more'} items={mapsAndMoreItems}
+                                   style={{fontSize}} dropup={asFooter} />
+                <NavDropdownButton dropdownElId={`about-dd${asFooter ? '-footer' : ''}`} title={'About'} items={aboutItems}
+                                   style={{fontSize}} dropup={asFooter} />
               </Grid>
             </Grid>
             <Grid alignItems={'end'} justifyContent={'right'}
@@ -284,7 +300,7 @@ const NavBar = ({ asFooter=false }) => {
                 <li>
                   <DropdownButton style={{fontSize}} ButtonComponent={LButton} icon={<MdOutlineTranslate/>}
                                   label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange}
-                                  dropup={asFooter} />
+                                  dropup={false} />
                 </li>
               </ul>
             </Grid>
