@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useCallback, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setSensorLocations,
@@ -8,6 +8,7 @@ import {
   setMetricData,
   selectMetricData,
   setMetricIndex, selectMetrics, selectClickedSensor, selectBreadcrumbs, selectMetricIndex, selectAverageType,
+  selectSelectedTimeIndex, setIsLoading,
 } from '../../store/slices/sensorDataSlice';
 import {fetchPq} from "../VariablePanel/common";
 
@@ -29,11 +30,16 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   const breadcrumbs = useSelector(selectBreadcrumbs);
   const metricIndex = useSelector(selectMetricIndex);
   const averageType = useSelector(selectAverageType);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   // Awareness of current dataset
   // TODO: Only fetch new data if we don't already have it?
   // const mean_pm25 = metricData?.['mean_pm25']?.data;
   // const nowcast_aqi = metricData?.['nowcast_aqi']?.data;
+
+  const setLoading = useCallback((s) => {
+    dispatch(setIsLoading(s))
+  }, [dispatch])
 
   useEffect(() => {
     // Fetch index JSON file for each metric
@@ -48,7 +54,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
           console.log(`Finished locating first rows for ${metric_name}: ${endTime - startTime}ms`);
         });
     });
-  }, [dispatch]);
+  }, [dispatch, setLoading]);
 
   useEffect(() => {
     // Fetch the list of location id, name, coordinates for all sensors
@@ -65,22 +71,41 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       const endTime = new Date().getTime();
       console.log(`Finished fetching sensor locations: ${endTime - startTime}ms`);
     });
-  }, [dispatch]);
+  }, [dispatch, setLoading]);
 
   useEffect(() => {
     // Fetch initial metric data for the map
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       rowStart: 0,
       rowEnd: 2,
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
-
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
-  }, [dispatch, locations, selectedParameter]);
+  }, [dispatch, locations, selectedParameter, setLoading]);
+
+  useEffect(() => {
+    // Fetch initial timestamp for the historical slider
+    const startTime = new Date().getTime();
+    setLoading(true);
+    fetchPq({
+      url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+      columns: ['type', 'date']
+    }).then(data => {
+      dispatch(setMetricData({ parameter: selectedParameter, data }));
+
+      const endTime = new Date().getTime();
+      console.log(`Finished fetching historical timestamps: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
+    });
+  }, [dispatch, locations, selectedParameter, setLoading]);
 
   useEffect(() => {
     if (!clickedSensor){
@@ -93,19 +118,22 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }*/
     // Fetch ~24hrs graph data for the graph when a sensor is clicked
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date', clickedSensor],
       rowStart: 0,
-      rowEnd: 24
+      rowEnd: 30
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
-      console.log(`Finished fetching 24hr clicked sensor data: ${endTime - startTime}ms`);
+      console.log(`Finished fetching ~24hr clicked sensor data: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
-  }, [dispatch, clickedSensor, selectedParameter]);
+  }, [dispatch, clickedSensor, selectedParameter, setLoading]);
 
-  // Fetch latest row(s) of PM2.5 when Details panel opens
+  // Fetch latest row(s) for selected parameter when Details panel opens
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
     if (!clickedSensor || currentPage !== 'Details') {
@@ -114,6 +142,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }
 
     const startTime = new Date().getTime();
+    setLoading(true);
     allMetrics.forEach(parameter => {
       fetchPq({
         url: `${s3prefix}/${parameter}.parquet.brotli`,
@@ -124,9 +153,32 @@ const ParquetReaderComponent = ({ DEBUG }) => {
         dispatch(setMetricData({ parameter, data }));
         const endTime = new Date().getTime();
         console.log(`Finished fetching initial Details panel data: ${endTime - startTime}ms`);
+      }).finally(() => {
+        setLoading(false);
       });
     });
-  }, [dispatch, clickedSensor, breadcrumbs]);
+  }, [dispatch, clickedSensor, breadcrumbs, setLoading]);
+
+  useEffect(() => {
+    // Fetch initial metric data for the map
+    const startTime = new Date().getTime();
+    setLoading(true);
+    allMetrics?.forEach(parameter => {
+      fetchPq({
+        url: `${s3prefix}/${parameter}.parquet.brotli`,
+        rowStart: selectedTimeIndex?.index,
+        rowEnd: selectedTimeIndex?.index+2,
+      }).then(data => {
+        dispatch(setMetricData({ parameter, data }));
+        const checkDate = data?.find(() => true)?.date;
+        const endTime = new Date().getTime();
+        console.log(`Finished fetching ${parameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
+        console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
+      }).finally(() => {
+        setLoading(false);
+      });
+    });
+  }, [dispatch, locations, selectedParameter, selectedTimeIndex, setLoading]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -158,8 +210,30 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
       console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+    }).finally(() => {
+      setLoading(false);
     });
-  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType]);
+  }, [dispatch, clickedSensor, selectedParameter, breadcrumbs, metricIndex, averageType, setLoading]);
+  //
+  // useEffect(() => {
+  //   // FIXME: Determine row indices for target data
+  //   const rowStart = metricIndex[averageType];
+  //   const rowEnd = Object.keys(metricIndex).find(key => metricIndex[key]);
+  //   console.log(metricIndex);
+  //   console.log(`Fetching from ${rowStart} to ${rowEnd} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
+  //
+  //   // Fetch metric for the Historical Trends graph with the given parameters
+  //   const startTime = new Date().getTime();
+  //   fetchPq({
+  //     url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
+  //     columns: ['type', 'date', clickedSensor],
+  //     rowStart,
+  //   }).then(data => {
+  //     dispatch(setMetricData({ parameter: selectedParameter, data }));
+  //     const endTime = new Date().getTime();
+  //     console.log(`Finished fetching initial map data: ${endTime - startTime}ms`);
+  //   });
+  // }, [dispatch, clickedSensor, selectedParameter, metricIndex, averageType]);
 
   useEffect(() => {
     // Skip rendering if we don't have enough data

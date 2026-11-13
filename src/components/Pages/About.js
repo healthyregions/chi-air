@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { NavBar } from '../../components';
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {GradientBackground, platformName, productName, WhiteBackground} from "../VariablePanel/common";
+import {GradientBackground, platformName, productName, TopDivider, WhiteBackground} from "../VariablePanel/common";
 import {useEffect, useState} from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import {FaCaretDown, FaCaretRight} from "react-icons/fa";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
+import {MdArrowOutward} from "react-icons/md";
 
 const AboutPage = styled.div`
     background:white;
@@ -28,14 +29,9 @@ const AboutBodyText = styled(Grid)`
 const ContentContainer = styled.div`
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 2rem;   /* Prevents text from touching edges */
     width: 100%;
     box-sizing: border-box;
-`;
-
-const FAQTopDivider = styled.hr`
-    padding: 2.75rem 0 5.375rem;
-    border: 0;
-    border-top: 1px solid #41B6E6;
 `;
 
 const FAQFilterRow = styled(Stack)`
@@ -97,6 +93,7 @@ const FAQAccordionSummary = styled(AccordionSummary)`
         flex-direction: row-reverse;
         align-items: flex-start;
         gap: 0.5rem;
+        margin-top: 1.25rem;
     }
 
     && .MuiAccordionSummary-content {
@@ -112,11 +109,15 @@ const FAQAccordionSummary = styled(AccordionSummary)`
         font-size: 18px;
         margin-top: 0.375rem;
     }
+    
+    && .MuiAccordionSummary-expandIconWrapper.Mui-expanded {
+        transform: rotate(-180deg);
+    }
 `;
 
 const FAQAccordionDetails = styled(AccordionDetails)`
     && {
-        padding: 1rem 0 1rem 1.5rem;
+        padding: 1rem 0 0.625rem 1.5rem;
     }
 `;
 
@@ -144,6 +145,12 @@ const faqCategories = [
     { id: 'map', label: 'Map' }
 ];
 
+const ExternalLink = styled.a`
+    text-decoration: none;
+    color: #005899;
+    font-weight: 700;
+`;
+
 const faqs = [
   {
     id: 'map-data-access',
@@ -152,16 +159,14 @@ const faqs = [
     answer: <>
       Explore the Map to explore sensor-specific, community/neighborhood-specific, or city-wide data trends.
       Data can also be downloaded in a number of ways, including: direct download on the{" "}
-      <a href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-         target={'_blank'} rel="noreferrer noopener">City Data Portal</a>,
+      <ExternalLink href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
+         target={'_blank'} rel="noreferrer noopener">City Data Portal <MdArrowOutward /></ExternalLink>,
       direct download on the{" "}
-      <a href={'https://map.clarity.io/open-air-chicago'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+      <ExternalLink href={'https://map.clarity.io/open-air-chicago'}
          target={'_blank'} rel="noreferrer noopener">
-        Open Air Clarity Dashboard
-      </a>, and direct download on this website (see 'Download' links on Map).
-      Note that when downloading data from the Our Air Map on this website, only the sensors that
+        Open Air Clarity Dashboard <MdArrowOutward />
+      </ExternalLink>, and direct download on this website (see 'Download' links on Map).
+      Note that when downloading data from the {productName} Map on this website, only the sensors that
       you clicked during exploration will be able to be downloaded. In the future,
       we plan to develop a more robust Data Download filter for more customized options.
     </>
@@ -180,11 +185,10 @@ const faqs = [
       Colors of individual sensor locations correspond to different value bins or groupings of EPA’s Air Quality Index (AQI). The U.S. Air Quality Index (AQI) is EPA's tool for communicating about outdoor air quality and health. The AQI includes six color-coded
       categories, each corresponding to a range of index values representing a different level of health concern. For example, while AQI value of 50 or below represents good air quality, an AQI value over 300 represents hazardous air quality. To identify the value
       range and corresponding advisory for each color, use the legend 'key' on the top left part of the mapping application. To learn more about the AQI, please consult{" "}
-      <a href={'https://www.airnow.gov/aqi/aqi-basics/'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+      <ExternalLink href={'https://www.airnow.gov/aqi/aqi-basics/'}
          target={'_blank'} rel="noreferrer noopener">
-        https://www.airnow.gov/aqi/aqi-basics/
-      </a>.
+        https://www.airnow.gov/aqi/aqi-basics/ <MdArrowOutward />
+      </ExternalLink>.
     </>
   },
   {
@@ -194,11 +198,10 @@ const faqs = [
     answer: <>
       We highly recommend checking the map regularly and understanding the trends in air quality in your neighborhood. On days when the Air Quality Index (AQI) is unhealthy (i.e., greater than 100), we recommend using our Map as a “Public Health Messaging Tool” and adjust your daily activities to reduce your exposures to air pollutants and associated health risks.
       Specifically, we recommend adopting one or more of the{" "}
-      <a href={'https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+      <ExternalLink href={'https://www.epa.gov/wildfire-smoke-course/strategies-reduce-exposure-outdoors'}
          target={'_blank'} rel="noreferrer noopener">
-        Strategies to Reduce Exposure Outdoors
-      </a>.
+        Strategies to Reduce Exposure Outdoors <MdArrowOutward />
+      </ExternalLink>.
       {" "}For example: adjusting outdoor activities (such as running) during time frames when the air quality is healthy, staying indoors, using an N95 mask, etc.)
     </>
   },
@@ -218,11 +221,10 @@ const faqs = [
       directly downloaded by time period of interest (e.g., hourly, monthly, seasonally) in
       the 'Details' section of the mapping interface. The raw and weighted (average) data for
       individual measurements, hourly and daily averages can also be accessed and downloaded from the
-      {" "}<a href={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'}
-        style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+      {" "}<ExternalLink href={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'}
         target={'_blank'} rel="noreferrer noopener">
-        CDPH Open Air Chicago website
-      </a>
+        CDPH Open Air Chicago website <MdArrowOutward />
+      </ExternalLink>
     </>
   },
   {
@@ -267,9 +269,8 @@ const faqs = [
     answer: <>
       Raw measurements from the Clarity Node-S sensors are available on the{" "}
       <a href={'https://data.cityofchicago.org/Health-Human-Services/Open-Air-Chicago-Individual-Measurements/xfya-dxtq/about_data'}
-         style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
          target={'_blank'} rel="noreferrer noopener">
-        City of Chicago “Open Air Chicago” data portal
+        City of Chicago “Open Air Chicago” data portal <MdArrowOutward />
       </a>. Raw data do not go through data cleaning, data quality assurance and control (QA/QC) checks,
       and are not calibrated. Please review Clarity Monitoring documentation in the Resources section
       for further discussion on sensor limitations and why calibrated
@@ -286,15 +287,13 @@ const faqs = [
       quality assurance and quality control protocols by the U.S. EPA scientists, the EPA and U.S.
       Forest service began displaying PM2.5 data from Clarity Node-S air sensors on EPA’s{" "}
       <a href={'https://fire.airnow.gov/'}
-              style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
               target={'_blank'} rel="noreferrer noopener">
-        Fire and Smoke Map (FASM)
+        Fire and Smoke Map (FASM) <MdArrowOutward />
       </a>
       {" "}located on EPA’s{" "}
       <a href={'https://www.airnow.gov/'}
-              style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
               target={'_blank'} rel="noreferrer noopener">
-        AirNow.gov website
+        AirNow.gov website <MdArrowOutward />
       </a>{" "}
       on July 23, 2025. The Clarity Node-S sensor is currently only one of the two commercially available
       lower-cost indicative sensors approved by the USEPA to display sensor data directly in the FASM (the
@@ -394,8 +393,8 @@ export default function About() {
 
          <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
-             <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
-               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
+             <Grid container spacing={3} justifyContent={'right'} textAlign={'right'} marginTop={'4rem'}>
+               <Grid size={12} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
                  About
                </Grid>
              </Grid>
@@ -404,8 +403,8 @@ export default function About() {
                Air pollution is often invisible, but its impact is real. Now, real-time air quality data is available for every neighborhood, for every Chicagoan.
              </Grid>
            </Grid> */}
-             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
-               <AboutBodyText size={12}>
+             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} justifyContent={'end'}>
+               <AboutBodyText size={9}>
                 <b className={'notranslate'}>{productName}</b> is a Chicago
                  mapping application that serves as a vital bridge between air quality data,
                  scientific exploration, community empowerment, and advocacy, making city-wide
@@ -422,16 +421,18 @@ export default function About() {
          </WhiteBackground>
 
          <WhiteBackground $largeScreen={largeScreen}>
-            <Grid container spacing={3} justifyContent={'center'} textAlign={'center'}>
-              <div className="item"><img src="/img/sensor-calibration.jpg" alt={''} /></div>
-            </Grid>
+           <ContentContainer>
+             <Grid container justifyContent={'center'} textAlign={'center'}>
+               <img width={'100%'} height={'100%'} style={{ borderRadius: '8px' }} src="/img/sensor-calibration.jpg" alt={''} />
+             </Grid>
+           </ContentContainer>
          </WhiteBackground>
 
 
          <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
              <Grid container spacing={3} justifyContent={'left'} textAlign={'left'}>
-               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#005899' }}>
+               <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '24px', fontWeight: 700, color: '#444444' }}>
                  Background on "{platformName}" Network
                </Grid>
              </Grid>
@@ -445,28 +446,25 @@ export default function About() {
                  Health (CDPH), in collaboration with 13 community organizations serving on the city’s
                  advisory board, seven of which were UIC’s official community partners under the UIC
                  grants (CEJN, ASE, SETF, PCR, PERRO, LVEJO, and N4EJ). Please refer to CDPH website to{" "}
-                 <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 <ExternalLink href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
                     target={'_blank'} rel="noreferrer noopener">
-                   learn about the “Open Air Chicago” Partner Organizations
-                 </a>.
+                   learn about the “Open Air Chicago” Partner Organizations <MdArrowOutward />
+                 </ExternalLink>.
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
                  The UIC and UIUC teams are the technical architects of the design of the “Open Air Chicago” air monitoring
                  network. We adopted the technical principles behind EPA’s {" "}
-                 <a href={'https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf'}
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 <ExternalLink href={'https://www3.epa.gov/ttnamti1/files/ambient/pm25/qa/vol2sec06.pdf'}
                     target={'_blank'} rel="noreferrer noopener">
-                   Network Design Criteria for Ambient Air Quality Monitoring
-                 </a>
+                   Network Design Criteria for Ambient Air Quality Monitoring <MdArrowOutward />
+                 </ExternalLink>
                  {" "}under the Clean Air Act to create a neighborhood scale grid-based design, overlaying the grid-based design
                  on the Environmental Justice (EJ) Index Score map generated by CDPH through a comprehensive
                  stakeholder participatory process in 2023 under the{" "}
-                 <a href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                 <ExternalLink href="https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html"
                     target={'_blank'} rel="noreferrer noopener">
-                   Cumulative Impact Assessment project
-                 </a>. Neighborhoods in or near EJ zones have a grid size of 1.4 km x 1.4 km (i.e., 0.87 miles x 0.87 miles),
+                   Cumulative Impact Assessment project <MdArrowOutward />
+                 </ExternalLink>. Neighborhoods in or near EJ zones have a grid size of 1.4 km x 1.4 km (i.e., 0.87 miles x 0.87 miles),
                  and non-EJ areas have a grid size of 1.5 x 1.5 km (0.93 miles x 0.93 miles). This means that there
                  are sensors across Chicago less than 1 mile from each other in every direction. This design,
                  generating concentrations upwind and downwind of a given location, is particularly advantageous
@@ -481,9 +479,8 @@ export default function About() {
                  quality to community organization staff.
                </Grid>
                <Grid size={12} marginTop={'1rem'} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
-                 <a href="https://publichealth.uic.edu/profiles/serap-erdal/"
-                    style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal</a>
+                 <ExternalLink href="https://publichealth.uic.edu/profiles/serap-erdal/"
+                    target={'_blank'} rel="noreferrer noopener">Dr. Serap Erdal <MdArrowOutward /></ExternalLink>
                  {" "}from UIC led the scientific and community engagement process of network
                  development and is the principal Investigator of two grants, the National Institute of
                  Standard and Technology (NIST) (i.e., a Congressional Earmark from Senator Tammy Duckworth
@@ -496,9 +493,9 @@ export default function About() {
            </ContentContainer>
          </WhiteBackground>
 
-         <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+         <WhiteBackground $largeScreen={largeScreen}>
            <ContentContainer>
-             <FAQTopDivider />
+             <TopDivider />
              <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
                             topRowText={'Some'}
                             bottomRowTextBlack={'Frequently Asked'}
@@ -525,53 +522,47 @@ export default function About() {
                  />
                ))}
              </FAQFilterRow>
-
-             {visibleCategories.map(({ id, label }) => (
-               <FAQCategorySection key={id}>
-                 <FAQCategoryTitle $largeScreen={largeScreen}>{label}</FAQCategoryTitle>
-                 {faqs
-                   .filter((faq) => faq.category === id)
-                   .map((faq) => {
-                     const isExpanded = expandedFaqIds.includes(faq.id);
-
-                     return (
-                       <FAQAccordion
-                         key={faq.id}
-                         expanded={isExpanded}
-                         onChange={(_, shouldExpand) => toggleFaq(faq.id, shouldExpand)}
-                       >
-                         <FAQAccordionSummary
-                           expandIcon={isExpanded ? <FaCaretDown /> : <FaCaretRight />}
-                         >
-                           <FAQQuestion $largeScreen={largeScreen}>{faq.question}</FAQQuestion>
-                         </FAQAccordionSummary>
-                         <FAQAccordionDetails>
-                           <FAQAnswer $largeScreen={largeScreen}>{faq.answer}</FAQAnswer>
-                         </FAQAccordionDetails>
-                       </FAQAccordion>
-                     );
-                   })}
-               </FAQCategorySection>
-             ))}
-           </ContentContainer>
-         </GradientBackground>
-
-         <WhiteBackground  style={{ margin: 0, backgroundColor: '#41B6E633' }} >
-           <ContentContainer>
-             <FAQTopDivider/>
            </ContentContainer>
          </WhiteBackground>
 
-         <GradientBackground $direction={'to top'} $largeScreen={largeScreen} style={{ marginBottom: 0, paddingBottom: largeScreen ? '5rem' : '4rem' }}>
+         <GradientBackground $direction={'to top'} $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundPosition: 'bottom center' }}>
            <ContentContainer>
-             <SectionHeader imgSrc={'/icons/chiair/aq-team-collab.svg'}
+               {visibleCategories.map(({ id, label }) => (
+                 <FAQCategorySection key={id}>
+                   <FAQCategoryTitle $largeScreen={largeScreen}>{label}</FAQCategoryTitle>
+                   {faqs
+                     .filter((faq) => faq.category === id)
+                     .map((faq) => {
+                       const isExpanded = expandedFaqIds.includes(faq.id);
+
+                       return (
+                         <FAQAccordion
+                           key={faq.id}
+                           expanded={isExpanded}
+                           onChange={(_, shouldExpand) => toggleFaq(faq.id, shouldExpand)}
+                         >
+                           <FAQAccordionSummary
+                             expandIcon={isExpanded ? <FaCaretDown /> : <FaCaretRight />}
+                           >
+                             <FAQQuestion $largeScreen={largeScreen}>{faq.question}</FAQQuestion>
+                           </FAQAccordionSummary>
+                           <FAQAccordionDetails>
+                             <FAQAnswer $largeScreen={largeScreen}>{faq.answer}</FAQAnswer>
+                           </FAQAccordionDetails>
+                         </FAQAccordion>
+                       );
+                     })}
+                 </FAQCategorySection>
+               ))}
+             <TopDivider/>
+             <SectionHeader imgSrc={'/icons/chiair/aq-funders.svg'}
                             topRowText={'Our Funders'}
                             bottomRowTextBlack={'and'}
                             bottomRowTextRed={'Acknowledgments'}
                             style={{ marginBottom: '6rem' }}
              />
 
-             <Grid container spacing={2} textAlign={'left'}>
+             <Grid container spacing={2} textAlign={'left'} marginBottom={'2rem'}>
                <Grid size={12} style={{ fontFamily: 'Space Grotesk', fontSize: '18px', color: '#444444' }}>
                  Dr. Serap Erdal (PI). U.S. Congress Earmark/National Institute of
                  Standards and Technology (NIST). Community-Driven Air Quality and

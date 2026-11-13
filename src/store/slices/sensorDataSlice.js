@@ -24,11 +24,13 @@ const initialState = {
 
   // User selections
   breadcrumbs: ['root'],
+  selectedTimeIndex: 0,
   selectedAreas: {
     community: [],
     zip: [],
     ward: [],
   },
+  isLoading: true,
   selectedSensors: [],
   selectedParameter: 'nowcast_aqi',
   clickedSensor: undefined,
@@ -40,6 +42,14 @@ export const sensorDataSlice = createSlice({
   name: 'sensors',
   initialState,
   reducers: {
+    setIsLoading: (state, action) => ({
+      ...state,
+      isLoading: action.payload
+    }),
+    setSelectedTimeIndex: (state, action) => ({
+      ...state,
+      selectedTimeIndex: action.payload
+    }),
     setBreadcrumbs: (state, action) => ({
       ...state,
       breadcrumbs: action.payload
@@ -149,6 +159,7 @@ export const sensorDataSlice = createSlice({
     },
   },
   selectors: {
+    selectSelectedTimeIndex: state => state.selectedTimeIndex,
     selectSensorLocations: state => state.locations,
     selectSelectedSensors: state => state.selectedSensors,
     selectSensorGeojsonData: state => state.geojsonData,
@@ -161,6 +172,7 @@ export const sensorDataSlice = createSlice({
     selectMetricData: state => state.metrics?.[state.selectedParameter]?.data,
     selectMetrics: state => state.metrics,
     selectBreadcrumbs: state => state.breadcrumbs,
+    selectIsLoading: state => state.isLoading,
   }
 });
 
@@ -180,6 +192,8 @@ export const {
   setMetricIndex,
   setMetricData,
   setBreadcrumbs,
+  setSelectedTimeIndex,
+  setIsLoading,
 } = sensorDataSlice.actions;
 
 // useSelector + a selector to read the state
@@ -195,6 +209,8 @@ export const {
   selectMetricIndex,
   selectMetricData,
   selectMetrics,
-  selectBreadcrumbs
+  selectBreadcrumbs,
+  selectSelectedTimeIndex,
+  selectIsLoading,
 } = sensorDataSlice.selectors
 

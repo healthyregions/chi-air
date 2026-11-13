@@ -28,18 +28,18 @@ const HomeDropdownCard = styled.div`
   background: #FFF;
   box-shadow: 2px 2px 4px 0 rgba(30, 30, 30, 0.05);
   //overflow: hidden;
-
+    margin-top: ${({ $largeScreen }) => $largeScreen ? '0.5rem' : 0};
   position: ${({ $largeScreen }) => $largeScreen ? 'absolute' : 'relative'};
   left: ${({ $isHomeVariant, $largeScreen, $type }) => {
       if (!$isHomeVariant || !$largeScreen) return 0;
       if ($type === 'community') return 0;
-      if ($type === 'ward') return '15rem';
+      if ($type === 'ward') return '22rem';
       if ($type === 'zip') return '12rem';
       return 0;
   }};
   right: ${({ $isHomeVariant, $largeScreen, $type }) => {
       if (!$isHomeVariant || !$largeScreen) return 0;
-      if ($type === 'community') return '15rem';
+      if ($type === 'community') return '18rem';
       if ($type === 'ward') return 0;
       if ($type === 'zip') return '8rem';
       return 0;
@@ -131,7 +131,7 @@ const HomeDropdownEmpty = styled.div`
 `;
 
 const ASDHeader = styled(SGBody)`
-    padding: .4rem 0 0 .4rem;
+    padding: 0 .4rem;
     font-size: 12px;
     font-weight: ${({ $variant }) => $variant === 'home' ? 400 : 200};
     font-family: Space Grotesk,serif;
@@ -249,16 +249,18 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   return(
     <>
       {
-        !isHomeVariant && <Grid container fullWidth>
-          <Grid size>
-            <ASDHeader $variant={variant}><strong>Find</strong> your community, zip code, or ward</ASDHeader>
-          </Grid>
+        !isHomeVariant && <Grid display={'inline-flex'} alignItems={'center'}>
+          <ASDHeader $variant={variant}><strong>Or your</strong></ASDHeader>
         </Grid>
       }
 
       {(noSelection || !showSelectedAreas) && <Grid container fullWidth justifyContent={'center'} alignItems={'center'} columnGap={isHomeVariant ? 2 : 0} rowGap={isHomeVariant ? 1 : 0} direction={isHomeVariant ? (largeScreen ? 'row' : 'column') : 'row'}>
         {[ 'community', 'zip', 'ward' ]?.map((key) => <Grid size key={key} textAlign={'center'}>
           <LButton
+            disableRipple
+            sx={{
+              '&:hover': { backgroundColor: '#00000000' }   // transparent background
+            }}
             id={`basic-button-${key}`}
             size={'small'}
             aria-controls={open ? 'basic-menu' : undefined}
@@ -270,14 +272,13 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
               fontFamily: 'Lexend,sans-serif',
               fontSize: '1.5rem',
               fontWeight: 500,
-              textDecoration: type===key ? 'underline' : 'none',
               borderRadius: '0.75rem',
               lineHeight: 'normal',
               textTransform: 'none',
-              padding: '0.25rem 0.5rem'
+              padding: '0.25rem 0.5rem',
             } : undefined}
           >
-            {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px' }} />
+            {prettyTypeName(key)} <FaCaretDown style={{ marginLeft: '2px', transition: 'transform 0.3s ease-in-out', transform: type === key ? 'rotate(-180deg)' : '' }} />
           </LButton>
 
           {type === key && <>
