@@ -36,3 +36,4 @@ public/img/people/T_Dict.xlsx
 
 # IDE settings
 .idea/
+.claude/
