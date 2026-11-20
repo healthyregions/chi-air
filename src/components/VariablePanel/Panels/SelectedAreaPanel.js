@@ -3,7 +3,7 @@ import {FaArrowLeft} from "react-icons/fa";
 import {pm2_5Ranges} from "../../../config";
 import {
   removeSensorsFromSelection,
-  selectClickedSensor, selectMetricData, selectSelectedAreas, selectSelectedSensors,
+  selectClickedSensor, selectMetricData, selectSelectedAreas, selectSelectedSensors, selectSelectedTimeIndex,
   selectSensorGeojsonData,
   /*selectSensorLocations,*/ selectSensorParameter,
   setClickedSensor, setSelectedAreas
@@ -60,6 +60,7 @@ export const SelectedAreaPanel = () => {
   const selectedParameter = useSelector(selectSensorParameter);
   const metricData = useSelector(selectMetricData);
   const geojsonData = useSelector(selectSensorGeojsonData);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   // Grab our previously-fetched data to determine some stats
   // TODO: we can do better for this logic, but for now this should work alright
@@ -101,7 +102,7 @@ export const SelectedAreaPanel = () => {
       </GridHeader>}
 
       {!clickedSensor && selectedSensors?.map((s, index) => {
-        const { feature, latestRow, latestValue } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId: s });
+        const { feature, latestRow, latestValue } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId: s, selectedTimeIndex });
         if (!latestValue) { return undefined; }
         const fixed = Number(latestValue)?.toFixed(1);
         const range = pm2_5Ranges.find(r => {

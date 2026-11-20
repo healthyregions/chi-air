@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
   selectAverageType,
   selectClickedSensor, selectMetricData, selectMetricIndex,
-  selectMetrics, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
+  selectMetrics, selectSelectedTimeIndex, selectSensorGeojsonData, selectSensorLocations, selectSensorParameter,
   setAverageType, setSensorParameter
 } from "../../../store/slices/sensorDataSlice";
 import {Divider, getLocation, getMetadata, LButton, LHeader, LinkText} from "../common";
@@ -66,6 +66,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const geojsonData = useSelector(selectSensorGeojsonData);
   const metrics = useSelector(selectMetrics);
   const metricIndex = useSelector(selectMetricIndex);
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   const setSelectedParameter = (payload) => dispatch(setSensorParameter(payload));
 
@@ -75,7 +76,8 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const {latestRow} = getMetadata({
     parameter: selectedParameter,
     datasourceId: clickedSensor,
-    geojsonData
+    geojsonData,
+    selectedTimeIndex
   });
 
   const downloadGeoJson = (geojsonData = sensorGeojson, filename = `chicago_${selectedParameter}.geojson`) => {
@@ -97,12 +99,12 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const latestAqi = metrics?.['nowcast_aqi']?.data?.[0]?.[clickedSensor];
-  const prevAqi = metrics?.['nowcast_aqi']?.data?.[1]?.[clickedSensor];
-  const latestPm25 = metrics?.['clarity_pm25']?.data?.[0]?.[clickedSensor];
-  const prevPm25 = metrics?.['clarity_pm25']?.data?.[1]?.[clickedSensor];
-  const latestNo2 = metrics?.['clarity_no2']?.data?.[0]?.[clickedSensor];
-  const prevNo2 = metrics?.['clarity_no2']?.data?.[1]?.[clickedSensor];
+  const latestAqi = metrics?.['nowcast_aqi']?.data?.[selectedTimeIndex?.index || 0]?.[clickedSensor];
+  const prevAqi = metrics?.['nowcast_aqi']?.data?.[(selectedTimeIndex?.index || 0)+1]?.[clickedSensor];
+  const latestPm25 = metrics?.['clarity_pm25']?.data?.[selectedTimeIndex?.index || 0]?.[clickedSensor];
+  const prevPm25 = metrics?.['clarity_pm25']?.data?.[(selectedTimeIndex?.index || 0)+1]?.[clickedSensor];
+  const latestNo2 = metrics?.['clarity_no2']?.data?.[selectedTimeIndex?.index || 0]?.[clickedSensor];
+  const prevNo2 = metrics?.['clarity_no2']?.data?.[(selectedTimeIndex?.index || 0)+1]?.[clickedSensor];
 
   const displayedAqi = latestAqi || prevAqi;
   const displayedPm25 = latestPm25 || prevPm25;
@@ -187,7 +189,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
               <MenuItem value="hour">Hour</MenuItem>
               <MenuItem value="day" disabled={metricIndex.day <= 0}>Day</MenuItem>
               <MenuItem value="week" disabled={metricIndex.week <= 0}>Week</MenuItem>
-              <MenuItem value="month" disabled={metricIndex.month <= 0} title={'hello world'}>Month</MenuItem>
+              <MenuItem value="month" disabled={metricIndex.month <= 0}>Month</MenuItem>
               <MenuItem value="season" disabled={metricIndex.season <= 0}>Season</MenuItem>
               <MenuItem value="year" disabled={metricIndex.year <= 0}>Year</MenuItem>
             </Select>
@@ -202,7 +204,6 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
       </Grid>
 
       <SensorBarChart margin={{ top: 40, left: 40, right: 40 }}
-                      pageSize={10}
                       showScroll={true}
                       context={'historical'}
                       averageType={averageType}

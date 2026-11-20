@@ -56,6 +56,7 @@ export const INITIAL_STATE = {
   },
   panelState: {
     variables: window.innerWidth > 768,
+    history: true,
     info: true,
     key: window.innerWidth > 768,
     tutorial: false,

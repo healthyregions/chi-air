@@ -20,7 +20,7 @@ const ColorScaleContainer = styled.div`
   border: 1px solid rgba(65, 182, 230, 1);
   width: 433px;
   left: ${({ $open }) => $open ? '2rem' : '0'};
-  top: ${({ $large }) => $large ? '2rem' : '0'};
+  top: ${({ $large }) => $large ? '2rem' : 'auto'};
   background: rgba( 255, 255, 255, 0.85 );
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.85 );
   backdrop-filter: blur( 20px );
@@ -58,16 +58,12 @@ const ColorScaleContainer = styled.div`
         background-color: ${colors.white};
         box-shadow: 2px 0px 2px ${colors.gray}44;
         border:1px solid ${colors.chicagoBlue};
-        // border-radius:20px;
+        border-radius: 100px;
         cursor: pointer;
         transition:500ms all;
         svg {
             width:15px;
             height:15px;
-            margin:12.5px 0 0 0;
-            @media (max-width:600px){
-                margin:5px;
-            }
             fill:${colors.gray};
             transform:rotate(180deg);
             transition:500ms all;
@@ -159,7 +155,8 @@ export const AQColorScale = () => {
               style={{
                 display: 'block',
                 backgroundColor: color,
-                border: `1px solid ${border}`,
+                opacity: '75%',
+                border: `2px solid ${border}`,
                 borderRadius: '10px',
                 width: '16px',
                 height: '16px',

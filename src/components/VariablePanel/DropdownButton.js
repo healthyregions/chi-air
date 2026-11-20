@@ -8,7 +8,7 @@ import {FaCaretUp} from "@react-icons/all-files/fa/FaCaretUp";
 
 const ITEM_HEIGHT = 48;
 
-export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = () => {}, buttonProps = {}, width, menuStyle, style, onChange, options, label, ButtonComponent, unique=true, sortOptions=true, dropup=false }) => {
+export const DropdownButton = ({ size, icon=undefined, onOpen = () => {}, buttonProps = {}, width, style, onChange, options, label, ButtonComponent, unique=true, sortOptions=true, dropup=false }) => {
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
@@ -41,6 +41,11 @@ export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = 
   return (
     <>
       <Btn
+        disableRipple
+        // TODO: If we can show menu on hover, remove hover "mask"?
+        // sx={{
+        //   '&:hover': { backgroundColor: '#00000000' }   // transparent background
+        // }}
         id="basic-button"
         size={size || 'small'}
         aria-controls={open ? 'basic-menu' : undefined}
@@ -66,23 +71,38 @@ export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = 
             horizontal: 'left',
           }}
           onClose={handleClose}
-          style={menuStyle}
           slotProps={{
             paper: {
               style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
+                maxHeight: ITEM_HEIGHT * 6.5,
                 width: '18rem',
+                boxShadow: dropup ? '2px 2px 4px 0px #1E1E1E0D' : '2px 2px 4px 0px #1E1E1E0D',
+                borderRadius: '8px',
               },
             },
             list: {
               'aria-labelledby': 'basic-button',
+              style: {
+                background: dropup ? 'linear-gradient(180deg, rgba(65, 182, 230, 0.25) 0%, rgba(255, 255, 255, 0.25) 100%)' : 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(65, 182, 230, 0.25) 100%)',
+                padding: '16px 0',
+              }
             },
+            backdrop: {
+              style: {
+                backgroundColor: 'transparent'
+              }
+            }
           }}
         >
           {displayOps?.map((op, index) =>
             <MenuItem as={LButton} key={`dropdown-button-${op}-${index}`}
                       onClick={handleChange}
                       className={'notranslate'}
+                      style={{
+                        padding: '8px 19px',
+                        fontSize: '24px',
+                        fontFamily: 'Space Grotesk'
+                      }}
                       value={op?.value}>
               {op?.label || op}
             </MenuItem>

@@ -9,7 +9,7 @@ import {createSearchParams} from "react-router-dom";
 import centroid from "@turf/centroid";
 
 export const platformName = 'Open Air Chicago';
-export const productName = 'Our Air';
+export const productName = 'OurAir';
 
 // Button with Lexend font
 export const LButton = styled(Button)`
@@ -23,6 +23,12 @@ export const Divider = styled.hr`
     border-color: rgba(65, 182, 230, 1);
     border-width: 1px;
     margin: .5rem 0 0.5rem 0;
+`;
+// ??
+export const TopDivider = styled.hr`
+    margin: 4rem 0;
+    border: 0;
+    border-top: 1px solid #41B6E6;
 `;
 // Header with Lexend font
 export const LHeader = styled.span`
@@ -89,20 +95,34 @@ export const getLocation = (locations, datasourceId) => {
   return locations?.find(s => s.datasourceId === datasourceId);
 };
 
+// Given a feature's per-metric rows, find the row for the time selected on the slider
+// (or the most recent row if nothing is selected). Rows are matched by date/type rather
+// than position, since a feature only holds rows that have been fetched for it.
+// NOTE: index 0 is the app-wide "latest" sentinel (e.g. SensorBarChart resets to it)
+export const findSelectedRow = (data, selectedTimeIndex) => {
+  if (!selectedTimeIndex?.index) {
+    return data?.[0];
+  }
+  return data?.find(r => r?.date === selectedTimeIndex.date && r?.type === selectedTimeIndex.type);
+};
+
 // Given a sensorId + related datasets, extract basic fragments needed by a few different views
-export const getMetadata = ({ geojsonData, parameter, datasourceId }) => {
+export const getMetadata = ({ geojsonData, parameter, datasourceId, selectedTimeIndex }) => {
   // Grab our previously-fetched data to determine some stats
-  // TODO: we can do better for this logic, but for now this should work alright
   const feature = geojsonData?.features?.find(f => f?.properties?.datasourceId === datasourceId);
-  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[0];
+  const latestRow = findSelectedRow(feature?.properties?.metrics?.[parameter]?.data, selectedTimeIndex);
   const latestValue = latestRow?.value;
   return { feature, latestRow, latestValue };
 }
 
+// Timestamps in the Parquet datasets are UTC; always display them in Chicago local time,
+// regardless of the viewer's own timezone
+export const DISPLAY_TZ = 'America/Chicago';
+
 // Static helper function to format dates consistently across DataPanel/Map components
 //    short => 02/22/26 10PM
 //     long => 10:00 PM, 02/22/26
-export const formatDate = ({ timestamp, year=true, format='long' }) => {
+export const formatDate = ({ timestamp, year=true, format='long', timeZone=DISPLAY_TZ }) => {
   if (!timestamp) {
     return { time:'', date:'', iso: '', utc: undefined };
   }
@@ -112,6 +132,7 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
 
   // Use 'en-US' to ensure the Month/Day/Year order
   const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
@@ -137,6 +158,79 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
     date, iso, utc
   };
 }
+
+export const fromIso = (d) => new Date(d?.split(' ').join('T') + 'Z');
+
+// Same layout as Date.toUTCString() (e.g. "Fri, 20 Nov 2026 10:00:00 GMT"), but in Chicago
+// local time with its zone abbreviation, e.g. "Fri, 20 Nov 2026 04:00:00 CST"
+const chicagoTimestampFormat = new Intl.DateTimeFormat('en-US', {
+  timeZone: DISPLAY_TZ,
+  weekday: 'short',
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hourCycle: 'h23',
+  timeZoneName: 'short',
+});
+export const formatChicagoTimestamp = (date) => {
+  if (!date || isNaN(date)) {
+    return '';
+  }
+  const p = Object.fromEntries(chicagoTimestampFormat.formatToParts(date).map(({type, value}) => [type, value]));
+  return `${p.weekday}, ${p.day} ${p.month} ${p.year} ${p.hour}:${p.minute}:${p.second} ${p.timeZoneName}`;
+};
+
+export const getIsoWeekRange = (year, weekNumber) => {
+  // ISO 8601 rule: Week 1 always contains January 4th
+  const jan4 = new Date(year, 0, 4);
+
+  // Get Day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const dayOfWeek = jan4.getDay();
+
+  // Adjust so Monday is 1 and Sunday is 7
+  const isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+  // Find the Monday of Week 1
+  const startOfWeek1 = new Date(jan4);
+  startOfWeek1.setDate(jan4.getDate() - isoDayOfWeek + 1);
+
+  // Calculate the target week's Monday (Start Date)
+  const startDate = new Date(startOfWeek1);
+  startDate.setDate(startOfWeek1.getDate() + (weekNumber - 1) * 7);
+
+  // Calculate the target week's Sunday (End Date)
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+
+  // Optional: Reset time to midnight/end of day if needed
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  return { startDate, endDate };
+};
+export const formatWeekDate = (v) => {
+  if (!v) {return [];}
+  const [year, weekNum] = v?.split('-W');
+
+  const {startDate, endDate} = getIsoWeekRange(year, weekNum);
+
+  // Format ISO dates to be more human-readable
+  const startOfWeek = startDate.toISOString().split('T')[0];
+  const endOfWeek = endDate.toISOString().split('T')[0];
+  const shortStartDate = shortDateFormat.format(new Date(startOfWeek));
+  const shortEndDate = shortDateFormat.format(new Date(endOfWeek));
+
+  return [shortStartDate, shortEndDate];
+};
+export const shortDateFormat = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "medium",
+  timeZone: "UCT",
+});
+
+
 
 // Adapter to provide a selector/reducer as a drop-in replacement for useState
 export const useSelectorAsState = (selector, reducer, dispatch) => {

@@ -68,16 +68,12 @@ const DataPanelContainer = styled.div`
     background-color: ${colors.white};
     box-shadow: 2px 0 2px ${colors.gray}44;
     border:1px solid ${colors.chicagoBlue};
-    // border-radius:20px;
+    border-radius: 100px;
     cursor: pointer;
     transition:500ms all;
     svg {
       width:15px;
       height:15px;
-      margin:12.5px 0 0 0;
-      @media (max-width:600px){
-        margin:5px;
-      }
       fill:${colors.gray};
       transform:rotate(180deg);
       transition:500ms all;
@@ -185,6 +181,7 @@ const DataPanel = ({ mapRef }) => {
 
       <Grid container spacing={8} alignItems={'center'} justifyContent={'space-between'} marginBottom={'1rem'}>
         <LButton
+          disableRipple
           component={NavLink}
           size={'large'}
           to="/"
@@ -194,7 +191,7 @@ const DataPanel = ({ mapRef }) => {
         >
           <MdHomeFilled style={{ width: '15px', height: '15px' }} /> Home
         </LButton>
-        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Add Community Context</LButton>
+        <LButton disableRipple variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Add Community Context</LButton>
       </Grid>
 
       {currentPage === 'root' && <>

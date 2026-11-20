@@ -23,7 +23,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useChivesData } from "../../hooks/useChivesData";
 import { useChivesWorkerQuery } from "../../hooks/useChivesWorkerQuery";
 import { MapboxOverlay } from "@deck.gl/mapbox";
-import { useControl } from "react-map-gl";
+import { useControl, useMap } from "react-map-gl";
 import MapOverlayTooltipContent from "./MapOverlayTooltipContent";
 
 import {
@@ -35,17 +35,62 @@ import {
 import MapMarkerPopup from "./MapMarkerPopup";
 import {
   selectClickedSensor, selectSelectedAreas,
-  selectSelectedSensors,
+  selectSelectedSensors, selectSelectedTimeIndex,
   selectSensorGeojsonData, selectSensorParameter,
   setClickedSensor
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
-import {getBoundariesPath, getFeature} from "../VariablePanel/common";
+import {findSelectedRow, getBoundariesPath, getFeature} from "../VariablePanel/common";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
   overlay?.setProps(props);
+
+  // WORKAROUND: in interleaved mode, deck.gl draws into Mapbox's WebGL canvas, and luma.gl
+  // attaches to it with autoResize disabled. Its cached drawing-buffer size is never updated
+  // when Mapbox resizes the canvas (window resize, or browser zoom changing devicePixelRatio),
+  // so deck computes the wrong CSS-to-device pixel ratio and the layers render scaled/offset
+  // from the basemap. Keep luma's size in sync with Mapbox's canvas on every map resize.
+  // Still present in deck.gl 9.4 / luma.gl 9.4 - remove once fixed upstream.
+  const { current: mapRef } = useMap();
+  useEffect(() => {
+    const map = mapRef?.getMap();
+    if (!map || !overlay) return;
+
+    const syncCanvasSize = () => {
+      const canvasContext = overlay._deck?.device?.canvasContext;  // private API, see above
+      const canvas = map.getCanvas();
+      if (!canvasContext || !canvas) return;
+      if (canvasContext.drawingBufferWidth === canvas.width
+        && canvasContext.drawingBufferHeight === canvas.height
+        && canvasContext.cssWidth === canvas.clientWidth
+        && canvasContext.cssHeight === canvas.clientHeight) {
+        return;
+      }
+      // Assign fields directly: setDrawingBufferSize() would also write canvas.width/height,
+      // which reallocates (and clears) Mapbox's drawing buffer
+      Object.assign(canvasContext, {
+        cssWidth: canvas.clientWidth,
+        cssHeight: canvas.clientHeight,
+        devicePixelWidth: canvas.width,
+        devicePixelHeight: canvas.height,
+        drawingBufferWidth: canvas.width,
+        drawingBufferHeight: canvas.height,
+      });
+      map.triggerRepaint();
+    };
+
+    syncCanvasSize();
+    map.on('resize', syncCanvasSize);
+    // Initial load / style changes can recreate deck after this effect runs
+    map.on('load', syncCanvasSize);
+    return () => {
+      map.off('resize', syncCanvasSize);
+      map.off('load', syncCanvasSize);
+    };
+  }, [mapRef, overlay]);
+
   return null;
 }
 
@@ -188,6 +233,7 @@ const NavInlineButton = styled.button`
 function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const selectedTimeIndex = useSelector(selectSelectedTimeIndex);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const lon = searchParams.get('lon');
@@ -310,7 +356,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [200, 200, 200];
@@ -330,7 +376,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         return [229, 238, 245];
         //return [68, 68, 68];
@@ -386,7 +432,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     pickable: true,
     stroked: true,
     filled: true,
-    extruded: false,
+    extruded: true,
     /*pointType: 'circle+text',
     getText: f => f?.properties?.name,
     getTextSize: 12,*/
@@ -396,7 +442,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [100, 100, 100];
@@ -416,7 +462,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         //return [229, 238, 245];
         //return [68, 68, 68];
@@ -465,7 +511,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         return [200, 200, 200];
       }
@@ -484,7 +530,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find(() => true)?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         return [100,100,100];
       }
@@ -508,7 +554,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         popupContent: `{"id": "datasourceId"}`
       }})}
   }),
-  ], [dispatch, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins, largeScreen]);
+  ], [dispatch, selectedTimeIndex, clickedSensor, geojsonData, selectedSensors, setSearchParams, selectedParameter, bins, largeScreen]);
 
   useEffect(() => {
     setViewStateFn(setViewState);
