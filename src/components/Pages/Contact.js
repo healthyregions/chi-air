@@ -8,10 +8,11 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaPaperPlane} from "@react-icons/all-files/fa/FaPaperPlane";
+import useTurnstile from "../../hooks/useTurnstile";
 
 const ContactPageContent = styled.div`
     width: 100%;
@@ -26,8 +27,8 @@ const ContactPageContent = styled.div`
 const Contact = () => {
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
-  const googleFormUrl = `${process.env.REACT_APP_EMAIL_FORM_URL}`
-  const slackFormUrl = `${process.env.REACT_APP_SLACK_FORM_SUBMISSION_URL}`
+  const turnstileContainerRef = useRef(null);
+  const getTurnstileToken = useTurnstile(turnstileContainerRef, 'contact');
 
   const messageTypes = [
     'General',
@@ -56,6 +57,7 @@ const Contact = () => {
   // Success confirmation
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const handleClose = () => {
     setSubmitted(false);
     setSubmitting(false);
@@ -147,43 +149,40 @@ const Contact = () => {
     }
   }
 
-  const generateURL = async (data, googleFormUrl) => {
-    let returnURL = `${googleFormUrl}?Date=${encodeURIComponent(new Date().toISOString().slice(0,10))}`
-    for (const property in data){
-      returnURL += `&${encodeURIComponent(property)}=${encodeURIComponent(data[property])}`
-    }
-    return returnURL
-  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isValid(formData)) {
       try {
         setSubmitting(true);
+        setSubmitError('');
 
-        // Send feedback to Google Sheet
-        const gSheetURL = await generateURL(formData, googleFormUrl);
-        await fetch(gSheetURL, {method: 'GET'});
-
-        // Send feedback notification to Slack channel
-        let slackText = `Submission from ${window.location.href}`
-        slackText += `\n*Name:* ${formData.Contact_Name}`
-        slackText += `\n*Email:* ${formData.Contact_Email}`
-        slackText += `\n*Phone:* ${formData.Contact_Phone}`
-        slackText += `\n*Message Category:* ${formData.Category}`
-        slackText += `\n---\n${formData.Message}`
-        await fetch(slackFormUrl, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
+        // Get a Cloudflare Turnstile token; the Netlify Function verifies it and
+        // then forwards the message to the Google Sheet and Slack.
+        let turnstileToken;
+        try {
+          turnstileToken = await getTurnstileToken();
+        } catch (err) {
+          console.error(err);
+          throw new Error('Could not verify you are human. Please disable any blockers for challenges.cloudflare.com and try again.');
+        }
+        const response = await fetch('/.netlify/functions/contact', {
           method: 'POST',
-          body: JSON.stringify({text: slackText})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...formData, turnstileToken, pageUrl: window.location.href })
         });
+        if (!response.ok) {
+          const { error } = await response.json().catch(() => ({}));
+          throw new Error(error || 'Could not send your message. Please try again later.');
+        }
 
         // Clear out the form and notify the user
         setFormData({Category: 'General', Contact_Name: '', Contact_Email: '', Message: '', Contact_Phone: ''});
 
         // Notify the user of success
         setSubmitted(true);
+      } catch (err) {
+        console.error(err);
+        setSubmitError(err.message || 'Could not send your message. Please try again later.');
       } finally {
         setSubmitting(false);
       }
@@ -232,7 +231,11 @@ const Contact = () => {
             <TextField label="Phone (optional)" name="Contact_Phone" type="phone" placeholder="111-867-5309" error={!!formErrors.Contact_Phone} helperText={formErrors.Contact_Phone} value={formData.Contact_Phone} onChange={handleChange} fullWidth />
             <TextField label="Message" name="Message" placeholder="Your message..." error={!!formErrors.Message} helperText={formErrors.Message} value={formData.Message} onChange={handleChange} multiline minRows={5} maxRows={10} required fullWidth />
 
-            <LButton type="submit" variant="outlined" loading={submitting}>Send <FaPaperPlane style={{ marginLeft: '0.5rem' }} /></LButton>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {/* Cloudflare Turnstile: hidden unless the visitor needs to complete a challenge */}
+              <Box ref={turnstileContainerRef} sx={{ display: 'flex', justifyContent: 'center' }} />
+              <LButton type="submit" variant="outlined" loading={submitting}>Send <FaPaperPlane style={{ marginLeft: '0.5rem' }} /></LButton>
+            </Box>
           </Box>
 
           <Snackbar
@@ -241,6 +244,13 @@ const Contact = () => {
             autoHideDuration={6000}
             onClose={handleClose}
             message="Feedback has been sent"
+          />
+          <Snackbar
+            open={!!submitError}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            autoHideDuration={8000}
+            onClose={() => setSubmitError('')}
+            message={submitError}
           />
         </Container>
       </GradientBackground>

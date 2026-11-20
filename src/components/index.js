@@ -1,7 +1,6 @@
 import Accordion from './Layout/Accordion';
 import BarChart from './Charts/BarChart';
 import BottomPanel from './Layout/BottomPanel';
-import ContactForm from './Layout/ContactForm';
 import DataPanel from './Map/DataPanel';
 import DensityChart from './Charts/DensityChart';
 import Draggable from './Layout/Draggable';
@@ -34,7 +33,6 @@ export {
     Accordion,
     BarChart,
     BottomPanel,
-    ContactForm,
     DataPanel,
     DensityChart,
     Draggable,

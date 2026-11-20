@@ -12,13 +12,36 @@ REACT_APP_MAPBOX_TOKEN=pk...
 # air quality endpoint
 REACT_APP_AQ_ENDPOINT=https:...
 
-# submission url for google form
-REACT_APP_EMAIL_FORM_URL=
-
 # S3 URL segments for Chicago AQ data
 REACT_APP_S3_ENDPOINT_URL=https://s3.us-east-2.amazonaws.com
 REACT_APP_S3_BUCKET_NAME=chicago-aq
 ```
+
+### Contact form (Cloudflare Turnstile)
+
+The `/contact` page is protected by [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/). The widget stays hidden for most visitors and only appears if Cloudflare needs the visitor to complete a quick challenge. On submit, the browser posts the message and a Turnstile token to the Netlify Function in `netlify/functions/contact.js`. The function verifies the token with Cloudflare and then forwards the message to the Google Sheet and Slack. The Sheet and Slack URLs live only on the server, so they are not exposed in the public bundle.
+
+In the Cloudflare dashboard, go to **Turnstile → Add widget**. Choose the **Managed** widget mode and add your production domain and Netlify deploy-preview domain to its hostname list. Then set:
+
+```
+# public, used by the browser
+REACT_APP_TURNSTILE_SITE_KEY=
+
+# server-only, used by netlify/functions/contact.js (set these in Netlify site settings)
+TURNSTILE_SECRET_KEY=
+CONTACT_SHEET_URL=                 # Google Sheet submission URL (was REACT_APP_EMAIL_FORM_URL)
+CONTACT_SLACK_WEBHOOK_URL=         # Slack webhook URL (was REACT_APP_SLACK_FORM_SUBMISSION_URL)
+```
+
+**Remove the old `REACT_APP_EMAIL_FORM_URL` and `REACT_APP_SLACK_FORM_SUBMISSION_URL` variables** from Netlify and from your local `.env`. Some dependencies (mapbox-gl, styled-components) read `process.env` dynamically, which makes Create React App inline *every* `REACT_APP_*` variable present at build time into the public bundle, even ones the code no longer uses.
+
+`yarn start` does not serve Netlify Functions. To test the contact form locally, run the app through the [Netlify CLI](https://docs.netlify.com/cli/local-development/) instead:
+
+```
+npx netlify-cli dev
+```
+
+For local testing, use Cloudflare's [dummy test keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) instead of the real ones: site key `1x00000000000000000000AA` with secret `1x0000000000000000000000000000000AA` always passes, and site key `2x00000000000000000000AB` always fails.
 
 ## Installing and Running the App
 
