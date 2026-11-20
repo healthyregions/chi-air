@@ -120,7 +120,8 @@ export const BinsContainer = styled.div`
 export const ContentContainer = styled.div`
   width:100%;
   max-width:1140px;
-  padding:4em 1em;
+    text-align: right;
+  padding:3em 0;
   margin:0 auto;
   h1, h2, h3, h4, h5, h6, p {
     color: #0d0d0d;
@@ -161,7 +162,6 @@ export const ContentContainer = styled.div`
   a {
     font-weight:700;
     text-decoration:none;
-    color: '#005899';
   }
   hr {
     display: block;
