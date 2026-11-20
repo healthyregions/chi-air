@@ -58,16 +58,12 @@ const ColorScaleContainer = styled.div`
         background-color: ${colors.white};
         box-shadow: 2px 0px 2px ${colors.gray}44;
         border:1px solid ${colors.chicagoBlue};
-        // border-radius:20px;
+        border-radius: 100px;
         cursor: pointer;
         transition:500ms all;
         svg {
             width:15px;
             height:15px;
-            margin:12.5px 0 0 0;
-            @media (max-width:600px){
-                margin:5px;
-            }
             fill:${colors.gray};
             transform:rotate(180deg);
             transition:500ms all;
