@@ -21,9 +21,11 @@ import {useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {useTranslation} from "react-i18next";
 
 const CopyLinkToClipboard = () => {
   const [linkCopied, setLinkCopied] = useState(false);
+  const { t } = useTranslation('panel');
   const handleTooltipOpen = () => {
     navigator.clipboard.writeText(window.location.href);
     setLinkCopied(true);
@@ -46,7 +48,7 @@ const CopyLinkToClipboard = () => {
           arrow={true}
           title={<Grid container alignItems={'center'}>
             <FaCheckCircle style={{ marginRight: '.5rem' }} />
-            Link copied
+            {t('sensor.linkCopied')}
           </Grid>}
           slotProps={{
             popper: {
@@ -55,7 +57,7 @@ const CopyLinkToClipboard = () => {
           }}
           slots={{ transition: Zoom }}
         >
-          <LButton onClick={handleTooltipOpen}>
+          <LButton onClick={handleTooltipOpen} aria-label={t('sensor.copyLink')}>
             <FaLink style={{ width: '18px', height: '18px' }} />
           </LButton>
         </Tooltip>
@@ -66,6 +68,7 @@ const CopyLinkToClipboard = () => {
 
 export const ClickedSensorPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('panel');
   const [, setSearchParams] = useSearchParams();
 
   const largeScreen = useMediaQuery('(min-width: 600px)');
@@ -147,7 +150,7 @@ export const ClickedSensorPanel = ({ push, pop }) => {
 
       <Grid container spacing={0} justifyContent={'space-between'} alignItems={'center'}>
         <Grid size={10}>
-          {latestRow && Object.keys(latestRow)?.length <= 2 && <>Loading, Please Wait...</>}
+          {latestRow && Object.keys(latestRow)?.length <= 2 && <>{t('common.loadingPleaseWait')}</>}
         </Grid>
       </Grid>
 
@@ -164,7 +167,7 @@ export const ClickedSensorPanel = ({ push, pop }) => {
       </Grid>
 
       <Grid size={12} textAlign={'center'}>
-        <LButton variant={'outlined'} onClick={() => push(['Details'])}>Explore Historical Trends & Download &rarr;</LButton>
+        <LButton variant={'outlined'} onClick={() => push(['Details'])}>{t('sensor.exploreHistorical')} &rarr;</LButton>
       </Grid>
     </>
   );

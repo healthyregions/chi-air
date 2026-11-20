@@ -5,8 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaExternalLinkAlt} from "react-icons/fa";
 import {GradientBackground, productName, WhiteBackground} from "../VariablePanel/common";
 import {SectionHeader} from "../VariablePanel/SectionHeader";
-import {selectLocale} from "../../store/slices/sensorDataSlice";
-import {useSelector} from "react-redux";
+import { useTranslation, Trans } from 'react-i18next';
 
 const ResourcesPage = styled.div`
     background:white;
@@ -93,115 +92,115 @@ const ContributorDescription = styled.div`
 
 const leadership = [
   {
+    id: 'erdal',
     photo: '/img/team/erdal.png',
     name: 'Serap Erdal, Ph.D.',
-    description: 'Principal Investigator, University of Illinois Chicago',
   },
   {
+    id: 'persky',
     photo: '/img/team/persky.png',
     name: 'Victoria Persky, M.D.',
-    description: 'Co-Investigator, University of Illinois Chicago',
   },
   {
+    id: 'kolak',
     photo: '/img/team/kolak.png',
     name: 'Marynia Kolak, Ph.D.',
-    description: 'Co-Investigator, University of Illinois Urbana-Champaign',
   },
   {
+    id: 'wang',
     photo: '/img/team/wang.png',
     name: 'Meida Wang, Ph.D.',
-    description: 'Co-Investigator, University of Illinois Chicago',
   }
 ];
 
 const coreteam = [
   {
+    id: 'astacioPalmer',
     photo: '/img/team/astacio-palmer.png',
     name: 'Marc Astacio-Palmer, MS',
-    description: 'Research Manager, UIUC',
   },
   {
+    id: 'barronville',
     photo: '/img/team/kamaria.png',
     name: 'Kamaria Barronville, Ed.D.',
-    description: 'Research Specialist, UIUC',
   },
   {
+    id: 'bhansoor',
     photo: '/img/team/mallikarjun.png',
     name: 'Mallikarjun Bhansoor, MS',
-    description: 'Research Scientist, UIUC',
   },
   {
+    id: 'cox',
     photo: '/img/team/cox.png',
     name: 'Adam Cox, MS',
-    description: 'Sr. Engineer, UIUC',
   },
   {
+    id: 'fiffer',
     photo: '/img/team/fiffer.png',
     name: 'Melissa Fiffer, Ph.D.',
-    description: 'Scientific Consultant, UIC',
   },
   {
+    id: 'garrett',
     photo: '/img/team/person.png',
     name: 'Camrin Garrett, MUP',
-    description: 'Research Specialist, UIUC',
   },
   {
+    id: 'kumar',
     photo: '/img/team/kumar.png',
     name: 'Shubham Kumar, MS',
-    description: 'Sr. Product Designer, UIUC',
   },
   {
+    id: 'lambert',
     photo: '/img/team/lambert.png',
     name: 'Sara Lambert',
-    description: 'Lead Sr. Engineer, UIUC',
   },
   {
+    id: 'pagone',
     photo: '/img/team/pagone.png',
     name: 'Frank Pagone, Ph.D.',
-    description: 'Sr. Manager, RHP',
   },
   {
+    id: 'tootoo',
     photo: '/img/team/tootoo.png',
     name: 'Joshua Tootoo',
-    description: 'Scientific Consultant, UIC',
   },
   {
+    id: 'vazquezGomez',
     photo: '/img/team/jocelynV.png',
     name: 'Jocelyn Vazquez-Gomez',
-    description: 'Community Science Organizer, LVEJO',
   }
 ];
 
 const students = [
   {
+    id: 'amar',
     photo: '/img/team/oni.png',
     name: 'Onongoo (Oni) Amar',
-    description: 'Research Assistant, UIC',
   },
   {
+    id: 'discenza',
     photo: '/img/team/discenza.png',
     name: 'Catherine Discenza',
-    description: 'Research Assistant, UIUC',
   },
   {
+    id: 'kabirAdrita',
     photo: '/img/team/mahjabin.png',
     name: 'Mahjabin Kabir Adrita, MS',
-    description: 'Research Assistant, UIUC',
   },
   {
+    id: 'huang',
     photo: '/img/team/zhengrui.png',
     name: 'Zhengrui Huang',
-    description: 'Research Assistant, UIC',
   },
   {
+    id: 'si',
     photo: '/img/team/nianen.png',
     name: 'Nianen Si',
-    description: 'Research Assistant, UIUC',
   },
   {
+    id: 'zeng',
     photo: '/img/team/qingwen.png',
     name: 'Qingwen Zeng',
-    description: 'Research Assistant, UIC',
   }
 ];
 
@@ -311,9 +310,7 @@ const ResourceLinkIcon = styled(FaExternalLinkAlt)`
 
 export default function Team() {
   const largeScreen = useMediaQuery('(min-width: 600px)');
-  const locale = useSelector(selectLocale);
-
-  console.log('Current locale is: ', locale);
+  const { t } = useTranslation('team');
 
   return (
     <ResourcesPage>
@@ -323,12 +320,12 @@ export default function Team() {
         <ContentContainer>
           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
-              Team
+              {t('title')}
             </Grid>
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              <b className={'notranslate'}>{productName}</b>&nbsp;is a collective effort driven by a shared commitment to air quality and data science and transparency, and public health. This page honors the diverse group of individuals, from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the quality of air they breathe in Chicago, IL.
+              <Trans t={t} i18nKey="intro" values={{ productName }} components={{ b: <b /> }} />
             </TeamBodyText>
           </Grid>
         </ContentContainer>
@@ -338,26 +335,26 @@ export default function Team() {
         <ContentContainer>
           <TopDivider />
           <SectionHeader imgSrc={'/icons/chiair/aq-team-collab.svg'}
-                         topRowText={'Passionately built'}
-                         bottomRowTextBlack={'With'}
-                         bottomRowTextRed={'Collaboration'}
+                         topRowText={t('collaborationHeader.topRow')}
+                         bottomRowTextBlack={t('collaborationHeader.bottomRowBlack')}
+                         bottomRowTextRed={t('collaborationHeader.bottomRowRed')}
           />
           {/*buttonOnClick={() => navigate('/contact')}*/}
           {/*buttonText={'Contact Us'}*/}
           {/*buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}*/}
 
           <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>Chicago Air Quality Program Leadership</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>{t('programLeadership.title')}</CategoryTitle>
                 <Grid container spacing={5}>
                   <Grid size={{ xs: 12, md: 4 }}>
                       <TeamHeadText>
-                        Lead Institution
+                        {t('programLeadership.leadInstitution')}
                       </TeamHeadText>
                       <img src="/img/team/uic.png" alt={''} style={{ marginRight: '64px' }} />
                   </Grid>
                   <Grid size={{ xs: 12, md:4 }}>
                       <TeamHead1Text>
-                        Contributing Institution
+                        {t('programLeadership.contributingInstitution')}
                       </TeamHead1Text>
                       <img src="/img/team/uiuc.png" alt={''} style={{ marginRight: '64px' }} />
                   </Grid>
@@ -371,43 +368,34 @@ export default function Team() {
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} height={113} />
                   <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
-                  <ContributorDescription>{contributor?.description}</ContributorDescription>
+                  <ContributorDescription>{t(`members.${contributor.id}.role`)}</ContributorDescription>
                 </Grid>
               </Grid>
             )}
 
             <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation
-              and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force
-              (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery
-              (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights
-              and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e.,
-              Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest
-              Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of
-              Public Health's (CDPH){" "}
-              <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
-                 style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-                 target={'_blank'} rel="noreferrer noopener">
-              Open Air</a>{" "}website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee.
+              <Trans t={t} i18nKey="programLeadership.description"
+                     components={{ link: <a href="https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html"
+                                            style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                                            target={'_blank'} rel="noreferrer noopener">Open Air</a> }} />
 
             </TeamBodyText>
             </Grid>
           </Grid>
 
           <CategorySection>
-              <CategoryTitle $largeScreen={largeScreen}>OurAir Dashboard Leadership</CategoryTitle>
+              <CategoryTitle $largeScreen={largeScreen}>{t('dashboardLeadership.title')}</CategoryTitle>
                 <Grid container spacing={10}>
                   <Grid size={{ xs: 12, md: 7 }}>
                       <TeamBodyText>
-                        The OurAir mapping platform was developed by the{" "}
-                        <a href="https://healthyregions.org/"
-                           style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
-                           target={'_blank'} rel="noreferrer noopener">
-                          Healthy Regions & Policies Lab
-                        </a>{" "}at the University of Illinois, directed by <b>Dr. M. Kolak</b>, in close
-                        collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers,
-                        and dozens of Chicagoland contributors.
+                        <Trans t={t} i18nKey="dashboardLeadership.description"
+                               components={{
+                                 link: <a href="https://healthyregions.org/"
+                                          style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}
+                                          target={'_blank'} rel="noreferrer noopener">Healthy Regions & Policies Lab</a>,
+                                 b: <b />,
+                               }} />
                       </TeamBodyText>
                   </Grid>
                   <Grid size={{ xs: 12, md: 5 }} container spacing={5}>
@@ -420,7 +408,7 @@ export default function Team() {
           </CategorySection>
 
           <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>Core Team</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>{t('coreTeam.title')}</CategoryTitle>
           </CategorySection>
 
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
@@ -428,8 +416,8 @@ export default function Team() {
               <Grid key={'coreteam-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} height={113} />
-                  <ContributorLabel className={contributor?.name === 'Sara Lambert' && locale !== 'zh-CN' ? '' : 'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
-                  <ContributorDescription>{contributor?.description}</ContributorDescription>
+                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorDescription>{t(`members.${contributor.id}.role`)}</ContributorDescription>
                 </Grid>
               </Grid>
             )}
@@ -437,14 +425,13 @@ export default function Team() {
 
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'} marginBottom={8}>
             <TeamBodyText>
-              We are additionally grateful to <b className={'notranslate'}>Pengyin Shan</b> for their technical support and <b className={'notranslate'}>Paulina Arias Caballero</b> for their essential translation services.
-              Finally, we are grateful to the <i>Pilsen Arts & Community House</i> for hosting the live co-design session.
+              <Trans t={t} i18nKey="coreTeam.acknowledgements" components={{ b: <b />, i: <i /> }} />
 
             </TeamBodyText>
           </Grid>
 
           <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>Student Team</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>{t('studentTeam.title')}</CategoryTitle>
           </CategorySection>
 
           <Grid container spacing={8} marginTop={9} marginBottom={8} alignItems={'start'} rowSpacing={4}>
@@ -452,8 +439,8 @@ export default function Team() {
               <Grid key={'students-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                   <img src={contributor?.photo} alt={''} height={113} />
-                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
-                  <ContributorDescription>{contributor?.description}</ContributorDescription>
+                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorDescription>{t(`members.${contributor.id}.role`)}</ContributorDescription>
                 </Grid>
               </Grid>
             )}
@@ -464,9 +451,9 @@ export default function Team() {
 
       <ContentContainer>
         <SectionHeader imgSrc={'/icons/chiair/aq-team-community.svg'}
-                       topRowText={'Co-created with'}
-                       bottomRowTextBlack={'The'}
-                       bottomRowTextRed={'Community'}
+                       topRowText={t('communityHeader.topRow')}
+                       bottomRowTextBlack={t('communityHeader.bottomRowBlack')}
+                       bottomRowTextRed={t('communityHeader.bottomRowRed')}
                        style={{ marginBottom: '2rem' }}
         />
       </ContentContainer>
@@ -476,7 +463,7 @@ export default function Team() {
 
       <ContentContainer>
       <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>OurAir Group Contributors</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>{t('groupContributors.title')}</CategoryTitle>
       </CategorySection>
         <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
           {communityorgs?.map((contributor, index) =>
@@ -485,8 +472,8 @@ export default function Team() {
               style={{ cursor: 'pointer' }} justifyItems={'center'}>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
                 <img src={contributor?.photo} style={{ minHeight: '100px', maxHeight: '100px' }} alt={''} height={113} />
-                <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
-                <ContributorDescription className={'notranslate'}>{contributor?.description}</ContributorDescription>
+                <ContributorLabel $largeScreen={largeScreen}>{contributor?.name} <ResourceLinkIcon /></ContributorLabel>
+                <ContributorDescription>{contributor?.description}</ContributorDescription>
               </Grid>
             </Grid>
           )}
@@ -496,23 +483,23 @@ export default function Team() {
 
         <ContentContainer>
         <CategorySection>
-            <CategoryTitle $largeScreen={largeScreen}>OurAir Individual Contributors</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>{t('individualContributors.title')}</CategoryTitle>
         </CategorySection>
           <Grid container spacing={8} marginBottom={8} alignItems={'start'} rowSpacing={4}>
             {communityindividual?.map((contributor, index) =>
               <Grid key={'communityindividual-' + index} size={{ xs: 12, md: 3 }} justifyItems={'center'}>
                 <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                  <ContributorLabel className={'notranslate'} $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
-                  <ContributorDescription className={'notranslate'}>{contributor?.description}</ContributorDescription>
+                  <ContributorLabel $largeScreen={largeScreen}>{contributor?.name}</ContributorLabel>
+                  <ContributorDescription>{contributor?.description}</ContributorDescription>
                 </Grid>
               </Grid>
             )}
           </Grid>
           <TeamBodyText>
-            <h3>Gratitude to all OurAir contributors, survey & focus group participants, and conversations.</h3>
+            <h3>{t('closing.gratitude')}</h3>
           </TeamBodyText>
           <TeamBodyText>
-            While only consenting members are featured, this mapping platform was shaped by the collective input of everyone involved.
+            {t('closing.consentNote')}
           </TeamBodyText>
         </ContentContainer>
       </GradientBackground>

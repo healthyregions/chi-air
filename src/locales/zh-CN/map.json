@@ -1,0 +1,80 @@
+{
+  "loading": "加载中...",
+  "dataPanel": {
+    "logoAlt": "芝加哥空气质量",
+    "goHomeTitle": "前往首页",
+    "home": "首页",
+    "addCommunityContext": "添加社区背景信息",
+    "indicator": "指标",
+    "whatIsParam": "什么是 {{param}}？"
+  },
+  "geocoder": {
+    "header": "<strong>搜索</strong>任意芝加哥地址",
+    "placeholder": "搜索地址..."
+  },
+  "legend": {
+    "displacement": {
+      "notVulnerable": "不易受影响",
+      "vulnerablePricesNotRising": "易受影响，价格未上涨",
+      "vulnerablePricesRising": "易受影响，价格上涨"
+    }
+  },
+  "mapControls": {
+    "geolocate": "定位到我的位置",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "resetTilt": "重置倾斜"
+  },
+  "markerPopup": {
+    "address": "地址：{{address}}",
+    "monitorsFor": "监测项目：{{monitors}}"
+  },
+  "sensorPopup": {
+    "arraysUnsupported": "不支持数组：{{key}}",
+    "objectsUnsupported": "不支持对象：{{key}}"
+  },
+  "overlayPopup": {
+    "yes": "是",
+    "no": "否",
+    "fields": {
+      "site_description": "站点描述",
+      "owner": "所有者",
+      "address": "地址",
+      "monitors": "监测项目",
+      "Short_Name": "名称",
+      "Grade_Cat": "年级类别",
+      "School_ID": "学校编号",
+      "Address": "地址"
+    }
+  },
+  "neighborhoodCounts": {
+    "clear": "清除"
+  },
+  "tractTooltip": {
+    "title": "人口普查区 {{geoid}}",
+    "population": "人口",
+    "numberOfTrees": "树木数量",
+    "percentCanopyCover": "树冠覆盖率",
+    "surfaceTempPercentile": "地表温度百分位",
+    "urbanFloodSusceptibility": "城市洪水易发性指数",
+    "loggedTrafficVolume": "交通量（对数）",
+    "socialVulnerabilityIndex": "社会脆弱性指数",
+    "childhoodAsthmaRate": "儿童哮喘率",
+    "vegetationIndex": "植被指数（NDVI）",
+    "plantBiodiversity": "植物生物多样性",
+    "percentHolcGradeA": "HOLC A 级区域占比",
+    "percentHolcGradeB": "HOLC B 级区域占比",
+    "percentHolcGradeC": "HOLC C 级区域占比",
+    "percentHolcGradeD": "HOLC D 级区域占比",
+    "percentSeniors": "老年人占比",
+    "percentChildren": "儿童占比",
+    "percentAsian": "亚裔占比",
+    "percentBlack": "黑人或非裔美国人占比",
+    "percentNativeAmerican": "美洲原住民或土著占比",
+    "percentPacificIslander": "夏威夷原住民或其他太平洋岛民占比",
+    "percentWhite": "白人占比",
+    "percentOtherRaces": "其他种族占比",
+    "percentHispanic": "西班牙裔或拉丁裔占比",
+    "customIndex": "自定义指数"
+  }
+}

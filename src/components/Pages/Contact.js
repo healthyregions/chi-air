@@ -12,6 +12,7 @@ import {useState} from "react";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {FaPaperPlane} from "@react-icons/all-files/fa/FaPaperPlane";
+import { useTranslation } from "react-i18next";
 
 const ContactPageContent = styled.div`
     width: 100%;
@@ -23,20 +24,23 @@ const ContactPageContent = styled.div`
     text-align:left;
 `;
 
+// The English `value` is what gets submitted to the Google Sheet / Slack, so it must stay English;
+// only the displayed label is translated (via `key`).
+const messageTypes = [
+  { key: 'general', value: 'General' },
+  { key: 'bugReport', value: 'Bug Report or Error' },
+  { key: 'dataQuestion', value: 'Data Question' },
+  { key: 'featureRequest', value: 'Feature Request' },
+  { key: 'technical', value: 'Technical or Open Source Questions' },
+  { key: 'press', value: 'Press or Media' },
+];
+
 const Contact = () => {
+  const { t } = useTranslation('contact');
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
   const googleFormUrl = `${process.env.REACT_APP_EMAIL_FORM_URL}`
   const slackFormUrl = `${process.env.REACT_APP_SLACK_FORM_SUBMISSION_URL}`
-
-  const messageTypes = [
-    'General',
-    'Bug Report or Error',
-    'Data Question',
-    'Feature Request',
-    'Technical or Open Source Questions',
-    'Press or Media'
-  ];
 
   // Form state
   const [formData, setFormData] = useState({
@@ -62,6 +66,7 @@ const Contact = () => {
   }
 
   // Error state + Validation
+  // formErrors holds translation keys (e.g. 'errors.nameRequired'), translated at render time.
   const emailRegexPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegexPattern = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
   const [formErrors, setFormErrors] = useState({
@@ -74,7 +79,7 @@ const Contact = () => {
 
   const isValidName = (propValue) => {
     if (!propValue) {
-      setFormErrors({ ...formErrors, Contact_Name: 'Name is required' });
+      setFormErrors({ ...formErrors, Contact_Name: 'errors.nameRequired' });
       return false;
     }
     setFormErrors({ ...formErrors, Contact_Name: '' });
@@ -83,10 +88,10 @@ const Contact = () => {
 
   const isValidEmail = (propValue) => {
     if (!propValue) {
-      setFormErrors({...formErrors, Contact_Email: 'Email is required'});
+      setFormErrors({...formErrors, Contact_Email: 'errors.emailRequired'});
       return false;
     } else if (!emailRegexPattern.test(propValue)) {
-      setFormErrors({...formErrors, Contact_Email: 'Must be a valid email address'});
+      setFormErrors({...formErrors, Contact_Email: 'errors.emailInvalid'});
       return false;
     }
     setFormErrors({...formErrors, Contact_Email: ''});
@@ -99,7 +104,7 @@ const Contact = () => {
       setFormErrors({...formErrors, Contact_Phone: ''});
       return true;
     } else if (!phoneRegexPattern.test(propValue)) {
-      setFormErrors({...formErrors, Contact_Phone: 'Must be a valid phone number'});
+      setFormErrors({...formErrors, Contact_Phone: 'errors.phoneInvalid'});
       return false;
     }
     setFormErrors({...formErrors, Contact_Phone: ''});
@@ -108,7 +113,7 @@ const Contact = () => {
 
   const isValidMessage = (propValue) => {
     if (!propValue) {
-      setFormErrors({...formErrors, Message: 'Please enter your message'});
+      setFormErrors({...formErrors, Message: 'errors.messageRequired'});
       return false;
     }
     setFormErrors({...formErrors, Message: ''});
@@ -199,40 +204,40 @@ const Contact = () => {
           <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Grid container spacing={1} justifyContent={'center'} textAlign={'center'} marginTop={'2rem'}>
               <Grid size={12} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
-                Contact Us
+                {t('title')}
               </Grid>
             </Grid>
             <Grid container spacing={3} textAlign={'center'} marginTop={'0.5rem'}>
               <Grid size={12}>
-                <SGBody>Hit a problem? Want to share feedback or feature suggestions?</SGBody>
+                <SGBody>{t('intro')}</SGBody>
               </Grid>
             </Grid>
 
             <FormControl fullWidth style={{ marginTop: '2rem' }}>
-              <InputLabel id="message-type-select-label">Message Type</InputLabel>
+              <InputLabel id="message-type-select-label">{t('form.messageType')}</InputLabel>
               <Select
                 variant={'filled'}
                 labelId="message-type-select-label"
                 id="message-type-select"
-                label="Message Type"
+                label={t('form.messageType')}
                 name="Category"
                 value={formData.Category}
                 //error={!!formErrors.Category}
                 //helperText={formErrors.type}
                 onChange={handleChange}
               >
-                {messageTypes?.map((type, index) =>
-                  <MenuItem key={`select-option-${index}`} value={type}>{type}</MenuItem>
+                {messageTypes.map((type) =>
+                  <MenuItem key={`select-option-${type.key}`} value={type.value}>{t(`messageTypes.${type.key}`)}</MenuItem>
                 )}
               </Select>
             </FormControl>
 
-            <TextField label="Name" name="Contact_Name" placeholder="Your Name" error={!!formErrors.Contact_Name} helperText={formErrors.Contact_Name} value={formData.Contact_Name} onChange={handleChange} required fullWidth />
-            <TextField label="Email" name="Contact_Email" type="email" placeholder="greetings@you.com" error={!!formErrors.Contact_Email} helperText={formErrors.Contact_Email} value={formData.Contact_Email} onChange={handleChange} required fullWidth />
-            <TextField label="Phone (optional)" name="Contact_Phone" type="phone" placeholder="111-867-5309" error={!!formErrors.Contact_Phone} helperText={formErrors.Contact_Phone} value={formData.Contact_Phone} onChange={handleChange} fullWidth />
-            <TextField label="Message" name="Message" placeholder="Your message..." error={!!formErrors.Message} helperText={formErrors.Message} value={formData.Message} onChange={handleChange} multiline minRows={5} maxRows={10} required fullWidth />
+            <TextField label={t('form.name')} name="Contact_Name" placeholder={t('form.namePlaceholder')} error={!!formErrors.Contact_Name} helperText={formErrors.Contact_Name && t(formErrors.Contact_Name)} value={formData.Contact_Name} onChange={handleChange} required fullWidth />
+            <TextField label={t('form.email')} name="Contact_Email" type="email" placeholder="greetings@you.com" error={!!formErrors.Contact_Email} helperText={formErrors.Contact_Email && t(formErrors.Contact_Email)} value={formData.Contact_Email} onChange={handleChange} required fullWidth />
+            <TextField label={t('form.phone')} name="Contact_Phone" type="phone" placeholder="111-867-5309" error={!!formErrors.Contact_Phone} helperText={formErrors.Contact_Phone && t(formErrors.Contact_Phone)} value={formData.Contact_Phone} onChange={handleChange} fullWidth />
+            <TextField label={t('form.message')} name="Message" placeholder={t('form.messagePlaceholder')} error={!!formErrors.Message} helperText={formErrors.Message && t(formErrors.Message)} value={formData.Message} onChange={handleChange} multiline minRows={5} maxRows={10} required fullWidth />
 
-            <LButton type="submit" variant="outlined" loading={submitting}>Send <FaPaperPlane style={{ marginLeft: '0.5rem' }} /></LButton>
+            <LButton type="submit" variant="outlined" loading={submitting}>{t('form.send')} <FaPaperPlane style={{ marginLeft: '0.5rem' }} /></LButton>
           </Box>
 
           <Snackbar
@@ -240,7 +245,7 @@ const Contact = () => {
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             autoHideDuration={6000}
             onClose={handleClose}
-            message="Feedback has been sent"
+            message={t('form.sentConfirmation')}
           />
         </Container>
       </GradientBackground>

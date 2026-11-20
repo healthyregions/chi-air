@@ -1,0 +1,154 @@
+{
+  "categories": {
+    "Heat Indicator": {
+      "name": "Wskaźnik upału"
+    },
+    "Social & Economic": {
+      "name": "Społeczne i ekonomiczne"
+    },
+    "Ecology & Greenness": {
+      "name": "Ekologia i zieleń"
+    },
+    "Built Environment": {
+      "name": "Środowisko zabudowane"
+    }
+  },
+  "variables": {
+    "MEAN_TEMP": {
+      "Variable Name": "Temperatura powietrza",
+      "Description": "Ten wskaźnik pokazuje średnią temperaturę powietrza w stopniach Fahrenheita, zmierzoną 28 lipca 2023 r. w każdym obszarze spisowym Chicago w ramach inicjatywy, która połączyła agencje rządowe, naukowców i członków społeczności w celu modelowania miejskich wysp ciepła w najgorętszym wówczas dniu roku.",
+      "Data Source(s)": "Cool Chi/Heat Watch Chicago",
+      "Original Scale": "Obszar spisowy",
+      "listGroup": "Wskaźnik upału"
+    },
+    "CEJI": {
+      "Variable Name": "Chicagowski Indeks Sprawiedliwości Środowiskowej",
+      "Description": "Chicagowski indeks sprawiedliwości środowiskowej to złożony wynik mierzący skumulowane oddziaływania i wskazujący społeczności najbardziej obciążone zanieczyszczeniami oraz najbardziej narażone na ich skutki. Wyższe wartości oznaczają większe obciążenie i podatność.",
+      "Data Source(s)": "Departament Zdrowia Publicznego Chicago",
+      "Original Scale": "Obszar spisowy",
+      "listGroup": "Społeczne i ekonomiczne"
+    },
+    "hardship": {
+      "Variable Name": "Indeks trudności ekonomicznych",
+      "Description": "Trudności ekonomiczne mierzy się złożonym indeksem opartym na sześciu miarach: bezrobociu, obciążeniu osobami zależnymi, wykształceniu, dochodach, przeludnieniu mieszkań i ubóstwie. Wyższe wartości oznaczają większe trudności ekonomiczne w danej okolicy.",
+      "Data Source(s)": "American Community Survey (Amerykańskie Badanie Społeczności) za pośrednictwem HeRoP Lab; Nathan i Adams (1976)",
+      "Original Scale": "Obszar spisowy",
+      "listGroup": "Społeczne i ekonomiczne"
+    },
+    "treeCCov17": {
+      "Variable Name": "Pokrycie koronami drzew",
+      "Description": "Zielona infrastruktura, np. większe pokrycie koronami drzew, może ograniczać negatywne skutki zanieczyszczenia powietrza i ekstremalnych upałów. Ten wskaźnik szacuje odsetek powierzchni obszaru spisowego pokrytej koronami drzew w 2017 r. Przy użyciu technologii LiDAR i kilku etapów przetwarzania geoprzestrzennego utworzono siatkę powierzchni pokrytej gałęziami i liśćmi drzew. Wyniki zagregowano następnie do odsetka obszaru spisowego pokrytego koronami drzew.",
+      "Data Source(s)": "Dane źródłowe: Chicago Region Trees Initiative (CRTI), finansowane przez The Morton Arboretum, Służbę Leśną USA (US Forest Service) i American Forest. Zagregowane do obszarów spisowych przez HeRoP Lab.",
+      "Original Scale": "Siatka 1 m",
+      "listGroup": "Ekologia i zieleń"
+    },
+    "primary_grade_4levels": {
+      "Variable Name": "Historyczny redlining",
+      "Description": "Mapy redliningu miast USA zostały pierwotnie opracowane przez Home Owners’ Loan Corporation (HOLC) w latach 30. XX wieku. Każdej okolicy przypisano jedną z czterech kategorii: A - „Najlepsza”, B - „Nadal pożądana”, C - „Zdecydowanie podupadająca” lub D - „Niebezpieczna”. Ta zmienna wskazuje, która z czterech kategorii obejmowała największą część powierzchni każdego obszaru spisowego – dla wszystkich obszarów, w których skategoryzowano ponad 50% powierzchni. Mieszkańcom obszarów oznaczonych literą C lub D często odmawiano usług finansowych i innych, a skutki dyskryminacji tych obszarów są odczuwalne do dziś.",
+      "Data Source(s)": "URichmond DSL",
+      "Original Scale": "Obszar spisowy",
+      "listGroup": "Środowisko zabudowane"
+    }
+  },
+  "overlayCategories": {
+    "Community Boundary": {
+      "name": "Granica obszaru"
+    },
+    "Community Resource": {
+      "name": "Zasób społeczności"
+    },
+    "Built Infrastructure": {
+      "name": "Infrastruktura zabudowana"
+    }
+  },
+  "overlays": {
+    "community_areas": {
+      "displayName": "Obszary społeczności",
+      "description": "Obszary społeczności",
+      "descriptionDetail": "Miasto Chicago dzieli się na 77 obszarów społeczności (community areas). Zostały one pierwotnie wyznaczone przez badaczy z Uniwersytetu Chicagowskiego w latach 20. XX wieku do śledzenia statystyk spisowych i społecznych, a zachowano je przez dziesięciolecia dla zapewnienia ciągłości.",
+      "descriptionSource": "Portal danych miasta Chicago"
+    },
+    "zip_codes": {
+      "displayName": "Kody pocztowe",
+      "description": "Kody pocztowe",
+      "descriptionDetail": "Kody pocztowe w Chicago zwykle zaczynają się od 606 i odpowiadają trasom amerykańskiej poczty (U.S. Postal Service).",
+      "descriptionSource": "Portal danych miasta Chicago"
+    },
+    "wards": {
+      "displayName": "Okręgi wyborcze",
+      "description": "Okręgi wyborcze",
+      "descriptionDetail": "Okręgi wyborcze (wards) to granice polityczne lub okręgi legislacyjne Chicago; każdym z nich zarządza radny (alderman).",
+      "descriptionSource": "Portal danych miasta Chicago"
+    },
+    "aq-monitoring-sites": {
+      "displayName": "Stacje monitoringu EPA",
+      "description": "Stacje monitoringu jakości powietrza EPA",
+      "descriptionDetail": "Te stacje monitoringu Agencji Ochrony Środowiska (EPA) rejestrują najważniejsze zanieczyszczenia powietrza w całym Chicago, dostarczając wzorcowych pomiarów pyłu (o średnicy poniżej 2,5 mikrona) i dwutlenku azotu.",
+      "descriptionSource": "Agencja Ochrony Środowiska (EPA)",
+      "popupContent": {
+        "site_description": "Opis stacji",
+        "owner": "Właściciel",
+        "address": "Adres",
+        "monitors": "Monitoruje"
+      }
+    },
+    "non-res": {
+      "displayName": "Wybrane rodzaje użytkowania terenu i strefowania",
+      "description": "Obszary przemysłowe i niemieszkalne",
+      "descriptionDetail": "CMAP udostępnia działkowy spis użytkowania terenu oraz dane o zabudowie dla Chicago i okolicznych gmin. W tej warstwie wybrano miejsca w strefach „przemysłowych” lub „niemieszkalnych”, wskazując lokalizacje mogące być obszarowymi źródłami emisji.",
+      "descriptionSource": "Chicago Metropolitan Agency for Planning (CMAP)"
+    },
+    "impervious-surfaces": {
+      "displayName": "Wybrana zabudowana infrastruktura przemysłowa",
+      "description": "Lotniska i infrastruktura przemysłowa",
+      "descriptionDetail": "Do utworzenia tej warstwy wyodrębniono budynki i miejsca oznaczone jako lotniska lub tereny przemysłowe, co daje obraz infrastruktury przemysłowej i wybranej infrastruktury transportowej. Obszary te mogą być również obszarowymi źródłami emisji, a w zależności od nawierzchni – lokalnymi wyspami ciepła.",
+      "descriptionSource": "OpenStreetMap"
+    },
+    "public-schools": {
+      "displayName": "Szkoły publiczne",
+      "description": "Szkoły publiczne w Chicago",
+      "descriptionDetail": "Szkoły publiczne w Chicago (Chicago Public Schools) zapewniają dzieciom możliwości nauki i zdrowe przestrzenie. Przeglądaj szkoły według typu i kliknij na mapie, aby zobaczyć szczegóły.",
+      "descriptionSource": "Portal danych miasta Chicago",
+      "legend": {
+        "Elementary School": "Szkoła podstawowa",
+        "Highschool": "Szkoła średnia"
+      },
+      "popupContent": {
+        "Short_Name": "Nazwa",
+        "Grade_Cat": "Kategoria szkoły",
+        "School_ID": "Identyfikator szkoły",
+        "Address": "Adres"
+      }
+    }
+  },
+  "baseLayers": {
+    "Parks & Forest Preserves": {
+      "Variable Name": "Parki i rezerwaty leśne",
+      "Original Scale": "Granice parków"
+    },
+    "Building Footprints": {
+      "Variable Name": "Obrysy budynków",
+      "Original Scale": "Obrysy budynków"
+    }
+  },
+  "aqiLevels": {
+    "Good": {
+      "label": "Dobry"
+    },
+    "Moderate": {
+      "label": "Umiarkowany"
+    },
+    "Unhealthy for Sensitive Groups": {
+      "label": "Niezdrowy dla grup wrażliwych"
+    },
+    "Unhealthy": {
+      "label": "Niezdrowy"
+    },
+    "Very Unhealthy": {
+      "label": "Bardzo niezdrowy"
+    },
+    "Hazardous": {
+      "label": "Niebezpieczny"
+    }
+  }
+}

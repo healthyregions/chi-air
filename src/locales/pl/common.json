@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "mapsAndMore": "Mapy i więcej",
+    "productMap": "Mapa {{productName}}",
+    "allResources": "Wszystkie zasoby",
+    "about": "O nas",
+    "team": "Zespół",
+    "infoFaq": "Informacje i FAQ",
+    "contactUs": "Kontakt",
+    "logoAlt": "Jakość powietrza w Chicago"
+  },
+  "footer": {
+    "home": "Strona główna",
+    "map": "Mapa",
+    "about": "O nas"
+  },
+  "errorPage": {
+    "title": "Błąd 404",
+    "subtitle": "Nie możemy zaprowadzić Cię tam, dokąd zmierzasz.",
+    "body": "Przepraszamy, nie możemy znaleźć strony, której szukasz. Mogła zostać przeniesiona lub niedawno zmieniona.<br/><br/>Skorzystaj z paska nawigacji lub stopki."
+  },
+  "loading": {
+    "message": "ładowanie...",
+    "imageAlt": "Ładowanie"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "mapsAndMore": "Maps & more",
+    "productMap": "{{productName}} Map",
+    "allResources": "All Resources",
+    "about": "About",
+    "team": "Team",
+    "infoFaq": "Info & FAQ",
+    "contactUs": "Contact Us",
+    "logoAlt": "Chicago Air Quality"
+  },
+  "footer": {
+    "home": "Home",
+    "map": "Map",
+    "about": "About"
+  },
+  "errorPage": {
+    "title": "Error 404",
+    "subtitle": "We can't get you where you're going.",
+    "body": "Sorry, we can't find the page you're looking for. It may have moved or recently changed.<br/><br/>Please use the navigation bar or footer."
+  },
+  "loading": {
+    "message": "loading...",
+    "imageAlt": "Preloader"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "mapsAndMore": "Mapas y más",
+    "productMap": "Nuestro AirMap",
+    "allResources": "Todos los recursos",
+    "about": "Acerca de",
+    "team": "Equipo",
+    "infoFaq": "Información y preguntas frecuentes",
+    "contactUs": "Contáctenos",
+    "logoAlt": "Calidad del aire de Chicago"
+  },
+  "footer": {
+    "home": "Inicio",
+    "map": "Mapa",
+    "about": "Acerca de"
+  },
+  "errorPage": {
+    "title": "Error 404",
+    "subtitle": "No podemos llevarle a donde quiere ir.",
+    "body": "Lo sentimos, no encontramos la página que busca. Es posible que se haya movido o cambiado recientemente.<br/><br/>Por favor, use la barra de navegación o el pie de página."
+  },
+  "loading": {
+    "message": "cargando...",
+    "imageAlt": "Cargando"
+  }
+}

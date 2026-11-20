@@ -1,0 +1,80 @@
+{
+  "loading": "Loading...",
+  "dataPanel": {
+    "logoAlt": "Chicago Air Quality",
+    "goHomeTitle": "Go to Home page",
+    "home": "Home",
+    "addCommunityContext": "Add Community Context",
+    "indicator": "Indicator",
+    "whatIsParam": "What is {{param}}?"
+  },
+  "geocoder": {
+    "header": "<strong>Search</strong> any Chicago Address",
+    "placeholder": "Search for address..."
+  },
+  "legend": {
+    "displacement": {
+      "notVulnerable": "Not Vulnerable",
+      "vulnerablePricesNotRising": "Vulnerable, Prices Not Rising",
+      "vulnerablePricesRising": "Vulnerable, Prices Rising"
+    }
+  },
+  "mapControls": {
+    "geolocate": "Geolocate",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "resetTilt": "Reset Tilt"
+  },
+  "markerPopup": {
+    "address": "Address: {{address}}",
+    "monitorsFor": "Monitors for: {{monitors}}"
+  },
+  "sensorPopup": {
+    "arraysUnsupported": "Arrays Unsupported: {{key}}",
+    "objectsUnsupported": "Objects Unsupported: {{key}}"
+  },
+  "overlayPopup": {
+    "yes": "Yes",
+    "no": "No",
+    "fields": {
+      "site_description": "Site Description",
+      "owner": "Owner",
+      "address": "Address",
+      "monitors": "Monitors for",
+      "Short_Name": "Name",
+      "Grade_Cat": "Grade Category",
+      "School_ID": "School ID",
+      "Address": "Address"
+    }
+  },
+  "neighborhoodCounts": {
+    "clear": "clear"
+  },
+  "tractTooltip": {
+    "title": "Tract {{geoid}}",
+    "population": "Population",
+    "numberOfTrees": "Number of Trees",
+    "percentCanopyCover": "Percent Canopy Cover",
+    "surfaceTempPercentile": "Surface Temp Percentile",
+    "urbanFloodSusceptibility": "Urban Flood Susceptibility Index",
+    "loggedTrafficVolume": "Logged Traffic Volume",
+    "socialVulnerabilityIndex": "Social Vulnerability Index",
+    "childhoodAsthmaRate": "Childhood Asthma Rate",
+    "vegetationIndex": "Vegetation Index (NDVI)",
+    "plantBiodiversity": "Plant Biodiversity",
+    "percentHolcGradeA": "Percent HOLC Grade A",
+    "percentHolcGradeB": "Percent HOLC Grade B",
+    "percentHolcGradeC": "Percent HOLC Grade C",
+    "percentHolcGradeD": "Percent HOLC Grade D",
+    "percentSeniors": "Percent Seniors",
+    "percentChildren": "Percent Children",
+    "percentAsian": "Percent Identified as Asian",
+    "percentBlack": "Percent Identified as Black or African American",
+    "percentNativeAmerican": "Percent Identified as Native American or Indigenous",
+    "percentPacificIslander": "Percent Identified as Native Hawaiian or Other Pacific Islander",
+    "percentWhite": "Percent Identified as White",
+    "percentOtherRaces": "Percent Identified as other races",
+    "percentHispanic": "Percent Identified as Hispanic or Latinx",
+    "customIndex": "Custom Index"
+  }
+}

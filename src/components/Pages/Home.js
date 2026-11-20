@@ -23,6 +23,7 @@ import {
   setSelectedSensors
 } from "../../store/slices/sensorDataSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {useTranslation, Trans} from "react-i18next";
 
 const brandColors = {
   chiDarkBlue: '#005899',
@@ -226,14 +227,15 @@ const ContentContainer = styled.div`
 `;
 
 // No CMS system, define static data structure here instead
+// Card text lives in the `home` namespace under resources.<id>.name / resources.<id>.description
 const resources = [
-  { url: 'https://scied.ucar.edu/learning-zone/air-quality/what-is-air-quality', icon: '/icons/chiair/resources-graph.svg', backdrop: true, name: 'What is Air Quality?', description: 'An introduction to air quality from the National Center for Atmospheric Research.' },
-  { url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'AirNow', description: 'AirNow highlights air quality in your local area alongside state and national views.' },
-  { url: 'https://311.chicago.gov/', icon: '/icons/chiair/resources-report.svg', backdrop: true, name: 'Report Air Pollution', description: 'Report suspected air quality violations in the City of Chicago.' },
-  { url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-square.svg', backdrop: true, name: 'Chicago Air Quality Ordinance', description: 'The Air Quality Ordinance regulates the construction and expansion of certain facilities that create air pollution.' },
-  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html', icon: '/icons/chiair/resources-triangle.svg', backdrop: true, name: `${platformName}`, description: `Check out the City of Chicago website on ${platformName}, including maps and data.` },
-  { url: 'https://chicagohealthatlas.org/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Health Atlas', description: 'A resource to review, explore and compare health-related data over time and across communities.' },
-  { url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true, name: 'ChiVes: Exploring Chicago', description: 'A Chicago data collaborative & community mapping platform with environment, climate, & neighborhood indicators.' },
+  { id: 'whatIsAirQuality', url: 'https://scied.ucar.edu/learning-zone/air-quality/what-is-air-quality', icon: '/icons/chiair/resources-graph.svg', backdrop: true },
+  { id: 'airNow', url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', icon: '/icons/chiair/resources-circle.svg', backdrop: true },
+  { id: 'reportAirPollution', url: 'https://311.chicago.gov/', icon: '/icons/chiair/resources-report.svg', backdrop: true },
+  { id: 'airQualityOrdinance', url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-square.svg', backdrop: true },
+  { id: 'openAirChicago', url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html', icon: '/icons/chiair/resources-triangle.svg', backdrop: true },
+  { id: 'healthAtlas', url: 'https://chicagohealthatlas.org/', icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'chives', url: 'https://chichives.com', icon: '/icons/chiair/resources-circle.svg', backdrop: true },
 ];
 
 const headerDecorItems = [
@@ -249,6 +251,7 @@ const searchBandHeader6LeftAnchor = 25.75;
 const searchBandHeader6RightAnchor = 25.75;
 
 export default function Home() {
+  const { t } = useTranslation('home');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //const tinyScreen = useMediaQuery('(min-width: 300px)');
@@ -298,22 +301,23 @@ export default function Home() {
               </Grid>
               <Grid size={{ xs: 12, md: 11 }}>
                 <HeroContent $largeScreen={largeScreen}>
-                  <HeroTitle $largeScreen={largeScreen} className={'notranslate'}>
+                  <HeroTitle $largeScreen={largeScreen}>
                     {
                       productName?.split(' ')?.map((s, i) =>
                         (i > 0) ? <HeroTitleAccent>{s}</HeroTitleAccent> : <>{s}</>
                       )
                     }
                   </HeroTitle>
-                  <HeroKicker $largeScreen={largeScreen}>Building on <span style={{ fontWeight: 500 }} className={'no-translate'}>{platformName}</span></HeroKicker>
-                  <HeroKickerAccent $largeScreen={largeScreen}>Built with Chicago, for Chicago.</HeroKickerAccent>
+                  <HeroKicker $largeScreen={largeScreen}>
+                    <Trans t={t} i18nKey={'hero.kicker'} values={{ platformName }}
+                           components={{ platform: <span style={{ fontWeight: 500 }} /> }} />
+                  </HeroKicker>
+                  <HeroKickerAccent $largeScreen={largeScreen}>{t('hero.tagline')}</HeroKickerAccent>
                   <HeroBody $largeScreen={largeScreen}>
-                    Air pollution is often invisible, but its impact is real. Now, real-time air quality
-                    data is available for every neighborhood, for every Chicagoan, ensuring you and your
-                    loved ones have the information you need to breathe easier.
+                    {t('hero.body')}
                   </HeroBody>
                   <HeroButton component={NavLink} to={'/map'} variant={"contained"} size={"large"} color={"primary"} style={{ color: 'white' }}>
-                    Explore Map &rarr;
+                    {t('hero.exploreMap')} &rarr;
                   </HeroButton>
                 </HeroContent>
               </Grid>
@@ -364,11 +368,11 @@ export default function Home() {
       <WhiteBackground $largeScreen={largeScreen} style={{ marginTop: '5.81rem', scrollMarginTop: '5.81rem' }} id={'home-resources'}>
         <ContentContainer style={{marginBottom: 80}}>
           <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
-                        topRowText={'Access useful'}
-                        bottomRowTextBlack={'Air Quality'}
-                        bottomRowTextRed={'Resources'}
+                        topRowText={t('resourcesSection.topRow')}
+                        bottomRowTextBlack={t('resourcesSection.bottomRowBlack')}
+                        bottomRowTextRed={t('resourcesSection.bottomRowRed')}
                         buttonOnClick={() => navigate('/resources')}
-                        buttonText={`View All Resources`}
+                        buttonText={t('resourcesSection.viewAll')}
                         buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
           />
         </ContentContainer>
@@ -386,8 +390,8 @@ export default function Home() {
                 <img style={{ position: 'absolute', marginLeft: '2rem' }} src={resource?.icon} alt={''} />
               </Grid>
               <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
-                <ResourceDescription>{resource?.description}</ResourceDescription>
+                <ResourceLabel $largeScreen={largeScreen}>{t(`resources.${resource.id}.name`, { platformName })} <ResourceLinkIcon /></ResourceLabel>
+                <ResourceDescription>{t(`resources.${resource.id}.description`, { platformName })}</ResourceDescription>
               </Grid>
             </Grid>
           )}
@@ -399,8 +403,8 @@ export default function Home() {
               <img style={{ position: 'absolute', marginLeft: '2rem' }} src={'/icons/chiair/resources-view-all.svg'} alt={''} />
             </Grid>
             <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-              <ResourceLabel $largeScreen={largeScreen}>View All Resources</ResourceLabel>
-              <ResourceDescription>Explore more learning materials & lesson plans, access reports, and explore additional maps.</ResourceDescription>
+              <ResourceLabel $largeScreen={largeScreen}>{t('viewAllCard.title')}</ResourceLabel>
+              <ResourceDescription>{t('viewAllCard.description')}</ResourceDescription>
             </Grid>
           </Grid>
         </Grid>
@@ -410,9 +414,9 @@ export default function Home() {
       <WhiteBackground $largeScreen={largeScreen}>
         <ContentContainer>
           <SectionHeader imgSrc={'/icons/chiair/aq-network.svg'}
-                        topRowText={'Empowered by a'}
-                        bottomRowTextBlack={'Record-Breaking'}
-                        bottomRowTextRed={'Network'}
+                        topRowText={t('network.topRow')}
+                        bottomRowTextBlack={t('network.bottomRowBlack')}
+                        bottomRowTextRed={t('network.bottomRowRed')}
           />
         </ContentContainer>
       </WhiteBackground>
@@ -423,9 +427,18 @@ export default function Home() {
             <img style={{ maxWidth: largeScreen ? '300px' : '100%', maxHeight: '500px' }} src={'/icons/chiair/aq-network-large-textless.svg'} alt={''} />
             <Grid size={{ xs:12, md: 6 }} style={{ fontFamily: 'Space Grotesk', fontSize: '18px' }} alignItems={'center'} textAlign={'right'}>
               <Grid container spacing={0}>
-                <div>Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks in our communities. To close this gap, we created the "{platformName} Network" and deployed a network of {sensorCount} Clarity Node-S sensors to blanket the city to measure Fine Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) in ambient air. {platformName} is co-owned between University of Illinois at Chicago (UIC) and Chicago Department of Public Health (CDPH).</div>
-                <div style={{ margin: '2rem 0 1rem' }}>By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <NavLink className={'no-translate'} to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} target={'_blank'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }}>{platformName} <FaExternalLinkAlt /></NavLink> platform sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.</div>
-                <div style={{ margin: '1rem 0 3rem' }}>This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <NavLink to={'/about'} style={{ textWrap: 'nowrap', textDecoration: 'none', color: '#005899', fontWeight: 700 }}>Learn more about us &rarr;</NavLink></div>{!largeScreen && <br/> }
+                <div>{t('network.paragraph1', { platformName, sensorCount })}</div>
+                <div style={{ margin: '2rem 0 1rem' }}>
+                  <Trans t={t} i18nKey={'network.paragraph2'} values={{ platformName }}
+                         components={{
+                           link: <NavLink to={'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html'} target={'_blank'} style={{ textDecoration: 'none', color: '#005899', fontWeight: 700 }} />,
+                           icon: <FaExternalLinkAlt />,
+                         }} />
+                </div>
+                <div style={{ margin: '1rem 0 3rem' }}>
+                  <Trans t={t} i18nKey={'network.paragraph3'}
+                         components={{ link: <NavLink to={'/about'} style={{ textWrap: 'nowrap', textDecoration: 'none', color: '#005899', fontWeight: 700 }} /> }} />
+                </div>{!largeScreen && <br/> }
               </Grid>
               <Grid container spacing={8} justifyContent={'right'} marginBottom={'4rem'}>
                 <img src={'/icons/chiair/uic-logo.svg'} alt={'UIC'} style={{ maxWidth: '100%' }} />

@@ -1,0 +1,99 @@
+{
+  "title": "Acerca de",
+  "intro": "<b>{{productName}}</b> es una aplicación de mapas de Chicago que sirve como un puente vital entre los datos de calidad del aire, la exploración científica, el empoderamiento comunitario y la defensa de causas, haciendo que los indicadores de calidad del aire de toda la ciudad sean comprensibles para todos los residentes de Chicago. Presentamos y ampliamos la red de monitoreo del aire basada en sensores más grande de EE. UU. (y la segunda más grande del mundo), mediante colaboraciones con la comunidad y entre distintos sectores, para garantizar que los datos sean fácilmente accesibles, transparentes, estén en contexto y listos para la acción en la formulación de políticas, el empoderamiento comunitario y la defensa de causas. Seguiremos perfeccionando el panel y agregándole mejoras y más recursos con el tiempo. Agradecemos los aportes científicos, regulatorios y de la comunidad.",
+  "background": {
+    "title": "Antecedentes de la red \"{{platformName}}\"",
+    "network": "La Open Air Network es un proyecto de toda la ciudad que consta de 277 sensores de aire no regulatorios Clarity Node-S de partículas finas (PM2.5) y dióxido de nitrógeno (NO2), instalados durante el verano de 2025. La red de sensores tiene una suscripción de cinco años con Clarity, con la que se prevé un monitoreo, una calibración y un perfeccionamiento continuos. Fue fundada por la Universidad de Illinois en Chicago y el Departamento de Salud Pública de Chicago (CDPH), en colaboración con 13 organizaciones comunitarias que forman parte del consejo asesor de la ciudad, siete de las cuales fueron socias comunitarias oficiales de UIC en el marco de las subvenciones de UIC (CEJN, ASE, SETF, PCR, PERRO, LVEJO y N4EJ). Consulte el sitio web del CDPH para <partnersLink>conocer las organizaciones socias de “Open Air Chicago”</partnersLink>.",
+    "design": "Los equipos de UIC y UIUC son los arquitectos técnicos del diseño de la red de monitoreo del aire “Open Air Chicago”. Adoptamos los principios técnicos de los <designLink>Criterios de diseño de redes para el monitoreo de la calidad del aire ambiente</designLink> de la EPA, establecidos bajo la Ley de Aire Limpio, para crear un diseño en cuadrícula a escala de vecindario, y sobrepusimos ese diseño en cuadrícula al mapa de puntuación del Índice de Justicia Ambiental (EJ) elaborado por el CDPH mediante un amplio proceso participativo con las partes interesadas en 2023, como parte del <ciaLink>proyecto de Evaluación de Impacto Acumulativo</ciaLink>. Los vecindarios dentro o cerca de zonas de justicia ambiental tienen un tamaño de cuadrícula de 1.4 km x 1.4 km (es decir, 0.87 millas x 0.87 millas), y las demás áreas tienen un tamaño de cuadrícula de 1.5 x 1.5 km (0.93 millas x 0.93 millas). Esto significa que en todo Chicago hay sensores a menos de 1 milla de distancia entre sí en todas las direcciones. Este diseño, que genera concentraciones a favor y en contra del viento de un lugar determinado, es especialmente útil para respaldar diversos tipos de análisis y modelos de calidad del aire.",
+    "communityInput": "Una vez desarrollado el diseño técnico de la red de monitoreo del aire en cuadrícula, solicitamos la opinión de la comunidad sobre la ubicación de los sensores en postes de luz cercanos a los puntos de muestreo teóricos de la cuadrícula, en una serie de reuniones comunitarias con 13 organizaciones comunitarias que forman parte del Consejo Asesor de la ciudad, en colaboración con el CDPH. Antes de las reuniones comunitarias para seleccionar los sitios de los sensores, UIC ofreció sesiones educativas sobre la calidad del aire al personal de las organizaciones comunitarias.",
+    "leadership": "La <erdalLink>Dra. Serap Erdal</erdalLink>, de UIC, dirigió el proceso científico y de participación comunitaria para el desarrollo de la red y es la investigadora principal de dos subvenciones: la del Instituto Nacional de Estándares y Tecnología (NIST) (es decir, una asignación del Congreso gestionada por la oficina de la senadora Tammy Duckworth) y la de Exelon-ComEd/RHP, que apoyaron el trabajo de los equipos de UIC y UIUC. Consulte los detalles de estas subvenciones en la sección “Financiadores y agradecimientos”. La Dra. Marynia Kolak, de UIUC, y los Dres. Victoria Persky, Meida Wang y Dr. de UIC son coinvestigadores de estas subvenciones."
+  },
+  "faq": {
+    "header": {
+      "top": "Algunas",
+      "bottomBlack": "Preguntas",
+      "bottomRed": "frecuentes"
+    },
+    "expandAll": "Expandir todo",
+    "collapseAll": "Contraer todo",
+    "categories": {
+      "all": "Todas",
+      "protocol": "Sensores",
+      "data": "Datos",
+      "parameters": "Parámetros",
+      "map": "Mapa"
+    },
+    "items": {
+      "mapDataAccess": {
+        "question": "¿Cómo puedo acceder a los datos?",
+        "answer": "Explore el Mapa para ver las tendencias de los datos por sensor, por comunidad o vecindario, o de toda la ciudad. Los datos también se pueden descargar de varias maneras, entre ellas: descarga directa en el <portalLink>Portal de Datos de la Ciudad</portalLink>, descarga directa en el <clarityLink>Open Air Clarity Dashboard</clarityLink> y descarga directa en este sitio web (vea los enlaces 'Descargar' en el Mapa). Tenga en cuenta que, al descargar datos de Nuestro AirMap en este sitio web, solo se podrán descargar los sensores en los que usted hizo clic durante la exploración. En el futuro, planeamos desarrollar un filtro de descarga de datos más completo con opciones más personalizadas."
+      },
+      "mapDataDetails": {
+        "question": "¿Cómo obtengo más detalles sobre los datos en la interfaz del mapa?",
+        "answer": "La sección 'Detalles' del Mapa ofrece mucha más información sobre las mediciones de calidad del aire. En la página del Mapa, haga clic en un sensor para ver un gráfico en el panel de datos. En la parte superior derecha de este gráfico, verá el botón 'Detalles →'; al hacer clic en este botón se mostrará el panel de Detalles del sensor elegido, que incluye el gráfico de Tendencias históricas. Allí verá un botón 'Descargar →', que ofrece descargas en varios formatos comunes."
+      },
+      "mapColors": {
+        "question": "¿Qué significan los colores del mapa?",
+        "answer": "Los colores de cada ubicación de sensor corresponden a distintos rangos o agrupaciones de valores del Índice de Calidad del Aire (AQI) de la EPA. El Índice de Calidad del Aire (AQI) de EE. UU. es la herramienta de la EPA para informar sobre la calidad del aire exterior y la salud. El AQI incluye seis categorías identificadas por colores, cada una de las cuales corresponde a un rango de valores del índice que representa un nivel distinto de preocupación por la salud. Por ejemplo, mientras que un valor de AQI de 50 o menos representa una buena calidad del aire, un valor de AQI superior a 300 representa una calidad del aire peligrosa. Para identificar el rango de valores y la recomendación correspondiente a cada color, use la leyenda en la parte superior izquierda de la aplicación de mapas. Para obtener más información sobre el AQI, consulte <aqiLink>https://www.airnow.gov/aqi/aqi-basics/</aqiLink>."
+      },
+      "dataUseProtection": {
+        "question": "¿Cómo puedo usar los datos para protegerme de la exposición dañina a los contaminantes del aire?",
+        "answer": "Le recomendamos consultar el mapa con regularidad y conocer las tendencias de la calidad del aire en su vecindario. En los días en que el Índice de Calidad del Aire (AQI) sea poco saludable (es decir, mayor de 100), le recomendamos usar nuestro Mapa como una “herramienta de comunicación de salud pública” y ajustar sus actividades diarias para reducir su exposición a los contaminantes del aire y los riesgos para la salud asociados. En concreto, le recomendamos adoptar una o más de las <epaLink>Estrategias para reducir la exposición al aire libre</epaLink>. Por ejemplo: realizar actividades al aire libre (como correr) en los horarios en que la calidad del aire sea saludable, permanecer en interiores, usar una mascarilla N95, etc."
+      },
+      "dataSource": {
+        "question": "¿De dónde provienen estos datos y dónde se almacenan?",
+        "answer": "Los datos corresponden a las mediciones de partículas finas (PM2.5) y dióxido de nitrógeno (NO2) de los sensores Clarity Node-S de la red “Open Air Chicago”, un proyecto de copropiedad de monitoreo del aire basado en sensores y de evaluación de la calidad del aire entre la Universidad de Illinois en Chicago y el Departamento de Salud Pública de Chicago. Las lecturas de los sensores se obtienen directamente de la interfaz de programación de Clarity, se depuran, se resumen y se actualizan en esta aplicación web de mapas. Clarity aplica los protocolos de depuración de datos y de aseguramiento y control de calidad (vea más detalles a continuación). Una copia de los datos se almacena en un servidor web ubicado en EE. UU. Los datos se pueden descargar directamente según el período de interés (por ejemplo, por hora, por mes o por temporada) en la sección 'Detalles' de la interfaz del mapa. Los datos sin procesar y ponderados (promedio) de las mediciones individuales y los promedios por hora y por día también se pueden consultar y descargar en el <cdphLink>sitio web Open Air Chicago del CDPH</cdphLink>"
+      },
+      "sensorOwner": {
+        "question": "¿Quién es el dueño de los sensores de calidad del aire?",
+        "answer": "Los sensores de la Open Air Network son copropiedad de la Universidad de Illinois en Chicago (bajo la dirección de la investigadora principal, la profesora Erdal) y de la Ciudad de Chicago, a través del Departamento de Salud Pública de Chicago. Si bien el 60% de los 277 sensores se compró con las dos subvenciones de UIC, el resto lo compró el CDPH con diversas fuentes de financiamiento de la ciudad. Cada entidad también mantiene sensores adicionales en inventario para reemplazarlos si es necesario."
+      },
+      "sensorMaintenance": {
+        "question": "¿Quién mantiene los sensores y la red?",
+        "answer": "La Universidad de Illinois en Chicago, la Ciudad de Chicago a través del Departamento de Salud Pública de Chicago, y Clarity colaboran en el mantenimiento de los sensores y de la red, y este trabajo está actualmente en curso. El Departamento de Transporte de la Ciudad de Chicago (CDOT) también es un colaborador importante, ya que mantiene los postes de luz en toda la ciudad. Las cuadrillas del CDOT capacitadas en los criterios y protocolos de instalación de sensores preparados por UIC son las que deben retirar e instalar los sensores."
+      },
+      "dataUpdateFrequency": {
+        "question": "¿Con qué frecuencia se actualizan los datos?",
+        "answer": "Actualizamos el panel cada hora. Sin embargo, algunos sensores pueden tener un pequeño retraso según su conectividad celular. Consulte siempre la marca de tiempo 'Última actualización' en la parte superior del mapa (por ejemplo, actualizado 3:00 PM, 06/23/26) para acceder a los datos de calidad del aire más recientes."
+      },
+      "dataRawData": {
+        "question": "¿Puedo acceder a los datos sin procesar y sin calibrar?",
+        "answer": "Las mediciones sin procesar de los sensores Clarity Node-S están disponibles en el <portalLink>portal de datos “Open Air Chicago” de la Ciudad de Chicago</portalLink>. Los datos sin procesar no pasan por la depuración de datos ni por los controles de aseguramiento y control de calidad (QA/QC), y no están calibrados. Revise la documentación de Clarity Monitoring en la sección Recursos para obtener más información sobre las limitaciones de los sensores y por qué se recomiendan los datos calibrados en lugar de las mediciones sin procesar para evaluar la calidad del aire. Se sigue necesitando un conocimiento técnico profundo en datos, monitoreo y análisis de la calidad del aire para analizar y utilizar los datos de manera confiable en evaluaciones comunitarias. Nuestros equipos con gusto ayudarán a las organizaciones que necesiten interpretar los datos."
+      },
+      "dataQuality": {
+        "question": "¿Cómo se evalúa la calidad de los datos?",
+        "answer": "Tras la revisión y aprobación, por parte de científicos de la EPA de EE. UU., del desempeño del sensor Clarity Node-S y de los protocolos de depuración de datos y de aseguramiento y control de calidad de Clarity, la EPA y el Servicio Forestal de EE. UU. comenzaron a mostrar los datos de PM2.5 de los sensores de aire Clarity Node-S en el <fasmLink>Mapa de Incendios y Humo (FASM)</fasmLink> de la EPA, ubicado en el <airnowLink>sitio web AirNow.gov</airnowLink> de la EPA, el 23 de julio de 2025. Actualmente, el sensor Clarity Node-S es uno de los dos únicos sensores indicativos de bajo costo disponibles comercialmente aprobados por la EPA de EE. UU. para mostrar datos directamente en el FASM (el otro es el sensor PurpleAir). Clarity informó que más de 550 sensores de calidad del aire Clarity Node-S proporcionan datos de PM2.5 en el FASM, lo que amplía de forma significativa las mediciones de calidad del aire obtenidas en las estaciones de monitoreo de la EPA con Monitores de Referencia Federal (FRM) y Monitores Equivalentes Federales (FEM) de grado regulatorio, y esta cifra sigue creciendo. La aprobación por parte de la EPA del desempeño de los sensores Clarity y de sus protocolos de QA/QC de datos, así como su inclusión en el FASM de la EPA, facilitó el uso directo de los datos producidos por Clarity por parte de usuarios finales como la red Clarity “Know Your Air” del Distrito Escolar Unificado de Los Ángeles (dentro de la jurisdicción del Distrito de Gestión de la Calidad del Aire de la Costa Sur (SCAQMD)). Del mismo modo, nosotros usamos datos de Clarity aprobados por la EPA, con varias medidas establecidas para proteger los datos y garantizar que se difundan datos de alta calidad al público. Estas medidas son:",
+        "list": {
+          "item1": "Colaboramos con el CDPH y Clarity en el mantenimiento de la red para verificar y dar seguimiento al estado de los sensores y de la red;",
+          "item2": "Colocamos sensores Clarity por triplicado en varias estaciones de monitoreo del aire de la EPA en el área de Chicago y actualmente estamos realizando un estudio de colocación conjunta para evaluar el desempeño de los sensores Clarity frente a los FRM/FEM de grado regulatorio de la EPA para PM2.5 y NO2. Este estudio nos permitirá generar ecuaciones de calibración específicas para Chicago para el sensor Clarity y evaluar qué tan representativa es para Chicago la ecuación de calibración global de Clarity. About Page Revisions-6-Under Protocol"
+        }
+      },
+      "dataRegulations": {
+        "question": "¿Se pueden usar los datos de los sensores de “Open Air Chicago” para tomar decisiones regulatorias (por ejemplo, para la aplicación de normas a fuentes industriales)?",
+        "answer": "Los sensores Clarity Node-S (o cualquier sensor de bajo costo) no son Monitores de Referencia Federal (FRM) ni Monitores Equivalentes Federales (FEM) de grado regulatorio, que son los que se usan para evaluar el cumplimiento de la Norma Nacional de Calidad del Aire Ambiente (NAAQS) en un área determinada. Por lo tanto, no se pueden usar para tomar decisiones regulatorias (por ejemplo, evaluaciones de cumplimiento, medidas de aplicación de la ley, etc.). Los sensores de bajo costo se denominan sensores indicativos y son herramientas útiles para evaluar la variabilidad de las concentraciones de contaminantes del aire a nivel comunitario, y pueden producir datos complementarios para las redes regulatorias."
+      },
+      "airQualityMetrics": {
+        "question": "¿Qué indicadores de calidad del aire se muestran en esta herramienta?",
+        "answer": "Actualmente, esta herramienta de mapas muestra mediciones de partículas finas (es decir, PM2.5), de un tamaño aerodinámico igual o menor a 2.5 micras (PM 2.5), y el NowCast AQI, un indicador del Índice de Calidad del Aire (AQI) en tiempo real generado por Clarity de acuerdo con las pautas de la EPA. El NowCast AQI es un algoritmo en tiempo real que se usa para estimar el Índice de Calidad del Aire de la hora actual. El cálculo tradicional del AQI se basa en un promedio completo de 24 horas de las concentraciones de contaminantes, por lo que no puede reflejar cambios repentinos en la calidad del aire. El algoritmo NowCast corrige esta deficiencia usando un promedio ponderado de los datos de las últimas 12 horas para reflejar las condiciones actuales de la calidad del aire. Por esta razón, la EPA usa el NowCast AQI como el indicador estándar que se muestra como 'calidad del aire actual' en el sitio web AirNow.gov (https://www.airnow.gov/). Más adelante este año, nuestra herramienta de mapas también mostrará las mediciones de concentración de dióxido de nitrógeno (NO2) de los 277 sensores de la ciudad, así como posiblemente las de seis sensores de carbono negro (BC) (vea más abajo el estado de los sensores de BC)."
+      },
+      "ozone": {
+        "question": "¿Por qué no se mide el ozono?",
+        "answer": "Por el momento, la “Open Air Network” no incluye módulos de sensores de ozono. El ozono es un contaminante del aire de criterio importante y tiene efectos adversos bien documentados sobre el sistema respiratorio. En el futuro, es posible que se agreguen módulos de ozono."
+      },
+      "blackCarbon": {
+        "question": "¿Cuál es el estado de los sensores de carbono negro?",
+        "answer": "Compramos seis sensores de carbono negro con dos subvenciones de UIC. Nuestras seis organizaciones comunitarias socias (ASE, SETF, PCR, LVEJO, PERRO y N4EJ) orientaron la selección de los postes de luz para instalar cuatro sensores de BC en las comunidades de justicia ambiental de los lados oeste y sureste de la ciudad. Uno se colocó en el centro urbano y el otro se instaló en un punto de referencia de fondo en el lado norte. Las cuadrillas del CDOT los instalaron todos en postes de luz entre octubre y noviembre de 2025. Después de funcionar unas semanas, todos dejaron de operar. Cambiamos algunos componentes y siguen sin funcionar. UIC, Clarity y el CDPH colaboran para resolver los problemas técnicos y operativos de los sensores de BC. Como estos sensores están diseñados para climas más cálidos, se ha planteado como posible causa el funcionamiento con energía solar en ambientes más fríos y con poca luz solar. Actualizaremos esta respuesta a medida que avancemos en la solución de este problema."
+      }
+    }
+  },
+  "funders": {
+    "header": {
+      "top": "Nuestros financiadores",
+      "bottomBlack": "y",
+      "bottomRed": "agradecimientos"
+    },
+    "nistGrant": "Dra. Serap Erdal (investigadora principal). Asignación del Congreso de EE. UU./Instituto Nacional de Estándares y Tecnología (NIST). Community-Driven Air Quality and Environmental Justice Assessment (Evaluación de la calidad del aire y la justicia ambiental impulsada por la comunidad). NIST 60NANB23D206.",
+    "comedGrant": "Dra. Serap Erdal (investigadora principal). Empresa de servicios públicos ComEd/RHP. ComEd Hyperlocal Air Quality Assessment in Environmental Justice Communities in Chicago (Evaluación hiperlocal de la calidad del aire en comunidades de justicia ambiental de Chicago). 2-549224-731000-191200.",
+    "thanks": "¡Un agradecimiento especial a todos los socios del proyecto, organizaciones comunitarias, agencias reguladoras, participantes de encuestas y grupos focales, y a los residentes de Chicago que participaron!"
+  }
+}

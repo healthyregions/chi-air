@@ -5,6 +5,8 @@ import {variablePresets} from '../../config';
 import {useChivesData} from "../../hooks/useChivesData";
 import {useSelector} from "react-redux";
 import {selectMapParams} from "../../store/slices/legacyStoreSlice";
+import {useTranslation} from "react-i18next";
+import useConfigText from "../../i18n/useConfigText";
 // import { Gutter } from '../styled_components';
 // import Tooltip from './tooltip';
 
@@ -93,9 +95,12 @@ const BinBars = styled.div`
     }
 `
 
+// `label` is the English variable label and is only used to pick the layout; displayed text is translated.
 const BinLabel = ({ label }) => {
+    const { t } = useTranslation('map');
     switch(label.trim()) {
         case "Historical Redlining":
+            // Redlining grade letters (A-D) are proper labels and must never be translated
             return (
                 <BinLabels>
                     <div key={'color-label0'} className='bin labe'>{"A"}</div>
@@ -107,9 +112,9 @@ const BinLabel = ({ label }) => {
         case "Displacement Pressure":
             return (
                 <BinLabels>
-                    <div key={'color-label0'} className='bin labe'>{"Not Vulnerable"}</div>
-                    <div key={'color-label1'} className='bin labe'>{"Vulnerable, Prices Not Rising"}</div>
-                    <div key={'color-label2'} className='bin labe'>{"Vulnerable, Prices Rising"}</div>
+                    <div key={'color-label0'} className='bin labe'>{t('legend.displacement.notVulnerable')}</div>
+                    <div key={'color-label1'} className='bin labe'>{t('legend.displacement.vulnerablePricesNotRising')}</div>
+                    <div key={'color-label2'} className='bin labe'>{t('legend.displacement.vulnerablePricesRising')}</div>
                 </BinLabels>
             );
         default:
@@ -122,6 +127,7 @@ const Legend = ({
 }) => {
   const { storedGeojson } = useChivesData();
   const mapParams = useSelector(selectMapParams);
+  const tc = useConfigText();
 
   // Note that "label" above and variableName here are similar, but not always the same
   const columnName = mapParams.variableName ? variablePresets[mapParams.variableName].Column : '';
@@ -131,7 +137,10 @@ const Legend = ({
   const min = Math.min(...values.filter(v => Number(v) && !Number.isNaN(v)));
   const max = Math.max(...values.filter(v => Number(v) && !Number.isNaN(v)));
 
+  // English label: used for logic (categorical detection / BinLabel layout). Never translate this one.
   const label = `${mapParams.variableName} ${mapParams?.units || ""}`;
+  // Translated label: display only
+  const displayLabel = `${tc('variables', columnName || null, 'Variable Name', mapParams.variableName)} ${tc('variables', columnName || null, 'units', mapParams?.units) || ""}`;
   const categorical = ["Historical Redlining", "Displacement Pressure"].includes(label.trim());
 
   const bins = mapParams?.bins || mapParams?.Bins;
@@ -148,7 +157,7 @@ const Legend = ({
           <Grid container spacing={0} id='legend-bins-container'>
             <Grid size={{ xs: 12 }}>
               <LegendTitle>
-                {label || ''}
+                {displayLabel || ''}
               </LegendTitle>
             </Grid>
             <Grid size={{ xs: 12 }}>

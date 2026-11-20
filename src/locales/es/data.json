@@ -1,0 +1,154 @@
+{
+  "categories": {
+    "Heat Indicator": {
+      "name": "Indicador de calor"
+    },
+    "Social & Economic": {
+      "name": "Social y económico"
+    },
+    "Ecology & Greenness": {
+      "name": "Ecología y áreas verdes"
+    },
+    "Built Environment": {
+      "name": "Entorno construido"
+    }
+  },
+  "variables": {
+    "MEAN_TEMP": {
+      "Variable Name": "Temperatura del aire",
+      "Description": "Esta medida muestra la temperatura promedio del aire ambiente, en grados Fahrenheit, registrada el 28 de julio de 2023 en cada sección censal de Chicago, gracias a una iniciativa que reunió a agencias de gobierno, académicos y miembros de la comunidad para modelar las islas de calor urbano en el día más caluroso del año en ese momento.",
+      "Data Source(s)": "Cool Chi/Heat Watch Chicago",
+      "Original Scale": "Sección censal",
+      "listGroup": "Indicador de calor"
+    },
+    "CEJI": {
+      "Variable Name": "Índice de Justicia Ambiental de Chicago",
+      "Description": "Este índice de justicia ambiental de Chicago es una puntuación compuesta que mide los impactos acumulativos y refleja a las comunidades más afectadas por la contaminación y a las más vulnerables a sus efectos. Valores más altos indican mayor afectación y vulnerabilidad.",
+      "Data Source(s)": "Departamento de Salud Pública de Chicago",
+      "Original Scale": "Sección censal",
+      "listGroup": "Social y económico"
+    },
+    "hardship": {
+      "Variable Name": "Índice de dificultades económicas",
+      "Description": "Las dificultades económicas se miden con un índice compuesto de seis medidas: desempleo, dependencia, educación, ingresos, hacinamiento en la vivienda y pobreza. Los valores más altos indican mayores dificultades económicas a nivel del vecindario.",
+      "Data Source(s)": "American Community Survey (Encuesta sobre la Comunidad Estadounidense) a través de HeRoP Lab, Nathan y Adams (1976)",
+      "Original Scale": "Sección censal",
+      "listGroup": "Social y económico"
+    },
+    "treeCCov17": {
+      "Variable Name": "Cobertura arbórea",
+      "Description": "La infraestructura verde, como una mayor cobertura arbórea, puede reducir los impactos negativos de la contaminación del aire y del calor extremo. Esta medida estima el porcentaje del área total de cada sección censal cubierta por copas de árboles en 2017. Mediante tecnología LiDAR y varios pasos de geoprocesamiento, se creó una superficie cuadriculada que representa el área cubierta por las ramas y hojas de los árboles. Los resultados finales se agregaron luego como porcentaje de cada sección censal cubierta por copas de árboles.",
+      "Data Source(s)": "Datos originales de Chicago Region Trees Initiative (CRTI), financiados por The Morton Arboretum, el Servicio Forestal de EE. UU. y American Forest. Agregados por sección censal por HeRoP Lab.",
+      "Original Scale": "Cuadrícula de 1 m",
+      "listGroup": "Ecología y áreas verdes"
+    },
+    "primary_grade_4levels": {
+      "Variable Name": "Discriminación histórica",
+      "Description": "Los mapas de redlining (discriminación histórica) de las ciudades de EE. UU. fueron creados originalmente por la Home Owners’ Loan Corporation (HOLC) en la década de 1930. A cada vecindario se le asignó una de cuatro categorías: A - “Mejor”, B - “Aún deseable”, C - “Definitivamente en declive” o D - “Peligroso”. Esta variable indica cuál de las cuatro categorías se asignó a la mayor parte del área de cada sección censal, para todas las secciones censales en las que más del 50 % del área fue categorizada. A los residentes de las áreas marcadas con C o D se les negaban con frecuencia servicios financieros y de otro tipo, y el legado de discriminación contra estas áreas persiste materialmente hoy en día.",
+      "Data Source(s)": "URichmond DSL",
+      "Original Scale": "Sección censal",
+      "listGroup": "Entorno construido"
+    }
+  },
+  "overlayCategories": {
+    "Community Boundary": {
+      "name": "Límite comunitario"
+    },
+    "Community Resource": {
+      "name": "Recurso comunitario"
+    },
+    "Built Infrastructure": {
+      "name": "Infraestructura construida"
+    }
+  },
+  "overlays": {
+    "community_areas": {
+      "displayName": "Áreas comunitarias",
+      "description": "Áreas comunitarias",
+      "descriptionDetail": "La Ciudad de Chicago usa 77 áreas comunitarias para definir sus límites. Estas áreas comunitarias fueron diseñadas originalmente por investigadores de la Universidad de Chicago en la década de 1920 para dar seguimiento a estadísticas censales y sociales, y se han mantenido a lo largo de las décadas para conservar la estabilidad.",
+      "descriptionSource": "Portal de Datos de la Ciudad de Chicago"
+    },
+    "zip_codes": {
+      "displayName": "Códigos postales",
+      "description": "Códigos postales",
+      "descriptionDetail": "Los códigos postales de Chicago suelen comenzar con 606 y corresponden a las rutas del Servicio Postal de EE. UU.",
+      "descriptionSource": "Portal de Datos de la Ciudad de Chicago"
+    },
+    "wards": {
+      "displayName": "Distritos electorales",
+      "description": "Distritos electorales",
+      "descriptionDetail": "Los distritos electorales (wards) son los límites políticos o distritos legislativos de Chicago; cada uno está a cargo de un concejal (alderman).",
+      "descriptionSource": "Portal de Datos de la Ciudad de Chicago"
+    },
+    "aq-monitoring-sites": {
+      "displayName": "Estaciones de monitoreo de la EPA",
+      "description": "Estaciones de monitoreo de la calidad del aire de la EPA",
+      "descriptionDetail": "Estas estaciones de monitoreo de la Agencia de Protección Ambiental (EPA) registran los principales contaminantes del aire en toda la Ciudad de Chicago y ofrecen mediciones de referencia de material particulado (menor de 2.5 micras) y dióxido de nitrógeno.",
+      "descriptionSource": "Agencia de Protección Ambiental (EPA)",
+      "popupContent": {
+        "site_description": "Descripción del sitio",
+        "owner": "Propietario",
+        "address": "Dirección",
+        "monitors": "Monitorea"
+      }
+    },
+    "non-res": {
+      "displayName": "Tipo de uso de suelo y zonificación selecta",
+      "description": "Áreas con zonificación industrial y no residencial",
+      "descriptionDetail": "CMAP ofrece el inventario de uso de suelo por parcela y datos de desarrollo de la Ciudad de Chicago y sus alrededores. En esta capa se seleccionan los lugares con zonificación \"industrial\" o \"no residencial\", destacando los sitios que podrían ser fuentes de emisiones a nivel de área.",
+      "descriptionSource": "Agencia Metropolitana de Planificación de Chicago (CMAP)"
+    },
+    "impervious-surfaces": {
+      "displayName": "Infraestructura industrial construida selecta",
+      "description": "Aeropuertos e infraestructura industrial",
+      "descriptionDetail": "Para generar esta capa se extrajeron edificios y lugares etiquetados como aeropuertos o zonas industriales, lo que ofrece una vista de la infraestructura industrial y de algunas infraestructuras de transporte. Estas áreas también son posibles fuentes de emisiones a nivel de área y, según sus superficies, pueden funcionar como islas de calor localizadas.",
+      "descriptionSource": "OpenStreetMap"
+    },
+    "public-schools": {
+      "displayName": "Escuelas públicas",
+      "description": "Escuelas públicas de Chicago",
+      "descriptionDetail": "Las Escuelas Públicas de Chicago ofrecen oportunidades de aprendizaje y espacios saludables para los niños de Chicago. Explore las escuelas por tipo y haga clic en el mapa para obtener más detalles.",
+      "descriptionSource": "Portal de Datos de la Ciudad de Chicago",
+      "legend": {
+        "Elementary School": "Escuela primaria",
+        "Highschool": "Escuela secundaria (high school)"
+      },
+      "popupContent": {
+        "Short_Name": "Nombre",
+        "Grade_Cat": "Categoría de grado",
+        "School_ID": "ID de la escuela",
+        "Address": "Dirección"
+      }
+    }
+  },
+  "baseLayers": {
+    "Parks & Forest Preserves": {
+      "Variable Name": "Parques y reservas forestales",
+      "Original Scale": "Límites de parques"
+    },
+    "Building Footprints": {
+      "Variable Name": "Huellas de edificios",
+      "Original Scale": "Huellas de edificios"
+    }
+  },
+  "aqiLevels": {
+    "Good": {
+      "label": "Bueno"
+    },
+    "Moderate": {
+      "label": "Moderado"
+    },
+    "Unhealthy for Sensitive Groups": {
+      "label": "Poco saludable para grupos sensibles"
+    },
+    "Unhealthy": {
+      "label": "Poco saludable"
+    },
+    "Very Unhealthy": {
+      "label": "Muy poco saludable"
+    },
+    "Hazardous": {
+      "label": "Peligroso"
+    }
+  }
+}

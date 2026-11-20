@@ -12,6 +12,7 @@ import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {formatDate, getMetadata, LButton, useSelectorAsState} from "../common";
 import {LHeader} from "../common";
+import {useTranslation} from "react-i18next";
 
 const SelectedSensorsPanelContainer = styled.div`
     overflow-y: auto;
@@ -51,6 +52,7 @@ const LocationNameColumn = styled(Grid)``;
 
 export const SelectedAreaPanel = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('panel');
 
   const [, setSelections] = useSelectorAsState(selectSelectedAreas, setSelectedAreas, dispatch);
 
@@ -84,13 +86,13 @@ export const SelectedAreaPanel = () => {
           </LButton>
         </Grid>
 
-        {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>Loading, Please Wait...</> : <LHeader>Sensors in location</LHeader>}
+        {firstHourlyRow && Object.keys(firstHourlyRow)?.length <= 2 ?  <>{t('common.loadingPleaseWait')}</> : <LHeader>{t('selectedArea.sensorsInLocation')}</LHeader>}
       </Grid>
 
       {!clickedSensor && firstHourlyRow && Object.keys(firstHourlyRow)?.length > 2 && <GridHeader container spacing={0} marginTop={'1rem'}>
         <ColorColumn size={1}></ColorColumn>
         <AqiValueColumn size={2}>{selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'NO₂' : 'PM2.5'}</AqiValueColumn>
-        <LocationNameColumn size={4}>Name</LocationNameColumn>
+        <LocationNameColumn size={4}>{t('selectedArea.name')}</LocationNameColumn>
         <TimestampColumn size={3}></TimestampColumn>
         {/*
         {selections?.community?.length === 0 && selections?.zip?.length === 0 && selections?.ward?.length === 0 && <SensorIdColumn size={3}>Sensor ID</SensorIdColumn>}

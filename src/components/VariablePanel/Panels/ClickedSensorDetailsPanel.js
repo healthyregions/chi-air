@@ -18,6 +18,7 @@ import {SensorBarChart} from "../SensorBarChart";
 import {useState} from "react";
 import Menu from "@mui/material/Menu";
 import {ListSubheader} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 const s3endpoint = process.env.REACT_APP_S3_ENDPOINT_URL;
 const bucketName = process.env.REACT_APP_S3_BUCKET_NAME;
@@ -55,6 +56,7 @@ const convertGeoJsonToCsv = (geojsonData, selectedParameter, separator= ',') => 
 
 export const ClickedSensorDetailsPanel = ({ push, pop }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('panel');
 
   const averageType = useSelector(selectAverageType);
   const clickedSensor = useSelector(selectClickedSensor);
@@ -110,7 +112,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
   return(
     <Grid size={11}>
-      <LHeader><LinkText onClick={() => pop('root')}>{clickedLocation?.name}</LinkText> / Details</LHeader>
+      <LHeader><LinkText onClick={() => pop('root')}>{clickedLocation?.name}</LinkText> / {t('breadcrumbs.details')}</LHeader>
 
       <Grid container spacing={2} marginTop={'1.5rem'}>
         <Grid size={6}>
@@ -130,7 +132,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
       </Grid>
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'center'}>
         <LastUpdatedDisplay datasourceId={clickedSensor}></LastUpdatedDisplay>
-        <LButton onClick={() => push(['Explain'])}>Explain &rarr;</LButton>
+        <LButton onClick={() => push(['Explain'])}>{t('details.explain')} &rarr;</LButton>
       </Grid>
 
       <Divider />
@@ -138,9 +140,9 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
       <Grid container spacing={2} margin={'1rem 0'} justifyContent={'space-between'} alignItems={'center'}>
         <div style={{ display: 'flex' }}>
           <FaChartLine style={{ width: '28px', height: '28px', color: 'rgba(65, 182, 230, 1)' }} />
-          <LHeader style={{ marginLeft: '0.5rem', fontSize: '18px' }}>Historical Trends</LHeader>
+          <LHeader style={{ marginLeft: '0.5rem', fontSize: '18px' }}>{t('details.historicalTrends')}</LHeader>
         </div>
-        <LButton onClick={handleClick}>Download &rarr;</LButton>
+        <LButton onClick={handleClick}>{t('details.download')} &rarr;</LButton>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -152,10 +154,10 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
             },
           }}
         >
-          <ListSubheader>Downloads all data from current session</ListSubheader>
+          <ListSubheader>{t('details.downloadSession')}</ListSubheader>
           <MenuItem onClick={() => {downloadCsv();handleClose();}}>CSV</MenuItem>
           <MenuItem onClick={() => {downloadGeoJson();handleClose();}}>GeoJSON</MenuItem>
-          <ListSubheader>Downloads all data for current indicator</ListSubheader>
+          <ListSubheader>{t('details.downloadIndicator')}</ListSubheader>
           <MenuItem onClick={() => {downloadParquet();handleClose();}}>Parquet</MenuItem>
         </Menu>
       </Grid>
@@ -163,7 +165,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
       <Grid container spacing={2}>
         <Grid size={6}>
           <FormControl id="paramSelect" variant="outlined" fullWidth>
-            <InputLabel htmlFor="paramSelect">Indicator</InputLabel>
+            <InputLabel htmlFor="paramSelect">{t('details.indicator')}</InputLabel>
             <Select
               variant={"filled"}
               value={selectedParameter}
@@ -178,18 +180,18 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
         </Grid>
         <Grid size={6}>
           <FormControl id="avgTypeSelect" variant="outlined" fullWidth>
-            <InputLabel htmlFor="avgTypeSelect">View by</InputLabel>
+            <InputLabel htmlFor="avgTypeSelect">{t('details.viewBy')}</InputLabel>
             <Select
               variant={"filled"}
               value={averageType}
               onChange={(e) => dispatch(setAverageType(e.target.value))}
             >
-              <MenuItem value="hour">Hour</MenuItem>
-              <MenuItem value="day" disabled={metricIndex.day <= 0}>Day</MenuItem>
-              <MenuItem value="week" disabled={metricIndex.week <= 0}>Week</MenuItem>
-              <MenuItem value="month" disabled={metricIndex.month <= 0} title={'hello world'}>Month</MenuItem>
-              <MenuItem value="season" disabled={metricIndex.season <= 0}>Season</MenuItem>
-              <MenuItem value="year" disabled={metricIndex.year <= 0}>Year</MenuItem>
+              <MenuItem value="hour">{t('details.averageType.hour')}</MenuItem>
+              <MenuItem value="day" disabled={metricIndex.day <= 0}>{t('details.averageType.day')}</MenuItem>
+              <MenuItem value="week" disabled={metricIndex.week <= 0}>{t('details.averageType.week')}</MenuItem>
+              <MenuItem value="month" disabled={metricIndex.month <= 0} >{t('details.averageType.month')}</MenuItem>
+              <MenuItem value="season" disabled={metricIndex.season <= 0}>{t('details.averageType.season')}</MenuItem>
+              <MenuItem value="year" disabled={metricIndex.year <= 0}>{t('details.averageType.year')}</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -197,7 +199,7 @@ export const ClickedSensorDetailsPanel = ({ push, pop }) => {
 
       <Grid container spacing={0}>
         <Grid offset={2} size={10}>
-          {!latestRow && <Grid>No recent readings found.</Grid> }
+          {!latestRow && <Grid>{t('details.noRecentReadings')}</Grid> }
         </Grid>
       </Grid>
 

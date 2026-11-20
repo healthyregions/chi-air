@@ -1,0 +1,169 @@
+{
+  "header": {
+    "title": "Acceda a recursos útiles sobre la calidad del aire",
+    "intro": "Esta lista de recursos sobre la calidad del aire incluye herramientas, repositorios de datos y redes de monitoreo pensados para el público en general, investigadores y responsables de políticas públicas, desde datos locales regulados por el gobierno hasta conjuntos de datos globales obtenidos por satélite."
+  },
+  "sectionHeader": {
+    "topRow": "Acceda a",
+    "bottomRowBlack": "recursos útiles sobre la",
+    "bottomRowRed": "calidad del aire",
+    "viewMap": "Ver Nuestro AirMap"
+  },
+  "categories": {
+    "all": "Todos",
+    "foundations": "Conceptos básicos",
+    "learning": "Recursos educativos",
+    "governance": "Gobierno municipal y reportes",
+    "supporting": "Mapas y recursos complementarios"
+  },
+  "cards": {
+    "outdoorAirQualityIntro": {
+      "name": "Introducción a la calidad del aire exterior",
+      "description": "Una introducción a la calidad del aire del Centro Nacional de Investigación Atmosférica (NCAR)."
+    },
+    "airQuality101": {
+      "name": "Calidad del aire 101",
+      "description": "Clases de la profesora Erdal de UIC sobre la calidad del aire."
+    },
+    "indoorAirQualityIntro": {
+      "name": "Introducción a la calidad del aire interior",
+      "description": "Las personas pasan el 90 % de su tiempo en interiores. Información básica sobre la calidad del aire interior."
+    },
+    "indoorAirQualityResources": {
+      "name": "Recursos sobre la calidad del aire interior",
+      "description": "La EPA de EE. UU. ofrece una lista de lecturas adicionales sobre la calidad del aire interior."
+    },
+    "naaqs": {
+      "name": "Normas Nacionales de Calidad del Aire Ambiental",
+      "description": "Normas Nacionales de Calidad del Aire Ambiental (NAAQS) de EE. UU."
+    },
+    "whoGuidelines": {
+      "name": "Directrices mundiales de la OMS sobre la calidad del aire",
+      "description": "Directrices mundiales de la Organización Mundial de la Salud sobre la calidad del aire."
+    },
+    "clarityMonitoring": {
+      "name": "Recursos de monitoreo de Clarity",
+      "description": "Recursos sobre el monitoreo de la calidad del aire de Clarity."
+    },
+    "aqiInformation": {
+      "name": "Información sobre el AQI",
+      "description": "Definiciones y límites de los distintos niveles de preocupación por la salud relacionados con el aire."
+    },
+    "airKnowledgeCourse": {
+      "name": "Curso Air Knowledge",
+      "description": "Profundice en el tema con este curso gratuito sobre los conceptos básicos de la calidad del aire."
+    },
+    "classroomActivities": {
+      "name": "Actividades sobre la calidad del aire para el aula",
+      "description": "Recursos didácticos para enseñar sobre la calidad del aire en el aula."
+    },
+    "buildYourOwnFilter": {
+      "name": "Construya su propio filtro",
+      "description": "Purificadores de aire caseros, con planes de clase."
+    },
+    "epaWebinars": {
+      "name": "Serie de seminarios web de la EPA",
+      "description": "Aprenda los fundamentos del monitoreo comunitario del aire."
+    },
+    "highSchoolCurriculum": {
+      "name": "Plan de estudios para preparatoria",
+      "description": "Plan de estudios sobre la calidad del aire de la Universidad de Washington para estudiantes de preparatoria."
+    },
+    "epaSensorToolbox": {
+      "name": "Caja de herramientas de sensores de aire de la EPA",
+      "description": "Guías de la EPA de EE. UU. sobre los sensores de calidad del aire y cómo interpretar sus lecturas."
+    },
+    "chi311": {
+      "name": "Chi 311",
+      "description": "Reporte posibles infracciones de calidad del aire en la Ciudad de Chicago."
+    },
+    "cumulativeImpactAssessment": {
+      "name": "Evaluación de Impacto Acumulativo de Chicago",
+      "description": "Un índice de justicia ambiental sobre impactos acumulativos que muestra las comunidades de Chicago más afectadas por la contaminación y más vulnerables a sus efectos."
+    },
+    "airQualityHealthReport2020": {
+      "name": "Informe de calidad del aire y salud 2020",
+      "description": "Informe de Chicago sobre la calidad del aire y la salud de 2020."
+    },
+    "airQualityOrdinance": {
+      "name": "Ordenanza de Calidad del Aire de Chicago",
+      "description": "Un resumen de la ordenanza de calidad del aire de Chicago."
+    },
+    "ejActionPlanReport": {
+      "name": "Informe del Plan de Acción de Justicia Ambiental de Chicago",
+      "description": "El plan de acción de justicia ambiental más reciente de Chicago, con actualizaciones."
+    },
+    "deptEnvironment": {
+      "name": "Departamento de Medio Ambiente y Sostenibilidad",
+      "description": "Departamento municipal dedicado a iniciativas ambientales centradas en la equidad y la sostenibilidad."
+    },
+    "cdph": {
+      "name": "Departamento de Salud Pública de Chicago",
+      "description": "El CDPH se enfoca en orientación, servicios y estrategias para hacer de Chicago una ciudad más sana y segura."
+    },
+    "openAirNetworkMap": {
+      "name": "Mapa municipal de la red Open Air",
+      "description": "Mapa de la Ciudad de Chicago con los sensores de la red Open Air."
+    },
+    "epaAirNow": {
+      "name": "EPA AirNow",
+      "description": "AirNow muestra la calidad del aire en su zona y también ofrece información sobre la calidad del aire a nivel estatal y nacional."
+    },
+    "purpleAir": {
+      "name": "PurpleAir",
+      "description": "Mapa en tiempo real de PurpleAir con concentraciones de PM2.5."
+    },
+    "ejIndexMap": {
+      "name": "Mapa del Índice de Justicia Ambiental de Chicago",
+      "description": "Mapa descargable del puntaje compuesto del Índice de Justicia Ambiental de la ciudad."
+    },
+    "ejScreen": {
+      "name": "EPA EJScreen",
+      "description": "Recreado por la Universidad de Harvard, ya que el sitio de la EPA ya no está activo."
+    },
+    "cdcEji": {
+      "name": "Índice de Justicia Ambiental de los CDC/ATSDR",
+      "description": "Recreado por la Universidad de Harvard, ya que el sitio de la EPA ya no está activo."
+    },
+    "chives": {
+      "name": "ChiVes: Explorando el medio ambiente de Chicago",
+      "description": "Una plataforma colaborativa de datos y mapeo comunitario para explorar el clima, el medio ambiente e indicadores clave del vecindario."
+    },
+    "healthAtlas": {
+      "name": "Chicago Health Atlas",
+      "description": "Un recurso para revisar, explorar y comparar datos de salud a lo largo del tiempo y entre comunidades."
+    },
+    "cejst": {
+      "name": "Herramienta de Evaluación de Justicia Climática y Económica",
+      "description": "Esta copia de la herramienta original de EE. UU. destaca medidas clave de justicia climática y ambiental para todos los sectores censales."
+    },
+    "policyMap": {
+      "name": "PolicyMap",
+      "description": "Plataforma de mapeo y análisis con sistema de información geográfica (SIG) en la nube, diseñada para ayudar a visualizar y comprender datos socioeconómicos, ambientales, de salud, de vivienda y más."
+    },
+    "gis101Toolkit": {
+      "name": "Kit de herramientas SIG 101",
+      "description": "Kit de herramientas SIG 101 para organizaciones y aliados de justicia ambiental, diseñado por el Center for Neighborhood Technology, LVEJO y Milwaukee Water Commons."
+    },
+    "sdohPlace": {
+      "name": "SDOH & Place",
+      "description": "Una iniciativa colaborativa que combina los determinantes sociales de la salud con datos geográficos y del vecindario para apoyar la investigación sobre equidad en salud y el desarrollo de herramientas comunitarias."
+    },
+    "uicSph": {
+      "name": "Escuela de Salud Pública de UIC",
+      "description": "La Escuela de Salud Pública de UIC se dedica a eliminar las disparidades en salud, a la salud ambiental y a la práctica comunitaria mediante investigación, educación y formulación de políticas públicas."
+    },
+    "uiucSese": {
+      "name": "Escuela de Tierra, Sociedad y Medio Ambiente de UIUC",
+      "description": "Sede de los departamentos de Ciencias del Clima, Geología y Geografía, SESE une las ciencias naturales y sociales para estudiar los sistemas de la Tierra, los impactos humanos y la sostenibilidad."
+    },
+    "uicCeche": {
+      "name": "Centro de Excelencia en Condiciones Extremas y Salud de UIC",
+      "description": "Reúne a investigadores de diversas disciplinas para impulsar investigaciones innovadoras sobre el clima extremo y la salud, y reducir los efectos de las condiciones extremas en la salud en entornos urbanos."
+    },
+    "healthyRegions": {
+      "name": "Healthy Regions & Policies Lab",
+      "description": "Conecta la ciencia de datos espaciales con la salud pública. Acceda a recursos gratuitos, kits de herramientas y ciclos de charlas sobre cómo medir y construir comunidades más saludables."
+    }
+  }
+}

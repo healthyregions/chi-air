@@ -1,0 +1,150 @@
+{
+  "common": {
+    "loadingPleaseWait": "Cargando, espere por favor..."
+  },
+  "variablePanel": {
+    "title": "Calidad del aire",
+    "intro": "Los puntos en el mapa muestran los valores de <strong>concentración másica</strong> de PM2.5 NowCast de nuestra red de sensores.",
+    "lastUpdated": "última actualización: {{date}} {{time}}",
+    "loadingData": "cargando datos...",
+    "toggle": "Variables"
+  },
+  "variables": {
+    "none": "Ninguno"
+  },
+  "description": {
+    "dataSource": "Fuente de datos",
+    "dataYear": "Año de los datos"
+  },
+  "overlays": {
+    "enabledLabel": "Capas:",
+    "categories": {
+      "communityBoundaries": "Límites comunitarios",
+      "communityResources": "Recursos comunitarios",
+      "builtInfrastructure": "Infraestructura construida"
+    }
+  },
+  "mapLayers": {
+    "title": "Agregar contexto de la comunidad",
+    "intro": "Personalice su vista para ver cómo la calidad del aire se relaciona con su comunidad. Explore distintos indicadores, recursos y límites.",
+    "indicators": {
+      "title": "Indicadores del vecindario",
+      "help": "Elija la medida principal que desea ver en el mapa. Solo puede elegir una."
+    },
+    "overlays": {
+      "title": "Sobreponer recursos adicionales",
+      "help": "Agregue límites, recursos e infraestructura. Le recomendamos seleccionar solo una opción de cada categoría para evitar saturar el mapa."
+    }
+  },
+  "colorScale": {
+    "title": {
+      "aqi": "Índice de calidad del aire de PM 2.5 de la EPA",
+      "pm25": "Material particulado fino",
+      "no2": "Dióxido de nitrógeno"
+    },
+    "tooltip": {
+      "aqi": "Índice de calidad del aire (AQI) de PM2.5 de la EPA",
+      "pm25": "Material particulado fino, de 2.5 micrómetros de diámetro o menos",
+      "no2": "Dióxido de nitrógeno"
+    },
+    "levelOfHealthConcern": "Nivel de preocupación por la salud",
+    "report": "Informe"
+  },
+  "colorCoding": {
+    "title": {
+      "aqi": "Código de colores de la calidad del aire",
+      "pm25": "Código de colores de PM2.5",
+      "no2": "Código de colores de NO₂"
+    },
+    "body": {
+      "aqi": "La escala de colores del <strong>Índice de calidad del aire (AQI)</strong> es un sistema estandarizado de seis colores, de 0 a 500, que se usa para comunicar los riesgos para la salud causados por la contaminación del aire. Los colores van del verde (bueno) al granate (peligroso); los números más altos y los colores más cálidos indican mayores niveles de contaminación y mayores riesgos para la salud.",
+      "pm25": "La escala de colores de <strong>PM2.5</strong> muestra las concentraciones de material particulado fino en microgramos por metro cúbico (μg/m³). Los colores van del verde (bueno) al granate (peligroso); los valores más altos indican mayores riesgos para la salud.",
+      "no2": "La escala de colores de <strong>NO₂</strong> muestra las concentraciones de dióxido de nitrógeno en partes por mil millones (ppb). El NO₂ es un gas muy reactivo, de color marrón rojizo y olor penetrante, que sirve como indicador principal de la contaminación del aire causada por fuentes de combustión, como el tráfico y las centrales eléctricas."
+    }
+  },
+  "sensor": {
+    "offline": "Sensor sin conexión en este momento",
+    "unavailable": "No disponible",
+    "linkCopied": "Enlace copiado",
+    "copyLink": "Copiar enlace",
+    "exploreHistorical": "Explorar tendencias históricas y descargar"
+  },
+  "lastUpdated": {
+    "tooltip": "Se actualiza cada hora: {{date}}",
+    "updated": "actualizado",
+    "updating": "actualizando",
+    "loading": "Cargando",
+    "pleaseWait": "Espere por favor..."
+  },
+  "breadcrumbs": {
+    "details": "Detalles",
+    "explain": "Explicación"
+  },
+  "details": {
+    "explain": "Explicación",
+    "historicalTrends": "Tendencias históricas",
+    "download": "Descargar",
+    "downloadSession": "Descarga todos los datos de la sesión actual",
+    "downloadIndicator": "Descarga todos los datos del indicador actual",
+    "indicator": "Indicador",
+    "viewBy": "Ver por",
+    "averageType": {
+      "hour": "Hora",
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes",
+      "season": "Estación",
+      "year": "Año"
+    },
+    "noRecentReadings": "No se encontraron lecturas recientes."
+  },
+  "explain": {
+    "aqi": {
+      "title": "Índice de calidad del aire (AQI) de la EPA",
+      "body": "El Índice de calidad del aire (AQI) es una escala de 0 a 500 con código de colores que se usa para comunicar qué tan contaminado está el aire y el nivel de preocupación por la salud asociado. Los valores más altos del AQI indican mayores niveles de contaminación y mayores riesgos para la salud. Un AQI menor de 100 generalmente se considera seguro, mientras que los valores mayores de 100 indican aire poco saludable, sobre todo para los grupos sensibles."
+    },
+    "pm25": {
+      "title": "PM2.5 – Material particulado fino",
+      "body": "PM2.5 se refiere al material particulado fino: pequeñas partículas sólidas y gotitas líquidas en el aire con un diámetro aerodinámico de 2.5 micrómetros o menos. Para darse una idea de su tamaño, un cabello humano mide unos 70 micrómetros de ancho, por lo que la partícula de PM2.5 más grande es 30 veces más pequeña que el ancho de un cabello. El PM2.5 se emite al aire desde muchas fuentes, como obras de construcción, caminos sin pavimentar, campos, chimeneas industriales, incendios o cualquier fuente de combustión. Como contaminante del aire “de criterio”, está regulado debido a sus efectos comprobados en la salud respiratoria y cardiovascular. Las personas con enfermedades del corazón o de los pulmones, los niños, los adultos mayores, las minorías y las poblaciones de bajo nivel socioeconómico se consideran en mayor riesgo porque son más sensibles o pueden tener mayores exposiciones."
+    },
+    "no2": {
+      "title": "NO₂ - Dióxido de nitrógeno",
+      "body": "El dióxido de nitrógeno (NO₂) es un gas muy reactivo, de color marrón rojizo y olor penetrante, que funciona como indicador principal de la contaminación del aire relacionada con el tráfico y es un componente clave del smog. Se emite principalmente al quemar combustibles en vehículos, centrales eléctricas e instalaciones industriales. Como contaminante del aire “de criterio”, está estrictamente regulado por su papel en las enfermedades respiratorias, en particular el asma, y por contribuir a la formación de material particulado PM2.5 y de ozono a nivel del suelo."
+    }
+  },
+  "selectedArea": {
+    "sensorsInLocation": "Sensores en esta ubicación",
+    "name": "Nombre"
+  },
+  "areaSelection": {
+    "findHeader": "<strong>Busque</strong> su comunidad, código postal o distrito electoral",
+    "tabs": {
+      "community": "Área comunitaria",
+      "zip": "Código postal",
+      "zipCode": "Código postal",
+      "ward": "Distrito"
+    },
+    "wardOption": "Distrito electoral {{number}}",
+    "search": "Buscar",
+    "noOptions": "No hay opciones",
+    "close": "Cerrar",
+    "clear": "Borrar selección",
+    "labels": {
+      "community": "Área comunitaria:",
+      "zipCode": "Código postal:",
+      "ward": "Distrito electoral:"
+    }
+  },
+  "chart": {
+    "startOfWeek": "Inicio de la semana",
+    "error": "ERROR",
+    "unknown": "Desconocido",
+    "seasons": {
+      "winter": "Invierno",
+      "spring": "Primavera",
+      "summer": "Verano",
+      "fall": "Otoño",
+      "autumn": "Otoño"
+    }
+  }
+}

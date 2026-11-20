@@ -1,0 +1,80 @@
+{
+  "loading": "Cargando...",
+  "dataPanel": {
+    "logoAlt": "Calidad del aire de Chicago",
+    "goHomeTitle": "Ir a la página de inicio",
+    "home": "Inicio",
+    "addCommunityContext": "Agregar contexto de la comunidad",
+    "indicator": "Indicador",
+    "whatIsParam": "¿Qué es {{param}}?"
+  },
+  "geocoder": {
+    "header": "<strong>Buscar</strong> cualquier dirección de Chicago",
+    "placeholder": "Buscar una dirección..."
+  },
+  "legend": {
+    "displacement": {
+      "notVulnerable": "No vulnerable",
+      "vulnerablePricesNotRising": "Vulnerable, precios sin aumentar",
+      "vulnerablePricesRising": "Vulnerable, precios en aumento"
+    }
+  },
+  "mapControls": {
+    "geolocate": "Mostrar mi ubicación",
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "resetTilt": "Restablecer inclinación"
+  },
+  "markerPopup": {
+    "address": "Dirección: {{address}}",
+    "monitorsFor": "Monitorea: {{monitors}}"
+  },
+  "sensorPopup": {
+    "arraysUnsupported": "Listas no compatibles: {{key}}",
+    "objectsUnsupported": "Objetos no compatibles: {{key}}"
+  },
+  "overlayPopup": {
+    "yes": "Sí",
+    "no": "No",
+    "fields": {
+      "site_description": "Descripción del sitio",
+      "owner": "Propietario",
+      "address": "Dirección",
+      "monitors": "Monitorea",
+      "Short_Name": "Nombre",
+      "Grade_Cat": "Categoría de grados",
+      "School_ID": "ID de la escuela",
+      "Address": "Dirección"
+    }
+  },
+  "neighborhoodCounts": {
+    "clear": "borrar"
+  },
+  "tractTooltip": {
+    "title": "Sector censal {{geoid}}",
+    "population": "Población",
+    "numberOfTrees": "Número de árboles",
+    "percentCanopyCover": "Porcentaje de cobertura arbórea",
+    "surfaceTempPercentile": "Percentil de temperatura de la superficie",
+    "urbanFloodSusceptibility": "Índice de susceptibilidad a inundaciones urbanas",
+    "loggedTrafficVolume": "Volumen de tráfico (logarítmico)",
+    "socialVulnerabilityIndex": "Índice de vulnerabilidad social",
+    "childhoodAsthmaRate": "Tasa de asma infantil",
+    "vegetationIndex": "Índice de vegetación (NDVI)",
+    "plantBiodiversity": "Biodiversidad vegetal",
+    "percentHolcGradeA": "Porcentaje con calificación HOLC A",
+    "percentHolcGradeB": "Porcentaje con calificación HOLC B",
+    "percentHolcGradeC": "Porcentaje con calificación HOLC C",
+    "percentHolcGradeD": "Porcentaje con calificación HOLC D",
+    "percentSeniors": "Porcentaje de personas mayores",
+    "percentChildren": "Porcentaje de niños",
+    "percentAsian": "Porcentaje que se identifica como asiático",
+    "percentBlack": "Porcentaje que se identifica como negro o afroamericano",
+    "percentNativeAmerican": "Porcentaje que se identifica como nativo americano o indígena",
+    "percentPacificIslander": "Porcentaje que se identifica como nativo de Hawái u otras islas del Pacífico",
+    "percentWhite": "Porcentaje que se identifica como blanco",
+    "percentOtherRaces": "Porcentaje que se identifica con otras razas",
+    "percentHispanic": "Porcentaje que se identifica como hispano o latino",
+    "customIndex": "Índice personalizado"
+  }
+}

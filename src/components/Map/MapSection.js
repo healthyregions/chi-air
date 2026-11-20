@@ -42,6 +42,7 @@ import {
 import {useSearchParams} from "react-router-dom";
 import {getBoundariesPath, getFeature} from "../VariablePanel/common";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {useTranslation} from "react-i18next";
 
 function DeckGLOverlay(props) {
   const overlay = useControl(() => new MapboxOverlay(props));
@@ -188,6 +189,7 @@ const NavInlineButton = styled.button`
 function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn = () => {}, bounds, geoids = [], showSearch = true, showCustom = false }) {
   const dispatch = useDispatch();
   const largeScreen = useMediaQuery('(min-width: 600px)');
+  const { t } = useTranslation('map');
 
   const [searchParams, setSearchParams] = useSearchParams();
   const lon = searchParams.get('lon');
@@ -908,7 +910,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
     return object && (object.title) &&
         (`${object.title} (${object.owner})\n` +
             (`${object.address}\n`) +
-            (`Monitors for: ${object.monitors.join(', ')}\n`));
+            (`${t('markerPopup.monitorsFor', { monitors: object.monitors.join(', ') })}\n`));
   }
 
   const geocoderLayers = useMemo(() => {
@@ -1073,7 +1075,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         <MapButtonContainer $infoPanel={panelState.info}>
           <NavInlineButtonGroup>
             <NavInlineButton
-              title="Geolocate"
+              title={t('mapControls.geolocate')}
               id="geolocate"
               onClick={() => handleGeolocate()}
             >
@@ -1083,21 +1085,21 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
 
           <NavInlineButtonGroup>
             <NavInlineButton
-              title="Zoom In"
+              title={t('mapControls.zoomIn')}
               id="zoomIn"
               onClick={() => handleZoom(0.5)}
             >
               {SVG.plus}
             </NavInlineButton>
             <NavInlineButton
-              title="Zoom Out"
+              title={t('mapControls.zoomOut')}
               id="zoomOut"
               onClick={() => handleZoom(-0.5)}
             >
               {SVG.minus}
             </NavInlineButton>
             <NavInlineButton
-              title="Reset Tilt"
+              title={t('mapControls.resetTilt')}
               id="resetTilt"
               $tilted={mapIsTilted}
               onClick={() => resetTilt()}
@@ -1111,7 +1113,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
         <GeocoderContainer>
           <Geocoder
             id="Geocoder"
-            placeholder={"Search for address..."}
+            placeholder={t('geocoder.placeholder')}
             API_KEY={MAPBOX_ACCESS_TOKEN}
             onChange={handleGeocoder}
             height={36}
@@ -1165,11 +1167,11 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
               if (typeof value === 'object' && value?.sort) {
                 return (
                   <div key={`sensor-popup-${key}`}>
-                    Arrays Unsupported: {key}
+                    {t('sensorPopup.arraysUnsupported', { key })}
                   </div>
                 );
               } else if (typeof value === 'object' && !value?.sort) {
-                return (<div key={`sensor-popup-${key}`}>Objects Unsupported: {key}</div>);
+                return (<div key={`sensor-popup-${key}`}>{t('sensorPopup.objectsUnsupported', { key })}</div>);
               }
               return <li key={`sensor-popup-${key}`}>{key}: {value}</li>
             })}

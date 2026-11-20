@@ -6,11 +6,14 @@ import VariableDescriptionDisplay from "../VariableDescriptionDisplay";
 //import {LButton, LHeader, SensorValueLabelTooltip, SGBody} from "../common";
 import {LButton, LHeader, SGBody} from "../common";
 import OverlaysDescriptionDisplay from "../OverlaysDescriptionDisplay";
+import {useTranslation} from "react-i18next";
 //import Tooltip from "@mui/material/Tooltip";
 
 
 
 export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
+
+  const { t } = useTranslation('panel');
 
   // Page selector logic for navigating the panel via breadcrumbs and links
   const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -23,20 +26,19 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
       </LButton></Grid>
 
       {currentPage === 'Map Layers' && <Grid size={11}>
-        <LHeader>Add Community Context</LHeader>
+        <LHeader>{t('mapLayers.title')}</LHeader>
 
         <SGBody style={{ margin: '0.5rem 0' }}>
-          Customize your view to see how air quality intersects with
-          your community. Explore different indicators, resources, and boundaries.
+          {t('mapLayers.intro')}
         </SGBody>
 
 
 
         <Grid size={9}>
 
-          <LHeader style={{ fontSize: '18px' }}>Neighborhood Indicators</LHeader><br></br>
+          <LHeader style={{ fontSize: '18px' }}>{t('mapLayers.indicators.title')}</LHeader><br></br>
 
-          <SGBody style={{ fontSize: '12px' }}>Choose the main measure you want to view on the map. You may only choose one.</SGBody>
+          <SGBody style={{ fontSize: '12px' }}>{t('mapLayers.indicators.help')}</SGBody>
 
           {/* <SGBody> */}
 
@@ -63,10 +65,9 @@ export const MapLayersPanel = ({ push, pop, breadcrumbs }) => {
             {/*</Button>*/}
           {/* </SGBody> */}
 
-          <LHeader style={{ fontSize: '18px' }}>Overlay Additional Resources</LHeader><br></br>
+          <LHeader style={{ fontSize: '18px' }}>{t('mapLayers.overlays.title')}</LHeader><br></br>
 
-          <SGBody style={{ fontSize: '12px' }}>Add boundaries, resources, & infrastructure.
-            We recommend selecting only one option from each category, to avoid clutter.</SGBody>
+          <SGBody style={{ fontSize: '12px' }}>{t('mapLayers.overlays.help')}</SGBody>
           <OverlaysDropdown></OverlaysDropdown>
           <OverlaysDescriptionDisplay style={{ marginTop: '1.5rem' }}></OverlaysDescriptionDisplay>
         </Grid>

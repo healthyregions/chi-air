@@ -1,0 +1,30 @@
+{
+  "title": "Contáctenos",
+  "intro": "¿Tuvo algún problema? ¿Desea compartir comentarios o sugerencias de funciones?",
+  "form": {
+    "messageType": "Tipo de mensaje",
+    "name": "Nombre",
+    "namePlaceholder": "Su nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono (opcional)",
+    "message": "Mensaje",
+    "messagePlaceholder": "Su mensaje...",
+    "send": "Enviar",
+    "sentConfirmation": "Sus comentarios se han enviado"
+  },
+  "messageTypes": {
+    "general": "General",
+    "bugReport": "Informe de falla o error",
+    "dataQuestion": "Pregunta sobre los datos",
+    "featureRequest": "Solicitud de función",
+    "technical": "Preguntas técnicas o de código abierto",
+    "press": "Prensa o medios de comunicación"
+  },
+  "errors": {
+    "nameRequired": "El nombre es obligatorio",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "emailInvalid": "Debe ser un correo electrónico válido",
+    "phoneInvalid": "Debe ser un número de teléfono válido",
+    "messageRequired": "Por favor, escriba su mensaje"
+  }
+}

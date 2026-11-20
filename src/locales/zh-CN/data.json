@@ -1,0 +1,154 @@
+{
+  "categories": {
+    "Heat Indicator": {
+      "name": "高温指标"
+    },
+    "Social & Economic": {
+      "name": "社会与经济"
+    },
+    "Ecology & Greenness": {
+      "name": "生态与绿化"
+    },
+    "Built Environment": {
+      "name": "建成环境"
+    }
+  },
+  "variables": {
+    "MEAN_TEMP": {
+      "Variable Name": "气温",
+      "Description": "该指标显示 2023 年 7 月 28 日芝加哥各人口普查区的平均环境气温（华氏度）。这些数据来自一项由政府机构、学术界和社区成员共同参与的项目，旨在对当时一年中最热一天的城市热岛进行建模。",
+      "Data Source(s)": "Cool Chi/Heat Watch Chicago",
+      "Original Scale": "人口普查区",
+      "listGroup": "高温指标"
+    },
+    "CEJI": {
+      "Variable Name": "芝加哥环境正义指数",
+      "Description": "芝加哥环境正义指数是一项综合评分，衡量累积影响，反映受污染负担最重、最易受其影响的社区。数值越高，表示负担和脆弱性越大。",
+      "Data Source(s)": "芝加哥公共卫生局",
+      "Original Scale": "人口普查区",
+      "listGroup": "社会与经济"
+    },
+    "hardship": {
+      "Variable Name": "经济困难指数",
+      "Description": "经济困难由六项指标构成的综合指数衡量：失业、抚养负担、教育、收入、住房拥挤和贫困。数值越高，表示社区层面的经济困难越大。",
+      "Data Source(s)": "美国社区调查（American Community Survey），经由 HeRoP Lab 处理；Nathan 和 Adams（1976）",
+      "Original Scale": "人口普查区",
+      "listGroup": "社会与经济"
+    },
+    "treeCCov17": {
+      "Variable Name": "树冠覆盖",
+      "Description": "增加树冠覆盖等绿色基础设施可以减轻空气污染和极端高温的负面影响。该指标估算 2017 年各人口普查区总面积中被树冠覆盖的百分比。研究人员利用激光雷达（LiDAR）技术和多个地理处理步骤，生成了表示树枝和树叶覆盖范围的网格表面，最终结果再汇总为各人口普查区的树冠覆盖百分比。",
+      "Data Source(s)": "原始数据来自 Chicago Region Trees Initiative（CRTI），由 The Morton Arboretum、美国林务局和 American Forest 资助。由 HeRoP Lab 汇总至人口普查区。",
+      "Original Scale": "1 米网格",
+      "listGroup": "生态与绿化"
+    },
+    "primary_grade_4levels": {
+      "Variable Name": "历史红线政策",
+      "Description": "美国城市的红线地图最初由房主贷款公司（Home Owners’ Loan Corporation，HOLC）于 20 世纪 30 年代绘制。每个社区被划入四个类别之一：A -“最佳”、B -“仍然理想”、C -“明显衰退”或 D -“危险”。该变量显示在每个人口普查区内被划分面积最大的类别，仅适用于超过 50% 面积已被分类的人口普查区。被标记为 C 或 D 的地区的居民经常被拒绝提供金融及其他服务，针对这些地区的歧视遗留问题至今仍有实际影响。",
+      "Data Source(s)": "URichmond DSL",
+      "Original Scale": "人口普查区",
+      "listGroup": "建成环境"
+    }
+  },
+  "overlayCategories": {
+    "Community Boundary": {
+      "name": "社区边界"
+    },
+    "Community Resource": {
+      "name": "社区资源"
+    },
+    "Built Infrastructure": {
+      "name": "建成基础设施"
+    }
+  },
+  "overlays": {
+    "community_areas": {
+      "displayName": "社区区域",
+      "description": "社区区域",
+      "descriptionDetail": "芝加哥市使用 77 个社区区域来划分其边界。这些社区区域最初由芝加哥大学的研究人员在 20 世纪 20 年代设计，用于跟踪人口普查和社会统计数据，数十年来一直沿用以保持稳定性。",
+      "descriptionSource": "芝加哥市数据门户"
+    },
+    "zip_codes": {
+      "displayName": "邮政编码",
+      "description": "邮政编码",
+      "descriptionDetail": "芝加哥的邮政编码通常以 606 开头，对应美国邮政服务的投递路线。",
+      "descriptionSource": "芝加哥市数据门户"
+    },
+    "wards": {
+      "displayName": "选区",
+      "description": "选区",
+      "descriptionDetail": "选区（ward）是芝加哥的政治边界或立法区，每个选区由一名市议员（alderman）负责。",
+      "descriptionSource": "芝加哥市数据门户"
+    },
+    "aq-monitoring-sites": {
+      "displayName": "EPA 监测站",
+      "description": "EPA 空气质量监测站",
+      "descriptionDetail": "这些由美国环境保护署（EPA）设立的监测站记录芝加哥全市的主要空气污染物，提供颗粒物（小于 2.5 微米）和二氧化氮的“黄金标准”测量数据。",
+      "descriptionSource": "美国环境保护署（EPA）",
+      "popupContent": {
+        "site_description": "站点描述",
+        "owner": "所有者",
+        "address": "地址",
+        "monitors": "监测项目"
+      }
+    },
+    "non-res": {
+      "displayName": "部分土地用途与分区类型",
+      "description": "工业及非住宅分区",
+      "descriptionDetail": "CMAP 提供芝加哥市及周边地区基于地块的土地利用清单和开发数据。此图层选取了分区为“工业”或“非住宅”的地点，突出显示可能成为区域性排放源的位置。",
+      "descriptionSource": "芝加哥都市规划署（CMAP）"
+    },
+    "impervious-surfaces": {
+      "displayName": "部分工业建成基础设施",
+      "description": "机场和工业基础设施",
+      "descriptionDetail": "此图层提取了被标记为机场或工业区的建筑物和地点，展示工业及部分交通基础设施。这些区域也可能是区域性排放源，并且根据地表类型，可能形成局部热岛。",
+      "descriptionSource": "OpenStreetMap"
+    },
+    "public-schools": {
+      "displayName": "公立学校",
+      "description": "芝加哥公立学校",
+      "descriptionDetail": "芝加哥公立学校为芝加哥的孩子们提供学习机会和健康的空间。您可以按类型浏览学校，并点击地图查看更多详情。",
+      "descriptionSource": "芝加哥市数据门户",
+      "legend": {
+        "Elementary School": "小学",
+        "Highschool": "高中"
+      },
+      "popupContent": {
+        "Short_Name": "名称",
+        "Grade_Cat": "年级类别",
+        "School_ID": "学校编号",
+        "Address": "地址"
+      }
+    }
+  },
+  "baseLayers": {
+    "Parks & Forest Preserves": {
+      "Variable Name": "公园和森林保护区",
+      "Original Scale": "公园边界"
+    },
+    "Building Footprints": {
+      "Variable Name": "建筑轮廓",
+      "Original Scale": "建筑轮廓"
+    }
+  },
+  "aqiLevels": {
+    "Good": {
+      "label": "良好"
+    },
+    "Moderate": {
+      "label": "中等"
+    },
+    "Unhealthy for Sensitive Groups": {
+      "label": "对敏感人群不健康"
+    },
+    "Unhealthy": {
+      "label": "不健康"
+    },
+    "Very Unhealthy": {
+      "label": "非常不健康"
+    },
+    "Hazardous": {
+      "label": "危险"
+    }
+  }
+}

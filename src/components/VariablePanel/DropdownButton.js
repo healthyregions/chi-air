@@ -18,9 +18,10 @@ export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = 
   const handleClose = () => setAnchorEl(null);
 
   // Handle user selecting an option from the list: close the menu and call the handler
-  const handleChange = (e) => {
-    const found = displayOps?.find(o => o.label === e?.target?.textContent || o === e?.target?.textContent)
-    onChange && onChange(found?.value || found);
+  // Options may be plain strings or {label, value} objects; we resolve by the option itself
+  // (never by its displayed text), so translated labels always map back to the right value.
+  const handleChange = (op) => {
+    onChange && onChange(op?.value ?? op);
     handleClose();
   };
 
@@ -80,9 +81,8 @@ export const DropdownButton = ({ className = '', size, icon=undefined, onOpen = 
           }}
         >
           {displayOps?.map((op, index) =>
-            <MenuItem as={LButton} key={`dropdown-button-${op}-${index}`}
-                      onClick={handleChange}
-                      className={'notranslate'}
+            <MenuItem as={LButton} key={`dropdown-button-${op?.value ?? op}-${index}`}
+                      onClick={() => handleChange(op)}
                       value={op?.value}>
               {op?.label || op}
             </MenuItem>

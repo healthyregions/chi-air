@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "kicker": "基于 <platform>{{platformName}}</platform> 打造",
+    "tagline": "与芝加哥共建，为芝加哥服务。",
+    "body": "空气污染往往看不见，但它的影响是真实存在的。现在，每个社区、每位芝加哥居民都能获取实时空气质量数据，确保您和您的家人拥有所需的信息，呼吸更安心。",
+    "exploreMap": "浏览地图"
+  },
+  "resourcesSection": {
+    "topRow": "获取实用的",
+    "bottomRowBlack": "空气质量",
+    "bottomRowRed": "资源",
+    "viewAll": "查看全部资源"
+  },
+  "resources": {
+    "whatIsAirQuality": {
+      "name": "什么是空气质量？",
+      "description": "美国国家大气研究中心（NCAR）提供的空气质量入门介绍。"
+    },
+    "airNow": {
+      "name": "AirNow",
+      "description": "AirNow 重点显示您所在地区的空气质量，同时提供州级和全国范围的视图。"
+    },
+    "reportAirPollution": {
+      "name": "举报空气污染",
+      "description": "举报芝加哥市内疑似违反空气质量规定的行为。"
+    },
+    "airQualityOrdinance": {
+      "name": "芝加哥空气质量条例",
+      "description": "《空气质量条例》对某些产生空气污染的设施的建设和扩建进行监管。"
+    },
+    "openAirChicago": {
+      "name": "{{platformName}}",
+      "description": "访问芝加哥市政府关于 {{platformName}} 的网站，包括地图和数据。"
+    },
+    "healthAtlas": {
+      "name": "Chicago Health Atlas",
+      "description": "用于查看、探索和比较不同时间、不同社区健康相关数据的资源。"
+    },
+    "chives": {
+      "name": "ChiVes：探索芝加哥",
+      "description": "芝加哥数据协作与社区地图平台，提供环境、气候和社区指标。"
+    }
+  },
+  "viewAllCard": {
+    "title": "查看全部资源",
+    "description": "探索更多学习资料和教案，获取报告，并浏览更多地图。"
+  },
+  "network": {
+    "topRow": "依托一个",
+    "bottomRowBlack": "创纪录的",
+    "bottomRowRed": "监测网络",
+    "paragraph1": "传统监测站之间相距数英里，无法捕捉影响我们社区特定街区的污染热点。为弥补这一不足，我们创建了“{{platformName}} 网络”，在全市部署了 {{sensorCount}} 个 Clarity Node-S 传感器，用于测量环境空气中的细颗粒物（PM2.5）和二氧化氮（NO2）。{{platformName}} 由伊利诺伊大学芝加哥分校（UIC）与芝加哥公共卫生局（CDPH）共同拥有。",
+    "paragraph2": "在部署时，<link>{{platformName}} <icon/></link> 平台运营着全美最大的基于传感器的空气监测网络，为环境正义树立了新标准，将精细的科研级数据提供给最需要的人。",
+    "paragraph3": "本地图应用在此基础上更进一步，通过与社区及跨部门的合作开发，确保数据易于获取、公开透明、结合实际背景，并可直接用于政策制定、社区赋权和倡导工作。我们将持续完善仪表板，并逐步增加更多资源。我们欢迎来自科学界、监管机构和社区的意见。<link>进一步了解我们 →</link>"
+  }
+}

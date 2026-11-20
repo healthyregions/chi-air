@@ -11,6 +11,8 @@ import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
 import {LHeader} from "./common";
 import OverlaysColorLegend from "./OverlaysColorLegend";
 import Legend from "../Map/Legend";
+import {useTranslation} from "react-i18next";
+import useConfigText from "../../i18n/useConfigText";
 
 //// Styled components CSS
 // Main container for entire panel
@@ -79,7 +81,7 @@ const ColorScaleContainer = styled.div`
             position: relative;
             top:-17px;
             transition:500ms all;
-            content: 'Report';
+            content: ${({ $reportLabel }) => JSON.stringify($reportLabel || '')};
             right:50px;
             z-index:4;
         }
@@ -122,30 +124,32 @@ export const AQColorScale = () => {
   const selectedParameter = useSelector(selectSensorParameter);
   const largeScreen = useMediaQuery('(min-width: 600px)');
   const mapParams = useSelector(selectMapParams);
+  const { t } = useTranslation('panel');
+  const tc = useConfigText();
 
   const handleOpenClose = () => dispatch(setPanelState({ key: !panelState.key }));
 
   return (
-    <ColorScaleContainer $large={largeScreen} $open={panelState.key}>
+    <ColorScaleContainer $large={largeScreen} $open={panelState.key} $reportLabel={t('colorScale.report')}>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200 }} justifyContent={'center'}>
         <Grid justifyContent={'end'}>
-          {selectedParameter === 'nowcast_aqi' && <LHeader>EPA PM 2.5 Air Quality Index</LHeader>}
-          {selectedParameter === 'clarity_pm25' && <LHeader>Fine Particulate Matter </LHeader>}
-          {selectedParameter === 'clarity_no2' && <LHeader>Nitrogen Dioxide</LHeader>}
+          {selectedParameter === 'nowcast_aqi' && <LHeader>{t('colorScale.title.aqi')}</LHeader>}
+          {selectedParameter === 'clarity_pm25' && <LHeader>{t('colorScale.title.pm25')}</LHeader>}
+          {selectedParameter === 'clarity_no2' && <LHeader>{t('colorScale.title.no2')}</LHeader>}
         </Grid>
       </Grid>
       <Grid container spacing={0} style={{ fontFamily: 'Lexend', fontWeight: 200, marginBottom: '1rem', marginTop:'0.5rem' }}>
         {selectedParameter === 'nowcast_aqi' && <Grid size={3} style={{ textAlign: 'right' }}>
-          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'EPA’s PM2.5 Air Quality Index (AQI)'}>AQI-PM2.5</Tooltip>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={t('colorScale.tooltip.aqi')}>AQI-PM2.5</Tooltip>
         </Grid>}
         {selectedParameter === 'clarity_pm25' && <Grid size={3} style={{ textAlign: 'right' }}>
-          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Particle Matter from fine particulates, 2.5 micrometers or less in diameter'}>PM2.5</Tooltip>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={t('colorScale.tooltip.pm25')}>PM2.5</Tooltip>
         </Grid>}
         {selectedParameter === 'clarity_no2' && <Grid size={3} style={{ textAlign: 'right' }}>
-          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={'Nitrogen Dioxide'}>NO₂</Tooltip>
+          <Tooltip arrow={true} placement={'top'} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted' }} title={t('colorScale.tooltip.no2')}>NO₂</Tooltip>
         </Grid>}
         <Grid size={1}></Grid>
-        <Grid size={8}>Level of Health Concern</Grid>
+        <Grid size={8}>{t('colorScale.levelOfHealthConcern')}</Grid>
       </Grid>
 
       { pm2_5Ranges?.map(({ pm25_min, pm25_max, aqi_min, aqi_max, no2_min, no2_max, label, color, border}, index) =>
@@ -167,7 +171,7 @@ export const AQColorScale = () => {
             ></span>
           </Grid>
           <Grid size={8}>
-            <span style={{padding:0, margin:'0 0 0 .25em', fontWeight: 800, color: (label === 'Good' || label === 'Moderate') ? border : color}}>{label}</span>
+            <span style={{padding:0, margin:'0 0 0 .25em', fontWeight: 800, color: (label === 'Good' || label === 'Moderate') ? border : color}}>{tc('aqiLevels', label, 'label', label)}</span>
           </Grid>
         </Grid>
       )}

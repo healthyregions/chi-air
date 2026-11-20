@@ -1,0 +1,150 @@
+{
+  "common": {
+    "loadingPleaseWait": "正在加载，请稍候..."
+  },
+  "variablePanel": {
+    "title": "空气质量",
+    "intro": "地图上的点显示我们传感器网络测得的 PM2.5 NowCast <strong>质量浓度</strong>数值。",
+    "lastUpdated": "最近更新：{{date}} {{time}}",
+    "loadingData": "正在加载数据...",
+    "toggle": "变量"
+  },
+  "variables": {
+    "none": "无"
+  },
+  "description": {
+    "dataSource": "数据来源",
+    "dataYear": "数据年份"
+  },
+  "overlays": {
+    "enabledLabel": "叠加图层：",
+    "categories": {
+      "communityBoundaries": "社区边界",
+      "communityResources": "社区资源",
+      "builtInfrastructure": "建成基础设施"
+    }
+  },
+  "mapLayers": {
+    "title": "添加社区背景信息",
+    "intro": "自定义您的视图，了解空气质量与您所在社区的关系。探索不同的指标、资源和边界。",
+    "indicators": {
+      "title": "社区指标",
+      "help": "选择您想在地图上查看的主要指标。只能选择一项。"
+    },
+    "overlays": {
+      "title": "叠加其他资源",
+      "help": "添加边界、资源和基础设施。为避免地图过于杂乱，建议每个类别只选择一项。"
+    }
+  },
+  "colorScale": {
+    "title": {
+      "aqi": "EPA PM 2.5 空气质量指数",
+      "pm25": "细颗粒物",
+      "no2": "二氧化氮"
+    },
+    "tooltip": {
+      "aqi": "EPA 的 PM2.5 空气质量指数（AQI）",
+      "pm25": "细颗粒物，直径为 2.5 微米或更小的颗粒",
+      "no2": "二氧化氮"
+    },
+    "levelOfHealthConcern": "健康关注程度",
+    "report": "报告"
+  },
+  "colorCoding": {
+    "title": {
+      "aqi": "空气质量颜色编码",
+      "pm25": "PM2.5 颜色编码",
+      "no2": "NO₂ 颜色编码"
+    },
+    "body": {
+      "aqi": "<strong>空气质量指数（AQI）</strong>颜色等级是一套标准化的六色、0-500 系统，用于传达空气污染带来的健康风险。颜色从绿色（良好）到褐红色（危险），数值越高、颜色越暖，表示污染程度越高、健康风险越大。",
+      "pm25": "<strong>PM2.5</strong> 颜色等级显示细颗粒物的浓度，单位为微克每立方米（μg/m³）。颜色从绿色（良好）到褐红色（危险），数值越高表示健康风险越大。",
+      "no2": "<strong>NO₂</strong> 颜色等级显示二氧化氮的浓度，单位为十亿分之一（ppb）。NO₂ 是一种高活性、有刺激性气味的红褐色气体，是交通和发电厂等燃烧源造成空气污染的主要指标。"
+    }
+  },
+  "sensor": {
+    "offline": "传感器当前离线",
+    "unavailable": "不可用",
+    "linkCopied": "链接已复制",
+    "copyLink": "复制链接",
+    "exploreHistorical": "查看历史趋势并下载"
+  },
+  "lastUpdated": {
+    "tooltip": "每小时更新：{{date}}",
+    "updated": "已更新",
+    "updating": "正在更新",
+    "loading": "正在加载",
+    "pleaseWait": "请稍候..."
+  },
+  "breadcrumbs": {
+    "details": "详情",
+    "explain": "说明"
+  },
+  "details": {
+    "explain": "说明",
+    "historicalTrends": "历史趋势",
+    "download": "下载",
+    "downloadSession": "下载当前会话的所有数据",
+    "downloadIndicator": "下载当前指标的所有数据",
+    "indicator": "指标",
+    "viewBy": "查看方式",
+    "averageType": {
+      "hour": "小时",
+      "day": "日",
+      "week": "周",
+      "month": "月",
+      "season": "季节",
+      "year": "年"
+    },
+    "noRecentReadings": "未找到最近的读数。"
+  },
+  "explain": {
+    "aqi": {
+      "title": "EPA 空气质量指数（AQI）",
+      "body": "空气质量指数（AQI）是一个 0–500 的颜色编码等级，用于说明空气污染的程度及相应的健康关注程度。AQI 数值越高，表示污染程度越高、健康风险越大。AQI 低于 100 通常是安全的，而高于 100 则表示空气不健康，尤其是对敏感人群。"
+    },
+    "pm25": {
+      "title": "PM2.5 – 细颗粒物",
+      "body": "PM2.5 指细颗粒物，即空气中空气动力学直径为 2.5 微米或更小的微小固体颗粒和液滴。打个比方，一根人类头发的宽度约为 70 微米，因此最大的 PM2.5 颗粒也比头发宽度小 30 倍。PM2.5 来源广泛，例如建筑工地、未铺设路面的道路、田地、烟囱、火灾或任何燃烧源。作为一种“标准”空气污染物，由于其对呼吸系统和心血管健康的影响已得到充分证实，它受到监管。患有心脏病或肺病的人、儿童、老年人、少数族裔以及社会经济地位较低的人群被认为风险更高，因为他们更敏感或可能暴露更多。"
+    },
+    "no2": {
+      "title": "NO₂ - 二氧化氮",
+      "body": "二氧化氮（NO₂）是一种高活性、红褐色、有刺激性气味的气体，是交通相关空气污染的主要指标，也是烟雾的关键成分，主要来自车辆、发电厂和工业设施燃烧燃料。作为一种“标准”空气污染物，由于它会引发呼吸道疾病（尤其是哮喘），并促成 PM2.5 颗粒物和地面臭氧的形成，因此受到严格监管。"
+    }
+  },
+  "selectedArea": {
+    "sensorsInLocation": "该地点的传感器",
+    "name": "名称"
+  },
+  "areaSelection": {
+    "findHeader": "<strong>查找</strong>您的社区、邮政编码或选区",
+    "tabs": {
+      "community": "社区",
+      "zip": "邮编",
+      "zipCode": "邮政编码",
+      "ward": "选区"
+    },
+    "wardOption": "第 {{number}} 选区",
+    "search": "搜索",
+    "noOptions": "没有选项",
+    "close": "关闭",
+    "clear": "清除选择",
+    "labels": {
+      "community": "社区：",
+      "zipCode": "邮政编码：",
+      "ward": "选区："
+    }
+  },
+  "chart": {
+    "startOfWeek": "每周开始日期",
+    "error": "错误",
+    "unknown": "未知",
+    "seasons": {
+      "winter": "冬季",
+      "spring": "春季",
+      "summer": "夏季",
+      "fall": "秋季",
+      "autumn": "秋季"
+    }
+  }
+}

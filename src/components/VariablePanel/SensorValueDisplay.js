@@ -4,6 +4,8 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {selectSensorParameter} from "../../store/slices/sensorDataSlice";
 import {FaSlash, FaWifi} from "react-icons/fa";
+import {useTranslation} from "react-i18next";
+import useConfigText from "../../i18n/useConfigText";
 
 const SensorValueDisplayContainer = styled.div`
     font-family: Lexend,sans-serif;
@@ -45,6 +47,8 @@ const SensorValueLabel = styled.span`
 
 export const SensorValueDisplay = ({ showColor = true, style, value }) => {
   const selectedParameter = useSelector(selectSensorParameter);
+  const { t } = useTranslation('panel');
+  const tc = useConfigText();
 
   const scale = selectedParameter === 'nowcast_aqi' ? 'AQI' : selectedParameter === 'clarity_no2' ? 'ppb' : 'μg/m³';
 
@@ -62,7 +66,9 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
     }
   });
 
+  // Compared against the English label (an id) - translate only for display
   const invertedColors = ['Good', 'Moderate'];
+  const rangeLabel = range?.label ? tc('aqiLevels', range.label, 'label', range.label) : range?.label;
 
   const primary = invertedColors?.includes(range?.label) ? range?.border : range?.color;
   //const secondary = invertedColors?.includes(range?.label) ? range?.color : range?.border;
@@ -79,7 +85,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
                 <>
                   <FaSlash style={{ transform: 'scaleX(-1)', position: 'absolute'}}></FaSlash>
                   <FaWifi></FaWifi>
-                </> Sensor currently offline
+                </> {t('sensor.offline')}
               </span>
             </Grid>
             <Grid size={{ xs: 12 }} style={{ marginTop: '2rem' }}>
@@ -89,7 +95,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
                 </Grid>
                 <Grid size={{ xs: 10 }}>
                   <SensorValueLabel $color={'rgba(68, 68, 68, 0.75)'}>
-                    {rounded ? range?.label : 'Unavailable'}
+                    {rounded ? rangeLabel : t('sensor.unavailable')}
                   </SensorValueLabel>
                 </Grid>
               </Grid>
@@ -114,7 +120,7 @@ export const SensorValueDisplay = ({ showColor = true, style, value }) => {
           <Grid offset={2}>
             <SensorLabelPanel $color={primary}>
               <SensorValueLabel $color={rounded ? primary : 'rgba(68, 68, 68, 0.75)'}>
-                {rounded ? range?.label : 'Unavailable'}
+                {rounded ? rangeLabel : t('sensor.unavailable')}
               </SensorValueLabel>
             </SensorLabelPanel>
           </Grid>

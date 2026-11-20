@@ -8,6 +8,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {debounce} from "@mui/material/utils";
 import {AreaSelectionDropdowns} from "../VariablePanel/Panels/AreaSelectionDropdowns";
 
+import {Trans, useTranslation} from "react-i18next";
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
@@ -44,6 +45,7 @@ const GeocoderHeader = styled.span`
 
 export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placeholder, pop = () => {}, style, size = 'small', variant = 'default' }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation('map');
 
   const onChange = useCallback((location) => {
     if (location?.center !== undefined) {
@@ -93,7 +95,7 @@ export const Geocoder = ({ showSelectedAreas = true, onDropdownChange, placehold
       <Grid container spacing={0} alignItems={'center'} justifyContent={isHomeVariant ? 'center' : 'space-between'}>
         <Grid size={12} style={isHomeVariant ? { textAlign: 'center' } : undefined}>
           <GeocoderHeader size={size} $variant={variant}>
-            <><strong>Search</strong> any Chicago Address</>
+            <Trans t={t} i18nKey="geocoder.header" components={{ strong: <strong /> }} />
           </GeocoderHeader>
         </Grid>
       </Grid>

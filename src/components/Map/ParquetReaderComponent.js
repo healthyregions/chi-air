@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   setSensorLocations,
   selectSensorLocations,
@@ -21,6 +22,7 @@ const allMetrics = ['nowcast_aqi', 'clarity_pm25', 'clarity_no2'];
 
 const ParquetReaderComponent = ({ DEBUG }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('map');
   const locations = useSelector(selectSensorLocations);
   const clickedSensor = useSelector(selectClickedSensor);
   const selectedParameter = useSelector(selectSensorParameter);
@@ -204,7 +206,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     console.log(`Finished building GeoJSON: ${endTime - startTime}ms`);
   }, [dispatch, locations, metricData, metrics]);
 
-  if (!metricData) return <>Loading...</>;
+  if (!metricData) return <>{t('loading')}</>;
 
   return (
     DEBUG ? <>

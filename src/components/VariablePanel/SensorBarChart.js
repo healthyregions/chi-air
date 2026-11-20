@@ -5,6 +5,7 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import {FaChevronCircleLeft} from "react-icons/fa";
 import {FaChevronCircleRight} from "react-icons/fa";
 import {formatDate, LButton} from "./common";
+import {useTranslation} from "react-i18next";
 
 
 const getIsoWeekRange = (year, weekNumber) => {
@@ -36,14 +37,26 @@ const getIsoWeekRange = (year, weekNumber) => {
   return { startDate, endDate };
 }
 
-const shortDateFormat = new Intl.DateTimeFormat("en-US", {
+// Display-only date formatters, localized to the current UI language
+const getShortDateFormat = (lng) => new Intl.DateTimeFormat(lng, {
   dateStyle: "medium",
-  timeZone: "UCT",
+  timeZone: "UTC",
 });
+// Axis tick label: month + day only (no year), split across two lines
+const getTickDateFormat = (lng) => new Intl.DateTimeFormat(lng, {
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+const formatTick = (fmt, d) => fmt.format(d).replaceAll(' ', "\n");
 
 
 export const SensorBarChart = ({ context = 'recent', selectedParameter, margin = {left:30,top:30}, style = {}, showScroll = false, pageSize = 24, metricData, averageType }) => {
   const [page, setPage] = useState(0);
+  const { t, i18n } = useTranslation('panel');
+  const lng = i18n.resolvedLanguage;
+  const shortDateFormat = useMemo(() => getShortDateFormat(lng), [lng]);
+  const tickDateFormat = useMemo(() => getTickDateFormat(lng), [lng]);
 
   // Listen for changes to averageType or selectedParameter
   // Reset page number when averageType or selectedParameter changes
@@ -71,7 +84,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
     } else if (selectedParameter === 'mean_pm25' || selectedParameter === 'clarity_pm25') {
       return `${Number(v)?.toFixed(1)} μg/m³`;
     } else {
-      return `ERR`;
+      return t('chart.error');
     }
   }
 
@@ -161,10 +174,13 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
             format: 'long',
             year: context.location !== 'tick'
           });
-          const shortStartDate = shortDateFormat.format(new Date(date));
+          // Interpret the MM/DD/YY date as a UTC calendar date
+          const [mm, dd, yy] = date.split('/').map(Number);
+          const day = new Date(Date.UTC(2000 + yy, mm - 1, dd));
+          const shortStartDate = shortDateFormat.format(day);
 
           // Format xAxisLabel - strip off the year but show this in tooltip
-          const xAxisLabel = shortStartDate.split(',')[0].replaceAll(' ', "\n");
+          const xAxisLabel = formatTick(tickDateFormat, day);
           return context.location === 'tick' ? xAxisLabel : shortStartDate;
         } else if (averageType === 'week') {
           const segments = v?.split('-W');
@@ -174,41 +190,34 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
           const {startDate, endDate} = getIsoWeekRange(year, weekNum);
 
           // Format ISO dates to be more human-readable
-          const startOfWeek = startDate.toISOString().split('T')[0];
-          const endOfWeek = endDate.toISOString().split('T')[0];
-          const shortStartDate = shortDateFormat.format(new Date(startOfWeek));
-          const shortEndDate = shortDateFormat.format(new Date(endOfWeek));
+          const startOfWeek = new Date(startDate.toISOString().split('T')[0]);
+          const endOfWeek = new Date(endDate.toISOString().split('T')[0]);
+          const shortStartDate = shortDateFormat.format(startOfWeek);
+          const shortEndDate = shortDateFormat.format(endOfWeek);
 
           // Format xAxisLabel strip off the year but show this in tooltip
-          const xAxisLabel = shortStartDate.split(',')[0].replaceAll(' ', "\n");
+          const xAxisLabel = formatTick(tickDateFormat, startOfWeek);
 
           return context.location === 'tick' ? xAxisLabel : `${shortStartDate.toString()} - ${shortEndDate.toString()}`;
         } else if (averageType === 'month') {
           const segments = v?.split('-');
           const year = segments[0];
           const month = segments[1];
-          switch (Number(month)) {
-            case 1: return context.location === 'tick' ? 'Jan' : `${year} January`;
-            case 2: return context.location === 'tick' ? 'Feb' : `${year} February`;
-            case 3: return context.location === 'tick' ? 'Mar' : `${year} March`;
-            case 4: return context.location === 'tick' ? 'Apr' : `${year} April`;
-            case 5: return context.location === 'tick' ? 'May' : `${year} May`;
-            case 6: return context.location === 'tick' ? 'June' : `${year} June`;
-            case 7: return context.location === 'tick' ? 'July' : `${year} July`;
-            case 8: return context.location === 'tick' ? 'Aug' : `${year} August`;
-            case 9: return context.location === 'tick' ? 'Sep' : `${year} September`;
-            case 10: return context.location === 'tick' ? 'Oct' : `${year} October`;
-            case 11: return context.location === 'tick' ? 'Nov' : `${year} November`;
-            case 12: return context.location === 'tick' ? 'Dec' : `${year} December`;
-            default:
-              console.error(`Encountered unsupported month=${month}: ` + v)
-              return 'Unknown'
+          const monthNum = Number(month);
+          if (!(monthNum >= 1 && monthNum <= 12)) {
+            console.error(`Encountered unsupported month=${month}: ` + v)
+            return t('chart.unknown');
           }
+          // Localized month names (e.g. "Jan" / "2026 January")
+          const monthDate = new Date(Date.UTC(Number(year), monthNum - 1, 1));
+          return context.location === 'tick'
+            ? new Intl.DateTimeFormat(lng, { month: 'short', timeZone: 'UTC' }).format(monthDate)
+            : `${year} ${new Intl.DateTimeFormat(lng, { month: 'long', timeZone: 'UTC' }).format(monthDate)}`;
         } else if (averageType === 'season') {
           const segments = v?.split('-');
           const year = segments[0];
           const season = segments[1];
-          const seasonName = season.substring(0,1).toUpperCase() + season.substring(1);
+          const seasonName = t(`chart.seasons.${season?.toLowerCase()}`, { defaultValue: season.substring(0,1).toUpperCase() + season.substring(1) });
           return context.location === 'tick' ? seasonName : `${year} ${seasonName}`
         } else if (averageType === 'year') {
           return v;
@@ -253,7 +262,7 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
 
       <Grid container>
         <Grid size={{ xs: 12 }} textAlign={'center'}>
-          { averageType === 'week' && <strong>Start of Week</strong> }
+          { averageType === 'week' && <strong>{t('chart.startOfWeek')}</strong> }
         </Grid>
       </Grid>
     </>
