@@ -16,20 +16,6 @@ export const variablePresets = rawVariables.reduce(
       : row['active'] ? { [row['Variable Name']]: { ...row, accessor: row.Column } } : {}
     ), {});
 
-export const dataDescriptions = rawVariables.reduce(
-  (obj, row) => Object.assign(obj, {
-    [row['Variable Name']]:
-    <div>
-      <span dangerouslySetInnerHTML={{ __html: row.Description }}></span>
-      <br /><br />
-      {/*<b>Data Contributor:</b>{" "}<span dangerouslySetInnerHTML={{__html:row['Added By']}}/>*/}
-      {/*<br />*/}
-      <b>Data Source</b>:{"  "}<span dangerouslySetInnerHTML={{__html:row['Data Source(s)']}}/>
-      <br/>
-      <b>Data Year</b>:{" "}{row['Data Year']}</div> }),
-  {});
-
-
 export const loadStickers = async (url) => {
   return await fetch(url).then(r => r.json());
 }

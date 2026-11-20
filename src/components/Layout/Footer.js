@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { colors } from "../../config";
 import {productName} from "../VariablePanel/common";
+import { useTranslation } from "react-i18next";
 
 const FooterContainer = styled.footer`
   display:flex;
@@ -96,19 +97,20 @@ const FooterContent = styled.div`
 `;
 
 const Footer = (props) => {
+  const { t } = useTranslation('common');
   return (
     <FooterContainer>
       <FooterContent>
-        <h6 translate="no" className={'no-translate'}>{productName}</h6>
+        <h6 translate="no">{productName}</h6>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">{t('footer.home')}</Link>
           </li>
           <li>
-            <Link to="/map">Map</Link>
+            <Link to="/map">{t('footer.map')}</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/about">{t('footer.about')}</Link>
           </li>
         </ul>
       </FooterContent>

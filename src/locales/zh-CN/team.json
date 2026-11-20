@@ -1,0 +1,106 @@
+{
+  "title": "团队",
+  "intro": "<b>{{productName}}</b> 是一项集体成果，源于对空气质量、数据科学与透明度以及公共健康的共同承诺。本页面向一群多元化的个人致敬——从学术机构到遍布芝加哥的社区合作伙伴——他们贡献了技术见解和亲身经历，共同打造了一个帮助人们了解伊利诺伊州芝加哥所呼吸空气质量的平台。",
+  "collaborationHeader": {
+    "topRow": "用心打造",
+    "bottomRowBlack": "携手",
+    "bottomRowRed": "合作"
+  },
+  "programLeadership": {
+    "title": "芝加哥空气质量项目领导团队",
+    "leadInstitution": "牵头机构",
+    "contributingInstitution": "参与机构",
+    "description": "芝加哥空气质量项目由 UIC 牵头，是一个由社区大力推动的项目，UIC 两项资助下的七个官方社区合作伙伴积极参与并作出贡献［即 Southeast Environmental Task Force (SETF)、Little Village Environmental Justice Organization (LVEJO)、Alliance of the Southeast (ASE)、People for Community Recovery (PCR)、Neighbors for Environmental Justice (N4EJ)、Chicago Environmental Justice Network (CEJN)、Pilsen Environmental Rights and Reform Organization (PERRO)］，另有六个在 CDPH 咨询委员会任职的社区组织［即 Communities United、Grow Greater Englewood (GGE)、ONE Northside、Openlands、Westside Community Alliance (WCA)、The Southwest Collective］，以及许多参加我们焦点小组和问卷调查的其他人士。请访问芝加哥公共卫生局（CDPH）的 <link>Open Air</link> 网站，了解在 CDPH“Open Air Chicago”咨询委员会任职的 13 个社区组织。"
+  },
+  "dashboardLeadership": {
+    "title": "OurAir 仪表板领导团队",
+    "description": "OurAir 地图平台由伊利诺伊大学的 <link>Healthy Regions & Policies Lab</link>（由 <b>M. Kolak 博士</b>领导）开发，并与项目领导团队、UIC 合作伙伴、核心团队、学生研究人员以及数十位芝加哥地区的贡献者密切合作完成。"
+  },
+  "coreTeam": {
+    "title": "核心团队",
+    "acknowledgements": "我们还要感谢 <b>Pengyin Shan</b> 提供的技术支持，以及 <b>Paulina Arias Caballero</b> 提供的重要翻译服务。最后，感谢 <i>Pilsen Arts & Community House</i> 承办现场共同设计会议。"
+  },
+  "studentTeam": {
+    "title": "学生团队"
+  },
+  "communityHeader": {
+    "topRow": "共同创建",
+    "bottomRowBlack": "携手",
+    "bottomRowRed": "社区"
+  },
+  "groupContributors": {
+    "title": "OurAir 团体贡献者"
+  },
+  "individualContributors": {
+    "title": "OurAir 个人贡献者"
+  },
+  "closing": {
+    "gratitude": "感谢所有 OurAir 贡献者、问卷调查和焦点小组参与者，以及每一次交流对话。",
+    "consentNote": "虽然这里仅列出同意公开的成员，但这个地图平台凝聚了所有参与者的集体智慧。"
+  },
+  "members": {
+    "erdal": {
+      "role": "首席研究员，University of Illinois Chicago"
+    },
+    "persky": {
+      "role": "联合研究员，University of Illinois Chicago"
+    },
+    "kolak": {
+      "role": "联合研究员，University of Illinois Urbana-Champaign"
+    },
+    "wang": {
+      "role": "联合研究员，University of Illinois Chicago"
+    },
+    "astacioPalmer": {
+      "role": "研究经理，UIUC"
+    },
+    "barronville": {
+      "role": "研究专员，UIUC"
+    },
+    "bhansoor": {
+      "role": "研究科学家，UIUC"
+    },
+    "cox": {
+      "role": "高级工程师，UIUC"
+    },
+    "fiffer": {
+      "role": "科学顾问，UIC"
+    },
+    "garrett": {
+      "role": "研究专员，UIUC"
+    },
+    "kumar": {
+      "role": "高级产品设计师，UIUC"
+    },
+    "lambert": {
+      "role": "首席高级工程师，UIUC"
+    },
+    "pagone": {
+      "role": "高级经理，RHP"
+    },
+    "tootoo": {
+      "role": "科学顾问，UIC"
+    },
+    "vazquezGomez": {
+      "role": "社区科学组织者，LVEJO"
+    },
+    "amar": {
+      "role": "研究助理，UIC"
+    },
+    "discenza": {
+      "role": "研究助理，UIUC"
+    },
+    "kabirAdrita": {
+      "role": "研究助理，UIUC"
+    },
+    "huang": {
+      "role": "研究助理，UIC"
+    },
+    "si": {
+      "role": "研究助理，UIUC"
+    },
+    "zeng": {
+      "role": "研究助理，UIC"
+    }
+  }
+}

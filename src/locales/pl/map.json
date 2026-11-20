@@ -1,0 +1,80 @@
+{
+  "loading": "Ładowanie...",
+  "dataPanel": {
+    "logoAlt": "Jakość powietrza w Chicago",
+    "goHomeTitle": "Przejdź do strony głównej",
+    "home": "Strona główna",
+    "addCommunityContext": "Dodaj kontekst społeczności",
+    "indicator": "Wskaźnik",
+    "whatIsParam": "Co to jest {{param}}?"
+  },
+  "geocoder": {
+    "header": "<strong>Wyszukaj</strong> dowolny adres w Chicago",
+    "placeholder": "Wyszukaj adres..."
+  },
+  "legend": {
+    "displacement": {
+      "notVulnerable": "Niezagrożone",
+      "vulnerablePricesNotRising": "Zagrożone, ceny nie rosną",
+      "vulnerablePricesRising": "Zagrożone, ceny rosną"
+    }
+  },
+  "mapControls": {
+    "geolocate": "Pokaż moją lokalizację",
+    "zoomIn": "Przybliż",
+    "zoomOut": "Oddal",
+    "resetTilt": "Resetuj nachylenie"
+  },
+  "markerPopup": {
+    "address": "Adres: {{address}}",
+    "monitorsFor": "Monitoruje: {{monitors}}"
+  },
+  "sensorPopup": {
+    "arraysUnsupported": "Tablice nieobsługiwane: {{key}}",
+    "objectsUnsupported": "Obiekty nieobsługiwane: {{key}}"
+  },
+  "overlayPopup": {
+    "yes": "Tak",
+    "no": "Nie",
+    "fields": {
+      "site_description": "Opis miejsca",
+      "owner": "Właściciel",
+      "address": "Adres",
+      "monitors": "Monitoruje",
+      "Short_Name": "Nazwa",
+      "Grade_Cat": "Kategoria klas",
+      "School_ID": "Identyfikator szkoły",
+      "Address": "Adres"
+    }
+  },
+  "neighborhoodCounts": {
+    "clear": "wyczyść"
+  },
+  "tractTooltip": {
+    "title": "Obszar spisowy {{geoid}}",
+    "population": "Ludność",
+    "numberOfTrees": "Liczba drzew",
+    "percentCanopyCover": "Procent pokrycia koronami drzew",
+    "surfaceTempPercentile": "Percentyl temperatury powierzchni",
+    "urbanFloodSusceptibility": "Wskaźnik podatności na powodzie miejskie",
+    "loggedTrafficVolume": "Natężenie ruchu (skala logarytmiczna)",
+    "socialVulnerabilityIndex": "Wskaźnik wrażliwości społecznej",
+    "childhoodAsthmaRate": "Częstość astmy u dzieci",
+    "vegetationIndex": "Wskaźnik roślinności (NDVI)",
+    "plantBiodiversity": "Bioróżnorodność roślin",
+    "percentHolcGradeA": "Procent obszaru z oceną HOLC A",
+    "percentHolcGradeB": "Procent obszaru z oceną HOLC B",
+    "percentHolcGradeC": "Procent obszaru z oceną HOLC C",
+    "percentHolcGradeD": "Procent obszaru z oceną HOLC D",
+    "percentSeniors": "Procent seniorów",
+    "percentChildren": "Procent dzieci",
+    "percentAsian": "Procent osób identyfikujących się jako Azjaci",
+    "percentBlack": "Procent osób identyfikujących się jako czarnoskórzy lub Afroamerykanie",
+    "percentNativeAmerican": "Procent osób identyfikujących się jako rdzenni Amerykanie lub ludność rdzenna",
+    "percentPacificIslander": "Procent osób identyfikujących się jako rdzenni Hawajczycy lub mieszkańcy innych wysp Pacyfiku",
+    "percentWhite": "Procent osób identyfikujących się jako biali",
+    "percentOtherRaces": "Procent osób identyfikujących się z innymi rasami",
+    "percentHispanic": "Procent osób identyfikujących się jako Latynosi",
+    "customIndex": "Wskaźnik niestandardowy"
+  }
+}

@@ -17,6 +17,7 @@ import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import {Trans, useTranslation} from "react-i18next";
 
 const HomeDropdownCard = styled.div`
   width: 16rem;
@@ -146,6 +147,7 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const navigate = useNavigate();
   const largeScreen = useMediaQuery('(min-width: 600px)');
   const mapParams = useSelector(selectMapParams);
+  const { t } = useTranslation('panel');
 
   // Keep track of our anchor element
   const [anchorEl, setAnchorEl] = useState(null);
@@ -201,16 +203,19 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
   const hasSelection = selections?.zip?.length > 0 || selections?.community?.length > 0 || selections?.ward?.length > 0;
   const isHomeVariant = variant === 'home';
 
-  const prettyTypeName = useCallback((t) => t === 'zip' ? isHomeVariant ? 'Zip code' : 'Zip' : t === 'community' ? 'Community' : 'Ward', [isHomeVariant]);
+  const prettyTypeName = useCallback((key) => key === 'zip'
+    ? (isHomeVariant ? t('areaSelection.tabs.zipCode') : t('areaSelection.tabs.zip'))
+    : key === 'community' ? t('areaSelection.tabs.community') : t('areaSelection.tabs.ward'), [isHomeVariant, t]);
 
   const options = useMemo(() => {
     return [...new Set(locations?.filter(l => !!l[type])?.map(l => l[type]))];
   }, [type, locations]);
 
   // When displaying, we need to transform / pretty print our possible values
-  const format = (value, type) => {
+  // (display only - selection always uses the raw value, see filteredOptions)
+  const format = useCallback((value, type) => {
     if (type === 'ward') {
-      return `Ward ${value}`;
+      return t('areaSelection.wardOption', { number: value });
     } else if (type === 'community') {
       // capitalize each word
       const words = value?.split(' ');
@@ -219,39 +224,30 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
       })?.join(' ');
     }
     return value;
-  }
+  }, [t]);
 
-  // When user selects an option, we need to undo the transformation above to select their choice
-  const unformat = (value, type) => {
-    if (type === 'ward') {
-      return value.split(' ')?.[1];
-    } else if (type === 'community') {
-      return value?.toUpperCase();
-    }
-    return value;
-  }
-
+  // Each option keeps its raw value (used for selection / lookups) next to its display label,
+  // so translated labels (e.g. "Distrito electoral 12") never need to be parsed back.
   const filteredOptions = useMemo(() => {
-    const ops = options.map(o => o.split(' ').map(o => format(o, type)).join(' '));
+    const ops = options.map(raw => ({ raw, label: format(raw, type) }));
+    const sorted = type !== 'ward'
+      ? ops.sort((a, b) => a.label < b.label ? -1 : a.label > b.label ? 1 : 0)
+      : ops.sort((a, b) => Number(a.raw) - Number(b.raw));
 
     if (!searchTerm) {
-      return type !== 'ward' ? ops.sort() : ops.sort((a, b) => {
-        return Number(a?.split(' ')[1]) - Number(b?.split(' ')[1])
-      });
+      return sorted;
     }
 
     const normalizedSearch = searchTerm.toLowerCase();
-    return (type !== 'ward' ? ops.sort() : ops.sort((a, b) => {
-      return Number(a?.split(' ')[1]) - Number(b?.split(' ')[1])
-    })).filter((option) => option?.toLowerCase().includes(normalizedSearch));
-  }, [options, searchTerm, type]);
+    return sorted.filter((option) => option?.label?.toLowerCase().includes(normalizedSearch));
+  }, [options, searchTerm, type, format]);
 
   return(
     <>
       {
         !isHomeVariant && <Grid container fullWidth>
           <Grid size>
-            <ASDHeader $variant={variant}><strong>Find</strong> your community, zip code, or ward</ASDHeader>
+            <ASDHeader $variant={variant}><Trans t={t} i18nKey="areaSelection.findHeader" components={{ strong: <strong /> }} /></ASDHeader>
           </Grid>
         </Grid>
       }
@@ -289,33 +285,33 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
                     autoFocus
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder={`Search`}
+                    placeholder={t('areaSelection.search')}
                   />
-                  <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }}>
+                  <LButton variant={'text'} size={'small'} onClick={handleClose} style={{ minWidth: 0, padding: 0 }} aria-label={t('areaSelection.close')}>
                     <FaTimes style={{ color: '#005899', fontSize: '0.75rem' }} />
                   </LButton>
                 </HomeDropdownSearchRow>
                 <HomeDropdownDivider />
                 <HomeDropdownOptions>
-                  {filteredOptions.length > 0 ? filteredOptions.map((option) => {
-                    const matches = match(option, searchTerm, { insideWords: true });
-                    const parts = parse(option, matches);
+                  {filteredOptions.length > 0 ? filteredOptions.map(({ raw, label }) => {
+                    const matches = match(label, searchTerm, { insideWords: true });
+                    const parts = parse(label, matches);
 
                     return (
-                      <HomeDropdownOption key={option} type="button" onClick={() => handleChange(unformat(option, type), type)}>
+                      <HomeDropdownOption key={raw} type="button" onClick={() => handleChange(raw, type)}>
                         <Grid container justifyContent={'space-between'} flexWrap={'nowrap'}>
                           <Grid size>
                             {parts.map((part, index) => (part.highlight ? (
                               <HomeDropdownHighlight key={index}>{part.text}</HomeDropdownHighlight>
                             ) : (
-                              <span>{part.text}</span>
+                              <span key={index}>{part.text}</span>
                             )))}
                           </Grid>
-                          <Grid size={1}>{comareaIdMap[unformat(option, type)]}</Grid>
+                          <Grid size={1}>{comareaIdMap[raw]}</Grid>
                         </Grid>
                       </HomeDropdownOption>
                     );
-                  }) : <HomeDropdownEmpty>No options</HomeDropdownEmpty>}
+                  }) : <HomeDropdownEmpty>{t('areaSelection.noOptions')}</HomeDropdownEmpty>}
                 </HomeDropdownOptions>
               </HomeDropdownCard>
             </ClickAwayListener>
@@ -325,12 +321,12 @@ export const AreaSelectionDropdowns = ({ showSelectedAreas = true, onChange, siz
 
       {showSelectedAreas && (!noSelection || hasSelection) && <Grid container width={'100%'} spacing={0} margin={'0.3rem'} alignItems={'center'} display={'flex'} flexDirection={"row"} justifyContent={'space-between'} fontFamily={'Lexend'}>
         <Grid size>
-          {selections?.community?.length > 0 && <span><LLabel>Community:</LLabel> {format(selections?.community?.[0], 'community')} ({comareaIdMap[selections?.community?.[0]]})</span>}
-          {selections?.zip?.length > 0 && <span><LLabel>Zip code:</LLabel> {selections?.zip?.[0]}</span>}
-          {selections?.ward?.length > 0 && <span><LLabel>Ward:</LLabel> {selections?.ward?.[0]}</span>}
+          {selections?.community?.length > 0 && <span><LLabel>{t('areaSelection.labels.community')}</LLabel> {format(selections?.community?.[0], 'community')} ({comareaIdMap[selections?.community?.[0]]})</span>}
+          {selections?.zip?.length > 0 && <span><LLabel>{t('areaSelection.labels.zipCode')}</LLabel> {selections?.zip?.[0]}</span>}
+          {selections?.ward?.length > 0 && <span><LLabel>{t('areaSelection.labels.ward')}</LLabel> {selections?.ward?.[0]}</span>}
         </Grid>
         <Grid size={2}>
-          <LButton variant={'text'} size={'small'} onClick={clearSelection}><FaTimes /></LButton>
+          <LButton variant={'text'} size={'small'} onClick={clearSelection} aria-label={t('areaSelection.clear')}><FaTimes /></LButton>
         </Grid>
       </Grid>}
     </>

@@ -12,6 +12,9 @@ import './index.css';
 import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import WebFont from 'webfontloader';
 
+// Initialize translations (must load before App renders)
+import './i18n';
+
 import App from './App';
 
 WebFont.load({

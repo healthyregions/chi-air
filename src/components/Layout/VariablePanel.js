@@ -15,6 +15,7 @@ import OverlaysColorLegend from "../VariablePanel/OverlaysColorLegend";
 import EnabledOverlayDisplay from "../VariablePanel/EnabledOverlaysDisplay";
 import VariablesDropdown from "../VariablePanel/VariablesDropdown";
 import VariableDescriptionDisplay from "../VariablePanel/VariableDescriptionDisplay";
+import {Trans, useTranslation} from "react-i18next";
 
 const VariablePanelContainer = styled.div`
   position: fixed;
@@ -98,7 +99,7 @@ const VariablePanelContainer = styled.div`
     :after {
       opacity: 0;
       font-weight: bold;
-      content: "Variables";
+      content: ${({ $toggleLabel }) => JSON.stringify($toggleLabel || "")};
       color: ${colors.gray};
       position: relative;
       right: -50px;
@@ -185,6 +186,7 @@ const ControlsContainer = styled.div`
 
 const VariablePanel = (props) => {
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation('panel');
 
   const panelState = useSelector(selectPanelState);
 
@@ -218,15 +220,18 @@ const VariablePanel = (props) => {
       className={panelState.variables ? "" : "hidden"}
       otherPanels={panelState.info}
       id="variablePanel"
+      $toggleLabel={t('variablePanel.toggle')}
     >
       <ControlsContainer>
-        <h2>Air Quality</h2>
+        <h2>{t('variablePanel.title')}</h2>
         <span className="data-description">
-          Points on the map show PM2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.
+          <Trans t={t} i18nKey="variablePanel.intro" components={{ strong: <strong /> }} />
         </span>
         {/*<AQColorScale></AQColorScale>*/}
         <span className="data-description">
-          {lastUpdated ? `last updated: ${lastUpdated.toLocaleDateString('en-US')} ${lastUpdated.toLocaleTimeString('en-US')}` : "loading data..."}
+          {lastUpdated
+            ? t('variablePanel.lastUpdated', { date: lastUpdated.toLocaleDateString(i18n.resolvedLanguage), time: lastUpdated.toLocaleTimeString(i18n.resolvedLanguage) })
+            : t('variablePanel.loadingData')}
         </span>
 
         <EnabledOverlayDisplay></EnabledOverlayDisplay>

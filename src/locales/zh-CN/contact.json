@@ -1,0 +1,30 @@
+{
+  "title": "联系我们",
+  "intro": "遇到问题？想分享反馈或功能建议？",
+  "form": {
+    "messageType": "消息类型",
+    "name": "姓名",
+    "namePlaceholder": "您的姓名",
+    "email": "电子邮箱",
+    "phone": "电话（选填）",
+    "message": "留言",
+    "messagePlaceholder": "请输入您的留言...",
+    "send": "发送",
+    "sentConfirmation": "反馈已发送"
+  },
+  "messageTypes": {
+    "general": "一般问题",
+    "bugReport": "错误报告",
+    "dataQuestion": "数据问题",
+    "featureRequest": "功能建议",
+    "technical": "技术或开源问题",
+    "press": "新闻或媒体"
+  },
+  "errors": {
+    "nameRequired": "请填写姓名",
+    "emailRequired": "请填写电子邮箱",
+    "emailInvalid": "请输入有效的电子邮箱地址",
+    "phoneInvalid": "请输入有效的电话号码",
+    "messageRequired": "请输入您的留言"
+  }
+}

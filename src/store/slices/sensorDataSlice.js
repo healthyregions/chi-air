@@ -33,7 +33,6 @@ const initialState = {
   selectedParameter: 'nowcast_aqi',
   clickedSensor: undefined,
   averageType: 'hour',
-  locale: undefined,
 };
 
 export const sensorDataSlice = createSlice({
@@ -86,10 +85,6 @@ export const sensorDataSlice = createSlice({
       selectedAreas: {
         ...action.payload,
       }
-    }),
-    setLocale: (state, action) => ({
-      ...state,
-      locale: action.payload
     }),
     setAverageType: (state, action) => ({
       ...state,
@@ -154,7 +149,6 @@ export const sensorDataSlice = createSlice({
     selectSensorGeojsonData: state => state.geojsonData,
     selectClickedSensor: state => state.clickedSensor,
     selectAverageType: state => state.averageType,
-    selectLocale: state=> state.locale,
     selectSelectedAreas: state => state.selectedAreas,
     selectSensorParameter: state => state.selectedParameter,
     selectMetricIndex: state => state.metrics?.[state.selectedParameter]?.index,
@@ -174,7 +168,6 @@ export const {
   setSelectedSensors,
   setClickedSensor,
   setAverageType,
-  setLocale,
   setSelectedAreas,
   setSensorParameter,
   setMetricIndex,
@@ -189,7 +182,6 @@ export const {
   selectSensorGeojsonData,
   selectClickedSensor,
   selectAverageType,
-  selectLocale,
   selectSelectedAreas,
   selectSensorParameter,
   selectMetricIndex,

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { ContentContainer } from '../../styled_components';
 import { NavBar, Footer } from '../';
+import { useTranslation, Trans } from 'react-i18next';
 
 const ErrorPage = styled.div`
   background:white;
@@ -13,17 +14,16 @@ const ErrorPage = styled.div`
 `
 
 const Error = () => {
+  const { t } = useTranslation('common');
 
   return (
     <ErrorPage >
       <NavBar/>
       <ContentContainer>
-        <h1>Error 404</h1>
-        <h2>We can't get you where you're going.</h2>
+        <h1>{t('errorPage.title')}</h1>
+        <h2>{t('errorPage.subtitle')}</h2>
         <p>
-          Sorry, we can't find the page you're looking for. It may have moved or recently changed.
-          <br/><br/>
-          Please use the navigation bar or footer.
+          <Trans t={t} i18nKey="errorPage.body" />
         </p>
       </ContentContainer>
       <Footer/>

@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "mapsAndMore": "地图及更多",
+    "productMap": "{{productName}} 地图",
+    "allResources": "所有资源",
+    "about": "关于",
+    "team": "团队",
+    "infoFaq": "信息与常见问题",
+    "contactUs": "联系我们",
+    "logoAlt": "芝加哥空气质量"
+  },
+  "footer": {
+    "home": "首页",
+    "map": "地图",
+    "about": "关于"
+  },
+  "errorPage": {
+    "title": "错误 404",
+    "subtitle": "我们无法带您前往目标页面。",
+    "body": "抱歉，找不到您要访问的页面。该页面可能已被移动或最近有所更改。<br/><br/>请使用导航栏或页脚。"
+  },
+  "loading": {
+    "message": "加载中...",
+    "imageAlt": "加载动画"
+  }
+}

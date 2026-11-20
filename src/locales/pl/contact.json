@@ -1,0 +1,30 @@
+{
+  "title": "Kontakt",
+  "intro": "Napotkałeś problem? Chcesz podzielić się opinią lub zaproponować nową funkcję?",
+  "form": {
+    "messageType": "Rodzaj wiadomości",
+    "name": "Imię i nazwisko",
+    "namePlaceholder": "Twoje imię i nazwisko",
+    "email": "E-mail",
+    "phone": "Telefon (opcjonalnie)",
+    "message": "Wiadomość",
+    "messagePlaceholder": "Twoja wiadomość...",
+    "send": "Wyślij",
+    "sentConfirmation": "Opinia została wysłana"
+  },
+  "messageTypes": {
+    "general": "Ogólne",
+    "bugReport": "Zgłoszenie błędu",
+    "dataQuestion": "Pytanie o dane",
+    "featureRequest": "Propozycja funkcji",
+    "technical": "Pytania techniczne lub dotyczące open source",
+    "press": "Prasa lub media"
+  },
+  "errors": {
+    "nameRequired": "Imię i nazwisko jest wymagane",
+    "emailRequired": "E-mail jest wymagany",
+    "emailInvalid": "Podaj prawidłowy adres e-mail",
+    "phoneInvalid": "Podaj prawidłowy numer telefonu",
+    "messageRequired": "Wpisz swoją wiadomość"
+  }
+}

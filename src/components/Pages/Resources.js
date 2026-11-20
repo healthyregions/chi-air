@@ -17,6 +17,7 @@ import {useNavigate} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 import {FaChalkboardTeacher} from "@react-icons/all-files/fa/FaChalkboardTeacher";
 import {FaAirFreshener} from "@react-icons/all-files/fa/FaAirFreshener";
 import {FaChartBar} from "@react-icons/all-files/fa/FaChartBar";
@@ -118,63 +119,65 @@ const FilterChip = styled(Chip)`
     }
 `;
 
+// Category ids are used for filtering; labels are translated at render (resources namespace: categories.<id>)
 const resourceCategories = [
-  { id: 'foundations', label: 'Foundations' },
-  { id: 'learning', label: 'Learning Resources' },
-  { id: 'governance', label: 'City Governance & Reporting' },
-  { id: 'supporting', label: 'Supporting Maps & Resources' },
+  { id: 'foundations' },
+  { id: 'learning' },
+  { id: 'governance' },
+  { id: 'supporting' },
 ];
 
 // No CMS system, define static data structure here instead
 
-// Define some resources, assign them to a Category
+// Define some resources, assign them to a Category.
+// Card text lives in the `resources` namespace under cards.<id>.name / cards.<id>.description
 const foundationalResources = [
-  { url: 'https://scied.ucar.edu/learning-zone/air-quality/what-is-air-quality', faIcon: <FaWind/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Intro to Outdoor Air Quality', description: 'An introduction to air quality from the National Center for Atmospheric Research.' },
-  { url: '/resources/Serap Erdal-AIR QUALITY 101 Presentation-6-20-2025.pdf', faIcon: <FaAirFreshener/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Quality 101 ', description: 'Lectures by Prof Erdal at UIC on air quality' },
-  { url: 'https://www.epa.gov/report-environment/indoor-air-quality', faIcon: <FaHeadSideCough/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Intro to Indoor Air Quality', description: 'People spend 90% of their time indoors. Information about indoor air quality basics.' },
-  { url: 'https://www.epa.gov/indoor-air-quality-iaq/learn-about-indoor-air-quality', faIcon: <FaDoorOpen/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Indoor Air Quality Resources', description: 'US EPA provides a list of further reading about Indoor Air Quality.' },
-  { url: 'https://www.epa.gov/criteria-air-pollutants/naaqs-table', faIcon: <FaChartBar/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'National Ambient Air Quality Standards', description: 'National Ambient Air Quality Standards for the U.S.' },
-  { url: 'https://www.who.int/publications/i/item/9789240034228', faIcon: <FaStickyNote/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'WHO Global Air Quality Guidelines', description: 'World Health Organization global air quality guidelines.' },
-  { url: 'https://www.clarity.io/air-quality-monitoring-resources', faIcon: <FaInfo/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Clarity AQ Monitoring Resources', description: 'Resources on Clarity air quality monitoring. ' },
-  { url: 'https://www.airnow.gov/aqi/aqi-basics/', faIcon: <FaBoltLightning />, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'AQI Information', description: 'Definitions and bounds for different levels of air health concern.' },
+  { id: 'outdoorAirQualityIntro', url: 'https://scied.ucar.edu/learning-zone/air-quality/what-is-air-quality', faIcon: <FaWind/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'airQuality101', url: '/resources/Serap Erdal-AIR QUALITY 101 Presentation-6-20-2025.pdf', faIcon: <FaAirFreshener/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'indoorAirQualityIntro', url: 'https://www.epa.gov/report-environment/indoor-air-quality', faIcon: <FaHeadSideCough/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'indoorAirQualityResources', url: 'https://www.epa.gov/indoor-air-quality-iaq/learn-about-indoor-air-quality', faIcon: <FaDoorOpen/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'naaqs', url: 'https://www.epa.gov/criteria-air-pollutants/naaqs-table', faIcon: <FaChartBar/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'whoGuidelines', url: 'https://www.who.int/publications/i/item/9789240034228', faIcon: <FaStickyNote/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'clarityMonitoring', url: 'https://www.clarity.io/air-quality-monitoring-resources', faIcon: <FaInfo/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'aqiInformation', url: 'https://www.airnow.gov/aqi/aqi-basics/', faIcon: <FaBoltLightning />, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
 ].map(r => ({ ...r, category: 'foundations'}));
 
 const learningResources = [
-  { url: 'https://airknowledge.gov/BASC-SI.html', faIcon: <FaGraduationCap/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Knowledge Course', description: 'Get a deeper dive into air quality with this free course on the basics of air quality.' },
-  { url: 'https://scied.ucar.edu/activity?field_learning_zone_category_target_id=26', faIcon: <FaChalkboardTeacher/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'AQ Classroom Activities', description: 'Teaching resources for air quality learning in the classroom. ' },
-  { url: 'https://corsirosenthalfoundation.org/instructions/', faIcon: <FaHammer/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Build Your Own Filter', description: 'Do-it-yourself air purifiers, with lesson plans.' },
-  { url: 'https://www.epa.gov/amtic/CommunityAirMonitoringWebinars', faIcon: <FaList/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'EPA Webinar Series', description: 'Learn about the Fundamentals of Community Air Monitoring.' },
-  { url: 'https://deohs.washington.edu/air-quality-curriculum-student-led-research-projects', faIcon: <FaHammer/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'HS Student Curriculum', description: 'University of Washington\'s Air quality curriculum for high school students.' },
-  { url: 'https://www.epa.gov/air-sensor-toolbox', faIcon: <FaToolbox/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'EPA Air Sensor Toolbox', description: 'US EPA\'s Guides for air quality sensors and how to read them.' },
+  { id: 'airKnowledgeCourse', url: 'https://airknowledge.gov/BASC-SI.html', faIcon: <FaGraduationCap/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'classroomActivities', url: 'https://scied.ucar.edu/activity?field_learning_zone_category_target_id=26', faIcon: <FaChalkboardTeacher/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'buildYourOwnFilter', url: 'https://corsirosenthalfoundation.org/instructions/', faIcon: <FaHammer/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'epaWebinars', url: 'https://www.epa.gov/amtic/CommunityAirMonitoringWebinars', faIcon: <FaList/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'highSchoolCurriculum', url: 'https://deohs.washington.edu/air-quality-curriculum-student-led-research-projects', faIcon: <FaHammer/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'epaSensorToolbox', url: 'https://www.epa.gov/air-sensor-toolbox', faIcon: <FaToolbox/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
   ].map(r => ({ ...r, category: 'learning'}));
 
 const governanceResources = [
-  { url: 'https://311.chicago.gov/', faIcon: <FaInfo/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chi 311', description: 'Report suspected air quality violations in the City of Chicago.' },
-  { url: 'https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html#docaccess-45c4545badc7db64483ab543f48066a0', faIcon: <FaChartLine/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago\'s Cumulative Impact Assessment', description: 'An EJ Index on cumulative impacts reflecting communities in Chicago most burdened by pollution and most vulnerable to its effects.' },
-  { url: 'https://www.chicago.gov/city/en/depts/cdph/provdrs/environmental_health/svcs/air-quality-and-health.html', faIcon: <FaChartBar/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Air Quality & Health Report 2020', description: 'Chicago\'s report on air quality and health from 2020.' },
-  { url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-indoor.svg', faIcon: <FaScaleBalanced/>, backdrop: true, name: 'Chicago Air Quality Ordinance⠀', description: 'An overview of Chicago air quality ordinance.' },
-  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/community_information/2024/EJ-Action-Plan-2024-Report-FULL.pdf', faIcon: <FaEnvelopeCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Environmental Justice Action Plan Report', description: 'Chicago\'s latest EJ action plan with updates. ' },
-  { url: 'https://www.chicago.gov/city/en/progs/env.html', faIcon: <FaSign/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Department of Environment & Sustainability', description: 'City department focused on environmental initiatives that center equity and sustainability.' },
-  { url: 'https://www.chicago.gov/city/en/depts/cdph.html', faIcon: <FaHospital/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Department of Public Health', description: 'CDPH focuses on guidance, services, and strategies that make Chicago a healthier and safer city.' },
+  { id: 'chi311', url: 'https://311.chicago.gov/', faIcon: <FaInfo/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'cumulativeImpactAssessment', url: 'https://www.chicago.gov/city/en/depts/env/supp_info/cumulative-impact-assessment.html#docaccess-45c4545badc7db64483ab543f48066a0', faIcon: <FaChartLine/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'airQualityHealthReport2020', url: 'https://www.chicago.gov/city/en/depts/cdph/provdrs/environmental_health/svcs/air-quality-and-health.html', faIcon: <FaChartBar/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'airQualityOrdinance', url: 'https://www.chicago.gov/city/en/depts/dcd/supp_info/chicago-air-quality-ordinance.html', icon: '/icons/chiair/resources-indoor.svg', faIcon: <FaScaleBalanced/>, backdrop: true },
+  { id: 'ejActionPlanReport', url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/community_information/2024/EJ-Action-Plan-2024-Report-FULL.pdf', faIcon: <FaEnvelopeCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'deptEnvironment', url: 'https://www.chicago.gov/city/en/progs/env.html', faIcon: <FaSign/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'cdph', url: 'https://www.chicago.gov/city/en/depts/cdph.html', faIcon: <FaHospital/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
 ].map(r => ({ ...r, category: 'governance'}));
 
 const supportingResources = [
-  { url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html#modalpop', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Open Air Network City Map', description: 'City of Chicago map of the Open Air Network sensors.' },
-  { url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', faIcon: <FaPersonThroughWindow/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'EPA AirNow', description: 'AirNow highlights air quality in your local area while also providing air quality information at state and national views.' },
-  { url: 'https://map.purpleair.com/', faIcon: <FaMapMarkerAlt/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'PurpleAir', description: 'PurpleAir Realtime Map for PM2.5 Concentrations.' },
-  { url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/CumulativeImpact/Chicago-EJ-Index_CAs-1500x2318.jpg', faIcon: <FaDownload/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago EJ Index Map', description: 'Downloadable Map of the City\'s EJ Index Composite Score.' },
-  { url: 'https://screening-tools.com/epa-ejscreen', faIcon: <FaMobileScreen/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'EPA EJScreen', description: 'Recreated by Harvard University since the EPA site is no longer active.' },
-  { url: 'https://www.atsdr.cdc.gov/place-health/php/eji/index.html', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'CDC/ATSDR\'s Environmental Justice Index', description: 'Recreated by Harvard University since the EPA site is no longer active.' },
-  { url: 'https://chichives.com/', faIcon: <FaPersonThroughWindow/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'ChiVes: Exploring Chicago\'s Environment', description: 'A data collaborative and community mapping platform to explore climate, environment, and key neighborhood indicators.' },
-  { url: 'https://chicagohealthatlas.org/', faIcon: <FaHospitalSymbol/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Chicago Health Atlas', description: 'A resource to review, explore and compare health-related data over time and across communities.' },
-  { url: 'https://public-environmental-data-partners.github.io/j40-cejst-2/en/#9.29/41.8341/-87.7321T', faIcon: <FaStar/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Climate & Economic Justice Screening Tool', description: 'This copy of the original U.S. tool highlights key measures of climate and environmental justices for all census tracts.' },
-  { url: 'https://www.policymap.com/', faIcon: <FaMobileScreen/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'PolicyMap', description: 'Cloud-based geographic information system (GIS) mapping and analytics platform designed to help users visualize and understand socio-economic, environmental, health, housing, etc data.' },
-  { url: 'https://cnt.org/publications/geographic-information-system-gis-101-toolkit-for-environmental-justice-organizations', faIcon: <FaMap/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'GIS 101 Toolkit', description: 'GIS 101 Toolkit for Environmental Justice Organizations & Allies, designed by Center for Neighborhood Technology, LVEJO & Milwaukee Water Commons.' },
-  { url: 'https://sdohplace.org/', faIcon: <FaLink/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'SDOH & Place', description: 'A collaborative initiative focused on combining social determinants of health with geographic & neighborhood data to support health equity research and community tool development.' },
-  { url: 'https://publichealth.uic.edu/', faIcon: <FaHospitalSymbol/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'UIC School of Public Health', description: 'UIC SPH focuses on eliminating health disparities, environmental health, and community-based practice through extensive research, education, and public policy formulation.' },
-  { url: 'https://earth.illinois.edu/', faIcon: <FaPersonThroughWindow/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'UIUC School of Earth, Society & Environment', description: 'Home to Climate Science, Geology, and Geography departments, SESE bridges natural and social sciences to study Earth systems, human impacts, and sustainability.' },
-  { url: 'https://ceche.uic.edu/', faIcon: <FaAt/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'UIC Center for Extreme Conditions and Health Excellence', description: 'Brings together multidisciplinary researchers to advance innovative research on extreme weather and health and reduce the health impacts of extreme conditions in urban environments.' },
-  { url: 'https://healthyregions.org/', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true, name: 'Healthy Regions & Policies Lab', description: 'Linking spatial data science & public health. Access multiple free resources, toolkits, and speaker series on measuring & building more healthy communities.' }
+  { id: 'openAirNetworkMap', url: 'https://www.chicago.gov/city/en/depts/cdph/supp_info/Environment/open-air-chicago.html#modalpop', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'epaAirNow', url: 'https://www.airnow.gov/?city=Chicago&state=IL&country=USA', faIcon: <FaPersonThroughWindow/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'purpleAir', url: 'https://map.purpleair.com/', faIcon: <FaMapMarkerAlt/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'ejIndexMap', url: 'https://www.chicago.gov/content/dam/city/depts/cdph/environment/CumulativeImpact/Chicago-EJ-Index_CAs-1500x2318.jpg', faIcon: <FaDownload/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'ejScreen', url: 'https://screening-tools.com/epa-ejscreen', faIcon: <FaMobileScreen/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'cdcEji', url: 'https://www.atsdr.cdc.gov/place-health/php/eji/index.html', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'chives', url: 'https://chichives.com/', faIcon: <FaPersonThroughWindow/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'healthAtlas', url: 'https://chicagohealthatlas.org/', faIcon: <FaHospitalSymbol/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'cejst', url: 'https://public-environmental-data-partners.github.io/j40-cejst-2/en/#9.29/41.8341/-87.7321T', faIcon: <FaStar/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'policyMap', url: 'https://www.policymap.com/', faIcon: <FaMobileScreen/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'gis101Toolkit', url: 'https://cnt.org/publications/geographic-information-system-gis-101-toolkit-for-environmental-justice-organizations', faIcon: <FaMap/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'sdohPlace', url: 'https://sdohplace.org/', faIcon: <FaLink/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'uicSph', url: 'https://publichealth.uic.edu/', faIcon: <FaHospitalSymbol/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'uiucSese', url: 'https://earth.illinois.edu/', faIcon: <FaPersonThroughWindow/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'uicCeche', url: 'https://ceche.uic.edu/', faIcon: <FaAt/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true },
+  { id: 'healthyRegions', url: 'https://healthyregions.org/', faIcon: <FaCircleCheck/>, icon: '/icons/chiair/resources-indoor.svg', backdrop: true }
 
 
 
@@ -189,6 +192,7 @@ const resources = [
 ];
 
 export default function Resources() {
+  const { t } = useTranslation('resources');
   const navigate = useNavigate();
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
@@ -209,12 +213,12 @@ export default function Resources() {
         <ContentContainer>
           <Grid container spacing={3} justifyContent={'right'} textAlign={'right'}>
             <Grid size={6} style={{ fontFamily: 'Lexend', fontSize: '48px', fontWeight: 700, color: '#005899' }}>
-              Access useful Air Quality Resources
+              {t('header.title')}
             </Grid>
           </Grid>
           <Grid container spacing={3} textAlign={'right'} marginTop={'2rem'}>
             <TeamBodyText size={12}>
-              This list of air quality resources includes tools, data repositories, and monitoring networks designed for the general public, researchers, and policymakers, ranging from local, government-regulated data to global, satellite-based datasets.
+              {t('header.intro')}
             </TeamBodyText>
           </Grid>
         </ContentContainer>
@@ -223,26 +227,26 @@ export default function Resources() {
 
       <ContentContainer>
         <SectionHeader imgSrc={'/icons/chiair/aq-resources-icon.svg'}
-                       topRowText={'Access useful'}
-                       bottomRowTextBlack={'Air Quality'}
-                       bottomRowTextRed={'Resources'}
+                       topRowText={t('sectionHeader.topRow')}
+                       bottomRowTextBlack={t('sectionHeader.bottomRowBlack')}
+                       bottomRowTextRed={t('sectionHeader.bottomRowRed')}
                        buttonOnClick={() => navigate('/map')}
-                       buttonText={`View ${productName} Map`}
+                       buttonText={t('sectionHeader.viewMap', { productName })}
                        buttonIcon={<FaArrowRight style={{ marginLeft: '.5rem' }} />}
         />
 
         <FilterRow direction="row" spacing={1} justifyContent={'flex-end'} useFlexGap flexWrap={'wrap'}>
           <FilterChip
             clickable
-            label="All"
+            label={t('categories.all')}
             $active={activeCategory === 'all'}
             onClick={() => setActiveCategory('all')}
           />
-          {resourceCategories.map(({ id, label }) => (
+          {resourceCategories.map(({ id }) => (
             <FilterChip
               key={id}
               clickable
-              label={label}
+              label={t(`categories.${id}`)}
               $active={activeCategory === id}
               onClick={() => setActiveCategory(id)}
             />
@@ -251,7 +255,7 @@ export default function Resources() {
 
         {visibleCategories?.map((category, catIndex) =>
           <CategorySection key={`resource-category-${catIndex}`}>
-            <CategoryTitle $largeScreen={largeScreen}>{category?.label}</CategoryTitle>
+            <CategoryTitle $largeScreen={largeScreen}>{t(`categories.${category?.id}`)}</CategoryTitle>
             <Grid container spacing={8} marginBottom={16} alignItems={'start'} rowSpacing={4}>
               {resources?.filter(r => r?.category === category?.id)?.map((resource, resIndex) =>
                 <Grid key={'resources-'+resIndex} size={{ xs: 12, md: 3 }} style={{ cursor: 'pointer' }}
@@ -265,8 +269,8 @@ export default function Resources() {
                     </div>}
                   </Grid>
                   <Grid container spacing={3} alignItems={'center'} justifyContent={'center'}>
-                    <ResourceLabel $largeScreen={largeScreen}>{resource?.name} <ResourceLinkIcon /></ResourceLabel>
-                    <ResourceDescription>{resource?.description}</ResourceDescription>
+                    <ResourceLabel $largeScreen={largeScreen}>{t(`cards.${resource?.id}.name`)} <ResourceLinkIcon /></ResourceLabel>
+                    <ResourceDescription>{t(`cards.${resource?.id}.description`)}</ResourceDescription>
                   </Grid>
                 </Grid>
               )}

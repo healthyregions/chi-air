@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "kicker": "Na bazie <platform>{{platformName}}</platform>",
+    "tagline": "Tworzone z Chicago, dla Chicago.",
+    "body": "Zanieczyszczenie powietrza często jest niewidoczne, ale jego skutki są realne. Teraz dane o jakości powietrza w czasie rzeczywistym są dostępne dla każdej dzielnicy i każdego mieszkańca Chicago, aby Ty i Twoi bliscy mieli informacje potrzebne do swobodniejszego oddychania.",
+    "exploreMap": "Przeglądaj mapę"
+  },
+  "resourcesSection": {
+    "topRow": "Przydatne",
+    "bottomRowBlack": "zasoby o jakości",
+    "bottomRowRed": "powietrza",
+    "viewAll": "Zobacz wszystkie zasoby"
+  },
+  "resources": {
+    "whatIsAirQuality": {
+      "name": "Czym jest jakość powietrza?",
+      "description": "Wprowadzenie do tematu jakości powietrza od National Center for Atmospheric Research."
+    },
+    "airNow": {
+      "name": "AirNow",
+      "description": "AirNow pokazuje jakość powietrza w Twojej okolicy, a także w skali stanowej i krajowej."
+    },
+    "reportAirPollution": {
+      "name": "Zgłoś zanieczyszczenie powietrza",
+      "description": "Zgłaszaj podejrzewane naruszenia przepisów o jakości powietrza w mieście Chicago."
+    },
+    "airQualityOrdinance": {
+      "name": "Rozporządzenie o jakości powietrza w Chicago",
+      "description": "Rozporządzenie o jakości powietrza reguluje budowę i rozbudowę niektórych obiektów, które powodują zanieczyszczenie powietrza."
+    },
+    "openAirChicago": {
+      "name": "{{platformName}}",
+      "description": "Odwiedź stronę miasta Chicago poświęconą {{platformName}}, z mapami i danymi."
+    },
+    "healthAtlas": {
+      "name": "Chicago Health Atlas",
+      "description": "Zasób do przeglądania, analizowania i porównywania danych o zdrowiu w czasie i między społecznościami."
+    },
+    "chives": {
+      "name": "ChiVes: Odkrywaj Chicago",
+      "description": "Platforma współpracy danych i mapowania społecznościowego w Chicago ze wskaźnikami środowiskowymi, klimatycznymi i dotyczącymi dzielnic."
+    }
+  },
+  "viewAllCard": {
+    "title": "Zobacz wszystkie zasoby",
+    "description": "Poznaj więcej materiałów edukacyjnych i scenariuszy lekcji, przeglądaj raporty i odkrywaj dodatkowe mapy."
+  },
+  "network": {
+    "topRow": "Napędzane przez",
+    "bottomRowBlack": "rekordową",
+    "bottomRowRed": "sieć",
+    "paragraph1": "Tradycyjne stacje pomiarowe dzielą mile, przez co umykają im ogniska zanieczyszczeń dotykające konkretnych kwartałów w naszych społecznościach. Aby wypełnić tę lukę, stworzyliśmy „Sieć {{platformName}}” i rozmieściliśmy w całym mieście sieć {{sensorCount}} czujników Clarity Node-S, które mierzą pył drobny (PM2.5) i dwutlenek azotu (NO2) w powietrzu atmosferycznym. {{platformName}} jest współwłasnością University of Illinois at Chicago (UIC) i Chicago Department of Public Health (CDPH).",
+    "paragraph2": "Obsługując w chwili uruchomienia największą w USA sieć monitorowania powietrza opartą na czujnikach, platforma <link>{{platformName}} <icon/></link> wyznacza nowy standard sprawiedliwości środowiskowej, dostarczając szczegółowe dane o jakości badawczej osobom, które najbardziej ich potrzebują.",
+    "paragraph3": "Ta aplikacja mapowa idzie o krok dalej: powstała we współpracy ze społecznością i partnerami z różnych sektorów, aby dane były łatwo dostępne, przejrzyste, osadzone w kontekście i gotowe do działania – przy tworzeniu polityki, wzmacnianiu społeczności i rzecznictwie. Z czasem będziemy dalej ulepszać panel i dodawać kolejne zasoby. Chętnie przyjmujemy uwagi naukowców, organów regulacyjnych i społeczności. <link>Dowiedz się więcej o nas →</link>"
+  }
+}

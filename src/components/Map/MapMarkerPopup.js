@@ -1,6 +1,7 @@
 import {ContentContainer} from "../../styled_components";
 import MapMarkerPin from "./MapMarkerPin";
 import styled from "styled-components";
+import {useTranslation} from "react-i18next";
 
 const FlexRow = styled.div`
     display: flex;
@@ -36,6 +37,7 @@ const PopupBody = styled.p`
 // This component handles and formats the map tooltip info regarding the clicked Community Sticker.
 // The props passed to this component should contain a reference to the Sticker that was clicked
 const MapMarkerPopup = ({ sticker }) => {
+    const { t } = useTranslation('map');
     return (
         <>
             {sticker && <>
@@ -49,8 +51,8 @@ const MapMarkerPopup = ({ sticker }) => {
                     </FlexRow>
 
                     <PopupBody>
-                      <div>Address: {sticker?.address}</div>
-                      <div>Monitors for: {sticker?.monitors?.join(' & ')}</div>
+                      <div>{t('markerPopup.address', { address: sticker?.address })}</div>
+                      <div>{t('markerPopup.monitorsFor', { monitors: sticker?.monitors?.join(' & ') })}</div>
                     </PopupBody>
                 </ContentContainer>
             </>}

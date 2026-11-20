@@ -13,7 +13,7 @@ import {
   selectBreadcrumbs, setBreadcrumbs as setBreadcrumbsAction,
   selectClickedSensor, selectSelectedAreas,
   selectSelectedSensors, selectSensorLocations, selectSensorParameter,
-  setClickedSensor, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData, setSensorParameter, setLocale,
+  setClickedSensor, setSelectedAreas, setSelectedSensors, selectSensorGeojsonData, setSensorParameter,
 } from "../../store/slices/sensorDataSlice";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -32,7 +32,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
-import {useCookies} from "react-cookie";
+import {useTranslation} from "react-i18next";
 import {MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
 
 /* position: ${({ $large }) => $large ? 'fixed' : 'absolute'}; */
@@ -110,7 +110,7 @@ const DropdownHeader = styled.span`
 const DataPanel = ({ mapRef }) => {
   const dispatch = useDispatch();
   const largeScreen = useMediaQuery('(min-width: 600px)');
-  const [cookies] = useCookies(['googtrans']);
+  const { t, i18n } = useTranslation('map');
 
   // Legacy map controls
   const panelState = useSelector(selectPanelState);
@@ -170,17 +170,15 @@ const DataPanel = ({ mapRef }) => {
     }
   };
 
-  const onLocaleChange = (locale) => {
-    dispatch(setLocale(locale));
-  }
+  const onLocaleChange = (locale) => i18n.changeLanguage(locale);
 
   const paramDisplayName = selectedParameter === 'nowcast_aqi' ? 'AQI-PM2.5' : selectedParameter === 'clarity_pm25' ? 'PM2.5' : 'NO₂';
 
   return (
     <DataPanelContainer $large={largeScreen} $open={!!panelState.info} id="data-panel">
       <Grid container spacing={2} alignItems={'center'} justifyContent={'space-between'} flexWrap={'nowrap'}>
-        <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} width={254} height={41}/></Grid>
-        <Grid><DropdownButton size={'large'} ButtonComponent={LButton} truncate={3} label={getLocaleLabel(cookies['googtrans'])} onChange={onLocaleChange} icon={<MdOutlineTranslate />}  options={locales} /></Grid>
+        <Grid size={9}><img src={'/icons/chiair-logo.svg'} alt={t('dataPanel.logoAlt')} width={254} height={41}/></Grid>
+        <Grid><DropdownButton size={'large'} ButtonComponent={LButton} truncate={3} label={getLocaleLabel(i18n.resolvedLanguage)} onChange={onLocaleChange} icon={<MdOutlineTranslate />}  options={locales} /></Grid>
       </Grid>
 
       <Grid container spacing={8} alignItems={'center'} justifyContent={'space-between'} marginBottom={'1rem'}>
@@ -190,18 +188,18 @@ const DataPanel = ({ mapRef }) => {
           to="/"
           variant="text"
           style={{ paddingLeft: '0', gap: '0.4rem' }}
-          title="Go to Home page"
+          title={t('dataPanel.goHomeTitle')}
         >
-          <MdHomeFilled style={{ width: '15px', height: '15px' }} /> Home
+          <MdHomeFilled style={{ width: '15px', height: '15px' }} /> {t('dataPanel.home')}
         </LButton>
-        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>Add Community Context</LButton>
+        <LButton variant={'text'} size={'large'} onClick={() => pushPage(['Map Layers'])}>{t('dataPanel.addCommunityContext')}</LButton>
       </Grid>
 
       {currentPage === 'root' && <>
         {(largeScreen || !clickedSensor) && <>
           <Grid container spacing={2} alignItems={'start'}>
             <Grid size={{ xs: 4 }}>
-              <DropdownHeader htmlFor="paramSelect" size={'small'}>Indicator</DropdownHeader>
+              <DropdownHeader htmlFor="paramSelect" size={'small'}>{t('dataPanel.indicator')}</DropdownHeader>
               <FormControl id="paramSelect" variant="outlined" fullWidth margin={'dense'} style={{
                 border: '1px solid rgba(0, 88, 153, 0.5)',
                 borderRadius: '5px'
@@ -223,7 +221,7 @@ const DataPanel = ({ mapRef }) => {
               <LButton as={Grid} size={'small'} style={{ textWrap: 'nowrap', display: 'flex', flexDirection:'row', width: '2rem' }} onClick={() => pushPage(['Explain'])}>
                 <span style={{ display:'flex', flexDirection: 'row', alignItems: 'center' }}>
                   <FaInfoCircle style={{ margin: '.5rem .2rem' }} color={'rgba(0, 88, 153, 0.5)'} size={'0.75rem'} />
-                  What is {paramDisplayName}?
+                  {t('dataPanel.whatIsParam', { param: paramDisplayName })}
                 </span>
               </LButton>
             </Grid>

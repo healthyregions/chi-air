@@ -1,0 +1,106 @@
+{
+  "title": "Zespół",
+  "intro": "<b>{{productName}}</b> to wspólne przedsięwzięcie, za którym stoi wspólne zaangażowanie na rzecz jakości powietrza, nauki o danych i przejrzystości oraz zdrowia publicznego. Ta strona wyraża uznanie dla zróżnicowanej grupy osób – od instytucji akademickich po partnerów społecznych z całego Chicago – które wniosły swoją wiedzę techniczną i doświadczenia życiowe, aby stworzyć platformę pomagającą ludziom zrozumieć jakość powietrza, którym oddychają w Chicago w stanie Illinois.",
+  "collaborationHeader": {
+    "topRow": "Zbudowane z pasją",
+    "bottomRowBlack": "We",
+    "bottomRowRed": "Współpracy"
+  },
+  "programLeadership": {
+    "title": "Kierownictwo Programu Jakości Powietrza w Chicago",
+    "leadInstitution": "Instytucja wiodąca",
+    "contributingInstitution": "Instytucja współpracująca",
+    "description": "Program Jakości Powietrza w Chicago, prowadzony przez UIC, to projekt silnie oparty na społeczności, w którym aktywnie uczestniczyło i swój wkład wniosło siedmiu oficjalnych partnerów społecznych UIC w ramach dwóch grantów UIC [tj. Southeast Environmental Task Force (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery (PCR), Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights and Reform Organization (PERRO)], sześć dodatkowych organizacji społecznych zasiadających w Radzie Doradczej CDPH [tj. Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA) i The Southwest Collective] oraz wiele innych osób, które wzięły udział w naszych grupach fokusowych i ankietach. Odwiedź stronę <link>Open Air</link> Departamentu Zdrowia Publicznego Chicago (CDPH), aby dowiedzieć się więcej o 13 organizacjach społecznych zasiadających w Komitecie Doradczym CDPH „Open Air Chicago”."
+  },
+  "dashboardLeadership": {
+    "title": "Kierownictwo panelu OurAir",
+    "description": "Platforma mapowa OurAir została opracowana przez <link>Healthy Regions & Policies Lab</link> na University of Illinois, kierowane przez <b>dr M. Kolak</b>, w ścisłej współpracy z Kierownictwem Programu, Partnerami UIC, Zespołem Głównym, Studentami-Badaczami oraz dziesiątkami współtwórców z regionu Chicago."
+  },
+  "coreTeam": {
+    "title": "Zespół Główny",
+    "acknowledgements": "Dziękujemy również następującym osobom: <b>Pengyin Shan</b> – za wsparcie techniczne oraz <b>Paulina Arias Caballero</b> – za nieocenione usługi tłumaczeniowe. Na koniec dziękujemy <i>Pilsen Arts & Community House</i> za goszczenie sesji współprojektowania na żywo."
+  },
+  "studentTeam": {
+    "title": "Zespół Studencki"
+  },
+  "communityHeader": {
+    "topRow": "Współtworzone",
+    "bottomRowBlack": "ze",
+    "bottomRowRed": "Społecznością"
+  },
+  "groupContributors": {
+    "title": "Organizacje współtworzące OurAir"
+  },
+  "individualContributors": {
+    "title": "Indywidualni współtwórcy OurAir"
+  },
+  "closing": {
+    "gratitude": "Dziękujemy wszystkim współtwórcom OurAir, uczestnikom ankiet i grup fokusowych oraz wszystkim rozmówcom.",
+    "consentNote": "Choć przedstawiamy tylko osoby, które wyraziły na to zgodę, ta platforma mapowa powstała dzięki wspólnemu wkładowi wszystkich zaangażowanych."
+  },
+  "members": {
+    "erdal": {
+      "role": "Główny badacz, University of Illinois Chicago"
+    },
+    "persky": {
+      "role": "Współbadacz, University of Illinois Chicago"
+    },
+    "kolak": {
+      "role": "Współbadacz, University of Illinois Urbana-Champaign"
+    },
+    "wang": {
+      "role": "Współbadacz, University of Illinois Chicago"
+    },
+    "astacioPalmer": {
+      "role": "Kierownik ds. badań, UIUC"
+    },
+    "barronville": {
+      "role": "Specjalista ds. badań, UIUC"
+    },
+    "bhansoor": {
+      "role": "Pracownik naukowy, UIUC"
+    },
+    "cox": {
+      "role": "Starszy inżynier, UIUC"
+    },
+    "fiffer": {
+      "role": "Konsultant naukowy, UIC"
+    },
+    "garrett": {
+      "role": "Specjalista ds. badań, UIUC"
+    },
+    "kumar": {
+      "role": "Starszy projektant produktu, UIUC"
+    },
+    "lambert": {
+      "role": "Wiodący starszy inżynier, UIUC"
+    },
+    "pagone": {
+      "role": "Starszy kierownik, RHP"
+    },
+    "tootoo": {
+      "role": "Konsultant naukowy, UIC"
+    },
+    "vazquezGomez": {
+      "role": "Organizator nauki obywatelskiej, LVEJO"
+    },
+    "amar": {
+      "role": "Asystent badawczy, UIC"
+    },
+    "discenza": {
+      "role": "Asystent badawczy, UIUC"
+    },
+    "kabirAdrita": {
+      "role": "Asystent badawczy, UIUC"
+    },
+    "huang": {
+      "role": "Asystent badawczy, UIC"
+    },
+    "si": {
+      "role": "Asystent badawczy, UIUC"
+    },
+    "zeng": {
+      "role": "Asystent badawczy, UIC"
+    }
+  }
+}

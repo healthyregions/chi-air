@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "kicker": "Building on <platform>{{platformName}}</platform>",
+    "tagline": "Built with Chicago, for Chicago.",
+    "body": "Air pollution is often invisible, but its impact is real. Now, real-time air quality data is available for every neighborhood, for every Chicagoan, ensuring you and your loved ones have the information you need to breathe easier.",
+    "exploreMap": "Explore Map"
+  },
+  "resourcesSection": {
+    "topRow": "Access useful",
+    "bottomRowBlack": "Air Quality",
+    "bottomRowRed": "Resources",
+    "viewAll": "View All Resources"
+  },
+  "resources": {
+    "whatIsAirQuality": {
+      "name": "What is Air Quality?",
+      "description": "An introduction to air quality from the National Center for Atmospheric Research."
+    },
+    "airNow": {
+      "name": "AirNow",
+      "description": "AirNow highlights air quality in your local area alongside state and national views."
+    },
+    "reportAirPollution": {
+      "name": "Report Air Pollution",
+      "description": "Report suspected air quality violations in the City of Chicago."
+    },
+    "airQualityOrdinance": {
+      "name": "Chicago Air Quality Ordinance",
+      "description": "The Air Quality Ordinance regulates the construction and expansion of certain facilities that create air pollution."
+    },
+    "openAirChicago": {
+      "name": "{{platformName}}",
+      "description": "Check out the City of Chicago website on {{platformName}}, including maps and data."
+    },
+    "healthAtlas": {
+      "name": "Chicago Health Atlas",
+      "description": "A resource to review, explore and compare health-related data over time and across communities."
+    },
+    "chives": {
+      "name": "ChiVes: Exploring Chicago",
+      "description": "A Chicago data collaborative & community mapping platform with environment, climate, & neighborhood indicators."
+    }
+  },
+  "viewAllCard": {
+    "title": "View All Resources",
+    "description": "Explore more learning materials & lesson plans, access reports, and explore additional maps."
+  },
+  "network": {
+    "topRow": "Empowered by a",
+    "bottomRowBlack": "Record-Breaking",
+    "bottomRowRed": "Network",
+    "paragraph1": "Traditional monitoring stations are miles apart, missing the pollution pockets that affect specific blocks in our communities. To close this gap, we created the \"{{platformName}} Network\" and deployed a network of {{sensorCount}} Clarity Node-S sensors to blanket the city to measure Fine Particulate Matter (PM2.5) and Nitrogen Dioxide (NO2) in ambient air. {{platformName}} is co-owned between University of Illinois at Chicago (UIC) and Chicago Department of Public Health (CDPH).",
+    "paragraph2": "By operating the largest sensor-based air monitoring network in the U.S. at the time of deployment, the <link>{{platformName}} <icon/></link> platform sets a new standard for environmental justice, delivering granular, research grade data to the people who need it most.",
+    "paragraph3": "This mapping application builds on that further, developed with community and cross-sector collaborations to ensure the data is easily accessible, transparent, in context, and ready for action for policy-making and community empowerment, and advocacy. We will continue to refine and add to the dashboard with improvements and more resources overtime. We welcome scientific, regulatory, and community input. <link>Learn more about us →</link>"
+  }
+}

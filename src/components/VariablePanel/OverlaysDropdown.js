@@ -5,11 +5,15 @@ import { parsedOverlays } from "../../config";
 import {selectMapParams, setMapParams} from "../../store/slices/legacyStoreSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {ListSubheader} from "@mui/material";
+import {useTranslation} from "react-i18next";
+import useConfigText from "../../i18n/useConfigText";
 
 
 const OverlaysDropdown = () => {
   const mapParams = useSelector(selectMapParams);
   const dispatch = useDispatch();
+  const { t } = useTranslation('panel');
+  const tc = useConfigText();
 
   const handleMapOverlay = (overlays) => {
     let prevOverlays = mapParams.overlays;
@@ -42,27 +46,27 @@ const OverlaysDropdown = () => {
           onChange={(e) => handleMapOverlay(e.target.value)}
           multiple={true}
         >
-          <ListSubheader>Community Boundaries</ListSubheader>
+          <ListSubheader>{t('overlays.categories.communityBoundaries')}</ListSubheader>
           {
             parsedOverlays?.filter(o => o?.categoryType === 'Community Boundary')?.map((overlay) =>
               <MenuItem value={overlay.id} key={overlay.id}>
-                {overlay.displayName}
+                {tc('overlays', overlay.id, 'displayName', overlay.displayName)}
               </MenuItem>
             )
           }
-          <ListSubheader>Community Resources</ListSubheader>
+          <ListSubheader>{t('overlays.categories.communityResources')}</ListSubheader>
           {
             parsedOverlays?.filter(o => o?.categoryType === 'Community Resource')?.map((overlay) =>
               <MenuItem value={overlay.id} key={overlay.id}>
-                {overlay.displayName}
+                {tc('overlays', overlay.id, 'displayName', overlay.displayName)}
               </MenuItem>
             )
           }
-          <ListSubheader>Built Infrastructure</ListSubheader>
+          <ListSubheader>{t('overlays.categories.builtInfrastructure')}</ListSubheader>
           {
             parsedOverlays?.filter(o => o?.categoryType === 'Built Infrastructure')?.map((overlay) =>
               <MenuItem value={overlay.id} key={overlay.id}>
-                {overlay.displayName}
+                {tc('overlays', overlay.id, 'displayName', overlay.displayName)}
               </MenuItem>
             )
           }

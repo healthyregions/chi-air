@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 // Import helper libraries
 import styled from 'styled-components';
@@ -95,6 +96,7 @@ const Tags = (props) => {
 
 export default function NeighborhoodCounts(props){
     const [tagCount, setTagCount] = useState(5)
+    const { t } = useTranslation('map');
     const dispatch = useDispatch();
     const resetFilter = () => {
         dispatch(removeFilterValues({ name: 'community' }));
@@ -114,7 +116,7 @@ export default function NeighborhoodCounts(props){
             }
             {
                 (props.activeCommunities !== undefined || tagCount > 5) &&
-                    <ClearButton onClick={() => resetFilter()}>clear</ClearButton>
+                    <ClearButton onClick={() => resetFilter()}>{t('neighborhoodCounts.clear')}</ClearButton>
             }
         </CountsContainer>
   )

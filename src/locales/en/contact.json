@@ -1,0 +1,30 @@
+{
+  "title": "Contact Us",
+  "intro": "Hit a problem? Want to share feedback or feature suggestions?",
+  "form": {
+    "messageType": "Message Type",
+    "name": "Name",
+    "namePlaceholder": "Your Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "message": "Message",
+    "messagePlaceholder": "Your message...",
+    "send": "Send",
+    "sentConfirmation": "Feedback has been sent"
+  },
+  "messageTypes": {
+    "general": "General",
+    "bugReport": "Bug Report or Error",
+    "dataQuestion": "Data Question",
+    "featureRequest": "Feature Request",
+    "technical": "Technical or Open Source Questions",
+    "press": "Press or Media"
+  },
+  "errors": {
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Must be a valid email address",
+    "phoneInvalid": "Must be a valid phone number",
+    "messageRequired": "Please enter your message"
+  }
+}

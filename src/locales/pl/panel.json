@@ -1,0 +1,150 @@
+{
+  "common": {
+    "loadingPleaseWait": "Ładowanie, proszę czekać..."
+  },
+  "variablePanel": {
+    "title": "Jakość powietrza",
+    "intro": "Punkty na mapie pokazują wartości <strong>stężenia masowego</strong> PM2.5 NowCast z naszej sieci czujników.",
+    "lastUpdated": "ostatnia aktualizacja: {{date}} {{time}}",
+    "loadingData": "ładowanie danych...",
+    "toggle": "Zmienne"
+  },
+  "variables": {
+    "none": "Brak"
+  },
+  "description": {
+    "dataSource": "Źródło danych",
+    "dataYear": "Rok danych"
+  },
+  "overlays": {
+    "enabledLabel": "Nakładki:",
+    "categories": {
+      "communityBoundaries": "Granice obszarów",
+      "communityResources": "Zasoby społeczności",
+      "builtInfrastructure": "Infrastruktura zabudowana"
+    }
+  },
+  "mapLayers": {
+    "title": "Dodaj kontekst społeczności",
+    "intro": "Dostosuj widok, aby zobaczyć, jak jakość powietrza wiąże się z Twoją społecznością. Poznaj różne wskaźniki, zasoby i granice.",
+    "indicators": {
+      "title": "Wskaźniki dla okolicy",
+      "help": "Wybierz główny wskaźnik, który chcesz zobaczyć na mapie. Możesz wybrać tylko jeden."
+    },
+    "overlays": {
+      "title": "Nałóż dodatkowe zasoby",
+      "help": "Dodaj granice, zasoby i infrastrukturę. Aby mapa była czytelna, zalecamy wybranie tylko jednej opcji z każdej kategorii."
+    }
+  },
+  "colorScale": {
+    "title": {
+      "aqi": "Indeks jakości powietrza PM 2.5 według EPA",
+      "pm25": "Pył drobny",
+      "no2": "Dwutlenek azotu"
+    },
+    "tooltip": {
+      "aqi": "Indeks jakości powietrza (AQI) dla PM2.5 według EPA",
+      "pm25": "Pył drobny – cząstki o średnicy 2,5 mikrometra lub mniejszej",
+      "no2": "Dwutlenek azotu"
+    },
+    "levelOfHealthConcern": "Poziom zagrożenia dla zdrowia",
+    "report": "Raport"
+  },
+  "colorCoding": {
+    "title": {
+      "aqi": "Kolory jakości powietrza",
+      "pm25": "Kolory PM2.5",
+      "no2": "Kolory NO₂"
+    },
+    "body": {
+      "aqi": "Skala kolorów <strong>indeksu jakości powietrza (AQI)</strong> to ustandaryzowany, sześciokolorowy system od 0 do 500, służący do informowania o zagrożeniach zdrowotnych wynikających z zanieczyszczenia powietrza. Kolory zmieniają się od zielonego (dobry) do bordowego (niebezpieczny) – wyższe wartości i cieplejsze kolory oznaczają większe zanieczyszczenie i większe ryzyko dla zdrowia.",
+      "pm25": "Skala kolorów <strong>PM2.5</strong> pokazuje stężenie pyłu drobnego w mikrogramach na metr sześcienny (μg/m³). Kolory zmieniają się od zielonego (dobry) do bordowego (niebezpieczny) – wyższe wartości oznaczają większe ryzyko dla zdrowia.",
+      "no2": "Skala kolorów <strong>NO₂</strong> pokazuje stężenie dwutlenku azotu w częściach na miliard (ppb). NO₂ to silnie reaktywny, czerwonobrązowy gaz o ostrym zapachu, będący głównym wskaźnikiem zanieczyszczenia powietrza ze źródeł spalania, takich jak ruch drogowy i elektrownie."
+    }
+  },
+  "sensor": {
+    "offline": "Czujnik jest obecnie offline",
+    "unavailable": "Niedostępne",
+    "linkCopied": "Link skopiowany",
+    "copyLink": "Kopiuj link",
+    "exploreHistorical": "Zobacz trendy historyczne i pobierz dane"
+  },
+  "lastUpdated": {
+    "tooltip": "Aktualizowane co godzinę: {{date}}",
+    "updated": "zaktualizowano",
+    "updating": "aktualizowanie",
+    "loading": "Ładowanie",
+    "pleaseWait": "Proszę czekać..."
+  },
+  "breadcrumbs": {
+    "details": "Szczegóły",
+    "explain": "Wyjaśnienie"
+  },
+  "details": {
+    "explain": "Wyjaśnienie",
+    "historicalTrends": "Trendy historyczne",
+    "download": "Pobierz",
+    "downloadSession": "Pobiera wszystkie dane z bieżącej sesji",
+    "downloadIndicator": "Pobiera wszystkie dane dla bieżącego wskaźnika",
+    "indicator": "Wskaźnik",
+    "viewBy": "Widok według",
+    "averageType": {
+      "hour": "Godzina",
+      "day": "Dzień",
+      "week": "Tydzień",
+      "month": "Miesiąc",
+      "season": "Pora roku",
+      "year": "Rok"
+    },
+    "noRecentReadings": "Nie znaleziono ostatnich odczytów."
+  },
+  "explain": {
+    "aqi": {
+      "title": "Indeks jakości powietrza (AQI) według EPA",
+      "body": "Indeks jakości powietrza (AQI) to oznaczona kolorami skala od 0 do 500, która informuje, jak bardzo zanieczyszczone jest powietrze i jaki jest związany z tym poziom zagrożenia dla zdrowia. Wyższe wartości AQI oznaczają większe zanieczyszczenie i większe zagrożenie dla zdrowia. AQI poniżej 100 jest zazwyczaj bezpieczny, natomiast wartości powyżej 100 oznaczają niezdrowe powietrze, zwłaszcza dla grup wrażliwych."
+    },
+    "pm25": {
+      "title": "PM2.5 – pył drobny",
+      "body": "PM2.5 to pył drobny – maleńkie cząstki stałe i kropelki cieczy w powietrzu o średnicy aerodynamicznej 2,5 mikrometra lub mniejszej. Dla porównania: ludzki włos ma około 70 mikrometrów szerokości, więc największa cząstka PM2.5 jest 30 razy mniejsza niż szerokość włosa. PM2.5 trafia do powietrza z wielu źródeł, takich jak place budowy, drogi nieutwardzone, pola, kominy, pożary czy dowolne źródło spalania. Jako zanieczyszczenie „kryterialne” podlega regulacjom ze względu na dobrze udokumentowany wpływ na układ oddechowy i krążenia. Osoby z chorobami serca lub płuc, dzieci, osoby starsze, mniejszości oraz osoby o niskim statusie społeczno-ekonomicznym są uznawane za grupy podwyższonego ryzyka, ponieważ są bardziej wrażliwe lub mogą być bardziej narażone."
+    },
+    "no2": {
+      "title": "NO₂ – dwutlenek azotu",
+      "body": "Dwutlenek azotu (NO₂) to silnie reaktywny, czerwonobrązowy gaz o ostrym zapachu, który jest głównym wskaźnikiem zanieczyszczenia powietrza związanego z ruchem drogowym i kluczowym składnikiem smogu. Powstaje głównie przy spalaniu paliw w pojazdach, elektrowniach i zakładach przemysłowych. Jako zanieczyszczenie „kryterialne” podlega ścisłym regulacjom, ponieważ powoduje choroby układu oddechowego, zwłaszcza astmę, i przyczynia się do powstawania pyłu PM2.5 oraz ozonu przyziemnego."
+    }
+  },
+  "selectedArea": {
+    "sensorsInLocation": "Czujniki w tej lokalizacji",
+    "name": "Nazwa"
+  },
+  "areaSelection": {
+    "findHeader": "<strong>Znajdź</strong> swoją dzielnicę, kod pocztowy lub okręg wyborczy",
+    "tabs": {
+      "community": "Dzielnica",
+      "zip": "Kod pocztowy",
+      "zipCode": "Kod pocztowy",
+      "ward": "Okręg"
+    },
+    "wardOption": "Okręg {{number}}",
+    "search": "Szukaj",
+    "noOptions": "Brak opcji",
+    "close": "Zamknij",
+    "clear": "Wyczyść wybór",
+    "labels": {
+      "community": "Dzielnica:",
+      "zipCode": "Kod pocztowy:",
+      "ward": "Okręg wyborczy:"
+    }
+  },
+  "chart": {
+    "startOfWeek": "Początek tygodnia",
+    "error": "BŁĄD",
+    "unknown": "Nieznany",
+    "seasons": {
+      "winter": "Zima",
+      "spring": "Wiosna",
+      "summer": "Lato",
+      "fall": "Jesień",
+      "autumn": "Jesień"
+    }
+  }
+}

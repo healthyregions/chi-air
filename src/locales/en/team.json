@@ -1,0 +1,106 @@
+{
+  "title": "Team",
+  "intro": "<b>{{productName}}</b> is a collective effort driven by a shared commitment to air quality and data science and transparency, and public health. This page honors the diverse group of individuals, from academic institutions to community partners across Chicago, who contributed their technical insights and lived experiences to architect a platform that empowers people to understand the quality of air they breathe in Chicago, IL.",
+  "collaborationHeader": {
+    "topRow": "Passionately built",
+    "bottomRowBlack": "With",
+    "bottomRowRed": "Collaboration"
+  },
+  "programLeadership": {
+    "title": "Chicago Air Quality Program Leadership",
+    "leadInstitution": "Lead Institution",
+    "contributingInstitution": "Contributing Institution",
+    "description": "The Chicago Air Quality Program, led by UIC, is a strong community-driven project that involved active participation and contribution of UIC’s seven official community partners under the two UIC grants [i.e., Southeast Environmental Task Force (SETF), Little Village Environmental Justice Organization (LVEJO), Alliance of the Southeast (ASE), People for Community Recovery (PCR). Neighbors for Environmental Justice (N4EJ), Chicago Environmental Justice Network (CEJN), Pilsen Environmental Rights and Reform Organization (PERRO)], six additional community organizations serving on the CDPH's Advisory Board [i.e., Communities United, Grow Greater Englewood (GGE), ONE Northside, Openlands, Westside Community Alliance (WCA), and The Southwest Collective], and many others who participated in our focus group sessions and surveys. Please refer to the Chicago Department of Public Health's (CDPH) <link>Open Air</link> website to learn about the 13 community organizations serving on CDPH's “Open Air Chicago” Advisory Committee."
+  },
+  "dashboardLeadership": {
+    "title": "OurAir Dashboard Leadership",
+    "description": "The OurAir mapping platform was developed by the <link>Healthy Regions & Policies Lab</link> at the University of Illinois, directed by <b>Dr. M. Kolak</b>, in close collaboration with Program Leadership, UIC Partners, the Core Team, Student Researchers, and dozens of Chicagoland contributors."
+  },
+  "coreTeam": {
+    "title": "Core Team",
+    "acknowledgements": "We are additionally grateful to <b>Pengyin Shan</b> for their technical support and <b>Paulina Arias Caballero</b> for their essential translation services. Finally, we are grateful to the <i>Pilsen Arts & Community House</i> for hosting the live co-design session."
+  },
+  "studentTeam": {
+    "title": "Student Team"
+  },
+  "communityHeader": {
+    "topRow": "Co-created with",
+    "bottomRowBlack": "The",
+    "bottomRowRed": "Community"
+  },
+  "groupContributors": {
+    "title": "OurAir Group Contributors"
+  },
+  "individualContributors": {
+    "title": "OurAir Individual Contributors"
+  },
+  "closing": {
+    "gratitude": "Gratitude to all OurAir contributors, survey & focus group participants, and conversations.",
+    "consentNote": "While only consenting members are featured, this mapping platform was shaped by the collective input of everyone involved."
+  },
+  "members": {
+    "erdal": {
+      "role": "Principal Investigator, University of Illinois Chicago"
+    },
+    "persky": {
+      "role": "Co-Investigator, University of Illinois Chicago"
+    },
+    "kolak": {
+      "role": "Co-Investigator, University of Illinois Urbana-Champaign"
+    },
+    "wang": {
+      "role": "Co-Investigator, University of Illinois Chicago"
+    },
+    "astacioPalmer": {
+      "role": "Research Manager, UIUC"
+    },
+    "barronville": {
+      "role": "Research Specialist, UIUC"
+    },
+    "bhansoor": {
+      "role": "Research Scientist, UIUC"
+    },
+    "cox": {
+      "role": "Sr. Engineer, UIUC"
+    },
+    "fiffer": {
+      "role": "Scientific Consultant, UIC"
+    },
+    "garrett": {
+      "role": "Research Specialist, UIUC"
+    },
+    "kumar": {
+      "role": "Sr. Product Designer, UIUC"
+    },
+    "lambert": {
+      "role": "Lead Sr. Engineer, UIUC"
+    },
+    "pagone": {
+      "role": "Sr. Manager, RHP"
+    },
+    "tootoo": {
+      "role": "Scientific Consultant, UIC"
+    },
+    "vazquezGomez": {
+      "role": "Community Science Organizer, LVEJO"
+    },
+    "amar": {
+      "role": "Research Assistant, UIC"
+    },
+    "discenza": {
+      "role": "Research Assistant, UIUC"
+    },
+    "kabirAdrita": {
+      "role": "Research Assistant, UIUC"
+    },
+    "huang": {
+      "role": "Research Assistant, UIC"
+    },
+    "si": {
+      "role": "Research Assistant, UIUC"
+    },
+    "zeng": {
+      "role": "Research Assistant, UIC"
+    }
+  }
+}

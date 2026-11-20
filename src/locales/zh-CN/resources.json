@@ -1,0 +1,169 @@
+{
+  "header": {
+    "title": "获取实用的空气质量资源",
+    "intro": "这份空气质量资源清单包括面向公众、研究人员和政策制定者的工具、数据库和监测网络，涵盖从地方政府监管数据到全球卫星数据集的各类资源。"
+  },
+  "sectionHeader": {
+    "topRow": "获取实用的",
+    "bottomRowBlack": "空气质量",
+    "bottomRowRed": "资源",
+    "viewMap": "查看 {{productName}} 地图"
+  },
+  "categories": {
+    "all": "全部",
+    "foundations": "基础知识",
+    "learning": "学习资源",
+    "governance": "城市治理与报告",
+    "supporting": "辅助地图与资源"
+  },
+  "cards": {
+    "outdoorAirQualityIntro": {
+      "name": "室外空气质量入门",
+      "description": "美国国家大气研究中心（NCAR）提供的空气质量入门介绍。"
+    },
+    "airQuality101": {
+      "name": "空气质量 101",
+      "description": "UIC Erdal 教授关于空气质量的讲座"
+    },
+    "indoorAirQualityIntro": {
+      "name": "室内空气质量入门",
+      "description": "人们 90% 的时间都在室内。了解室内空气质量的基础知识。"
+    },
+    "indoorAirQualityResources": {
+      "name": "室内空气质量资源",
+      "description": "美国环境保护署（EPA）提供的室内空气质量延伸阅读清单。"
+    },
+    "naaqs": {
+      "name": "国家环境空气质量标准",
+      "description": "美国国家环境空气质量标准（NAAQS）。"
+    },
+    "whoGuidelines": {
+      "name": "世卫组织全球空气质量指南",
+      "description": "世界卫生组织全球空气质量指南。"
+    },
+    "clarityMonitoring": {
+      "name": "Clarity 空气质量监测资源",
+      "description": "关于 Clarity 空气质量监测的资源。"
+    },
+    "aqiInformation": {
+      "name": "空气质量指数（AQI）信息",
+      "description": "不同空气健康关注级别的定义和范围。"
+    },
+    "airKnowledgeCourse": {
+      "name": "Air Knowledge 课程",
+      "description": "通过这门免费的空气质量基础课程，深入了解空气质量。"
+    },
+    "classroomActivities": {
+      "name": "空气质量课堂活动",
+      "description": "用于课堂空气质量教学的教学资源。"
+    },
+    "buildYourOwnFilter": {
+      "name": "自制空气过滤器",
+      "description": "自己动手制作空气净化器，附教案。"
+    },
+    "epaWebinars": {
+      "name": "EPA 网络研讨会系列",
+      "description": "了解社区空气监测的基础知识。"
+    },
+    "highSchoolCurriculum": {
+      "name": "高中生课程",
+      "description": "华盛顿大学面向高中生的空气质量课程。"
+    },
+    "epaSensorToolbox": {
+      "name": "EPA 空气传感器工具箱",
+      "description": "美国 EPA 关于空气质量传感器及其读数解读的指南。"
+    },
+    "chi311": {
+      "name": "Chi 311",
+      "description": "举报芝加哥市内疑似违反空气质量规定的行为。"
+    },
+    "cumulativeImpactAssessment": {
+      "name": "芝加哥累积影响评估",
+      "description": "一项关于累积影响的环境正义指数，反映芝加哥受污染负担最重、最易受其影响的社区。"
+    },
+    "airQualityHealthReport2020": {
+      "name": "2020 年空气质量与健康报告",
+      "description": "芝加哥 2020 年空气质量与健康报告。"
+    },
+    "airQualityOrdinance": {
+      "name": "芝加哥空气质量条例",
+      "description": "芝加哥空气质量条例概览。"
+    },
+    "ejActionPlanReport": {
+      "name": "芝加哥环境正义行动计划报告",
+      "description": "芝加哥最新的环境正义行动计划及进展更新。"
+    },
+    "deptEnvironment": {
+      "name": "环境与可持续发展局",
+      "description": "专注于以公平和可持续发展为核心的环境倡议的市政部门。"
+    },
+    "cdph": {
+      "name": "芝加哥公共卫生局",
+      "description": "CDPH 致力于提供指导、服务和策略，让芝加哥成为更健康、更安全的城市。"
+    },
+    "openAirNetworkMap": {
+      "name": "Open Air 网络城市地图",
+      "description": "芝加哥市 Open Air 网络传感器地图。"
+    },
+    "epaAirNow": {
+      "name": "EPA AirNow",
+      "description": "AirNow 重点显示您所在地区的空气质量，同时提供州级和全国范围的空气质量信息。"
+    },
+    "purpleAir": {
+      "name": "PurpleAir",
+      "description": "PurpleAir PM2.5 浓度实时地图。"
+    },
+    "ejIndexMap": {
+      "name": "芝加哥环境正义指数地图",
+      "description": "可下载的芝加哥环境正义指数综合得分地图。"
+    },
+    "ejScreen": {
+      "name": "EPA EJScreen",
+      "description": "由于 EPA 网站已停止运行，由哈佛大学重建。"
+    },
+    "cdcEji": {
+      "name": "CDC/ATSDR 环境正义指数",
+      "description": "由于 EPA 网站已停止运行，由哈佛大学重建。"
+    },
+    "chives": {
+      "name": "ChiVes：探索芝加哥的环境",
+      "description": "一个数据协作与社区地图平台，用于探索气候、环境和关键社区指标。"
+    },
+    "healthAtlas": {
+      "name": "Chicago Health Atlas",
+      "description": "用于查看、探索和比较不同时间、不同社区健康相关数据的资源。"
+    },
+    "cejst": {
+      "name": "气候与经济正义筛查工具",
+      "description": "这一美国原版工具的副本，展示了所有人口普查区的气候与环境正义关键指标。"
+    },
+    "policyMap": {
+      "name": "PolicyMap",
+      "description": "基于云的地理信息系统（GIS）制图与分析平台，帮助用户直观了解社会经济、环境、健康、住房等数据。"
+    },
+    "gis101Toolkit": {
+      "name": "GIS 101 工具包",
+      "description": "面向环境正义组织及其伙伴的 GIS 101 工具包，由 Center for Neighborhood Technology、LVEJO 和 Milwaukee Water Commons 设计。"
+    },
+    "sdohPlace": {
+      "name": "SDOH & Place",
+      "description": "一项协作计划，将健康的社会决定因素与地理和社区数据相结合，支持健康公平研究和社区工具开发。"
+    },
+    "uicSph": {
+      "name": "UIC 公共卫生学院",
+      "description": "UIC 公共卫生学院通过广泛的研究、教育和公共政策制定，致力于消除健康差距、推动环境健康和社区实践。"
+    },
+    "uiucSese": {
+      "name": "UIUC 地球、社会与环境学院",
+      "description": "SESE 下设气候科学、地质学和地理学系，连接自然科学与社会科学，研究地球系统、人类影响和可持续发展。"
+    },
+    "uicCeche": {
+      "name": "UIC 极端条件与健康卓越中心",
+      "description": "汇聚多学科研究人员，推进关于极端天气与健康的创新研究，减少城市环境中极端条件对健康的影响。"
+    },
+    "healthyRegions": {
+      "name": "Healthy Regions & Policies Lab",
+      "description": "连接空间数据科学与公共卫生。获取多种免费资源、工具包和系列讲座，了解如何衡量和建设更健康的社区。"
+    }
+  }
+}

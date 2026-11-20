@@ -1,0 +1,150 @@
+{
+  "common": {
+    "loadingPleaseWait": "Loading, Please Wait..."
+  },
+  "variablePanel": {
+    "title": "Air Quality",
+    "intro": "Points on the map show PM2.5 NowCast <strong>Mass Concentration</strong> values from our sensor network.",
+    "lastUpdated": "last updated: {{date}} {{time}}",
+    "loadingData": "loading data...",
+    "toggle": "Variables"
+  },
+  "variables": {
+    "none": "None"
+  },
+  "description": {
+    "dataSource": "Data Source",
+    "dataYear": "Data Year"
+  },
+  "overlays": {
+    "enabledLabel": "Overlays:",
+    "categories": {
+      "communityBoundaries": "Community Boundaries",
+      "communityResources": "Community Resources",
+      "builtInfrastructure": "Built Infrastructure"
+    }
+  },
+  "mapLayers": {
+    "title": "Add Community Context",
+    "intro": "Customize your view to see how air quality intersects with your community. Explore different indicators, resources, and boundaries.",
+    "indicators": {
+      "title": "Neighborhood Indicators",
+      "help": "Choose the main measure you want to view on the map. You may only choose one."
+    },
+    "overlays": {
+      "title": "Overlay Additional Resources",
+      "help": "Add boundaries, resources, & infrastructure. We recommend selecting only one option from each category, to avoid clutter."
+    }
+  },
+  "colorScale": {
+    "title": {
+      "aqi": "EPA PM 2.5 Air Quality Index",
+      "pm25": "Fine Particulate Matter",
+      "no2": "Nitrogen Dioxide"
+    },
+    "tooltip": {
+      "aqi": "EPA’s PM2.5 Air Quality Index (AQI)",
+      "pm25": "Particle Matter from fine particulates, 2.5 micrometers or less in diameter",
+      "no2": "Nitrogen Dioxide"
+    },
+    "levelOfHealthConcern": "Level of Health Concern",
+    "report": "Report"
+  },
+  "colorCoding": {
+    "title": {
+      "aqi": "Color Coding Air Quality",
+      "pm25": "Color Coding PM2.5",
+      "no2": "Color Coding NO₂"
+    },
+    "body": {
+      "aqi": "The <strong>Air Quality Index (AQI)</strong> color scale is a standardized, six-color, 0-500 system used to communicate health risks from air pollution. Colors range from Green (good) to Maroon (hazardous), with higher numbers and warmer colors indicating higher pollution levels and greater health risks.",
+      "pm25": "The <strong>PM2.5</strong> color scale shows concentrations of fine particulate matter in micrograms per cubic meter (μg/m³). Colors range from Green (good) to Maroon (hazardous), with higher values indicating greater health risks.",
+      "no2": "The <strong>NO₂</strong> color scale shows concentrations of Nitrogen Dioxide in parts per billion (ppb). NO₂ is a highly reactive, pungent-smelling reddish-brown gas that serves as a primary indicator of air pollution from combustion sources, such as traffic and power plants."
+    }
+  },
+  "sensor": {
+    "offline": "Sensor currently offline",
+    "unavailable": "Unavailable",
+    "linkCopied": "Link copied",
+    "copyLink": "Copy link",
+    "exploreHistorical": "Explore Historical Trends & Download"
+  },
+  "lastUpdated": {
+    "tooltip": "Updated hourly: {{date}}",
+    "updated": "updated",
+    "updating": "updating",
+    "loading": "Loading",
+    "pleaseWait": "Please Wait..."
+  },
+  "breadcrumbs": {
+    "details": "Details",
+    "explain": "Explain"
+  },
+  "details": {
+    "explain": "Explain",
+    "historicalTrends": "Historical Trends",
+    "download": "Download",
+    "downloadSession": "Downloads all data from current session",
+    "downloadIndicator": "Downloads all data for current indicator",
+    "indicator": "Indicator",
+    "viewBy": "View by",
+    "averageType": {
+      "hour": "Hour",
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "season": "Season",
+      "year": "Year"
+    },
+    "noRecentReadings": "No recent readings found."
+  },
+  "explain": {
+    "aqi": {
+      "title": "EPA’s Air Quality Index (AQI)",
+      "body": "The Air Quality Index (AQI) is a color-coded, 0–500 scale used to communicate how polluted the air is and the associated level of health concern. Higher AQI values indicate higher pollution levels and greater health concerns. An AQI under 100 is generally safe, while values over 100 indicate unhealthy air, particularly for sensitive groups."
+    },
+    "pm25": {
+      "title": "PM2.5 – Fine Particulate Matter",
+      "body": "PM2.5 refers to fine particulate matter—tiny solid particles and liquid droplets in the air that have a diameter of 2.5 micrometers in aerodynamic size or smaller. To put their size in perspective, a single human hair is about 70 micrometers wide, making the largest PM2.5 particle 30 times smaller than the width of a hair. PM2.5 is emitted into air from many sources, such as construction sites, unpaved roads, fields, smokestacks or fires, or any combustion source. As “criteria” air pollutant, it is regulated due to its well-established respiratory and cardiovascular health effects. People with heart or lung diseases, children, older adults, minority and low socioeconomic status populations are considered at higher risk because they are more sensitive or may have higher exposures."
+    },
+    "no2": {
+      "title": "NO₂ - Nitrogen Dioxide",
+      "body": "Nitrogen dioxide (NO₂) is a highly reactive, reddish-brown, pungent gas that acts as a primary indicator of traffic-related air pollution and a key component of smog, largely emitted from burning fuels in vehicles, power plants, and industrial facilities. As a \"criteria\" air pollutant, it is tightly regulated due to its role in causing respiratory illness, particularly asthma, and contributing to the formation of particulate matter PM2.5 and ground-level ozone."
+    }
+  },
+  "selectedArea": {
+    "sensorsInLocation": "Sensors in location",
+    "name": "Name"
+  },
+  "areaSelection": {
+    "findHeader": "<strong>Find</strong> your community, zip code, or ward",
+    "tabs": {
+      "community": "Community",
+      "zip": "Zip",
+      "zipCode": "Zip code",
+      "ward": "Ward"
+    },
+    "wardOption": "Ward {{number}}",
+    "search": "Search",
+    "noOptions": "No options",
+    "close": "Close",
+    "clear": "Clear selection",
+    "labels": {
+      "community": "Community:",
+      "zipCode": "Zip code:",
+      "ward": "Ward:"
+    }
+  },
+  "chart": {
+    "startOfWeek": "Start of Week",
+    "error": "ERR",
+    "unknown": "Unknown",
+    "seasons": {
+      "winter": "Winter",
+      "spring": "Spring",
+      "summer": "Summer",
+      "fall": "Fall",
+      "autumn": "Autumn"
+    }
+  }
+}

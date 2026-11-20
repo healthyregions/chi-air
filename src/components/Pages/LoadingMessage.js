@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ContentContainer } from '../../styled_components';
 import { colors } from '../../config';
+import { useTranslation } from 'react-i18next';
 
 const PreloaderPage = styled.div`
     background:${colors.gray};
@@ -23,12 +24,13 @@ const PreloaderPage = styled.div`
 `
 
 const LoadingMessage = () => {
+    const { t } = useTranslation('common');
 
     return (
        <PreloaderPage>
            <ContentContainer className="transferInfo">
-                <h2>loading...</h2>
-                <img src={`${process.env.PUBLIC_URL}/assets/img/preloader.gif`} alt="Preloader" />
+                <h2>{t('loading.message')}</h2>
+                <img src={`${process.env.PUBLIC_URL}/assets/img/preloader.gif`} alt={t('loading.imageAlt')} />
            </ContentContainer>
        </PreloaderPage>
     );

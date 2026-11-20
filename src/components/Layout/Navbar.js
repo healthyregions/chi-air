@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from '../../config';
@@ -6,8 +5,7 @@ import Grid from "@mui/material/Grid";
 import {DropdownButton} from "../VariablePanel/DropdownButton";
 import {MdHomeFilled, MdOutlineTranslate} from "react-icons/md";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {setLocale} from "../../store/slices/sensorDataSlice";
-import {useCookies} from "react-cookie";
+import {useTranslation} from "react-i18next";
 import {NavDropdown} from "./NavDropdown";
 import MenuItem from "@mui/material/MenuItem";
 import {getLocaleLabel, LButton, locales, productName} from "../VariablePanel/common";
@@ -39,15 +37,12 @@ export default function Nav({
   asFooter=false
 }) {
 
-  const dispatch = useDispatch();
-  const [cookies] = useCookies(['googtrans']);
+  const { t, i18n } = useTranslation('common');
 
   const navigate = useNavigate();
   const largeScreen = useMediaQuery('(min-width: 600px)');
 
-  const onLocaleChange = (locale) => {
-    dispatch(setLocale(locale));
-  };
+  const onLocaleChange = (locale) => i18n.changeLanguage(locale);
 
   const lgScreenFontSize = '24px';
   const xsScreenFontSize = '16px'
@@ -60,21 +55,21 @@ export default function Nav({
           <Grid container justifyContent={largeScreen ? 'space-between' : 'center'} alignItems={'center'} flexDirection={asFooter ? 'column' : (largeScreen ? 'row' : 'column-reverse')}>
             <Grid size='grow'>
               <Grid spacing={2} container justifyContent={largeScreen ? 'initial' : 'center'} alignItems={'center'}>
-                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(cookies['googtrans'])} options={locales} onChange={onLocaleChange} dropup={asFooter} />
+                <DropdownButton style={{ fontSize }} ButtonComponent={LButton} icon={<MdOutlineTranslate />} label={getLocaleLabel(i18n.resolvedLanguage)} options={locales} onChange={onLocaleChange} dropup={asFooter} />
                 <LButton style={{ fontSize }} onClick={() => navigate('/')}><MdHomeFilled /></LButton>
-                <NavDropdown keyName={'maps'} label={'Maps & more'} style={{ fontSize }} dropup={asFooter}>
-                  <MenuItem as={LButton} onClick={() => navigate('/map')}><span className={'notranslate'}>{productName}</span>&nbsp;Map</MenuItem>
-                  <MenuItem as={LButton} onClick={() => navigate('/resources')}>All Resources</MenuItem>
+                <NavDropdown keyName={'maps'} label={t('nav.mapsAndMore')} style={{ fontSize }} dropup={asFooter}>
+                  <MenuItem as={LButton} onClick={() => navigate('/map')}>{t('nav.productMap', { productName })}</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/resources')}>{t('nav.allResources')}</MenuItem>
                 </NavDropdown>
-                <NavDropdown keyName={'about'} label={'About'} style={{ fontSize }} dropup={asFooter}>
-                  <MenuItem as={LButton} onClick={() => navigate('/team')}>Team</MenuItem>
-                  <MenuItem as={LButton} onClick={() => navigate('/about')}>Info & FAQ</MenuItem>
-                  <MenuItem as={LButton} onClick={() => navigate('/contact')}>Contact Us</MenuItem>
+                <NavDropdown keyName={'about'} label={t('nav.about')} style={{ fontSize }} dropup={asFooter}>
+                  <MenuItem as={LButton} onClick={() => navigate('/team')}>{t('nav.team')}</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/about')}>{t('nav.infoFaq')}</MenuItem>
+                  <MenuItem as={LButton} onClick={() => navigate('/contact')}>{t('nav.contactUs')}</MenuItem>
                 </NavDropdown>
               </Grid>
             </Grid>
             <Grid alignItems={'end'} justifyContent={'right'} style={{ cursor: largeScreen ? '' : 'pointer', padding: largeScreen ? '' : '2rem 4rem' }}>
-              <img width={largeScreen ? 400 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={'Chicago Air Quality'} />
+              <img width={largeScreen ? 400 : '100%'} style={{ minWidth: largeScreen ? '' : '8rem' }} src={'/icons/chiair-logo.svg'} alt={t('nav.logoAlt')} />
             </Grid>
           </Grid>
 
