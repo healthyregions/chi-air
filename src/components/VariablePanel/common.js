@@ -95,19 +95,34 @@ export const getLocation = (locations, datasourceId) => {
   return locations?.find(s => s.datasourceId === datasourceId);
 };
 
+// Given a feature's per-metric rows, find the row for the time selected on the slider
+// (or the most recent row if nothing is selected). Rows are matched by date/type rather
+// than position, since a feature only holds rows that have been fetched for it.
+// NOTE: index 0 is the app-wide "latest" sentinel (e.g. SensorBarChart resets to it)
+export const findSelectedRow = (data, selectedTimeIndex) => {
+  if (!selectedTimeIndex?.index) {
+    return data?.[0];
+  }
+  return data?.find(r => r?.date === selectedTimeIndex.date && r?.type === selectedTimeIndex.type);
+};
+
 // Given a sensorId + related datasets, extract basic fragments needed by a few different views
 export const getMetadata = ({ geojsonData, parameter, datasourceId, selectedTimeIndex }) => {
   // Grab our previously-fetched data to determine some stats
   const feature = geojsonData?.features?.find(f => f?.properties?.datasourceId === datasourceId);
-  const latestRow = feature?.properties?.metrics?.[parameter]?.data?.[selectedTimeIndex?.index || 0];
+  const latestRow = findSelectedRow(feature?.properties?.metrics?.[parameter]?.data, selectedTimeIndex);
   const latestValue = latestRow?.value;
   return { feature, latestRow, latestValue };
 }
 
+// Timestamps in the Parquet datasets are UTC; always display them in Chicago local time,
+// regardless of the viewer's own timezone
+export const DISPLAY_TZ = 'America/Chicago';
+
 // Static helper function to format dates consistently across DataPanel/Map components
 //    short => 02/22/26 10PM
 //     long => 10:00 PM, 02/22/26
-export const formatDate = ({ timestamp, year=true, format='long' }) => {
+export const formatDate = ({ timestamp, year=true, format='long', timeZone=DISPLAY_TZ }) => {
   if (!timestamp) {
     return { time:'', date:'', iso: '', utc: undefined };
   }
@@ -117,6 +132,7 @@ export const formatDate = ({ timestamp, year=true, format='long' }) => {
 
   // Use 'en-US' to ensure the Month/Day/Year order
   const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,

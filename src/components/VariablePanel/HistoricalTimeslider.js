@@ -25,7 +25,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import isBetween from 'dayjs/plugin/isBetween';
-import {formatWeekDate, fromIso} from "./common";
+import {DISPLAY_TZ, formatWeekDate, fromIso} from "./common";
 
 // Extend dayjs with the required plugins
 dayjs.extend(utc);
@@ -181,7 +181,7 @@ export const HistoricalTimeslider = () => {
     if (!date) { return; }
     //console.log(`Formatting: date=${date}`, averageType);
     if (averageType === 'hour') {
-      const format = { month: 'short', day: 'numeric', hour: 'numeric' };
+      const format = { month: 'short', day: 'numeric', hour: 'numeric', timeZone: DISPLAY_TZ };
       if (sliderStartDate?.year() !== sliderEndDate?.year()) {
         format.year = 'numeric';    // show year only if it is relevant
       }
@@ -217,11 +217,13 @@ export const HistoricalTimeslider = () => {
   const filteredValues = useMemo(() => {
     const filteredData = metricData?.filter(m => m?.type === averageType);
     if (averageType === 'hour') {
-      const start = dayjs(sliderStartDate).tz("America/Chicago").hour(0).minute(0).second(0).millisecond(0);
-      const end = dayjs(sliderEndDate).tz("America/Chicago").hour(0).minute(0).second(0).millisecond(0);
+      // Treat the picked calendar dates as Chicago days: [start 00:00, end+1 00:00) Chicago time,
+      // independent of the viewer's timezone. Hourly dates in the dataset are UTC.
+      const start = dayjs.tz(sliderStartDate?.format('YYYY-MM-DD'), DISPLAY_TZ).valueOf();
+      const end = dayjs.tz(sliderEndDate?.format('YYYY-MM-DD'), DISPLAY_TZ).add(1, 'day').valueOf();
       const hourFiltered = filteredData?.filter(m => {
-        const current = dayjs(fromIso(m?.date));
-        return (start <= current) && (current <= end);
+        const current = fromIso(m?.date).getTime();
+        return (start <= current) && (current < end);
       });
       //console.log(`start=${start}   end=${end}`, hourFiltered);
       return hourFiltered;

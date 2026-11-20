@@ -105,7 +105,7 @@ const ParquetReaderComponent = ({ DEBUG }) => {
     }).finally(() => {
       setLoading(false);
     });
-  }, [dispatch, locations, selectedParameter, setLoading]);
+  }, [dispatch, selectedParameter, setLoading]);
 
   useEffect(() => {
     if (!clickedSensor){
@@ -160,25 +160,32 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   }, [dispatch, clickedSensor, breadcrumbs, setLoading]);
 
   useEffect(() => {
-    // Fetch initial metric data for the map
+    // Fetch map data for the row selected on the Historical Timeslider
+    // IMPORTANT: without a valid index, rowStart/rowEnd would be undefined/NaN and
+    // hyparquet would read *every row and every sensor column* of every metric file
+    const index = selectedTimeIndex?.index;
+    if (!Number.isInteger(index) || index < 0) {
+      return;
+    }
+
     const startTime = new Date().getTime();
     setLoading(true);
     allMetrics?.forEach(parameter => {
       fetchPq({
         url: `${s3prefix}/${parameter}.parquet.brotli`,
-        rowStart: selectedTimeIndex?.index,
-        rowEnd: selectedTimeIndex?.index+2,
+        rowStart: index,
+        rowEnd: index + 2,
       }).then(data => {
         dispatch(setMetricData({ parameter, data }));
         const checkDate = data?.find(() => true)?.date;
         const endTime = new Date().getTime();
-        console.log(`Finished fetching ${parameter} map data for index=${selectedTimeIndex?.index}: ${endTime - startTime}ms`);
+        console.log(`Finished fetching ${parameter} map data for index=${index}: ${endTime - startTime}ms`);
         console.log(`Checksum: requestedDate=${selectedTimeIndex?.date}  receivedDate=${checkDate}`);
       }).finally(() => {
         setLoading(false);
       });
     });
-  }, [dispatch, locations, selectedParameter, selectedTimeIndex, setLoading]);
+  }, [dispatch, selectedTimeIndex, setLoading]);
 
   useEffect(() => {
     const currentPage = breadcrumbs[breadcrumbs.length - 1];
@@ -193,19 +200,25 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       return;
     }*/
 
-    // FIXME: Determine row indices for target data
-    const rowStart = metricIndex[averageType];
-    const rowEnd = Object.keys(metricIndex).find(key => metricIndex[key] > rowStart);
-    console.log(metricIndex);
-    console.log(`Fetching from ${rowStart} to ${rowEnd} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
+    // Determine row indices for target data: rows for each averageType are contiguous,
+    // so this type ends where the next type (by starting row) begins
+    const rowStart = metricIndex?.[averageType];
+    if (!Number.isInteger(rowStart) || rowStart < 0) {
+      // Index file not loaded yet - this effect re-runs when metricIndex arrives
+      return;
+    }
+    const nextStarts = Object.values(metricIndex).filter(v => Number.isInteger(v) && v > rowStart);
+    const rowEnd = nextStarts.length ? Math.min(...nextStarts) : undefined;
+    console.log(`Fetching from ${rowStart} to ${rowEnd ?? 'end'} from ${s3prefix}/${selectedParameter}.parquet.brotli`)
 
     // Fetch metric for the Historical Trends graph with the given parameters
     const startTime = new Date().getTime();
+    setLoading(true);
     fetchPq({
       url: `${s3prefix}/${selectedParameter}.parquet.brotli`,
       columns: ['type', 'date', clickedSensor],
       rowStart,
-      rowEnd: rowEnd === -1 ? rowEnd : undefined
+      rowEnd,
     }).then(data => {
       dispatch(setMetricData({ parameter: selectedParameter, data }));
       const endTime = new Date().getTime();
@@ -238,8 +251,17 @@ const ParquetReaderComponent = ({ DEBUG }) => {
   useEffect(() => {
     // Skip rendering if we don't have enough data
     if (!locations?.length || !metricData?.length) { return; }
-    console.log(`Building GeoJSON from metricData:`, metricData);
     const startTime = new Date().getTime();
+
+    // metrics[*].data holds a row for every timestamp in the file (from the slider's
+    // type/date fetch), but sensor values only exist for the few rows we've actually
+    // fetched. Only copy rows that carry values - copying every row for every sensor
+    // creates millions of objects and crashes the tab ("Aw, Snap").
+    const rowsWithValues = allMetrics.reduce((acc, metric) => ({
+      ...acc,
+      [metric]: (metrics?.[metric]?.data || []).filter(d => Object.keys(d).length > 2),
+    }), {});
+
     const geojsonData = {
       type: 'FeatureCollection',
       features: locations?.filter(l => !!l?.currentSourceId && !!l?.datasourceId)?.map((location) => {
@@ -259,11 +281,13 @@ const ParquetReaderComponent = ({ DEBUG }) => {
               ...acc,
               [metric]: {
                 index: metrics?.[metric]?.index,
-                data: metrics?.[metric]?.data?.map(d => ({
-                  type: d.type,
-                  date: d.date,
-                  value: Number(d[location.datasourceId]),
-                }))
+                data: rowsWithValues[metric]
+                  .filter(d => d[location.datasourceId] !== undefined)
+                  .map(d => ({
+                    type: d.type,
+                    date: d.date,
+                    value: Number(d[location.datasourceId]),
+                  }))
               }
             }), {}),
           },
@@ -271,11 +295,10 @@ const ParquetReaderComponent = ({ DEBUG }) => {
       }) || [],
     };
 
-    console.log(`Built GeoJSON from sensor data: `, geojsonData);
     dispatch(setSensorGeojsonData(geojsonData));
 
     const endTime = new Date().getTime();
-    console.log(`Finished building GeoJSON: ${endTime - startTime}ms`);
+    console.log(`Finished building GeoJSON (${geojsonData.features.length} features): ${endTime - startTime}ms`);
   }, [dispatch, locations, metricData, metrics]);
 
   if (!metricData) return <>Loading...</>;

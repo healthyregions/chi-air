@@ -211,12 +211,10 @@ export const SensorBarChart = ({ context = 'recent', selectedParameter, margin =
           });
           return context.location === 'tick' ? time?.split(' ')?.join( '\n') : `${date} ${time}`;
         } else if (averageType === 'day') {
-          const {date} = formatDate({
-            timestamp: v,
-            format: 'long',
-            year: context.location !== 'tick'
-          });
-          const shortStartDate = shortDateFormat.format(new Date(date));
+          // Daily values are calendar dates (e.g. 2026-11-19), not instants: format the
+          // parsed UTC-midnight Date in UTC so the day never shifts with the viewer's timezone
+          const {utc} = formatDate({ timestamp: v, format: 'long' });
+          const shortStartDate = shortDateFormat.format(utc);
 
           // Format xAxisLabel - strip off the year but show this in tooltip
           const xAxisLabel = shortStartDate.split(',')[0].replaceAll(' ', "\n");

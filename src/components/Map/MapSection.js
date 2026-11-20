@@ -40,7 +40,7 @@ import {
   setClickedSensor
 } from "../../store/slices/sensorDataSlice";
 import {useSearchParams} from "react-router-dom";
-import {getBoundariesPath, getFeature} from "../VariablePanel/common";
+import {findSelectedRow, getBoundariesPath, getFeature} from "../VariablePanel/common";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 function DeckGLOverlay(props) {
@@ -311,7 +311,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [200, 200, 200];
@@ -331,7 +331,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         return [229, 238, 245];
         //return [68, 68, 68];
@@ -397,7 +397,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         //return [79, 143, 197];
         return [100, 100, 100];
@@ -417,7 +417,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         //return [229, 238, 245];
         //return [68, 68, 68];
@@ -466,7 +466,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [79, 143, 197];
       }
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         return [200, 200, 200];
       }
@@ -485,7 +485,7 @@ function MapSection({ mapRef, handlePanMap = (viewState) => {}, setViewStateFn =
       if (!data?.length) {
         return [229, 238, 245];
       }
-      const latest = data?.find((r) => !selectedTimeIndex?.index || (r.date === selectedTimeIndex?.date && r.type === selectedTimeIndex?.type))?.value;
+      const latest = findSelectedRow(data, selectedTimeIndex)?.value;
       if (isSensorOffline(latest)) {
         return [100,100,100];
       }

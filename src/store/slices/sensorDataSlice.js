@@ -24,7 +24,7 @@ const initialState = {
 
   // User selections
   breadcrumbs: ['root'],
-  selectedTimeIndex: 0,
+  selectedTimeIndex: null,  // { index, date, type } once a time is chosen on the slider
   selectedAreas: {
     community: [],
     zip: [],
@@ -71,7 +71,7 @@ export const sensorDataSlice = createSlice({
         [action.payload.parameter]: {
           ...state.metrics?.[action.payload.parameter],
           data: Object.values(
-            [...state.metrics?.[action.payload.parameter]?.data, ...action.payload.data].reduce((acc, row) => {
+            [...(state.metrics?.[action.payload.parameter]?.data || []), ...(action.payload.data || [])].reduce((acc, row) => {
               // 1. Create a unique string key from the two columns
               const compositeKey = `${row.type}_${row.date}`;
 
