@@ -252,7 +252,7 @@ export default function Resources() {
         </FilterRow>
       </ContentContainer>
 
-      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundPosition: 'bottom center' }}>
+      <GradientBackground $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: '100% auto', backgroundPosition: 'bottom center' }}>
         <ContentContainer>
           {visibleCategories?.map((category, catIndex) =>
             <CategorySection key={`resource-category-${catIndex}`}>

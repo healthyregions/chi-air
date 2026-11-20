@@ -525,7 +525,7 @@ export default function About() {
            </ContentContainer>
          </WhiteBackground>
 
-         <GradientBackground $direction={'to top'} $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', backgroundPosition: 'bottom center' }}>
+         <GradientBackground $direction={'to top'} $largeScreen={largeScreen} style={{ marginBottom: 0, backgroundImage: 'url(img/bg-gradient.svg)', backgroundRepeat: 'no-repeat', backgroundSize: '100% auto', backgroundPosition: 'bottom center' }}>
            <ContentContainer>
                {visibleCategories.map(({ id, label }) => (
                  <FAQCategorySection key={id}>
