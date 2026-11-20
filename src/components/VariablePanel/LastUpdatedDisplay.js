@@ -6,7 +6,7 @@ import {
 } from "../../store/slices/sensorDataSlice";
 import {useSelector} from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
-import {formatDate, formatWeekDate, fromIso, getMetadata} from "./common";
+import {formatChicagoTimestamp, formatDate, formatWeekDate, fromIso, getMetadata} from "./common";
 import dayjs from "dayjs";
 
 
@@ -44,10 +44,10 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
   })(selectedTimeIndex?.type);
 
   const { latestRow } = getMetadata({ parameter: selectedParameter, geojsonData, datasourceId, selectedTimeIndex });
-  const {time, date, utc} = (!selectedTimeIndex?.index || selectedTimeIndex?.type === 'hour') ? formatDate({
+  const {time, utc} = (!selectedTimeIndex?.index || selectedTimeIndex?.type === 'hour') ? formatDate({
     timestamp: timestamp || latestRow?.['date'],
     format: 'long'
-  }) : {time: undefined, date: undefined, utc: undefined};
+  }) : {time: undefined, utc: undefined};
 
 
   return (
@@ -56,12 +56,14 @@ export const LastUpdatedDisplay = ({ timestamp, datasourceId }) => {
         <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
           <FaHistory style={{ transform: 'scaleX(-1)', color: 'rgba(0, 88, 153, 0.5)', marginRight: '0.35rem' }} />
           <Tooltip arrow={true} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }} title={`Updated hourly: ${utc?.toUTCString()}`}>updat{time ? 'ed' : 'ing'}</Tooltip>
-          {time || 'Loading'}, {date || 'Please Wait...'}
+          {time ? formatChicagoTimestamp(utc) : 'Loading, Please Wait...'}
         </span> : <span style={{ fontWeight: 200, fontFamily: 'Space Grotesk' }}>
           <FaHistory style={{ transform: 'scaleX(-1)', color: 'rgba(0, 88, 153, 0.5)', marginRight: '0.35rem' }} />
-          <Tooltip arrow={true} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }} title={`Viewing past ${prettyAverageType} average: ${selectedTimestamp}`}>past {prettyAverageType} average</Tooltip>
+          <Tooltip arrow={true} style={{ textDecoration: 'underline', textDecorationStyle: 'dotted', marginRight: '0.25rem' }} title={`Viewing past ${prettyAverageType} average: ${selectedTimeIndex?.type === 'hour' ? selectedTimestamp?.toUTCString() : selectedTimestamp}`}>past {prettyAverageType} average</Tooltip>
           {
-            selectedTimeIndex?.type === 'day' || selectedTimeIndex?.type === 'hour' ? dayjs(selectedTimestamp).tz("America/Chicago")?.format(template) :
+            selectedTimeIndex?.type === 'hour' ? formatChicagoTimestamp(selectedTimestamp) :
+            // Daily values are calendar dates (e.g. 2026-11-19): format as-is, never shifted by timezone
+            selectedTimeIndex?.type === 'day' ? dayjs(selectedTimestamp)?.format(template) :
               selectedTimeIndex?.type === 'week' ? `${formatWeekDate(selectedTimestamp)[0]} - ${formatWeekDate(selectedTimestamp)[1]}` :
                 selectedTimeIndex?.type === 'month' ? `${dayjs(selectedTimestamp).tz("utc").startOf('month').format('MMMM YYYY')}` :
                   selectedTimeIndex?.type === 'season' ?

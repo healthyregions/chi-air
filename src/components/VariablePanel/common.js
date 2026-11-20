@@ -161,6 +161,28 @@ export const formatDate = ({ timestamp, year=true, format='long', timeZone=DISPL
 
 export const fromIso = (d) => new Date(d?.split(' ').join('T') + 'Z');
 
+// Same layout as Date.toUTCString() (e.g. "Fri, 20 Nov 2026 10:00:00 GMT"), but in Chicago
+// local time with its zone abbreviation, e.g. "Fri, 20 Nov 2026 04:00:00 CST"
+const chicagoTimestampFormat = new Intl.DateTimeFormat('en-US', {
+  timeZone: DISPLAY_TZ,
+  weekday: 'short',
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hourCycle: 'h23',
+  timeZoneName: 'short',
+});
+export const formatChicagoTimestamp = (date) => {
+  if (!date || isNaN(date)) {
+    return '';
+  }
+  const p = Object.fromEntries(chicagoTimestampFormat.formatToParts(date).map(({type, value}) => [type, value]));
+  return `${p.weekday}, ${p.day} ${p.month} ${p.year} ${p.hour}:${p.minute}:${p.second} ${p.timeZoneName}`;
+};
+
 export const getIsoWeekRange = (year, weekNumber) => {
   // ISO 8601 rule: Week 1 always contains January 4th
   const jan4 = new Date(year, 0, 4);

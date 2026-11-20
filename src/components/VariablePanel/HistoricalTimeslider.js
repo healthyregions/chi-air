@@ -25,7 +25,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import isBetween from 'dayjs/plugin/isBetween';
-import {DISPLAY_TZ, formatWeekDate, fromIso} from "./common";
+import {DISPLAY_TZ, formatChicagoTimestamp, formatWeekDate, fromIso} from "./common";
 
 // Extend dayjs with the required plugins
 dayjs.extend(utc);
@@ -181,11 +181,8 @@ export const HistoricalTimeslider = () => {
     if (!date) { return; }
     //console.log(`Formatting: date=${date}`, averageType);
     if (averageType === 'hour') {
-      const format = { month: 'short', day: 'numeric', hour: 'numeric', timeZone: DISPLAY_TZ };
-      if (sliderStartDate?.year() !== sliderEndDate?.year()) {
-        format.year = 'numeric';    // show year only if it is relevant
-      }
-      return new Date(fromIso(date))?.toLocaleTimeString('en-US', format);
+      // e.g. "Fri, 20 Nov 2026 04:00:00 CST" - matches LastUpdatedDisplay
+      return formatChicagoTimestamp(fromIso(date));
     } else if (averageType === 'day') {
       const format = { month: 'short', day: 'numeric', year: 'numeric' };
       return dayjs(date)?.toDate().toLocaleDateString('en-US', format);
@@ -354,6 +351,10 @@ export const HistoricalTimeslider = () => {
     // }
   }, [filteredValues, sliderStartDate, sliderEndDate, selectedTimeIndex?.date, setMapState]);
 
+  // Thumb position along the slider (0 = start, 1 = end), used to keep the value label in bounds
+  const sliderMax = filteredValues?.length - 1;
+  const labelPosition = sliderMax > 0 ? Math.min(1, Math.max(0, value / sliderMax)) : 0.5;
+
   const prettyAverageType = ((type) => {
     if (type === 'season') {
       return 'seasonal';
@@ -445,6 +446,11 @@ export const HistoricalTimeslider = () => {
                         },
                         '& .MuiSlider-thumb': {
                           color: '#005899'
+                        },
+                        // Keep long labels (e.g. "Fri, 20 Nov 2026 04:00:00 CST") inside the slider:
+                        // left-aligned to the thumb at the start, centered mid-way, right-aligned at the end
+                        '& .MuiSlider-valueLabel.MuiSlider-valueLabelOpen': {
+                          transform: `translateX(${(0.5 - labelPosition) * 100}%) translateY(-100%) scale(1)`,
                         },
                         // Target the value label container
                         '& .MuiSlider-valueLabel': {
